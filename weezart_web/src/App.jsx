@@ -1,11 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
 import Signup from './Pages/Signup/Signup';
+import Login from './Pages/Login/Login';
 
 function App() {
   return (
     <div className="App">
-
+      <Login/>
       <Signup/>
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />

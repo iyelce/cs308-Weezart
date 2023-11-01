@@ -4,59 +4,80 @@ import './Signup.css';
 const SignUp = () => {
     return (
       <div className="main">
-        {/* Sign-up form */}
-        <section className="signup">
-          <div className="container">
-            <div className="signup-content">
-              <div className="signup-form">
-                <h2 className="form-title">Sign up</h2>
-                <form method="POST" className="register-form" id="register-form">
-                  <div className="form-group">
-                    <label htmlFor="name">
-                      <i className="zmdi zmdi-account material-icons-name"></i>
-                    </label>
-                    <input type="text" name="name" id="name" placeholder="Your Name" />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="email">
-                      <i className="zmdi zmdi-email"></i>
-                    </label>
-                    <input type="email" name="email" id="email" placeholder="Your Email" />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="pass">
-                      <i className="zmdi zmdi-lock"></i>
-                    </label>
-                    <input type="password" name="pass" id="pass" placeholder="Password" />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="re-pass">
-                      <i className="zmdi zmdi-lock-outline"></i>
-                    </label>
-                    <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password" />
-                  </div>
-                  <div className="form-group">
-                    <input type="checkbox" name="agree-term" id="agree-term" className="agree-term" />
-                    <label htmlFor="agree-term" className="label-agree-term">
-                      <span><span></span></span>I agree to all statements in <a href="#" className="term-service">Terms of service</a>
-                    </label>
-                  </div>
-                  <div className="form-group form-button">
-                    <input type="submit" name="signup" id="signup" className="form-submit" value="Register" />
-                  </div>
-                </form>
-              </div>
-              <div className="signup-image">
-                <figure><img src="/public/Images/WizardWithGuitar.png" alt="signup" /></figure>
-                <a href="#" className="signup-image-link">I am already a member</a>
-              </div>
-            </div>
+
+{/* deneme */}
+<section className="signup">
+  <div className="signup-container">
+    <div className="title">Sign up</div>
+
+    <div className="signup-content">
+      <div className="signup-form">
+
+        <form className="register-form">
+
+        <div className="field">
+            <input className="signup-input-box" type="text" required />
+            <label  >Username</label>
           </div>
-        </section>
-  
+
+          <div className="field">
+            <input className="signup-input-box" type="text" required />
+            <label className="signup-input-label" >Email Address</label>
+          </div>
+
+          <div className="field">
+            <input className="signup-input-box" type="password" required />
+            <label className="signup-input-label" >Password</label>
+          </div>
+
+          <div className="field">
+            <input className="signup-input-box" type="password" required />
+            <label className="signup-input-label">Repeat your password</label>
+          </div>
+
+          
+          <div className="field">
+            <button className="register-button">
+              Register
+            </button>
+          </div>
+
+          
+
+        </form>
+        <div className="login-link"> Already a member? 
+            <a href="#">  Login now</a>
+          </div>
+
+          
+
+        <div className="social-login">
+                  <span className="social-label">Or log in with</span>
+                  <ul className="socials">
+                    <li><a href="#"><i className="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                    <li><a href="#"><i className="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                    <li><a href="#"><i className="display-flex-center zmdi zmdi-google"></i></a></li>
+                  </ul>
+                </div>
+
+      </div>
+
+      <div className="signup-image">
+        <figure>
+          <img src="weezart_web\public\Images\WizardWithGuitar.png" alt="signup" />
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
         {/* Sign-in form */}
-        <section className="sign-in">
-          <div className="container">
+        <section className="signup">
+          <div className="signup-container">
             <div className="signin-content">
               <div className="signin-image">
                 <figure><img src="images/signin-image.jpg" alt="sign up image" /></figure>
@@ -100,6 +121,9 @@ const SignUp = () => {
           </div>
         </section>
       </div>
+
+
+
     );
   };
   

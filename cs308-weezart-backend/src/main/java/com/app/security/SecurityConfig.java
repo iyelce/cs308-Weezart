@@ -30,7 +30,7 @@ public class SecurityConfig {
 		
 		log.info("security içerdeyim");
 		
-		http.authorizeHttpRequests(authorize->authorize.requestMatchers("/auth/register").permitAll().anyRequest().authenticated())
+		http.authorizeHttpRequests(authorize->authorize.requestMatchers("/auth/register", "/auth/login").permitAll().anyRequest().authenticated())
 		.csrf(AbstractHttpConfigurer::disable)
         .anonymous(AbstractHttpConfigurer::disable);
 		

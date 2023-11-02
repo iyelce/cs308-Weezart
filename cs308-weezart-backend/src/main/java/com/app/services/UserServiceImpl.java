@@ -2,8 +2,11 @@ package com.app.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.app.models.User;
 import com.app.repo.UserRepository;
@@ -17,6 +20,8 @@ public class UserServiceImpl implements UserService{
 	    public UserServiceImpl(UserRepository userRepository) {
 	        this.userRepository = userRepository;
 	    }
+	    
+	    @Autowired private UserRepository userRepo;
   
 	    public User createUser(String username, String password, String email) {
 	    	
@@ -36,12 +41,40 @@ public class UserServiceImpl implements UserService{
 	        return userRepository.save(user);
 	    }
 	    
-	    public User loginUser(String username, String password) {
+	    public User loginUser(String username, String password) throws CustomException{
+	    		    	
+	    	User userDetails = userRepository.findByUsername(username); 
+	    		    	
+	    	if(userDetails == null) throw new CustomException("Username is wrong");
 	    	
-	    	//TODO: IMPLEMENT LOGIN
+	    	if(!matchesPassword(password, userDetails.getPassword())) {
+	    		
+	    		log.info("exception thrown, wrong username or password");
+	    		throw new CustomException("Username or password is wrong");
+	    	}
 	    	
-	    	User user = new User();
-	    	
-	    	return userRepository.save(user);
+	    	log.info("login successful?");
+	    	return userRepository.findByUsername(username);
 	    }
+	    
+	    private boolean matchesPassword(String password, String passwordHashed) {
+	    		    	
+	    	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	    	
+	    	log.info("encoder initialized for password check");
+	    	return passwordEncoder.matches(password, passwordHashed);
+	    }
+	    
+	    @ResponseStatus(HttpStatus.BAD_REQUEST)
+	 	public class CustomException extends RuntimeException {
+	 		private String message;
+
+		    public CustomException(String message) {
+		        this.message = message;
+		    }
+
+		    public String getMessage() {
+		        return message;
+		    }
+		}
 }

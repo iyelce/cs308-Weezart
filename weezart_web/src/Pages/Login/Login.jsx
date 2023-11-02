@@ -29,10 +29,10 @@ function Login() {
                         <input type="submit" value="Login" />
                     </div>
                     <div className="signup-link">
-                        Not a member? <a href="#">Signup now</a>
+                        Not a member? <a >Signup now</a>
                     </div>
                     <div className="pass-link">
-                            <a href="#">Forgot password?</a>
+                            <a >Forgot password?</a>
                         </div>
                 </form>
             </div>

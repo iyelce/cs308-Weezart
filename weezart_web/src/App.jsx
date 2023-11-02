@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Signup from './Pages/Signup/Signup';
 import Login from './Pages/Login/Login';
@@ -8,22 +7,33 @@ function App() {
     <div className="App">
       {/* <Login/> */}
       <Signup/>
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
+      
     </div>
   );
 }
 
 export default App;
+
+// import { BrowserRouter, Route, Routes } from 'react-router-dom';
+// import Login from './Pages/Login/Login';
+// import SignUp from './Pages/Signup/Signup';
+
+
+
+// const App = () => {
+
+// 	return (
+
+// 		<BrowserRouter> 
+// 			<Routes>
+        
+// 				<Route path={'/'} element={<Login />}></Route>
+
+// 				<Route path={'/signup'} element={<SignUp/>} > </Route>
+
+// 			</Routes>
+//     </BrowserRouter> 
+// 	);
+// };
+
+// export default App;

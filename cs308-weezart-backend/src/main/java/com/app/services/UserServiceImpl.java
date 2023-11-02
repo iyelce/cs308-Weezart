@@ -2,11 +2,13 @@ package com.app.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.app.models.User;
 import com.app.repo.UserRepository;
 
-
+@Service
 public class UserServiceImpl implements UserService{
 	 private final UserRepository userRepository;
 	 
@@ -16,10 +18,16 @@ public class UserServiceImpl implements UserService{
 	        this.userRepository = userRepository;
 	    }
   
-	    public User createUser(String username, String passwordHashed, String email) {
+	    public User createUser(String username, String password, String email) {
+	    	
+	    	log.info("hi!");
+	    	
+	    	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	    	String passwordHashed = passwordEncoder.encode(password);
+	    	
 	        User user = new User();
 	        user.setUsername(username);
-	        user.setPasswordHashed(passwordHashed);
+	        user.setPassword(passwordHashed);
 	        user.setEmail(email);
 	        
 	        log.info("username: " + username + "password :D : " + passwordHashed + "email: " + email);
@@ -27,6 +35,13 @@ public class UserServiceImpl implements UserService{
 	        // Save the user to the database
 	        return userRepository.save(user);
 	    }
-
-
+	    
+	    public User loginUser(String username, String password) {
+	    	
+	    	//TODO: IMPLEMENT LOGIN
+	    	
+	    	User user = new User();
+	    	
+	    	return userRepository.save(user);
+	    }
 }

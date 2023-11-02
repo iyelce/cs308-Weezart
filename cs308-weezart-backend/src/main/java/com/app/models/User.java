@@ -1,5 +1,9 @@
 package com.app.models;
 
+
+
+
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,16 +15,19 @@ import jakarta.persistence.Table;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long userID;
+	private long iduser;
 	private String username;
-	private String passwordHashed;
+	
+	
+	private String password;
+	
 	private String email;
 	
-	public long getUserID() {
-		return userID;
+	public long getiduser() {
+		return iduser;
 	}
-	public void setUserID(long userID) {
-		this.userID = userID;
+	public void setiduser(long iduser) {
+		this.iduser = iduser;
 	}
 	public String getUsername() {
 		return username;
@@ -28,11 +35,11 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getPasswordHashed() {
-		return passwordHashed;
+	public String getpassword() {
+		return password;
 	}
-	public void setPasswordHashed(String passwordHashed) {
-		this.passwordHashed = passwordHashed;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public String getEmail() {
 		return email;

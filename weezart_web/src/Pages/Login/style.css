@@ -5,26 +5,76 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+
+html{
+    width:100%;
+    height: 100%;
+    
+}
+
 html,body{
   display: grid;
   height: 100%;
   width: 100%;
   place-items: center;
-  background: #f2f2f2;
-  /* background: linear-gradient(-135deg, #c850c0, #4158d0); */
+
 }
+body{
+  background: url('https://cdnb.artstation.com/p/assets/images/images/016/387/059/large/stefanie-arndorfer-god-temple-interior-version.jpg?1551966297');
+  background-size:cover;
+  background-position:center;
+  background-repeat: no-repeat;
+
+  
+}
+#root{
+  height:100%;
+  width:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+
+
+  
+
+
+div.App{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 ::selection{
   background: #4158d0;
   color: #fff;
 }
 .wrapper{
-  width: 60%;
-  background: #fff;
+  width: 100%;
+  height: 60%;
+  background: #ffffff1a;
+  color:#fff;
   display: flex;
   flex-direction: column;
   border-radius: 15px;
   box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
 }
+.wrapper .container{
+  padding-top:2.5rem;
+  height: 100%;
+
+  display: flex;
+  background-color:rgba(253, 253, 253, 0.35);
+
+
+  
+}
+
+
+
 .wrapper .title{
   width:100%;
   font-size: 35px;
@@ -34,10 +84,13 @@ html,body{
   color: #fff;
   user-select: none;
   border-radius: 15px 15px 0 0;
-  background: linear-gradient(90deg, rgba(22,20,57,1) 9%, rgba(69,26,146,1) 52%, rgba(255,169,0,1) 100%);
+  background: rgba(37, 2, 67, 0.873);
+
 }
 .wrapper form{
   padding: 10px 30px 50px 30px;
+  width:100%;
+  
 }
 .wrapper form .field{
   height: 50px;
@@ -57,7 +110,7 @@ html,body{
 }
 .wrapper form .field input:focus,
 form .field input:valid{
-  border-color: #4158d0;
+  border-color: #222;
 }
 .wrapper form .field label{
   position: absolute;
@@ -73,61 +126,139 @@ form .field input:valid{
 form .field input:focus ~ label,
 form .field input:valid ~ label{
   top: 0%;
-  padding-bottom:12px;
+  padding-bottom:15px;
   font-size: 16px;
-  color: #4158d0;
+  color: #331055;
   background: transparent;
   transform: translateY(-50%);
 }
-form .content{
-  display: flex;
-  width: 100%;
-  height: 50px;
-  font-size: 16px;
-  align-items: center;
-  justify-content: center;
+
+
+form  .pass-link{
+    margin-top: 1.3rem;
 }
-form .content .checkbox{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.container-1{
+  margin-top:2rem;
+  display:grid;
+  place-items:center;
+
+
+
 }
-form .content input{
-  width: 15px;
-  height: 15px;
-  background: red;
+.container-1 .btn {
+	position: relative;
+	
+	width: 250px;
+	height: 50px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
 }
-form .content label{
-  color: #262626;
-  user-select: none;
-  padding-left: 5px;
+.container-1 .btn a {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: rgba(255, 255, 255, 0.05);
+	box-shadow: 0 15px 15px rgba(0, 0, 0, 0.3);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 30px;
+	padding: 10px;
+	letter-spacing: 1px;
+	text-decoration: none;
+    font-size:15px;
+	overflow: hidden;
+	color: #fff;
+	font-weight: 400px;
+	z-index: 1;
+	transition: 0.5s;
+	backdrop-filter: blur(15px);
+  background: #331055;
+
 }
-form .content .pass-link{
-  color: "";
+.container-1 .btn:hover a {
+	letter-spacing: 3px;
 }
-form .field input[type="submit"]{
-  color: #fff;
-  border: none;
-  padding-left: 0;
-  margin-top: -10px;
-  font-size: 20px;
-  font-weight: 500;
-  cursor: pointer;
-  background: linear-gradient(-135deg, #c850c0, #4158d0);
-  transition: all 0.3s ease;
+.container-1 .btn a::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: 100%;
+	background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
+	transform: skewX(45deg) translate(0);
+	transition: 0.5s;
+	filter: blur(0px);
+   
 }
-form .field input[type="submit"]:active{
-  transform: scale(0.95);
+.container-1 .btn:hover a::before {
+	transform: skewX(45deg) translate(200px);
+}
+.container-1 .btn::before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	transform: translatex(-50%);
+	bottom: -5px;
+	width: 40px;
+	height: 10px;
+	background: #331055;
+	border-radius: 10px;
+	transition: 0.5s;
+	transition-delay: 0.5;
+  opacity: 0;
+}
+.container-1 .btn:hover::before /*lightup button*/ {
+	bottom: 0;
+	height: 100%;
+	width: 100%;
+	border-radius: 40px;
+  opacity: 1;
+}
+
+.container-1 .btn::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	transform: translatex(-50%);
+	top: -5px;
+	width: 40px;
+	height: 10px;
+	background: #331055;
+	border-radius: 30px;
+	transition: 0.5s;
+	transition-delay: 0.5;
+  opacity: 0;
+}
+.container-1 .btn:hover::after /*lightup button*/ {
+	top: 0;
+	height: 50%;
+	width: 92%;
+	border-radius: 30px;
+  opacity: 1;
+}
+.container-1 .btn:nth-child(1)::before, /*chnage 1*/
+.container-1 .btn:nth-child(1)::after {
+	background: #331055;
+	box-shadow: 0 0 5px #331055, 0 0 15px #331055, 0 0 30px#331055,
+		0 0 60px #331055;
 }
 form .signup-link{
   color: #262626;
-  margin-top: 20px;
   text-align: center;
 } 
 
 form .pass-link a,
 form .signup-link a{
-  color: #4158d0;
+  color: #331055;
   text-decoration: none;
   text-align: center;
   
@@ -148,3 +279,77 @@ div.login-form{
 div.login-logo{
     width:50%;
 }
+
+div.sign-up-socials{
+  width:100%;
+  display: flex;
+  align-items: center;
+}
+div button.login-with-google-btn {
+
+    
+  padding: 12px 16px 12px 42px;
+  margin-top:20px;
+  border: none;
+  border-radius: 25px;
+  font-size:15px;
+  font-weight: 500;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
+  
+  color: #757575;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
+  position:relative;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: 12px 11px;
+  cursor: pointer;
+
+}
+  
+  
+  
+  
+
+  div button.login-with-google-btn:before {
+    position: absolute;
+    content: "";
+    top: -2px;
+    left: -2px;
+    height: calc(100% + 4px);
+    width: calc(100% + 4px);
+    border-radius: 25px;
+    z-index: -1;
+    opacity: 0;
+    filter: blur(5px);
+    background: linear-gradient(
+      90deg,
+      blue,
+      red,
+      yellow,
+      green
+      
+    );
+    background-size: 400%;
+
+    animation: animate 20s linear infinite;
+  }
+  div button.login-with-google-btn:hover:before {
+    opacity: 1;
+    border-radius: 25px;
+  }
+  
+ 
+  @keyframes animate {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 400% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }

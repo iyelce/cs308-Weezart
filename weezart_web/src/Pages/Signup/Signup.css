@@ -339,7 +339,6 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
     -ms-align-items: center;
     margin-top: 80px; }
   
-
       .title{
         font-size: 35px;
         font-weight: 600;
@@ -410,20 +409,6 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
         background: #fff;
         transform: translateY(-50%);
       }
-
-      .register-form.login-link{
-        color: red;
-        margin-top: 100px;
-        text-align: center;
-      }
-      .register-form.pass-link a,
-      .register-form .login-link a{
-        color: #4158d0;
-        text-decoration: none;
-      }
-
-
-
 
       .login-with-google-btn {
         transition: background-color .3s, box-shadow .3s;
@@ -510,6 +495,15 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
         flex-direction: row;
         align-items: center;
       }
+
+      .password-input-box .field span{
+          color: #757575;
+          position: 'absolute';
+          right: '8px';
+          top: '50%';
+          transform: 'translateY(-50%)';
+        
+      }
       
       .eye-button {
         background-color: white;
@@ -519,5 +513,30 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
         align-items: center;
         cursor: pointer;
         margin-left: 20px;
+      }
+      
+
+
+
+     
+      
+      .input-container {
+        position: relative;
+      }
+      
+      
+      
+      .eye-icon-container {
+        position: absolute;
+        right: 10px; /* Adjust the position as needed */
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+      
+      .eye-button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
       }
       

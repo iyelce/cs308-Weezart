@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 
-export default Email = ({ navigation }) => {
+export default Signup = ({ navigation }) => {
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
       <KeyboardAvoidingView
@@ -30,7 +30,7 @@ export default Email = ({ navigation }) => {
             <Text
               style={{ textAlign: "center", fontWeight: "bold", fontSize: 21 }}
             >
-              {"Enter your credentials"}
+              {"Sign up"}
             </Text>
             <Text
               style={{
@@ -40,8 +40,7 @@ export default Email = ({ navigation }) => {
                 textAlign: "center",
               }}
             >
-              Login using your email and password in order to verify your
-              account
+              Sign Up using your own information
             </Text>
           </View>
           <View
@@ -91,6 +90,31 @@ export default Email = ({ navigation }) => {
               }}
             />
           </View>
+          <View
+            style={{
+              backgroundColor: "#f3f3f3",
+              borderRadius: 16,
+              padding: 16,
+              paddingLeft: 20,
+              paddingRight: 20,
+              width: "100%",
+              marginTop: 10,
+            }}
+          >
+            <TextInput
+              required
+              placeholder="Re-Enter password"
+              placeholderTextColor={"#9ba3af"}
+              textContentType="password"
+              secureTextEntry
+              keyboardShouldPersistTaps="always"
+              style={{
+                width: "100%",
+                fontSize: 17,
+                fontWeight: "bold",
+              }}
+            />
+          </View>
           <TouchableOpacity
             style={{
               backgroundColor: "#f3f3f3",
@@ -109,16 +133,16 @@ export default Email = ({ navigation }) => {
             }}
           >
             <Text style={{ fontWeight: "bold", color: "white", fontSize: 17 }}>
-              Login
+              Sign Up
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{ marginTop: 10 }}
-            onPress={() => navigation.navigate("Signup")}
+            onPress={() => navigation.goBack()} //here
           >
             <Text style={{ fontSize: 12, color: "#7e7e7e" }}>
-              {"Don't have an account? "}
-              <Text style={{ textDecorationLine: "underline" }}>Sign up.</Text>
+              {"Already have an account? "}
+              <Text style={{ textDecorationLine: "underline" }}>Login.</Text>
             </Text>
           </TouchableOpacity>
         </View>

@@ -98,7 +98,7 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
     display: flex;
     flex-direction: column;
     width: 900px;
-    background: #fff;
+    background: rgba(255, 255, 255,0.3);
     margin: 0 auto;
     box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
     -moz-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
@@ -340,6 +340,7 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
     margin-top: 80px; }
   
       .title{
+        width:100%;
         font-size: 35px;
         font-weight: 600;
         text-align: center;
@@ -347,7 +348,7 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
         color: #fff;
         user-select: none;
         border-radius: 15px 15px 0 0;
-        background: linear-gradient(90deg, rgba(22,20,57,1) 9%, rgba(69,26,146,1) 52%, rgba(255,169,0,1) 100%);
+        background: rgba(37, 2, 67, 0.873);
       }     
 
       .register-button{
@@ -366,14 +367,14 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
         transition: all 0.3s ease;
       }
 
-      .register-form .field{
+      .register-form-body .field{
         height: 50px;
         width: 100%;
         margin-top: 20px;
         position: relative;
       }
 
-      .register-form .field input{
+      .register-form-body .field input{
         height: 100%;
         width: 100%;
         outline: none;
@@ -384,12 +385,12 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
         transition: all 0.3s ease;
       }
 
-      .register-form .field input:focus,
+      .register-form-body .field input:focus,
       form .field input:valid{
         border-color: #4158d0;
       }
 
-      .register-form .field label{
+      .register-form-body .field label{
         position: absolute;
         top: 50%;
         left: 20px;
@@ -401,8 +402,8 @@ display-flex, .display-flex, .display-flex-center, .signup-content, .signin-cont
         transition: all 0.3s ease;
       }
 
-      .register-form .field input:focus ~ label,
-      .register-form .field input:valid ~ label{
+      .register-form-body .field input:focus ~ label,
+      .register-form-body .field input:valid ~ label{
         top: 0%;
         font-size: 16px;
         color: #4158d0;

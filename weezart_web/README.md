@@ -73,8 +73,15 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 -------------cansın----------------
 
-eye icon:
+icons:
 npm install react-icons --save
 
 router:
 npm i react-router-dom
+
+popup:
+npm install react-modal
+
+bootstrap:
+npm install bootstrap
+

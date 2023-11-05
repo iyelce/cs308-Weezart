@@ -57,7 +57,7 @@ const SignUp = () => {
 
             <div className="signup-form">
 
-              <form className="register-form">
+              <form className="register-form-body">
 
                 <div className="field">
                   <input className="signup-input-box" type="text"  

@@ -13,7 +13,7 @@ html{
 }
 
 html,body{
-  display: grid;
+
   height: 100%;
   width: 100%;
   place-items: center;
@@ -36,13 +36,9 @@ body{
   
 }
 
-
-
-  
-
-
 div.App{
   height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -53,7 +49,7 @@ div.App{
   color: #fff;
 }
 .wrapper{
-  width: 100%;
+  width: 50%;
   height: 60%;
   background: #ffffff1a;
   color:#fff;
@@ -307,6 +303,7 @@ div button.login-with-google-btn {
   background-position: 12px 11px;
   cursor: pointer;
 
+  
 }
   
   

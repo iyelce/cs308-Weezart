@@ -3,6 +3,7 @@ import Signup from './Pages/Signup/Signup';
 import Login from './Pages/Login/Login';
 import Search from './Pages/Search/Search';
 
+import Template from './Pages/template/template';
 
 function App() {
   return (

@@ -82,18 +82,22 @@ div.main .register-form .field{
     width: 100%;
     margin-top: 20px;
     position: relative;
+    display: flex;
+    border: 1px solid lightgrey;
+    border-radius: 25px;
+    background:white;
     
 
 }
 div.main .register-form .field input.register-input-box{
     height: 100%;
-    width: 80%;
-    padding: 1px 30px 1px 20px;
+    width: 90%;
+
     outline:none;
     font-size: 17px;
 
-    border: 1px solid lightgrey;
-    border-radius: 25px;
+    border: none;
+
     transition: all 0.3s ease;
 }
 div.main .register-form .field label{
@@ -107,6 +111,13 @@ div.main .register-form .field label{
     pointer-events: none;
     transform: translateY(-50%);
     transition: all 0.3s ease;
+}
+
+div.main .register-form .field span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right:0;
 }
 
 div.main .register-form form .field input.register-input-box:focus,

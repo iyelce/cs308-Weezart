@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService{
 	        user.setUsername(username);
 	        user.setPassword(passwordHashed);
 	        user.setEmail(email);
+	        user.setAuthority("ROLE_USER");
 	        
 	        log.info("username: " + username + "password :D : " + passwordHashed + "email: " + email);
 	        

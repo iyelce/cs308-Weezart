@@ -1,12 +1,13 @@
 import './App.css';
 import Signup from './Pages/Signup/Signup';
 import Login from './Pages/Login/Login';
+import Template from './Pages/template/template';
 
 function App() {
   return (
     <div className="App">
-      {/* <Login/> */}
-      <Signup/>
+  
+      <Template/>
       
     </div>
   );

@@ -1,17 +1,14 @@
 import React, { useEffect } from 'react';
-import './template.css';
+import './authStyle.css';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { useState } from "react";
-const Template = () => {
+const Login = () => {
   
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);
-    const [isVisibleRepeatPassword, setIsVisibleRepeatPassword] = useState(false);
     const [isFocusedUsername, setIsFocusedUsername] = useState(false);
     const [isFocusedEmail, setIsFocusedEmail] = useState(false);
     const [isFocusedPassword, setIsFocusedPassword] = useState(false);
-    const [isFocusedRepeatPassword, setIsFocusedRepeatPassword] = useState(false);
     const [password, setPassword] = useState('');
-    const [repeatPassword, setRepeatPassword] = useState('');
     const [username, setUsername] = useState('');
     const [email,setEmail] = useState('');
  
@@ -22,60 +19,12 @@ const Template = () => {
       const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
       return emailRegex.test(email);
     }
-    // function labelVisibility(){
-    //     let whole_inputs=document.querySelectorAll(".field");
-    //     whole_inputs.forEach((input)=>{
-    //         input.addEventListener("click",()=>{
-    //             input.classList.add("moved");
-    //             input.children[1].classList.add("moved-upside");
-            
-    //         });
-            
-    //     });
+  
     
-    // }
-
-    // function labelUnvisibility(){
-    //     let dom =window.addEventListener("click",(e)=>{
-    //         let whole_inputs=document.querySelectorAll(".field");
-    //         whole_inputs.forEach((input)=>{
-    //             input.classList.remove("moved");
-    //             if(input.children[0].value==""){
-    //                 input.children[1].classList.remove("moved-upside");
-    //             }
-
-    //           });
-    //     })
-    // }
-   
-  
-    function registerCheck(){
-  
-      console.log("--------render--------");
-  
-      //check mail format
-      if (isEmailValid(email)) {
-        console.log("Email is valid");
-      } 
-      else {
-        console.log("Email is not valid");
-      }
-  
-      //check password and repeat password
-      if (password === repeatPassword) {
-        console.log("Passwords are same");;
-      }
-      else {
-        console.log("Passwords do not match")
-      }
-  
-      //check if the username is unique via API
-  
-    }
 
   return (
     <div className="main">
-    <div className="title">Sign Up</div>
+    <div className="title">Login</div>
     <div className="register-content">
         <div className="register-form">
             <form action="#" className="register-form-body">
@@ -114,29 +63,12 @@ const Template = () => {
                       </span>
                 </div>
 
-                <div  className={'field '+(isFocusedRepeatPassword?'moved':'')}>
-                    <input type={isVisibleRepeatPassword ? "text" : "password"}
-                    className='register-input-box'
-                    onChange={(e)=>setRepeatPassword(e.target.value)}
-                    onBlur={()=>setIsFocusedRepeatPassword(false)}
-                    onFocus={()=>setIsFocusedRepeatPassword(true)}
-                     ></input>
-                    <label  className={'register-input-label '+(isFocusedRepeatPassword||(!isFocusedRepeatPassword&&repeatPassword!=='')?'moved-upside':'')}>Repeat Password</label>
-                    <span className="register-see-password" onClick={()=> setIsVisibleRepeatPassword(!isVisibleRepeatPassword)}>
-                        {isVisibleRepeatPassword ? (
-                          <AiOutlineEye size="32px" />
-                        ) : (
-                          <AiOutlineEyeInvisible size="32px" />
-                        )}
-                      </span>
-                </div>
-
                 <div className="register-button"><a href="">Register</a></div>
                 
             </form>
             <div className="social-registers">
 
-                <button className="register-with-google-btn">Sign In with Google</button>
+                <button className="register-with-google-btn">Login with Google</button>
             </div>
 
         </div>
@@ -154,4 +86,4 @@ const Template = () => {
   );
 }
 
-export default Template;
+export default Login;

@@ -1,16 +1,13 @@
-import './App.css';
-import Signup from './Pages/Signup/Signup';
-import Login from './Pages/Login/Login';
-import Search from './Pages/Search/Search';
 
-import Template from './Pages/template/template';
+import SignUp from './Pages/Authentication/SignUp';
+
 
 function App() {
   return (
     <div className="App">
       {/* <Login/> */}
       {/* <Signup/> */}
-      <Template/>
+      <SignUp/>
       
     </div>
   );

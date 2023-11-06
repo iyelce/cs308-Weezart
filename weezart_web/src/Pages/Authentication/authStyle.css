@@ -12,6 +12,11 @@ body{
 
 }
 
+#root{
+    width: 50%;
+    height: auto;
+
+}
 *{
     margin:0;
     padding:0;
@@ -21,7 +26,7 @@ body{
 div.App{
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 100%;
     height: auto;
 }
 
@@ -74,6 +79,12 @@ div.main .register-form, div.main .register-logo{
     padding-left:2rem;
 }
 
+div.main .register-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* Div that contains input boxes of username email password and repeat password*/
 div.main .register-form .field{
     height: 50px;
@@ -93,14 +104,16 @@ div.main .register-form .field input.register-input-box{
     outline:none;
     font-size: 17px;
     border-color: transparent;
+    border-radius: 25px;
     transition: all 0.3s ease;
+    position:relative;
 }
 
 
 /*Texts inside of the input boxes */
 div.main .register-form .field label{
     position: absolute;
-    top: 65%;
+    top: 50%;
     left: 20px;
     color: #999999;
     background:transparent;
@@ -138,17 +151,20 @@ form .field input ~ label.moved-upside{
 /* Login or Sign Up Button */
 div.register-button {
 	position: relative;
+    margin-top:1.7rem;
 	top: 50%;
     left:10%;
 	width: 250px;
 	height: 50px;	
     transition:0.5s;
+    border-radius:30px;
 }
 
 /* Login or Sign Up Button Hover Effect */
 div.register-button:hover{
     box-shadow: 0 0 5px #331055, 0 0 15px #331055, 0 0 30px #331055,
 		0 0 60px #331055;
+        
 }
 
 /* Login or Sign Up Button Text */

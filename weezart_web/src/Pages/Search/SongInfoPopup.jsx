@@ -16,6 +16,30 @@ Modal.setAppElement("#root");
 // image :
 
 
+// Track:
+// -Name                +
+// -Album information 
+
+        // -Name
+        // -Type (album single etc)
+        // -Tracks (does not directly return from search, need another step)
+        // -Track amount
+        // -Image (as an array but only use 1 for pp)
+        // -Release date (only use year since day and month might be missing and require another parameter)
+        // -Artists
+
+// -Artist information 
+
+        // -Name
+        // -Follower amount
+        // -Genre (as an array)
+        // -Image (as an array but only use 1 for pp)
+
+// -Duration in ms +
+// -Explicit (swear etc) bool
+// -Popularity (algorithm based on global popularity, returns value from 0 to 100)
+
+
 function imgsrc(val) {
     if(val === undefined || val==="") {
         return "https://i.pinimg.com/564x/47/99/fd/4799fdb80098968bf6ff4c311eed1110.jpg";
@@ -67,7 +91,11 @@ function SongInfoPopup(props) {
                     <p className="songName">{props.songInfo.songName}</p>
                     <p className="songArtists">{props.songInfo.artists.join(', ')}</p>
                     <p className="songAlbum">{props.songInfo.album}</p>
+                    <p className="songDuration">Duration: {props.songInfo.duration}</p>
+                    <p className="songPopularity">Populartiy: {props.songInfo.populartiy}</p>
                     <p className="songGenre">Genre: {props.songInfo.genre.join(', ')}</p>
+
+
                 </div>
             </div>
 

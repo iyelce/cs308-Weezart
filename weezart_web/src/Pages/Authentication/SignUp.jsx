@@ -81,6 +81,7 @@ const SignUp = () => {
             <form action="#" className="register-form-body">
                 <div className={'field '+(isFocusedUsername?'moved':'')} >
                     <input type="text" 
+                    
                     className="register-input-box"
                     onChange={(e)=>setUsername(e.target.value)}
                     onBlur={()=>setIsFocusedUsername(false)}
@@ -136,7 +137,7 @@ const SignUp = () => {
             </form>
             <div className="social-registers">
 
-                <button className="register-with-google-btn">Sign In with Google</button>
+                <button className="register-with-google-btn">Signup with Google</button>
             </div>
 
         </div>

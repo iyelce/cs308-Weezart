@@ -1,15 +1,14 @@
-.song-information-modal, .song-details, .song-attributes, .song-like, .song-add {
+.information-modal, .song-details, .song-attributes, .song-like, .song-add {
     display: flex;
     flex-direction: column;
-    
 }
 
-.song-image , .three-column-container, .song-like-add {
+.song-image , .three-column-container, .song-like-add, .songPopularity {
     display: flex;
     flex-direction: row;
 }
 
-.song-information-modal {
+.information-modal {
 
     width: 70%;
     border-radius: 30px;
@@ -74,7 +73,7 @@
     right:8%;
 
 }
-.songName, .songArtists, .songGenre, .songAlbum{
+.songName, .songArtists, .songGenre, .songAlbum, .songPopularity-label{
     color: #B9B4C7;
     font-family: Poppins;
     margin-left: 3%;
@@ -93,7 +92,7 @@
     font-weight: 300;
 }
 
-.songDuration, .songPopularity{
+.songDuration, .songPopularity-label{
     font-size: 20px;
     font-weight: 250;
 }
@@ -142,9 +141,9 @@
 }
 
 
-  .star.selected {
+.star.selected {
     color: gold; 
-  }
+}
 
 .half-width {
     flex: 1;
@@ -169,7 +168,22 @@
 }
 
 .cover-img{
-    width: 90%; /* Set the width to your desired value */
+    width: 90%; 
     height: 90%;
     border-radius: 3%;
 }
+
+
+.songPopularity {
+    display: flex;
+    align-items: center;
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+  
+  
+  .crown-icon {
+    color: gold;
+    font-size: 50px; 
+  }
+  

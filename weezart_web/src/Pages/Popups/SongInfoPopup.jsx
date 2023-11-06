@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { AiOutlineClose } from "react-icons/ai";
 import './Popup.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckCircle, AiFillCheckCircle } from 'react-icons/ai'; 
+import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckCircle, AiFillCheckCircle, AiFillCrown } from 'react-icons/ai'; 
  
 
 // Make sure to set appElement to avoid a11y violations
@@ -30,7 +30,6 @@ function SongInfoPopup(props) {
         if (selectedRating === rating) {
             // If the clicked star is the same as the current rating, remove the rating (set it to 0)
             setRating(0);
-            setAdded(false);
 
           } else {
             setRating(selectedRating);
@@ -43,9 +42,14 @@ function SongInfoPopup(props) {
     <Modal
       isOpen={props.isOpen}
       onRequestClose={props.onRequestClose}
-      className="song-information-modal"
+      className="information-modal"
     >
         <div className="close-page">
+            <div className="songPopularity">
+                <AiFillCrown className="crown-icon" />
+                <p className="songPopularity-label">Popularity: {props.songInfo.popularity} / 100 </p>
+            </div>
+            
             <button onClick={props.onRequestClose}>
                 <AiOutlineClose/>
             </button>
@@ -62,11 +66,7 @@ function SongInfoPopup(props) {
                     <p className="songName">{props.songInfo.songName}</p>
                     <p className="songArtists">{props.songInfo.artists.join(', ')}</p>
                     <p className="songAlbum">{props.songInfo.album}</p>
-                    <p className="songDuration">Duration: {props.songInfo.duration}</p>
-                    <p className="songPopularity">Populartiy: {props.songInfo.populartiy}</p>
                     <p className="songGenre">Genre: {props.songInfo.genre.join(', ')}</p>
-
-
                 </div>
             </div>
 
@@ -84,7 +84,6 @@ function SongInfoPopup(props) {
                             onClick={() => handleStarClick(star)}
                         >
                             {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
-                            
                         </span>
                         ))}
                     </div>
@@ -93,7 +92,7 @@ function SongInfoPopup(props) {
 
                     <div className="song-like-add">
                             <div className="half-width">
-                                <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={() => { setLiked(!liked); }}>
+                                <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={() => { setLiked(!liked); setAdded(true);}}>
                                     {liked ? <AiFillHeart /> : <AiOutlineHeart />}
                                 </div>
                                 <p>{liked ? 'Liked' : 'Like'}</p>
@@ -126,48 +125,6 @@ function SongInfoPopup(props) {
 
 
     </Modal>
-
-//     <div className={`modal ${props.showModal ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: props.showModal ? 'block' : 'none' }}>
-
-//     <div className="modal-dialog">
-
-//       <div className="modal-content">
-
-//         <div className="modal-header">
-//              <button className="close-button" onClick={props.onRequestClose}>
-//                  <AiOutlineClose/>
-//              </button>
-//         </div>
-
-//         <div className="modal-body">
-//             <div class="row">
-
-//                 <div class="col-sm">
-//                 One of three columns
-//                 </div>
-
-//                 <div class="col-sm">
-//                     <div className="col-sm">
-//                         <label>song name</label>
-//                         <label>song name</label>
-//                     </div>
-//                 </div>
-
-//                 <div class="col-sm">
-//                 One of three columns
-//                 </div>
-
-//             </div>
-//         </div>
-
-//         <div className="modal-footer">
-//           <button type="button" className="btn btn-secondary" onClick={props.onRequestClose}>Close</button>
-//           <button type="button" className="btn btn-primary" onClick={props.onRequestClose}>Save changes</button>
-//         </div>
-
-//       </div>
-//     </div>
-//   </div>
     
   );
 }

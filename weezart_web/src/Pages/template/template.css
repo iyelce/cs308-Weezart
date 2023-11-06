@@ -96,13 +96,13 @@ div.main .register-form .field input.register-input-box{
     outline:none;
     font-size: 17px;
 
-    border: none;
+    border-color: transparent;
 
     transition: all 0.3s ease;
 }
 div.main .register-form .field label{
     position: absolute;
-    top: 50%;
+    top: 65%;
     left: 20px;
     color: #999999;
     background:transparent;
@@ -120,13 +120,12 @@ div.main .register-form .field span{
     right:0;
 }
 
-div.main .register-form form .field input.register-input-box:focus,
- form .field input.register-input-box:valid{
+div.main .register-form form .field.moved{
   border-color: #331055;
 }
 
-div.main .register-form form .field input.register-input-box:focus ~ label,
-form .field input:valid ~ label{
+div.main .register-form form .field input.register-input-box ~ label.moved-upside,
+form .field input ~ label.moved-upside{
   top: 0%;
   padding-bottom:3px;
   color: #331055;
@@ -139,7 +138,7 @@ div.register-button {
 	top: 50%;
     left:10%;
 	width: 250px;
-	height: 40px;
+	height: 50px;
 	
     transition:0.5s;
 }

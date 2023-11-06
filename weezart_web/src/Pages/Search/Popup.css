@@ -64,7 +64,7 @@
     border: none;
 }
 
-.songName, .songArtists, .songGenre, .songAlbum{
+.songName, .songArtists, .songGenre, .songAlbum, .songDuration, .songPopularity{
     color: #B9B4C7;
     font-family: Poppins;
     margin-left: 3%;
@@ -81,6 +81,11 @@
     
     font-size: 25px;
     font-weight: 300;
+}
+
+.songDuration, .songPopularity{
+    font-size: 20px;
+    font-weight: 250;
 }
 
 .songGenre{
@@ -117,6 +122,7 @@
 }
 
 .stars{
+    display: flex;
     justify-content: center;
     align-items: center;
     border: none;

@@ -9,36 +9,6 @@ import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckC
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
 
-//songInfo-->
-// songName : "name1",
-// artists : ["artist1.1"],
-// genre : ["genre1.1", "genre1.2"],
-// image :
-
-
-// Track:
-// -Name                +
-// -Album information 
-
-        // -Name
-        // -Type (album single etc)
-        // -Tracks (does not directly return from search, need another step)
-        // -Track amount
-        // -Image (as an array but only use 1 for pp)
-        // -Release date (only use year since day and month might be missing and require another parameter)
-        // -Artists
-
-// -Artist information 
-
-        // -Name
-        // -Follower amount
-        // -Genre (as an array)
-        // -Image (as an array but only use 1 for pp)
-
-// -Duration in ms +
-// -Explicit (swear etc) bool
-// -Popularity (algorithm based on global popularity, returns value from 0 to 100)
-
 
 function imgsrc(val) {
     if(val === undefined || val==="") {

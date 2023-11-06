@@ -56,6 +56,7 @@
     flex: 2;
 }
 
+
 .column:nth-child(3), .column:nth-child(1) {
     flex: 2;
     display: flex;
@@ -64,6 +65,16 @@
     border: none;
 }
 
+.column:nth-child(1){
+    position: relative;
+}
+.column:nth-child(1) p.duration{
+    color:white;
+    position:absolute;
+    bottom:5%;
+    right:8%;
+
+}
 .songName, .songArtists, .songGenre, .songAlbum{
     color: #B9B4C7;
     font-family: Poppins;

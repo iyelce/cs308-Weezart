@@ -47,14 +47,11 @@
 .close-page button svg {
     font-weight: bold;
 }
-  
-
-  
-
-  
+    
 .column:nth-child(2) {
     flex: 2;
 }
+
 
 .column:nth-child(3), .column:nth-child(1) {
     flex: 2;
@@ -64,7 +61,17 @@
     border: none;
 }
 
-.songName, .songArtists, .songGenre, .songAlbum, .songDuration, .songPopularity{
+.column:nth-child(1){
+    position: relative;
+}
+.column:nth-child(1) p.duration{
+    color:white;
+    position:absolute;
+    bottom:5%;
+    right:8%;
+
+}
+.songName, .songArtists, .songGenre, .songAlbum{
     color: #B9B4C7;
     font-family: Poppins;
     margin-left: 3%;
@@ -102,7 +109,7 @@
     justify-content: center;
     align-items: center;
     padding: 10px; 
-  }
+}
 
 .rating p{
     color: #B9B4C7;

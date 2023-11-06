@@ -54,6 +54,7 @@ function SongInfoPopup(props) {
         <div className="three-column-container">
             <div className="column">
                 <img className="cover-img" src= {imgsrc(props.songInfo.image)} alt="cover"/>
+                <p className="duration"> 3:05</p>
             </div>
 
             <div className="column">

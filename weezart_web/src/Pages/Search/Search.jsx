@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SongInfoPopup from "./SongInfoPopup";
+import SongInfoPopup from "../Popups/SongInfoPopup";
 
 
 function Search() {

@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       {/* <Login/> */}
       {/* <Signup/> */}
-      <Search/>
+      <Template/>
       
     </div>
   );

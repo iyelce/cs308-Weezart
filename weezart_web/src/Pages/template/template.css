@@ -4,37 +4,34 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     background: url('https://cdnb.artstation.com/p/assets/images/images/016/387/059/large/stefanie-arndorfer-god-temple-interior-version.jpg?1551966297');
     background-size:cover;
     background-position:center;
     background-repeat: no-repeat;
-    
     font-family: Poppins;
-  
 
 }
+
 *{
     margin:0;
     padding:0;
 }
+
+/* Div that react creates*/
 div.App{
     display: flex;
     flex-direction: column;
     width: 50%;
     height: auto;
-
 }
 
+/* Div that we created */
 div.main{
     display: flex;
     flex-direction: column;
     width: 100%;
     height:100%;
-
     background: rgba(255,255,255,0.3);
-
-
     box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
     -moz-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
     -webkit-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
@@ -45,12 +42,12 @@ div.main{
     -webkit-border-radius: 20px;
     -o-border-radius: 20px;
     -ms-border-radius: 20px; 
-    
-
+    padding:0;
+    padding-bottom:2rem;
 }
 
+/* Login or Sign up written Part*/
 div.main .title{
-
   font-size: 35px;
   font-weight: 400;
   margin-top: 0;
@@ -60,23 +57,24 @@ div.main .title{
   user-select: none;
   border-radius: 15px 15px 0 0;
   background: rgba(37, 2, 67, 0.873);
-
 }
 
+/* Part that contains whole input part and buttons*/
 div.main .register-content{
     display: grid;
     width: 100%;
     grid-template-columns: 1fr 1fr;
-    
 }
 
+/* Two Equal parts in div one of them whole inputs other one is for the logo*/
 div.main .register-form, div.main .register-logo{
     width:100%;
     height:100%;
     padding-top:2rem;
     padding-left:2rem;
-    
 }
+
+/* Div that contains input boxes of username email password and repeat password*/
 div.main .register-form .field{
     height: 50px;
     width: 100%;
@@ -86,20 +84,20 @@ div.main .register-form .field{
     border: 1px solid lightgrey;
     border-radius: 25px;
     background:white;
-    
-
 }
+
+/*Input Boxes */
 div.main .register-form .field input.register-input-box{
     height: 100%;
     width: 90%;
-
     outline:none;
     font-size: 17px;
-
     border-color: transparent;
-
     transition: all 0.3s ease;
 }
+
+
+/*Texts inside of the input boxes */
 div.main .register-form .field label{
     position: absolute;
     top: 65%;
@@ -113,6 +111,7 @@ div.main .register-form .field label{
     transition: all 0.3s ease;
 }
 
+/* See Password Button */
 div.main .register-form .field span{
     display: flex;
     align-items: center;
@@ -120,10 +119,13 @@ div.main .register-form .field span{
     right:0;
 }
 
+/* When input boxes are clicked its border become this color */
 div.main .register-form form .field.moved{
   border-color: #331055;
 }
 
+
+/* It moves the text inside of the input box to upperside of the input box  */
 div.main .register-form form .field input.register-input-box ~ label.moved-upside,
 form .field input ~ label.moved-upside{
   top: 0%;
@@ -133,19 +135,23 @@ form .field input ~ label.moved-upside{
   transform: translateY(-75%);
 }
 
+/* Login or Sign Up Button */
 div.register-button {
 	position: relative;
 	top: 50%;
     left:10%;
 	width: 250px;
-	height: 50px;
-	
+	height: 50px;	
     transition:0.5s;
 }
+
+/* Login or Sign Up Button Hover Effect */
 div.register-button:hover{
     box-shadow: 0 0 5px #331055, 0 0 15px #331055, 0 0 30px #331055,
 		0 0 60px #331055;
 }
+
+/* Login or Sign Up Button Text */
 div.register-button a {
 	position: absolute;
 	top: 0;
@@ -169,9 +175,13 @@ div.register-button a {
 	transition: 0.5s;
 	backdrop-filter: blur(15px);
 }
+
+/* Login or Sign Up Button Text Hover Effect */
 div.register-button :hover a {
 	letter-spacing: 3px;
 }
+
+/* Button Animation Upper Part*/
 div.register-button a::before {
 	content: "";
 	position: absolute;
@@ -182,11 +192,14 @@ div.register-button a::before {
 	background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
 	transform: skewX(45deg) translate(0);
 	transition: 0.5s;
-
 }
+
+/* Button Animation Hover Effect */
 div.register-button:hover a::before {
 	transform: skewX(45deg) translate(200px);
 }
+
+/* Button Animation Upper Part*/
 div.register-button::before {
 	content: "";
 	position: absolute;
@@ -201,7 +214,9 @@ div.register-button::before {
 	transition-delay: 0.5;
     opacity: 0;
 }
-div.register-button:hover::before /*lightup button*/ {
+
+ /*lightup button*/
+div.register-button:hover::before {
 	bottom: 0;
 	height: 50%;
 	width: 80%;
@@ -209,6 +224,7 @@ div.register-button:hover::before /*lightup button*/ {
     opacity: 1;
 }
 
+/* Button Animation Lower Part*/
 div.register-button::after {
 	content: "";
 	position: absolute;
@@ -223,34 +239,36 @@ div.register-button::after {
 	transition-delay: 0.5;
     opacity: 0;
 }
-div.register-button:hover::after /*lightup button*/ {
+
+ /*lightup button*/
+div.register-button:hover::after  {
 	top: 0;
 	height: 50%;
 	width: 80%;
 	border-radius: 30px;
     opacity: 1;
 }
-div.register-button:nth-child(1)::before, /*chnage 1*/
+
+/* Login or Sign Up Button Text Hover Effect */
+div.register-button:nth-child(1)::before, 
 div.register-button:nth-child(1)::after {
 	background: #331055;
 	box-shadow: 0 0 5px #331055, 0 0 15px #331055, 0 0 30px #331055,
 		0 0 60px #331055;
 }
 
-.social-registers {
-    
+/* Div that contains login or sign up with Google button */
+.social-registers {    
 	display: flex;
 	width: 80%;
 	flex-direction: column;
     margin-top: 1.5rem;
 	justify-content: center;
 	align-items: center;
-
 }
 
-
-
-   .social-registers button.register-with-google-btn {
+/* Login or Sign Up with Google Button */
+.social-registers button.register-with-google-btn {
 	padding: 12px 16px 12px 42px;
 	margin-top:20px;
 	border: none;
@@ -269,16 +287,10 @@ div.register-button:nth-child(1)::after {
 	background-position: 12px 11px;
 	cursor: pointer;
     width: 60%;
-    left:5%;
-    
-  
-	
+    left:5%;	
   }
 	
-	
-	
-	
-  
+/* Login or Sign Up with Google Button Hover Effect */
   div button.register-with-google-btn:before {
     content: '';
     background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
@@ -314,7 +326,6 @@ div.register-button:nth-child(1)::after {
     position: absolute;
     width: 100%;
     height: 100%;
-
     left: 0;
     top: 0;
     border-radius: 10px;
@@ -324,10 +335,6 @@ div.register-button:nth-child(1)::after {
     0% { background-position: 0 0; }
     50% { background-position: 400% 0; }
     100% { background-position: 0 0; }
-}
-div.main{
-    padding:0;
-    padding-bottom:2rem;
 }
 
   

@@ -1,9 +1,9 @@
-.information-modal, .song-details, .song-attributes, .song-like, .song-add {
+.information-modal, .song-details, .attributes, .song-like, .song-add {
     display: flex;
     flex-direction: column;
 }
 
-.song-image , .three-column-container, .song-like-add, .songPopularity {
+.song-image , .three-column-container, .like-add, .songPopularity {
     display: flex;
     flex-direction: row;
 }

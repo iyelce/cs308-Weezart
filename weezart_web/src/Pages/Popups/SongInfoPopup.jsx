@@ -62,7 +62,7 @@ function SongInfoPopup(props) {
             </div>
 
             <div className="column">
-                <div className="song-attributes">
+                <div className="attributes">
                     <p className="songName">{props.songInfo.songName}</p>
                     <p className="songArtists">{props.songInfo.artists.join(', ')}</p>
                     <p className="songAlbum">{props.songInfo.album}</p>
@@ -90,7 +90,7 @@ function SongInfoPopup(props) {
 
                     <hr/>
 
-                    <div className="song-like-add">
+                    <div className="like-add">
                             <div className="half-width">
                                 <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={() => { setLiked(!liked); setAdded(true);}}>
                                     {liked ? <AiFillHeart /> : <AiOutlineHeart />}

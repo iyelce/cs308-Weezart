@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SongInfoPopup from "../Popups/SongInfoPopup";
+import ArtistInfoPopup from "../Popups/ArtistInfoPopup";
 
 
 function Search() {
@@ -33,18 +34,48 @@ function Search() {
     }
   ];
 
-  const [showPopups, setShowPopups] = useState(new Map());
 
-  const handleButtonClick = (index) => {
-    const newShowPopups = new Map(showPopups);
-    newShowPopups.set(index, true);
-    setShowPopups(newShowPopups);
+  const artistInfos = [
+    {
+        artistName: "artist1",
+        artistsFollower: ["artist2.1", "artist2.2", "artist2.3"],
+        genre: ["genre2.1", "genre2.2", "genre2.3"],
+        image: "",
+      },
+
+      {
+        artistName: "artist2",
+        artistsFollower: ["artist2.1", "artist2.2", "artist2.3"],
+        genre: ["genre2.1", "genre2.2", "genre2.3"],
+        image: "",
+      },
+  ];
+
+  const [showSongPopups, setShowSongPopups] = useState(new Map());
+  const [showArtistPopups, setShowArtistPopups] = useState(new Map());
+
+  const handleSongButtonClick = (index) => {
+    const newShowSongPopups = new Map(showSongPopups);
+    newShowSongPopups.set(index, true);
+    setShowSongPopups(newShowSongPopups);
   };
 
-  const handleClosePopup = (index) => {
-    const newShowPopups = new Map(showPopups);
-    newShowPopups.set(index, false);
-    setShowPopups(newShowPopups);
+  const handleSongClosePopup = (index) => {
+    const newShowSongPopups = new Map(showSongPopups);
+    newShowSongPopups.set(index, false);
+    setShowSongPopups(newShowSongPopups);
+  };
+
+  const handleArtistButtonClick = (index) => {
+    const newShowArtistPopups = new Map(showArtistPopups);
+    newShowArtistPopups.set(index, true);
+    setShowArtistPopups(newShowArtistPopups);
+  };
+
+  const handleArtistClosePopup = (index) => {
+    const newShowArtistPopups = new Map(showArtistPopups);
+    newShowArtistPopups.set(index, false);
+    setShowArtistPopups(newShowArtistPopups);
   };
 
   
@@ -53,17 +84,32 @@ function Search() {
     <div>
       {songInfos.map((songInfo, index) => (
         <div key={index}>
-          <button onClick={() => handleButtonClick(index)}>Song {index + 1}</button>
+          <button onClick={() => handleSongButtonClick(index)}>Song {index + 1}</button>
           <SongInfoPopup
-            isOpen={showPopups.get(index) || false}
-            onRequestClose={() => handleClosePopup(index)}
+            isOpen={showSongPopups.get(index) || false}
+            onRequestClose={() => handleSongClosePopup(index)}
             songInfo={songInfo}
-            showModal={showPopups}
+            showModal={showSongPopups}
           />
           <br />
           <br />
         </div>
       ))}
+
+    {artistInfos.map((artistInfo, index) => (
+        <div key={index}>
+          <button onClick={() => handleArtistButtonClick(index)}>Artist {index + 1}</button>
+          <ArtistInfoPopup
+            isOpen={showArtistPopups.get(index) || false}
+            onRequestClose={() => handleArtistClosePopup(index)}
+            songInfo={artistInfo}
+            showModal={showSongPopups}
+          />
+          <br />
+          <br />
+        </div>
+      ))}
+
     </div>
   );
 }

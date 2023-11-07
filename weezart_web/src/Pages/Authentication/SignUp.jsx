@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import './authStyle.css';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { useState } from "react";
+
+const LOGO = require('../../weezart-removebg-preview.png');
+
 const SignUp = () => {
   
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);
@@ -143,7 +146,7 @@ const SignUp = () => {
         </div>
 
         <div className="register-logo">
-            <img src="https://fastly.picsum.photos/id/781/200/300.jpg?hmac=BPGlXlV8K6X2z4SJCt86Qh1io6ezZBBdynv-QiXwLro" alt=""></img>
+            <img src={LOGO} alt=""></img>
         </div>
     </div>
 

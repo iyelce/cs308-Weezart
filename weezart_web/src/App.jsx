@@ -1,15 +1,15 @@
 
-import Search from "./Pages/Search/Search";
 import Login from './Pages/Authentication/Login';
 import SignUp from "./Pages/Authentication/SignUp";
+import Search from './Pages/Search/Search';
 
 
 function App() {
   return (
     <div className="App">
       {/* <Login/> */}
-      <SignUp/>
-      {/* <Search/> */}
+      {/* <SignUp/> */}
+      <Search/>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 
-import Search from "./Pages/Search/Search";
 import Login from './Pages/Authentication/Login';
+import SignUp from './Pages/Authentication/SignUp';
 
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       {/* <Login/> */}
       {/* <Signup/> */}
-      <Search/>
+      <SignUp/>
     </div>
   );
 }

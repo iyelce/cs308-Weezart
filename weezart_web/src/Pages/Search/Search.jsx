@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SongInfoPopup from "../Popups/SongInfoPopup";
+import AlbumInfoPopup from "../Popups/AlbumInfoPopup";
 
 
 function Search() {
@@ -54,7 +54,7 @@ function Search() {
       {songInfos.map((songInfo, index) => (
         <div key={index}>
           <button onClick={() => handleButtonClick(index)}>Song {index + 1}</button>
-          <SongInfoPopup
+          <AlbumInfoPopup
             isOpen={showPopups.get(index) || false}
             onRequestClose={() => handleClosePopup(index)}
             songInfo={songInfo}

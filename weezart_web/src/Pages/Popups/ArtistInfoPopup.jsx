@@ -9,17 +9,11 @@ import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckC
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
 
-//artistInfo
-
-// artistName: "artist2",
-// artistsFollower: ["artist2.1", "artist2.2", "artist2.3"],
-// genre: ["genre2.1", "genre2.2", "genre2.3"],
-// image: "",
 
 //if image is empty put a defoult image
 function imgsrc(val) {
     if(val === undefined || val==="") {
-        return "https://i.pinimg.com/564x/47/99/fd/4799fdb80098968bf6ff4c311eed1110.jpg";
+        return "https://i.pinimg.com/564x/e3/c9/a9/e3c9a9e5934d65cff25d83a2ac655230.jpg";
     }
     else {
         return val;
@@ -62,16 +56,20 @@ function ArtistInfoPopup(props) {
 
         <div className="three-column-container">
             <div className="column">
-                <img className="cover-img" src= {imgsrc(props.songInfo.image)} alt="cover"/>
+                <img className="cover-img" src= {imgsrc(props.artistInfo.image)} alt="cover"/>
             </div>
 
             <div className="column">
                 {/* informations  */}
                 <div className="attributes">
-                    {/* <p className="ArtistName">{props.artistInfo.artistName}</p> */}
-                    {/* <p className="songArtists">{props.songInfo.artists.join(', ')}</p>
-                    <p className="songAlbum">{props.songInfo.album}</p>
-                    <p className="songGenre">Genre: {props.songInfo.genre.join(', ')}</p> */}
+                    <p className="artistName">{props.artistInfo.artistName}</p>
+                    <p className="artistsFollower"> Followers: {props.artistInfo.artistsFollower}</p>
+                    <p className="songGenre">Genre: {props.artistInfo.genre.join(', ')}</p>
+                </div>
+
+                <div className="top5songlist">
+                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                
                 </div>
 
 

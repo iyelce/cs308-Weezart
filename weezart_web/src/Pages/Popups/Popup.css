@@ -36,6 +36,7 @@
     transition: transform 0.2s; 
     background-color: transparent; 
     color: #B9B4C7;
+    margin-left: auto;
 
     :hover {
         font-size: 32px; 
@@ -44,7 +45,7 @@
         color: #dad5e6;
     }
 }
-  
+
 .close-page button svg {
     font-weight: bold;
 }
@@ -75,7 +76,7 @@
     right:8%;
 
 }
-.songName, .songArtists, .songGenre, .songAlbum, .songPopularity-label{
+.songName, .songArtists, .songGenre, .songAlbum, .songPopularity-label, .artistName, .artistsFollower{
     color: #B9B4C7;
     font-family: Poppins;
     margin-left: 3%;
@@ -83,12 +84,12 @@
 
 }
 
-.songName {
+.songName, .artistName {
     font-size: 40px;
     font-weight: 800;
 }
 
-.songArtists, .songAlbum,.songYear {
+.songArtists, .songAlbum,.songYear ,.artistsFollower {
     
     font-size: 25px;
     font-weight: 300;
@@ -192,5 +193,13 @@
   .crown-icon {
     color: gold;
     font-size: 30px; 
+  }
+
+
+
+  .top5songlist{
+    background-color: red;
+    margin-top: 5%;
+    margin-left: 3%;
   }
   

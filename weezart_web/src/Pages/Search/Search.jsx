@@ -38,16 +38,16 @@ function Search() {
   const artistInfos = [
     {
         artistName: "artist1",
-        artistsFollower: ["artist2.1", "artist2.2", "artist2.3"],
+        artistsFollower: 25350,
         genre: ["genre2.1", "genre2.2", "genre2.3"],
         image: "",
       },
 
       {
-        artistName: "artist2",
-        artistsFollower: ["artist2.1", "artist2.2", "artist2.3"],
-        genre: ["genre2.1", "genre2.2", "genre2.3"],
-        image: "",
+        artistName: "AURORA",
+        artistsFollower: "12.482.490",
+        genre: ["Art pop", "Nordic folk", "synth-pop", "electropop"], 
+        image: "https://www.normanrecords.com/artwork/medium/213/175963-aurora-a-different-kind-of-human.jpg",
       },
   ];
 
@@ -102,7 +102,7 @@ function Search() {
           <ArtistInfoPopup
             isOpen={showArtistPopups.get(index) || false}
             onRequestClose={() => handleArtistClosePopup(index)}
-            songInfo={artistInfo}
+            artistInfo={artistInfo}
             showModal={showSongPopups}
           />
           <br />

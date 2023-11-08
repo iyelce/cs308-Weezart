@@ -24,6 +24,8 @@
     display: flex;
     justify-content: right;
     align-items: center;
+    justify-content: space-between;
+    padding: 10px;
 }
 
 .close-page button {
@@ -77,7 +79,7 @@
     color: #B9B4C7;
     font-family: Poppins;
     margin-left: 3%;
-    margin-top: 2%;
+    margin-top: 6%;
 
 }
 
@@ -95,7 +97,12 @@
 .songDuration, .songPopularity-label{
     font-size: 20px;
     font-weight: 250;
+    margin-left: 10px;
 }
+
+.songPopularity {
+    align-items: center; 
+  }
 
 .songGenre{
     font-size: 15px;
@@ -184,6 +191,6 @@
   
   .crown-icon {
     color: gold;
-    font-size: 50px; 
+    font-size: 30px; 
   }
   

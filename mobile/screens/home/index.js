@@ -12,6 +12,7 @@ import {
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Search from "./search";
 import { BlurView } from "@react-native-community/blur";
+import Profile from "./profile";
 
 const Tab = createBottomTabNavigator();
 

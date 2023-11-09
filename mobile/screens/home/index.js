@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, Profiler } from "react";
 import {
   Text,
   View,
@@ -40,7 +40,7 @@ export default Home = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={Search}
+        component={Profile}
         initialParams={{
           icon: require("./../../assets/icons/profile.png"),
         }}

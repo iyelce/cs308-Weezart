@@ -27,6 +27,26 @@ function ArtistInfoPopup(props) {
     const [liked, setLiked] = useState(false);
     const [added, setAdded] = useState(false);
 
+
+
+    const [songs,setSongs] = useState(
+        [
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+            { songName: "name1", songDuration: "7:30", likes: "750.561.780"} ,
+        ]
+    );
+
     const handleStarClick = (selectedRating) => {
         if (selectedRating === rating) {
             // If the clicked star is the same as the current rating, remove the rating (set it to 0)
@@ -67,9 +87,11 @@ function ArtistInfoPopup(props) {
                     <p className="songGenre">Genre: {props.artistInfo.genre.join(', ')}</p>
                 </div>
 
+
+
                 <div className="top5songlist">
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                
+                    
+                  <br/>  <br/> <br/> <br/> <br/> <br/> <br/>
                 </div>
 
 

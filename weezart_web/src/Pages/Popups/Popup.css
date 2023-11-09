@@ -195,11 +195,36 @@
     font-size: 30px; 
   }
 
-
-
   .top5songlist{
     background-color: red;
     margin-top: 5%;
     margin-left: 3%;
   }
+
+
+
+
+
+
+
+
+  
+.song-list, .links, .tour, .socials {
+    margin-top: 15px;
+  }
+  .song-item {
+    line-height: 30px;
+    margin-bottom: 10px;
+    padding: 0 10px;
+    border-bottom: 3px solid transparent;
+    clear: both;
+  }
+  .song-item:hover {
+    border-bottom: 3px solid #840001;
+    color: #840001;
+  }
+  .song-duration {
+    float: right;
+  }
+  
   

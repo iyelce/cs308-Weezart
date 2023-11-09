@@ -1,18 +1,19 @@
 package com.app.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Artist {
 	
-	public Artist(String name, List<String> genres, String imageUrl, int followerCount) {
+	public Artist(String name, List<String> genres, String imageUrl, int followerCount, String id) {
 		super();
 		this.name = name;
 		this.genres = genres;
 		this.imageUrl = imageUrl;
 		this.followerCount = followerCount;
+		this.id = id;
 	}
 	
+	String id;
 	String name;
 	List<String> genres;
 	String imageUrl;
@@ -41,6 +42,13 @@ public class Artist {
 	public void setFollowerCount(int followerCount) {
 		this.followerCount = followerCount;
 	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	
 	
 }

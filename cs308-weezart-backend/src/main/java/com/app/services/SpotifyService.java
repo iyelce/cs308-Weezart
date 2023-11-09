@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.app.controllers.SpotifyController;
 import com.app.models.Artist;
+import com.app.models.Song;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -26,7 +27,7 @@ public class SpotifyService {
 	
 
 	public List<Artist> artistSearch(String query, String type, String accessToken) throws JsonMappingException, JsonProcessingException {
-		 String searchUrl = "https://api.spotify.com/v1/search?q=" + query + "&type=artist";
+		 	String searchUrl = "https://api.spotify.com/v1/search?q=" + query + "&type=artist";
 		    HttpHeaders headers = new HttpHeaders();
 		    
 		    log.info(accessToken);
@@ -46,6 +47,29 @@ public class SpotifyService {
 		    List<Artist> artists = spotifySearchResponse.artistJsonParser(responseEntity.getBody());
 		    
 		    return artists;
+	}
+	
+	public List<Song> songSearch(String query, String accessToken) throws JsonMappingException, JsonProcessingException {
+		String searchUrl = "https://api.spotify.com/v1/search?q=" + query + "&type=track";
+	    HttpHeaders headers = new HttpHeaders();
+	    
+	    log.info(accessToken);
+	    headers.set("Authorization", "Bearer " + accessToken);
+
+	    HttpEntity<String> entity = new HttpEntity<>(headers);
+	    
+	    log.info("authentication yolluyorum");
+
+	    ResponseEntity<String> responseEntity = restTemplate.exchange(searchUrl, HttpMethod.GET, entity, String.class);
+
+	    log.info("response da geldi oldu sayılır");
+	    
+	    //log.info(responseEntity.toString());
+	    
+	    // Process the JSON response and extract artists
+	    List<Song> songs = spotifySearchResponse.songJsonParser(responseEntity.getBody());
+	    
+	    return songs;
 	}
 
 }

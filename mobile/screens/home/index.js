@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, { Component, useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -8,10 +8,10 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
-} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Search from './search';
-import {BlurView} from '@react-native-community/blur';
+} from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Search from "./search";
+import { BlurView } from "@react-native-community/blur";
 
 const Tab = createBottomTabNavigator();
 
@@ -21,33 +21,35 @@ export default Home = () => {
     <Tab.Navigator
       initialRouteName="Search"
       backBehavior="none"
-      tabBar={props => <MyTabBar {...props} />}>
+      tabBar={(props) => <MyTabBar {...props} />}
+    >
       <Tab.Screen
         name="Main"
         component={Search}
         initialParams={{
-          icon: require('./../../assets/icons/home.png'),
+          icon: require("./../../assets/icons/home.png"),
         }}
       />
       <Tab.Screen
         name="Search"
         component={Search}
+        options={{ headerShown: false }}
         initialParams={{
-          icon: require('./../../assets/icons/search.png'),
+          icon: require("./../../assets/icons/search.png"),
         }}
       />
       <Tab.Screen
         name="Profile"
         component={Search}
         initialParams={{
-          icon: require('./../../assets/icons/profile.png'),
+          icon: require("./../../assets/icons/profile.png"),
         }}
       />
     </Tab.Navigator>
   );
 };
 
-function MyTabBar({state, descriptors, navigation}) {
+function MyTabBar({ state, descriptors, navigation }) {
   const focusedOptions = descriptors[state.routes[state.index].key].options;
 
   if (focusedOptions.tabBarVisible === false) {
@@ -65,24 +67,26 @@ function MyTabBar({state, descriptors, navigation}) {
           // backgroundColor: '#feffe3',
           // backgroundColor: '#000d',
         }
-      }>
+      }
+    >
       <BlurView
         blurType="light"
         blurAmount={40}
         style={{
-          position: 'absolute',
+          position: "absolute",
           height: 90,
           bottom: 0,
           right: 0,
           left: 0,
 
-          flexDirection: 'row',
+          flexDirection: "row",
           paddingTop: 20,
           borderTopWidth: 1,
-          borderTopColor: '#e7e8cc',
-        }}>
+          borderTopColor: "#e7e8cc",
+        }}
+      >
         {state.routes.map((route, index) => {
-          const {options} = descriptors[route.key];
+          const { options } = descriptors[route.key];
           const label =
             options.tabBarLabel !== undefined
               ? options.tabBarLabel
@@ -94,7 +98,7 @@ function MyTabBar({state, descriptors, navigation}) {
 
           const onPress = () => {
             const event = navigation.emit({
-              type: 'tabPress',
+              type: "tabPress",
               target: route.key,
               canPreventDefault: true,
             });
@@ -106,7 +110,7 @@ function MyTabBar({state, descriptors, navigation}) {
 
           const onLongPress = () => {
             navigation.emit({
-              type: 'tabLongPress',
+              type: "tabLongPress",
               target: route.key,
             });
           };
@@ -115,14 +119,15 @@ function MyTabBar({state, descriptors, navigation}) {
             <TouchableOpacity
               key={route.key}
               accessibilityRole="button"
-              accessibilityStates={isFocused ? ['selected'] : []}
+              accessibilityStates={isFocused ? ["selected"] : []}
               accessibilityLabel={options.tabBarAccessibilityLabel}
               testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
-              style={{flex: 1, alignItems: 'center'}}>
+              style={{ flex: 1, alignItems: "center" }}
+            >
               <Image
-                style={{height: 30, width: 30}}
+                style={{ height: 30, width: 30 }}
                 source={route.params.icon}
               />
               {/* <Text style={{color: isFocused ? '#673ab7' : '#222'}}>

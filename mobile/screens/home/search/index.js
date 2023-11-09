@@ -1,19 +1,20 @@
-import React from 'react';
+import React from "react";
 import {
   SafeAreaView,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
+} from "react-native";
 
 export default Search = () => {
   return (
-    <SafeAreaView style={{backgroundColor: 'white'}}>
+    <SafeAreaView style={{ backgroundColor: "white" }}>
       <View
         style={{
-          height: '100%',
-        }}></View>
+          height: "100%",
+        }}
+      ></View>
     </SafeAreaView>
   );
 };

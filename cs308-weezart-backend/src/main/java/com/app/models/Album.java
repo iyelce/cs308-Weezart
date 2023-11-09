@@ -1,7 +1,5 @@
 package com.app.models;
 
-public class Song {
-	
-    
+public class Album {
 	
 }

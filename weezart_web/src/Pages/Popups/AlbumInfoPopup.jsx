@@ -57,9 +57,11 @@ function ArtistInfoPopup(props) {
         <div className="three-column-container">
             <div className="column column-try ">
                 <div className="content">
-                    <h2 className="title">{props.albumInfo.albumName}</h2>
+                    <h2 className="title">{props.albumInfo.albumName} <span>{props.albumInfo.year}</span></h2>
 
                     <p className="copy">{props.albumInfo.artists.join(', ')}</p>
+                    <p className="copy">Genre: {props.albumInfo.genre.join(', ')}</p>
+
                     <div className="stars">
                         {stars.map((star) => (
                         <span
@@ -78,15 +80,36 @@ function ArtistInfoPopup(props) {
 
             <div className="column">
                 {/* informations  */}
-                <div className="attributes">
-                    <p className="albumName">{props.albumInfo.albumName}</p>
-                    <p className="albumYear"> {props.albumInfo.year}</p>
-                    <p className="albumArtist"> {props.albumInfo.artists.join(', ')}</p>
-                    <p className="songGenre">Genre: {props.albumInfo.genre.join(', ')}</p>
-                </div>
 
                 <div className="top5songlist">
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                    <ul>
+                    <li className="songs">Rhythm of the Rain</li>
+                    <li className="songs">Moonlight Sonata</li>
+                    <li className="songs">Dreamcatcher</li>
+                    <li className="songs">Eternal Echo</li>
+                    <li className="songs">Whispers in the Wind</li>
+                    <li className="songs">Serenade of Stars</li>
+                    <li className="songs">Lost in Harmony</li>
+                    <li className="songs">Mystic Melodies</li>
+                    <li className="songs">Sunset Serenade</li>
+                    <li className="songs">Aurora Lullaby</li>
+                    <li className="songs">Echoes of Eternity</li>
+                    <li className="songs">Silent Symphony</li>
+                    <li className="songs">Enchanted Dreams</li>
+                    <li className="songs">Dancing Shadows</li>
+                    <li className="songs">Midnight Sonata</li>
+                    <li className="songs">Crimson Crescendo</li>
+                    <li className="songs">Infinite Melody</li>
+                    <li className="songs">Stardust Serenade</li>
+                    <li className="songs">Emerald Elegy</li>
+                    <li className="songs">Waves of Whispers</li>
+                    <li className="songs">Celestial Cadence</li>
+                    <li className="songs">Lullaby for the Soul</li>
+                    <li className="songs">Ephemeral Echos</li>
+                    <li className="songs">Chasing Rainbows</li>
+                    <li className="songs">Astral Aria</li>
+
+                    </ul>
                 
                 </div>
 

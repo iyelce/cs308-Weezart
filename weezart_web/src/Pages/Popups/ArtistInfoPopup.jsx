@@ -75,17 +75,25 @@ function ArtistInfoPopup(props) {
         </div>
 
         <div className="three-column-container">
-            <div className="column">
-                <img className="cover-img" src= {imgsrc(props.artistInfo.image)} alt="cover"/>
+            <div className="column column-try ">
+                <div className="content">
+                    <h2 className="title">{props.artistInfo.artistName}</h2>
+
+                    <div className="stars">
+                        {stars.map((star) => (
+                        <span
+                            key={star}
+                            className={`star ${star <= rating ? 'selected' : ''}`}
+                            onClick={() => handleStarClick(star)}
+                        >
+                            {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
+                        </span>
+                        ))}
+                    </div>
+                </div>
             </div>
 
-            <div className="column">
-                {/* informations  */}
-                <div className="attributes">
-                    <p className="artistName">{props.artistInfo.artistName}</p>
-                    <p className="artistsFollower"> Followers: {props.artistInfo.artistsFollower}</p>
-                    <p className="songGenre">Genre: {props.artistInfo.genre.join(', ')}</p>
-                </div>
+            <div className="column">               
 
 
 
@@ -99,24 +107,7 @@ function ArtistInfoPopup(props) {
 
             <div className="column">
                 
-                <form className="rating">
-
-                    <p>{rating > 0 ? 'Rated' : 'Rate'}</p>
-
-                    <div className="stars">
-                        {stars.map((star) => (
-                        <span
-                            key={star}
-                            className={`star ${star <= rating ? 'selected' : ''}`}
-                            onClick={() => handleStarClick(star)}
-                        >
-                            {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
-                        </span>
-                        ))}
-                    </div>
-
-                    <hr/>
-
+            <form className="rating-artist">
                     <div className="like-add">
                             <div className="half-width">
                                 <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={() => { setLiked(!liked); setAdded(true);}}>
@@ -124,6 +115,7 @@ function ArtistInfoPopup(props) {
                                 </div>
                                 <p>{liked ? 'Liked' : 'Like'}</p>
                             </div>
+                           
                             <div className="half-width">
                                 <div className={`add-icon ${added ? 'added' : ''}`} onClick={() => { setAdded(!added); }}>
                                     {added ? <AiFillCheckCircle /> : <AiOutlineCheckCircle/>}
@@ -131,9 +123,12 @@ function ArtistInfoPopup(props) {
                                 <p>{added ? 'Added' : 'Add'}</p>
                             </div>
                     </div>
-
-                    
                 </form>
+
+                <div className="attributes">
+                    <p className="artistsFollower"> Followers: {props.artistInfo.artistsFollower}</p>
+                    <p className="songGenre">Genre: {props.artistInfo.genre.join(', ')}</p>
+                </div>
 
             </div>
 

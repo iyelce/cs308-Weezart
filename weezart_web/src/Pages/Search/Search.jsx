@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SongInfoPopup from "../Popups/SongInfoPopup";
 import ArtistInfoPopup from "../Popups/ArtistInfoPopup";
+import AlbumInfoPopup from "../Popups/AlbumInfoPopup";
 
 
 function Search() {
@@ -51,8 +52,22 @@ function Search() {
       },
   ];
 
+  const albumInfos = [ 
+    {
+      albumName: "album1",
+      artists: ["artist1.1"],
+      genre: ["genre1.1", "genre1.2"],
+      image: "https://images.theconversation.com/files/512871/original/file-20230301-26-ryosag.jpg?ixlib=rb-1.1.0&rect=97%2C79%2C5799%2C5817&q=45&auto=format&w=926&fit=clip",
+      year:2022,
+      songs: ["song1.1", "song1.2", "song1.3"]
+
+    }
+
+  ];
+
   const [showSongPopups, setShowSongPopups] = useState(new Map());
   const [showArtistPopups, setShowArtistPopups] = useState(new Map());
+  const [showAlbumPopups, setShowAlbumPopups] = useState(new Map());
 
   const handleSongButtonClick = (index) => {
     const newShowSongPopups = new Map(showSongPopups);
@@ -77,6 +92,19 @@ function Search() {
     newShowArtistPopups.set(index, false);
     setShowArtistPopups(newShowArtistPopups);
   };
+
+  const handleAlbumButtonClick = (index) => {
+    const newShowAlbumPopups = new Map(showAlbumPopups);
+    newShowAlbumPopups.set(index, true);
+    setShowAlbumPopups(newShowAlbumPopups);
+  };
+
+  const handleAlbumClosePopup = (index) => {
+    const newShowAlbumPopups = new Map(showAlbumPopups);
+    newShowAlbumPopups.set(index, false);
+    setShowAlbumPopups(newShowAlbumPopups);
+  };
+
 
   
 
@@ -109,6 +137,18 @@ function Search() {
           <br />
         </div>
       ))}
+
+    {albumInfos.map((albumInfo, index) => (
+      <div key={index}>
+        <button onClick={() => handleAlbumButtonClick(index)}>Album {index + 1}</button>
+        <AlbumInfoPopup
+          isOpen={showAlbumPopups.get(index) || false}
+          onRequestClose={() => handleAlbumClosePopup(index)}
+          albumInfo={albumInfo}
+          showModal={showAlbumPopups}/>
+        <br />
+        <br />
+        </div>))}
 
     </div>
   );

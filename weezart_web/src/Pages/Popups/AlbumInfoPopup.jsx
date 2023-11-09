@@ -3,23 +3,24 @@ import Modal from "react-modal";
 import { AiOutlineClose } from "react-icons/ai";
 import './Popup.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckCircle, AiFillCheckCircle } from 'react-icons/ai'; 
+import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckCircle, AiFillCheckCircle, AiFillCrown } from 'react-icons/ai'; 
  
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
 
 
+//if image is empty put a defoult image
 function imgsrc(val) {
     if(val === undefined || val==="") {
-        return "https://i.pinimg.com/564x/47/99/fd/4799fdb80098968bf6ff4c311eed1110.jpg";
+        return "https://i.pinimg.com/564x/e3/c9/a9/e3c9a9e5934d65cff25d83a2ac655230.jpg";
     }
     else {
         return val;
     }
 }
 
-function AlbumInfoPopup(props) {
+function ArtistInfoPopup(props) {
 
     const [rating, setRating] = useState(0);
     const stars = [1, 2, 3, 4, 5];
@@ -30,11 +31,10 @@ function AlbumInfoPopup(props) {
         if (selectedRating === rating) {
             // If the clicked star is the same as the current rating, remove the rating (set it to 0)
             setRating(0);
-            setAdded(false);
 
           } else {
             setRating(selectedRating);
-            setAdded(true);
+            setAdded(true); 
           }
     };
 
@@ -45,28 +45,52 @@ function AlbumInfoPopup(props) {
       onRequestClose={props.onRequestClose}
       className="information-modal"
     >
-        <div className="close-page">
+        {/* close button */}
+        <div className="close-page"> 
+
             <button onClick={props.onRequestClose}>
                 <AiOutlineClose/>
             </button>
+
         </div>
 
         <div className="three-column-container">
-            <div className="column">
-                <img className="cover-img" src= {""} alt="cover"/>
-              
+            <div className="column column-try ">
+                <div className="content">
+                    <h2 className="title">{props.albumInfo.albumName}</h2>
+
+                    <p className="copy">{props.albumInfo.artists.join(', ')}</p>
+                    <div className="stars">
+                        {stars.map((star) => (
+                        <span
+                            key={star}
+                            className={`star ${star <= rating ? 'selected' : ''}`}
+                            onClick={() => handleStarClick(star)}
+                        >
+                            {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
+                        </span>
+                        ))}
+                    </div>
+                </div>
+
+
             </div>
 
             <div className="column">
-                <div className="song-attributes">
-                    <p className="songAlbum">{props.songInfo.album}</p>
-                    <p className="songYear">{props.songInfo.year}</p>
-                    <p className="songArtists">{props.songInfo.artists.join(', ')}</p>
-
-
-
-
+                {/* informations  */}
+                <div className="attributes">
+                    <p className="albumName">{props.albumInfo.albumName}</p>
+                    <p className="albumYear"> {props.albumInfo.year}</p>
+                    <p className="albumArtist"> {props.albumInfo.artists.join(', ')}</p>
+                    <p className="songGenre">Genre: {props.albumInfo.genre.join(', ')}</p>
                 </div>
+
+                <div className="top5songlist">
+                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                
+                </div>
+
+
             </div>
 
             <div className="column">
@@ -83,16 +107,15 @@ function AlbumInfoPopup(props) {
                             onClick={() => handleStarClick(star)}
                         >
                             {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
-                            
                         </span>
                         ))}
                     </div>
 
                     <hr/>
 
-                    <div className="song-like-add">
+                    <div className="like-add">
                             <div className="half-width">
-                                <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={() => { setLiked(!liked); }}>
+                                <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={() => { setLiked(!liked); setAdded(true);}}>
                                     {liked ? <AiFillHeart /> : <AiOutlineHeart />}
                                 </div>
                                 <p>{liked ? 'Liked' : 'Like'}</p>
@@ -125,9 +148,8 @@ function AlbumInfoPopup(props) {
 
 
     </Modal>
-
-
+    
   );
 }
 
-export default AlbumInfoPopup;
+export default ArtistInfoPopup;

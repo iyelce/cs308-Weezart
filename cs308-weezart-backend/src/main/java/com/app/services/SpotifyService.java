@@ -1,4 +1,5 @@
 package com.app.services;import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +95,21 @@ public class SpotifyService {
 	    List<Album> albums = spotifySearchResponse.albumJsonParser(responseEntity.getBody());
 	    
 	    return albums;
+	}
+
+	public Map<String, String> getSongFromAlbum(String albumId, String accessToken) throws JsonMappingException, JsonProcessingException {
+		String searchUrl = "https://api.spotify.com/v1/albums/"+ albumId + "/tracks";
+		HttpHeaders headers = new HttpHeaders();
+		
+		headers.set("Autherization", "Bearer " + accessToken);
+		
+		HttpEntity<String> entity = new HttpEntity<>(headers);
+		
+		ResponseEntity<String> responseEntity = restTemplate.exchange(searchUrl, HttpMethod.GET, entity, String.class);
+		
+		Map<String, String> songs = spotifySearchResponse.songFromAlbumParser(responseEntity.getBody());
+		
+		return songs;
 	}
 	
 

@@ -1,6 +1,7 @@
 package com.app.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.directory.SearchResult;
 
@@ -60,5 +61,12 @@ public class SpotifyController {
     	List<Album> results = spotifyService.albumSearch(query, spotifyAuthenticator.authenticateWithSpotify());
     	
     	return ResponseEntity.ok(results);
+    }
+    
+    @GetMapping("/get-songs-from-album")
+    public ResponseEntity<Map<String, String>> getSongFromAlbum(@RequestParam String albumId) throws JsonMappingException, JsonProcessingException {
+    	Map<String, String> songIdsAndNames = spotifyService.getSongFromAlbum(albumId, spotifyAuthenticator.authenticateWithSpotify());
+    	
+    	return ResponseEntity.ok(songIdsAndNames);
     }
 }

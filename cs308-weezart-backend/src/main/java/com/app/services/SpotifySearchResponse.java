@@ -1,7 +1,9 @@
 package com.app.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -184,6 +186,22 @@ public class SpotifySearchResponse {
 			albumList.add(album);
 		}
 		return albumList;
+	}
+
+	public Map<String, String> songFromAlbumParser(String songFromAlbumJson) throws JsonMappingException, JsonProcessingException {
+		
+		Map<String, String> songIdsAndNames = new HashMap<>();
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(songFromAlbumJson);
+		
+		JsonNode itemsNode = rootNode.get("items");
+		
+		for(JsonNode item : itemsNode) {
+			songIdsAndNames.put(item.get("id").asText(), item.get("name").asText());
+		}
+		
+		return songIdsAndNames;
 	}
 
 }

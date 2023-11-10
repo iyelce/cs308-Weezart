@@ -142,6 +142,48 @@ public class SpotifySearchResponse {
 		return songList;	
 	}
 	
-	
+	public List<Album> albumJsonParser(String albumJson) throws JsonMappingException, JsonProcessingException {
+		
+		//TODO songsName and songsId needs a different API call, somehow implement that
+		
+		List<Album> albumList = new ArrayList<>();
+		
+		String id = "", name = "", imageUrl = "", releaseDate = "";
+		int numberOfTracks = 0;
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = objectMapper.readTree(albumJson);
+		
+		JsonNode albumNode = rootNode.get("albums");
+		
+		JsonNode itemsNode = albumNode.get("items");
+		
+		for(JsonNode item : itemsNode) {
+			
+			List<String> songsName = new ArrayList<>();
+			List<String> songsId = new ArrayList<>();
+			List<String> artistsName = new ArrayList<>();
+			List<String> artistsId = new ArrayList<>();
+			
+			id = item.get("id").asText();
+			name = item.get("name").asText();
+			releaseDate = item.get("release_date").asText();
+			numberOfTracks = item.get("total_tracks").asInt();
+			
+			JsonNode imageNode = item.get("images");
+			imageUrl = imageNode.get(0).get("url").asText();
+			
+			JsonNode artistsNode = item.get("artists");
+			
+			for(JsonNode artist : artistsNode) {
+				if(artist.get("name") != null) {artistsName.add(artist.get("name").asText()); }
+				if(artist.get("id")!= null) {artistsId.add(artist.get("id").asText()); }
+			}
+			
+			Album album = new Album(id, name, imageUrl, releaseDate, numberOfTracks, artistsName, artistsId);
+			albumList.add(album);
+		}
+		return albumList;
+	}
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.filter.JwtTokenFilter;
+import com.app.models.Album;
 import com.app.models.Artist;
 import com.app.models.Song;
 import com.app.services.SpotifyService;
@@ -50,6 +51,13 @@ public class SpotifyController {
     @GetMapping("/search-song")
     public ResponseEntity<List<Song>> searchSong(@RequestParam String query) throws JsonMappingException, JsonProcessingException {
     	List<Song> results = spotifyService.songSearch(query, spotifyAuthenticator.authenticateWithSpotify());
+    	
+    	return ResponseEntity.ok(results);
+    }
+    
+    @GetMapping("/search-album")
+    public ResponseEntity<List<Album>> searchAlbum(@RequestParam String query) throws JsonMappingException, JsonProcessingException {
+    	List<Album> results = spotifyService.albumSearch(query, spotifyAuthenticator.authenticateWithSpotify());
     	
     	return ResponseEntity.ok(results);
     }

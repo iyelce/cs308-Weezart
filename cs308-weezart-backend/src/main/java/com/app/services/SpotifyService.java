@@ -98,10 +98,13 @@ public class SpotifyService {
 	}
 
 	public Map<String, String> getSongFromAlbum(String albumId, String accessToken) throws JsonMappingException, JsonProcessingException {
+		
+		log.info(albumId);
 		String searchUrl = "https://api.spotify.com/v1/albums/"+ albumId + "/tracks";
+		log.info(searchUrl);
 		HttpHeaders headers = new HttpHeaders();
 		
-		headers.set("Autherization", "Bearer " + accessToken);
+		headers.set("Authorization", "Bearer " + accessToken);
 		
 		HttpEntity<String> entity = new HttpEntity<>(headers);
 		

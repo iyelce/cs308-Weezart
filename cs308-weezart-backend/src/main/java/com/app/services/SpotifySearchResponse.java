@@ -31,9 +31,7 @@ public class SpotifySearchResponse {
 	
 	public List<Artist> artistJsonParser(String artistJson) throws JsonMappingException, JsonProcessingException {
 		
-		String name = "", imageUrl = "", id = "";
-		List<String> genres = new ArrayList<>();
-		int followerCount = 0;
+		
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
@@ -52,6 +50,10 @@ public class SpotifySearchResponse {
 		int count = 0;
 		
 		for(JsonNode item : itemsNode) {
+			
+			String name = "", imageUrl = "", id = "";
+			List<String> genres = new ArrayList<>();
+			int followerCount = 0;
 			
 			log.info("her itemi aldım " + count);
 			
@@ -78,13 +80,16 @@ public class SpotifySearchResponse {
 				}
 			}
 		
-		JsonNode imagesNode = item.get("images");
-
-		if(imagesNode != null)  {imageUrl = imagesNode.get(0).get("url").asText();}
+			name = item.get("name").asText();
 			
-		
-		name = item.get("name").asText();
-		
+			log.info(name);
+			
+		if(item.get("images") != null) { 
+			JsonNode imagesNode = item.get("images");
+			if(imagesNode.isArray() && imagesNode.size() > 0) {
+				imageUrl = imagesNode.get(0).get("url").asText(); 
+			}
+		}
 		
 		Artist artist = new Artist(name, genres, imageUrl, followerCount, id);
 		
@@ -97,9 +102,6 @@ public class SpotifySearchResponse {
 			
 		List<Song> songList = new ArrayList<>();
 		
-		String id = "", name = "", albumName = "", albumId = "";
-		int popularity = 0, duration_ms = 0;
-		boolean explicit = false;
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
@@ -110,6 +112,10 @@ public class SpotifySearchResponse {
 		JsonNode itemsNode = songNode.get("items");
 		
 		for(JsonNode item : itemsNode) {	
+			
+			String id = "", name = "", albumName = "", albumId = "";
+			int popularity = 0, duration_ms = 0;
+			boolean explicit = false;
 			
 			List<String> artistsName = new ArrayList<>();
 			List<String> artistsId = new ArrayList<>();
@@ -150,8 +156,7 @@ public class SpotifySearchResponse {
 		
 		List<Album> albumList = new ArrayList<>();
 		
-		String id = "", name = "", imageUrl = "", releaseDate = "";
-		int numberOfTracks = 0;
+		
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode rootNode = objectMapper.readTree(albumJson);
@@ -161,6 +166,9 @@ public class SpotifySearchResponse {
 		JsonNode itemsNode = albumNode.get("items");
 		
 		for(JsonNode item : itemsNode) {
+			
+			String id = "", name = "", imageUrl = "", releaseDate = "";
+			int numberOfTracks = 0;
 			
 			List<String> songsName = new ArrayList<>();
 			List<String> songsId = new ArrayList<>();

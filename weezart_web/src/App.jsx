@@ -2,6 +2,7 @@
 import Login from './Pages/Authentication/Login';
 import SignUp from "./Pages/Authentication/SignUp";
 import Search from './Pages/Search/Search';
+import HomePage from './Pages/HomePage/HomePage';
 
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
     <div className="App">
       {/* <Login/> */}
       {/* <SignUp/> */}
-      <Search/>
+      <HomePage/>
     </div>
   );
 }

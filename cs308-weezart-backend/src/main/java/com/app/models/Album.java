@@ -1,6 +1,5 @@
 package com.app.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Album {
@@ -10,14 +9,14 @@ public class Album {
 	String releaseDate;
 	int numberOfTracks;
 	
-	List<String> artistsName = new ArrayList<>();
-	List<String> artistsId = new ArrayList<>();
+	List<String> artistsName;
+	List<String> artistsId;
 	
-	
-	
+	List<String> songsName;
+	List<String> songsId;
 	
 	public Album(String id, String name, String imageUrl, String releaseDate, int numberOfTracks,
-			List<String> artistsName, List<String> artistsId) {
+			List<String> artistsName, List<String> artistsId, List<String> songsName, List<String> songsId) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -26,6 +25,20 @@ public class Album {
 		this.numberOfTracks = numberOfTracks;
 		this.artistsName = artistsName;
 		this.artistsId = artistsId;
+		this.songsName = songsName;
+		this.songsId = songsId;
+	}
+	public List<String> getSongsName() {
+		return songsName;
+	}
+	public void setSongsName(List<String> songsName) {
+		this.songsName = songsName;
+	}
+	public List<String> getSongsId() {
+		return songsId;
+	}
+	public void setSongsId(List<String> songsId) {
+		this.songsId = songsId;
 	}
 	public String getId() {
 		return id;

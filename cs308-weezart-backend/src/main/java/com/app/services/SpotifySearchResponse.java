@@ -7,6 +7,12 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.app.models.Album;
 import com.app.models.Artist;
@@ -27,6 +33,11 @@ public class SpotifySearchResponse {
 //	}
 	
     private static final Logger log = LoggerFactory.getLogger(SpotifyService.class);
+    
+    private final RestTemplate restTemplate = new RestTemplate();
+    
+    private final SpotifyAPIService spotifyAPIService = new SpotifyAPIService();
+
 
 	
 	public List<Artist> artistJsonParser(String artistJson) throws JsonMappingException, JsonProcessingException {
@@ -150,13 +161,11 @@ public class SpotifySearchResponse {
 		return songList;	
 	}
 	
-	public List<Album> albumJsonParser(String albumJson) throws JsonMappingException, JsonProcessingException {
+	public List<Album> albumJsonParser(String albumJson, String token) throws JsonMappingException, JsonProcessingException {
 		
 		//TODO songsName and songsId needs a different API call, somehow implement that
 		
 		List<Album> albumList = new ArrayList<>();
-		
-		
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode rootNode = objectMapper.readTree(albumJson);
@@ -170,8 +179,6 @@ public class SpotifySearchResponse {
 			String id = "", name = "", imageUrl = "", releaseDate = "";
 			int numberOfTracks = 0;
 			
-			List<String> songsName = new ArrayList<>();
-			List<String> songsId = new ArrayList<>();
 			List<String> artistsName = new ArrayList<>();
 			List<String> artistsId = new ArrayList<>();
 			
@@ -190,11 +197,15 @@ public class SpotifySearchResponse {
 				if(artist.get("id")!= null) {artistsId.add(artist.get("id").asText()); }
 			}
 			
-			Album album = new Album(id, name, imageUrl, releaseDate, numberOfTracks, artistsName, artistsId);
+			List<String> songsId = new ArrayList<>(spotifyAPIService.getSongFromAlbum(id, token).keySet());
+			List<String> songsName = new ArrayList<>(spotifyAPIService.getSongFromAlbum(id, token).values());
+			
+			Album album = new Album(id, name, imageUrl, releaseDate, numberOfTracks, artistsName, artistsId, songsName, songsId);
 			albumList.add(album);
 		}
 		return albumList;
 	}
+	
 
 	public Map<String, String> songFromAlbumParser(String songFromAlbumJson) throws JsonMappingException, JsonProcessingException {
 		

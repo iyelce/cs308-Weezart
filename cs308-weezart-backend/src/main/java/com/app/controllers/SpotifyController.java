@@ -18,6 +18,8 @@ import com.app.filter.JwtTokenFilter;
 import com.app.models.Album;
 import com.app.models.Artist;
 import com.app.models.Song;
+import com.app.services.SpotifyAPIService;
+import com.app.services.SpotifySearchResponse;
 import com.app.services.SpotifyService;
 import com.app.spotify.SpotifyAuthenticator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,10 +31,13 @@ public class SpotifyController {
 	
 	private final SpotifyService spotifyService;
 	
+	
     private static final Logger log = LoggerFactory.getLogger(SpotifyController.class);
 	
 	@Autowired
 	private final SpotifyAuthenticator spotifyAuthenticator;
+	
+	private final SpotifyAPIService spotifyAPIService = new SpotifyAPIService();
 	
     @Autowired
     public SpotifyController(SpotifyService spotifyService, SpotifyAuthenticator spotifyAuthenticator) {
@@ -65,7 +70,7 @@ public class SpotifyController {
     
     @GetMapping("/get-songs-from-album")
     public ResponseEntity<Map<String, String>> getSongFromAlbum(@RequestParam String albumId) throws JsonMappingException, JsonProcessingException {
-    	Map<String, String> songIdsAndNames = spotifyService.getSongFromAlbum(albumId, spotifyAuthenticator.authenticateWithSpotify());
+    	Map<String, String> songIdsAndNames = spotifyAPIService.getSongFromAlbum(albumId, spotifyAuthenticator.authenticateWithSpotify());
     	
     	return ResponseEntity.ok(songIdsAndNames);
     }

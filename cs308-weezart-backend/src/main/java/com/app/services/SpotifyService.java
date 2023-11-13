@@ -92,28 +92,11 @@ public class SpotifyService {
 	    //log.info(responseEntity.toString());
 	    
 	    // Process the JSON response and extract artists
-	    List<Album> albums = spotifySearchResponse.albumJsonParser(responseEntity.getBody());
+	    List<Album> albums = spotifySearchResponse.albumJsonParser(responseEntity.getBody(), accessToken);
 	    
 	    return albums;
 	}
 
-	public Map<String, String> getSongFromAlbum(String albumId, String accessToken) throws JsonMappingException, JsonProcessingException {
-		
-		log.info(albumId);
-		String searchUrl = "https://api.spotify.com/v1/albums/"+ albumId + "/tracks";
-		log.info(searchUrl);
-		HttpHeaders headers = new HttpHeaders();
-		
-		headers.set("Authorization", "Bearer " + accessToken);
-		
-		HttpEntity<String> entity = new HttpEntity<>(headers);
-		
-		ResponseEntity<String> responseEntity = restTemplate.exchange(searchUrl, HttpMethod.GET, entity, String.class);
-		
-		Map<String, String> songs = spotifySearchResponse.songFromAlbumParser(responseEntity.getBody());
-		
-		return songs;
-	}
 	
 
 }

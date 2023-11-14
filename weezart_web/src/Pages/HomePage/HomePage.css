@@ -26,25 +26,14 @@
     display: flex;
   }
   
-  .sidebar {
-    flex: 1;
-    height: 100%;
-    color: white;
-    background-color: #282c34;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+
   
   .main-page {
     width: 60%;
-    flex: 5; /* Adjusted to 6 to make it 60% of the available space */
-  }
-  
+    flex: 5; }
   .friend-activity {
     background: black;
     width: 20%;
-    flex: 2; /* Adjusted to 2 to make it 20% of the available space */
+    flex: 2;
   }
   

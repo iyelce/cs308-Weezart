@@ -78,10 +78,10 @@ npm install react-icons --save
 
 router:
 npm i react-router-dom
+npm install --save react-router-dom@latest
 
 popup:
 npm install react-modal
 
-bootstrap:
-npm install bootstrap
+
 

@@ -12,6 +12,8 @@
     flex-direction: column;
     height: 70%;
 }
+
+
 .three-column-container{
     width:100%;
     height:100%;
@@ -57,10 +59,12 @@
 }
 .column{
     display: flex;
-justify-content: center;
-align-items: center;
-height: 80%;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    flex-direction: column;
 }
+
 
 .close-page button {
     font-size: 27px;
@@ -87,7 +91,7 @@ height: 80%;
 .column:nth-child(2) {
     flex: 2;
     width: auto;
-}
+}st
 
 
 .column:nth-child(3), .column:nth-child(1) {
@@ -154,6 +158,8 @@ height: 80%;
     justify-content: center;
     align-items: center;
     padding: 10px; 
+
+    margin-right: 15%;
 }
 
 .rating-artist{
@@ -249,23 +255,6 @@ height: 80%;
     font-size: 30px; 
   }
 
-
-
-  .top5songlist{
-    height: 80%;
-   overflow: scroll;
-   margin-left:3rem;
-   font-size:1.5rem;
-
-  }
-  .songs{
-    padding:10px 20px;
-    opacity:1;
-
-
-  }
-  
-
   .column-try {  
     margin-left:1%;
     position: relative;
@@ -285,9 +274,6 @@ height: 80%;
       0 8px 8px rgba(0,0,0,0.1),
       0 16px 16px rgba(0,0,0,0.1);
       background-image: url(https://i.scdn.co/image/ab67616d0000b27390a50cfe99a4c19ff3cbfbdb);
-    
-    
-  
 
     &:before {
       content: '';
@@ -441,4 +427,46 @@ background-color: transparent;
         transition-duration: 0s;
       }
     }
+  }
+
+
+
+
+  .top5songlist {
+    overflow-y: scroll;
+    max-height: 300px;
+    width: 90%;
+  }
+  
+  .songs {
+    list-style-type: none;
+    margin-bottom: 1%;
+    margin-right: 3%;
+    padding: 8px;
+    background-color: rgba(28, 11, 49, 0.8);
+    border-radius: 2px;
+    color: #B9B4C7;
+    font-family: Poppins;
+    font-size: 18px;
+    font-weight: 300;
+    
+  }
+  
+  .songs:hover {
+    background-color: rgba(52, 20, 92, 0.8);
+  }
+
+
+  .top5songlist::-webkit-scrollbar {
+    width: 15px;
+  }
+  
+  .top5songlist::-webkit-scrollbar-track {
+    background-color: rgba(28, 11, 49, 0.8);
+    border-radius: 40px;
+  }
+  
+  .top5songlist::-webkit-scrollbar-thumb {
+    border-radius: 40px;
+    background-color: rgba(88, 47, 138, 0.8); 
   }

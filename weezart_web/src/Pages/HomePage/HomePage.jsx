@@ -6,14 +6,6 @@ import './HomePage.css';
 
 
 const HomePage = () => {
-  
-
-
-
-    
-  
-    
-
   return (
     
     <div className="whole-page">
@@ -37,9 +29,6 @@ const HomePage = () => {
         </div>
     <div className="main-page">main page</div>
     <div className="friend-activity">friends</div>
-
-
-
 
 </div>
 

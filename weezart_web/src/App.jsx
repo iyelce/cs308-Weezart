@@ -9,8 +9,9 @@ function App() {
   return (
     <div className="App">
       {/* <Login/> */}
-      {/* <SignUp/> */}
+      {/* <SignUp/>  */}
       <HomePage/>
+       {/* <Search/> */}
     </div>
   );
 }
@@ -18,26 +19,24 @@ function App() {
 
 export default App;
 
-// import { BrowserRouter, Route, Routes } from 'react-router-dom';
-// import Login from './Pages/Login/Login';
-// import SignUp from './Pages/Signup/Signup';
 
-
+// import React from 'react';
+// import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+// import HomePage from './Pages/HomePage/HomePage';
+// import Layout from './Pages/Layout';
+// import Search from './Pages/Search/Search';
 
 // const App = () => {
+//   return (
+//     <BrowserRouter>
+//       <Routes>
+//         <Route path="/" element={<HomePage />} />
+//         <Route path="/search" element={<Search />} />
+//       </Routes>
+//     </BrowserRouter>
+//   );
 
-// 	return (
-
-// 		<BrowserRouter> 
-// 			<Routes>
-        
-// 				<Route path={'/'} element={<Login />}></Route>
-
-// 				<Route path={'/signup'} element={<SignUp/>} > </Route>
-
-// 			</Routes>
-//     </BrowserRouter> 
-// 	);
 // };
 
 // export default App;
+

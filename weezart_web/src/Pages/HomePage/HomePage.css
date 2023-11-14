@@ -2,6 +2,12 @@
 
 
 /* #root{
+#root {
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  #root .App {
     width: 100%;
     height: 100%;
 
@@ -18,25 +24,27 @@
     background-color: aliceblue;
     width: 100%;
     display: flex;
-}
-.sidebar{
-    flex:1;
+  }
+  
+  .sidebar {
+    flex: 1;
     height: 100%;
-    width:10%;
-    color:white;
+    color: white;
     background-color: #282c34;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-.main-page{
-    width:60%;
-    flex:1;
-}
-.friend-activity{
-    background:black;
-    width:20;
-    flex:1;
-
-}
+  }
+  
+  .main-page {
+    width: 60%;
+    flex: 5; /* Adjusted to 6 to make it 60% of the available space */
+  }
+  
+  .friend-activity {
+    background: black;
+    width: 20%;
+    flex: 2; /* Adjusted to 2 to make it 20% of the available space */
+  }
+  

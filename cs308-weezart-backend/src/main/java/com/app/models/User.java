@@ -27,6 +27,17 @@ public class User {
 	private String email;
 	private GrantedAuthority authority;
 	
+	
+	
+	public User() {
+		super();
+	}
+
+	public User(long iduser) {
+		super();
+		this.iduser = iduser;
+	}
+	
 	public long getiduser() {
 		return iduser;
 	}

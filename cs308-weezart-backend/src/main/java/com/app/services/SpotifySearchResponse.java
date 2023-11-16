@@ -113,7 +113,6 @@ public class SpotifySearchResponse {
 			
 		List<Song> songList = new ArrayList<>();
 		
-		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
 		JsonNode rootNode = objectMapper.readTree(songJson);
@@ -124,7 +123,7 @@ public class SpotifySearchResponse {
 		
 		for(JsonNode item : itemsNode) {	
 			
-			String id = "", name = "", albumName = "", albumId = "";
+			String id = "", name = "", albumName = "", albumId = "", albumRelease = "";
 			int popularity = 0, duration_ms = 0;
 			boolean explicit = false;
 			
@@ -147,6 +146,8 @@ public class SpotifySearchResponse {
 			
 			albumName = albumNode.get("name").asText();
 			
+			albumRelease = albumNode.get("release_date").asText();
+			
 			JsonNode artistNode = item.get("artists");
 			
 			for(JsonNode artists : artistNode) {
@@ -154,7 +155,7 @@ public class SpotifySearchResponse {
 				artistsId.add(artists.get("id").asText());
 			}
 			
-			Song song = new Song(id, name, albumName, albumId, artistsName, artistsId, popularity, duration_ms, explicit);
+			Song song = new Song(id, name, albumName, albumId, artistsName, artistsId, popularity, duration_ms, explicit, albumRelease);
 			songList.add(song);
 		}
 		

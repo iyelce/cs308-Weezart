@@ -1,5 +1,13 @@
 package com.app.repo;
 
-public interface SongRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import com.app.models.Song;
+
+@Repository
+public interface SongRepository extends JpaRepository<Song, String>{
+
+	Song findByid(String id);
+	
 }

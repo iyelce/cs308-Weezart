@@ -1,58 +1,25 @@
-package com.app.models;
+package com.app.payloads;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "songs")
-public class Song {
-	
-	@Id
+public class SongPayload {
 	String id; 
 	String name; 
 	String albumName; 
 	String albumId;
-	String albumRelease;
 	List<String> artistsName;
 	List<String> artistsId;
 	int popularity; 
 	int duration_ms;
 	boolean explicit;
-	
-	
-	
-	public Song() {
-		super();
-	}
-
-	public Song(String id, String name, String albumName, String albumId, List<String> artistsName,
-			List<String> artistsId, int popularity, int duration_ms, boolean explicit, String albumRelease) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.albumName = albumName;
-		this.albumId = albumId;
-		this.artistsName = artistsName;
-		this.artistsId = artistsId;
-		this.popularity = popularity;
-		this.duration_ms = duration_ms;
-		this.explicit = explicit;
-		this.albumRelease = albumRelease;
-	}
+	String albumRelease;
 	
 	public String getAlbumRelease() {
 		return albumRelease;
 	}
-
 	public void setAlbumRelease(String albumRelease) {
 		this.albumRelease = albumRelease;
 	}
-
 	public String getId() {
 		return id;
 	}
@@ -107,7 +74,4 @@ public class Song {
 	public void setExplicit(boolean explicit) {
 		this.explicit = explicit;
 	}
-	
-	
-	
 }

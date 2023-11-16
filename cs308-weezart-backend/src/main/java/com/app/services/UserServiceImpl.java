@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService{
 	        this.userRepository = userRepository;
 	    }
 	    
-	    @Autowired private UserRepository userRepo;
+	    //@Autowired private UserRepository userRepo;
   
 	    public User createUser(String username, String password, String email) {
 	    	

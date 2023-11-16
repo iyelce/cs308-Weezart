@@ -5,15 +5,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.models.Album;
 import com.app.models.Artist;
 import com.app.models.Song;
 import com.app.models.User;
+import com.app.models.UserAlbum;
 import com.app.models.UserArtist;
 import com.app.models.UserSong;
+import com.app.payloads.AlbumPayload;
 import com.app.payloads.ArtistPayload;
 import com.app.payloads.SongPayload;
+import com.app.repo.AlbumRepository;
 import com.app.repo.ArtistRepository;
 import com.app.repo.SongRepository;
+import com.app.repo.UserAlbumRepository;
 import com.app.repo.UserArtistRepository;
 import com.app.repo.UserSongRepository;
 
@@ -31,6 +36,12 @@ public class AddServiceImpl implements AddService{
 	
 	@Autowired
 	private UserArtistRepository userArtistRepo;
+	
+	@Autowired
+	private AlbumRepository albumRepo;
+	
+	@Autowired
+	private UserAlbumRepository userAlbumRepo;
 	
     private static final Logger log = LoggerFactory.getLogger(SpotifyService.class);
 	
@@ -69,17 +80,17 @@ public class AddServiceImpl implements AddService{
 	
 	public Artist addArtist(ArtistPayload artist) {
 			
-			Artist givenArtist = new Artist(artist.getName(), artist.getGenres(), artist.getImageUrl(), artist.getFollowerCount(), artist.getId());
+		Artist givenArtist = new Artist(artist.getName(), artist.getGenres(), artist.getImageUrl(), artist.getFollowerCount(), artist.getId());
 			
-			log.info("eklemeden önce var mı diye bakıyorum");
+		log.info("eklemeden önce var mı diye bakıyorum");
 			
-			if(artistRepo.findByid(givenArtist.getId()) == null){
-				log.info("ife girdim");
-				return artistRepo.save(givenArtist);
-			}
-	
-			else { log.info("ife girmedim"); return null; }
+		if(artistRepo.findByid(givenArtist.getId()) == null){
+			log.info("ife girdim");
+			return artistRepo.save(givenArtist);
 		}
+	
+		else { log.info("ife girmedim"); return null; }
+	}
 	
 	public UserArtist relateUserArtist(ArtistPayload artist, String userID) {
 		
@@ -97,6 +108,33 @@ public class AddServiceImpl implements AddService{
 		
 		return userArtistRepo.save(userArtist);
 		
+	}
+	
+	public Album addAlbum(AlbumPayload album) {
+		
+		Album givenAlbum = new Album(album.getId(), album.getName(), album.getImageUrl(), album.getReleaseDate(),
+				album.getNumberOfTracks(), album.getArtistsName(), album.getArtistsId(), album.getSongsName(), album.getSongsId());
+		
+		if(albumRepo.findByid(album.getId()) == null) {
+			return albumRepo.save(givenAlbum);
+		}
+		else return null;
+	}
+	
+	public UserAlbum relateUserAlbum(AlbumPayload album, String userID) {
+		
+		UserAlbum userAlbum = new UserAlbum();
+		
+		Album givenAlbum = new Album(album.getId(), album.getName(), album.getImageUrl(), album.getReleaseDate(),
+				album.getNumberOfTracks(), album.getArtistsName(), album.getArtistsId(), album.getSongsName(), album.getSongsId());
+		
+		userAlbum.setAlbum(givenAlbum);
+		
+		User givenUser = new User(Long.parseLong(userID));
+		
+		userAlbum.setUser(givenUser);
+		
+		return userAlbumRepo.save(userAlbum);
 	}
 	
 }

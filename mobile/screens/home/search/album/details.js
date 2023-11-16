@@ -84,7 +84,7 @@ export default Details = ({ route, navigation }) => {
               {type == "song" ? data.tracks[track].name : data.name}
             </Text>
             <Text style={{ color: "#0007" }}>
-              {data.artists[0] + " • "}
+              {data.artists[0].name + " • "}
               <Text style={{ fontWeight: 500 }}>
                 {type == "song" ? type : data.type}
               </Text>

@@ -59,14 +59,20 @@ export default Album = ({ route, navigation }) => {
             style={{ width: 15, height: 15 }}
             source={require("./../../../../assets/icons/mic.png")}
           />
-          <Text
-            style={{
-              fontSize: 15,
-              marginLeft: 5,
-            }}
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("Artist", { data: data.artists[0] })
+            }
           >
-            {data.artists[0]}
-          </Text>
+            <Text
+              style={{
+                fontSize: 15,
+                marginLeft: 5,
+              }}
+            >
+              {data.artists[0].name}
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={{ width: "100%", padding: 10 }}>
           <TouchableOpacity

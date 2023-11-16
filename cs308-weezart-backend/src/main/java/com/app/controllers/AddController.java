@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.models.Song;
+import com.app.models.UserArtist;
 import com.app.models.UserSong;
+import com.app.payloads.ArtistPayload;
 import com.app.payloads.SongPayload;
 import com.app.services.AddService;
 import com.app.services.SpotifyService;
@@ -40,5 +42,15 @@ public class AddController {
 		log.info("relate ettim");
 		
 		return ResponseEntity.ok(userSongRelation);
+	}
+	
+	@PostMapping("/artist/{userId}")
+	public ResponseEntity<UserArtist> addArtist(@RequestBody ArtistPayload artistPayload, @PathVariable String userId) {
+		
+		addService.addArtist(artistPayload);
+		
+		UserArtist userArtistRelation = addService.relateUserArtist(artistPayload, userId);
+		
+		return ResponseEntity.ok(userArtistRelation);
 	}
 }

@@ -1,16 +1,10 @@
-package com.app.models;
+package com.app.payloads;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+public class ArtistPayload {
 
-@Entity
-@Table(name = "artists")
-public class Artist {
-	
-	public Artist(String name, List<String> genres, String imageUrl, int followerCount, String id) {
+	public ArtistPayload(String name, List<String> genres, String imageUrl, int followerCount, String id) {
 		super();
 		this.name = name;
 		this.genres = genres;
@@ -19,15 +13,6 @@ public class Artist {
 		this.id = id;
 	}
 	
-	
-	
-	public Artist() {
-		super();
-	}
-
-
-
-	@Id
 	String id;
 	String name;
 	List<String> genres;
@@ -63,7 +48,6 @@ public class Artist {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
 	
 	
 }

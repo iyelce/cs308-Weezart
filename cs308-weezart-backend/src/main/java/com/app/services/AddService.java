@@ -2,12 +2,17 @@ package com.app.services;
 
 import org.springframework.stereotype.Service;
 
+import com.app.models.Artist;
 import com.app.models.Song;
+import com.app.models.UserArtist;
 import com.app.models.UserSong;
+import com.app.payloads.ArtistPayload;
 import com.app.payloads.SongPayload;
 
 @Service
 public interface AddService {
 	public Song addSong(SongPayload song);
-	public UserSong relateUserSong(SongPayload song, String userID); 
+	public UserSong relateUserSong(SongPayload song, String userID);
+	public Artist addArtist(ArtistPayload artist);
+	public UserArtist relateUserArtist(ArtistPayload artist, String userID);
 }

@@ -137,7 +137,7 @@ export default Profile = () => {
           }}
         >
           <SectionList
-            contentContainerStyle={{ paddingHorizontal: 10 }}
+            contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 60 }}
             stickySectionHeadersEnabled={false}
             sections={SECTIONS}
             renderSectionHeader={({ section }) => (

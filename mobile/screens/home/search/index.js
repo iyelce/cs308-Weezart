@@ -231,6 +231,7 @@ const SearchScreen = ({ navigation }) => {
             ? sampleData.map((album, i) => {
                 return (
                   <TouchableOpacity
+                    key={album.name}
                     style={{
                       width: "100%",
                       //   padding: 5,
@@ -291,6 +292,7 @@ const SearchScreen = ({ navigation }) => {
               sampleArtists.map((artist, i) => {
                 return (
                   <TouchableOpacity
+                    key={artist.name}
                     style={{
                       width: "100%",
                       //   padding: 5,

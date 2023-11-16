@@ -106,27 +106,33 @@
 
 
   .search-items-container {
+    margin-top: 3%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px; 
-    background-color: aqua;
+    background-color: none;
+    width: 100%;
+    background-color: none;
   }
 
   .search-item{
     display: flex;
     justify-content: space-between; 
     align-items: center; 
-    background-color: red;
+    background-color: #352F44;
     padding: 10px;
+    width: 90%;
+    border-radius: 4px;
+    height:max-content;
   }
   
   .searchbar-song-number,
-  .searchbar-songname-artist,
   .searchbar-song-album,
   .seachbar-song-duration {
     margin-left: 3%; /* Adjust left margin */
     white-space: nowrap;
+    flex: 2;
   }
   
   /* Add space between the album and duration */
@@ -137,7 +143,10 @@
   .searchbar-songname-artist {
     display: flex;
     flex-direction: column;
-    background-color: blueviolet;
+    background-color: none;
+    margin-left: 3%; /* Adjust left margin */
+    white-space: nowrap;
+    flex: 3;
   }
   
   .searchbar-songname-artist-artist,
@@ -158,5 +167,12 @@
   .seachbar-song-duration {
     font-size: 17px;
     font-weight: 200;
+  }
+
+  .searchbar-song-img {
+    flex: 2;
+    margin-right: 10px;
+    width: 64px;
+    height: 64px;
   }
   

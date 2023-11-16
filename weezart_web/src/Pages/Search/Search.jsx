@@ -14,7 +14,7 @@ function Search() {
       album: "album1",
       duration: "2.20",
       popularity: 20,
-      image: "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsteamuserimages-a.akamaihd.net%2Fugc%2F93850193080369520%2F61C4021F25F147CAC23590E08DEC803545FB94F0%2F%3Fimw%3D512%26%26ima%3Dfit%26impolicy%3DLetterbox%26imcolor%3D%2523000000%26letterbox%3Dfalse&tbnid=_u_AJRNjmlW2_M&vet=12ahUKEwihhJLJ6q2CAxVfkP0HHc2UBacQMygZegUIARCJAQ..i&imgrefurl=https%3A%2F%2Fsteamcommunity.com%2Fsharedfiles%2Ffiledetails%2F%3Fl%3Dturkish%26id%3D859710736&docid=7ER6m7GdPHcaNM&w=512&h=512&q=adventure%20time%20finn&ved=2ahUKEwihhJLJ6q2CAxVfkP0HHc2UBacQMygZegUIARCJAQ",
+      image: "https://www.normanrecords.com/artwork/medium/213/175963-aurora-a-different-kind-of-human.jpg",
     },
     {
       songName: "name2",
@@ -23,7 +23,7 @@ function Search() {
       album: "album2",
       duration: "3.20",
       popularity: 1500,
-      image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fmilanote.com%2Fthe-work%2Fthe-designer-of-nirvanas-nevermind-album-cover&psig=AOvVaw1o6Vv_XwKhI9pAgteYfj6a&ust=1699307205010000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJiZhOTqrYIDFQAAAAAdAAAAABAE",
+      image: "https://www.normanrecords.com/artwork/medium/213/175963-aurora-a-different-kind-of-human.jpg",
     },
     {
       songName: "name3",
@@ -32,7 +32,7 @@ function Search() {
       genre: ["genre2.1", "genre2.2", "genre2.3"],
       duration: "4.20",
       popularity: 506,
-      image: "",
+      image: "https://www.normanrecords.com/artwork/medium/213/175963-aurora-a-different-kind-of-human.jpg",
     }
   ];
 
@@ -137,19 +137,54 @@ function Search() {
   const renderSearchItems = () => {
     switch (activeCategory) {
       case 'songs':
-        return songInfos.map((songInfo, index) => (
-          <div key={index}>
-            <button onClick={() => handleSongButtonClick(index)}>Song {index + 1}</button>
-            <SongInfoPopup
-              isOpen={showSongPopups.get(index) || false}
-              onRequestClose={() => handleSongClosePopup(index)}
-              songInfo={songInfo}
-              showModal={showSongPopups}
-            />
-            <br />
-            <br />
-          </div>
-        ));
+
+
+      // return songInfos.map((songInfo, index) => (
+      //   <div key={index}>
+      //     <button onClick={() => handleSongButtonClick(index)}>Song {index + 1}</button>
+      //     <SongInfoPopup
+      //       isOpen={showSongPopups.get(index) || false}
+      //       onRequestClose={() => handleSongClosePopup(index)}
+      //       songInfo={songInfo}
+      //       showModal={showSongPopups}
+      //     />
+      //     <br />
+      //     <br />
+      //   </div>
+      // ));
+
+
+      return songInfos.map((song, index) => (
+        <div className="search-items-container"> 
+           <div key={index} className="search-item" onClick={() => handleSongButtonClick(index)}>
+           <div className="searchbar-song-number">
+                  <span>{index + 1}</span>
+                </div>
+        
+                <img
+                  aria-hidden="false"
+                  draggable="false"
+                  loading="eager"
+                  src={song.image || "default-image-url"}
+                  alt={`Song ${index + 1}`}
+                  className="searchbar-song-img"
+                />
+        
+                <div className="searchbar-songname-artist">
+                  <p className="searchbar-songname-artist-songname">{song.songName}</p>
+                  <p className="searchbar-songname-artist-artist">{song.artists.join(", ")}</p>
+                </div>
+        
+                <p className="searchbar-song-album">{song.album}</p>
+        
+                <p className="seachbar-song-duration">{song.duration}</p>
+           
+           </div>
+        
+        </div>
+
+      ));
+             
 
       case 'artists':
         return artistInfos.map((artistInfo, index) => (
@@ -249,65 +284,8 @@ function Search() {
       </div>
 
 
-    <div className="search-items-container">
-    <div className="search-item">
 
-<div className="searchbar-song-number">
-  <span>
-    1
-  </span>
-</div>
 
-<img aria-hidden="false" draggable="false" loading="eager" src="https://i.scdn.co/image/ab67616d00004851aa620deeb0916090246acea1" alt="" class="mMx2LUixlnN_Fu45JpFB rkw8BWQi3miXqtlJhKg0 Yn2Ei5QZn19gria6LjZj" width="40" height="40" />
-
-<div className="searchbar-songname-artist">
-  <p className="searchbar-songname-artist-songname">Song Name</p>
-  <p className="searchbar-songname-artist-artist">artist</p>
-</div>
-
-<p className="searchbar-song-album">Album</p>
-
-<p className="seachbar-song-duration">2:30</p>
-
-</div>
-
-    </div>
-      
-    
-
-    <div className="search-items-container"> 
-
-      <div className="search-item">
-        {songInfos.map((song, index) => (
-          <div key={index} className="search-item">
-            <div className="searchbar-song-number">
-              <span>{index + 1}</span>
-            </div>
-
-            <img
-              aria-hidden="false"
-              draggable="false"
-              loading="eager"
-              src={song.image || "default-image-url"} // Provide a default image URL if 'image' is undefined
-              alt={`Song ${index + 1}`}
-              className="mMx2LUixlnN_Fu45JpFB rkw8BWQi3miXqtlJhKg0 Yn2Ei5QZn19gria6LjZj"
-              width="40"
-              height="40"
-            />
-
-            <div className="searchbar-songname-artist">
-              <p className="searchbar-songname-artist-songname">{song.songName}</p>
-              <p className="searchbar-songname-artist-artist">{song.artists.join(", ")}</p>
-            </div>
-
-            <p className="searchbar-song-album">{song.album}</p>
-
-            <p className="seachbar-song-duration">{song.duration}</p>
-          </div>
-        ))}
-      </div>
-      
-    </div>
 
 
 

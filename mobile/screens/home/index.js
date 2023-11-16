@@ -13,6 +13,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Search from "./search";
 import { BlurView } from "@react-native-community/blur";
 import Profile from "./profile";
+import Main from "./main";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +27,7 @@ export default Home = () => {
     >
       <Tab.Screen
         name="Main"
-        component={Search}
+        component={Main}
         initialParams={{
           icon: require("./../../assets/icons/home.png"),
         }}
@@ -72,10 +73,10 @@ function MyTabBar({ state, descriptors, navigation }) {
     >
       <BlurView
         blurType="light"
-        blurAmount={40}
+        // blurAmount={40}
         style={{
           position: "absolute",
-          height: 90,
+          height: 80,
           bottom: 0,
           right: 0,
           left: 0,
@@ -128,7 +129,11 @@ function MyTabBar({ state, descriptors, navigation }) {
               style={{ flex: 1, alignItems: "center" }}
             >
               <Image
-                style={{ height: 30, width: 30 }}
+                style={{
+                  height: 25,
+                  width: 25,
+                  tintColor: isFocused ? "black" : "#7e7e7e",
+                }}
                 source={route.params.icon}
               />
               {/* <Text style={{color: isFocused ? '#673ab7' : '#222'}}>

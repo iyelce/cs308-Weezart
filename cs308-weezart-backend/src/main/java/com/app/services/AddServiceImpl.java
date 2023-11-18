@@ -2,6 +2,8 @@ package com.app.services;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +25,10 @@ import com.app.repo.ArtistRepository;
 import com.app.repo.SongRepository;
 import com.app.repo.UserAlbumRepository;
 import com.app.repo.UserArtistRepository;
+import com.app.repo.UserRepository;
 import com.app.repo.UserSongRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class AddServiceImpl implements AddService{
@@ -45,6 +50,9 @@ public class AddServiceImpl implements AddService{
 	
 	@Autowired
 	private UserAlbumRepository userAlbumRepo;
+	
+	@Autowired
+	private UserRepository userRepo;
 	
     private static final Logger log = LoggerFactory.getLogger(SpotifyService.class);
 	
@@ -156,5 +164,26 @@ public class AddServiceImpl implements AddService{
 
         return formattedDateTime;
     }
+
+	@Transactional
+	public User followUser(String username, String targetUsername) {
+		User currentUser = userRepo.findByUsername(username);
+		User targetUser = userRepo.findByUsername(targetUsername);
+		
+		List<String> currentFollowing = currentUser.getFollowing();
+		if(currentFollowing == null) currentFollowing = new ArrayList<>();
+		currentFollowing.add(targetUser.getUsername());
+		
+		currentUser.setFollowing(currentFollowing);
+		
+		List<String> targetFollowers = targetUser.getFollowers();
+		if(targetFollowers == null) targetFollowers = new ArrayList<>();
+		targetFollowers.add(currentUser.getUsername());
+		
+		targetUser.setFollowers(targetFollowers);
+		
+		userRepo.save(currentUser);
+		return userRepo.save(targetUser);
+	}
 	
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.models.Song;
+import com.app.models.User;
 import com.app.models.UserAlbum;
 import com.app.models.UserArtist;
 import com.app.models.UserSong;
@@ -68,5 +69,13 @@ public class AddController {
 		log.info("album added");
 		
 		return ResponseEntity.ok(userAlbumRelation);
+	}
+	
+	@PostMapping("/friend/{currentUsername}/{targetUsername}")
+	public ResponseEntity<User> followUser(@PathVariable String currentUsername, @PathVariable String targetUsername) {
+		
+		User user = addService.followUser(currentUsername, targetUsername);
+		
+		return ResponseEntity.ok(user);
 	}
 }

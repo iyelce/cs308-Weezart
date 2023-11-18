@@ -6,6 +6,7 @@ package com.app.models;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,6 +27,8 @@ public class User {
 	private String password;
 	private String email;
 	private GrantedAuthority authority;
+	private List<String> followers;
+	private List<String> following;
 	
 	
 	
@@ -68,5 +71,22 @@ public class User {
 	public void setAuthority(String role) {
 		this.authority = new SimpleGrantedAuthority(role);
 	}
+
+	public List<String> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(List<String> followers) {
+		this.followers = followers;
+	}
+
+	public List<String> getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(List<String> following) {
+		this.following = following;
+	}
+	
 	
 }

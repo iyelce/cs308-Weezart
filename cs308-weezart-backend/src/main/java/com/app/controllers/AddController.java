@@ -61,7 +61,11 @@ public class AddController {
 		
 		addService.addAlbum(albumPayload);
 		
+		log.info("album adding");
+		
 		UserAlbum userAlbumRelation = addService.relateUserAlbum(albumPayload, userId);
+		
+		log.info("album added");
 		
 		return ResponseEntity.ok(userAlbumRelation);
 	}

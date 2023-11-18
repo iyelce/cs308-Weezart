@@ -28,7 +28,7 @@ public class SpotifyService {
     private final SpotifySearchResponse spotifySearchResponse = new SpotifySearchResponse();
 	
 
-	public List<Artist> artistSearch(String query, String type, String accessToken) throws JsonMappingException, JsonProcessingException {
+	public List<Artist> artistSearch(String query, String accessToken) throws JsonMappingException, JsonProcessingException {
 		 	String searchUrl = "https://api.spotify.com/v1/search?q=" + query + "&type=artist";
 		    HttpHeaders headers = new HttpHeaders();
 		    

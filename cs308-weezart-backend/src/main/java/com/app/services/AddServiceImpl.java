@@ -76,7 +76,7 @@ public class AddServiceImpl implements AddService{
 		
 		userSong.setUser(givenUser);
 		
-		userSong.setTime(getCurrentDateTimeAsString());
+		userSong.setAddTime(getCurrentDateTimeAsString());
 		
 		return userSongRepo.save(userSong);
 		
@@ -109,7 +109,7 @@ public class AddServiceImpl implements AddService{
 		
 		userArtist.setUser(givenUser);
 		
-		userArtist.setTime(getCurrentDateTimeAsString());
+		userArtist.setAddTime(getCurrentDateTimeAsString());
 		
 		return userArtistRepo.save(userArtist);
 		
@@ -139,7 +139,7 @@ public class AddServiceImpl implements AddService{
 		
 		userAlbum.setUser(givenUser);
 		
-		userAlbum.setTime(getCurrentDateTimeAsString());
+		userAlbum.setAddTime(getCurrentDateTimeAsString());
 		
 		return userAlbumRepo.save(userAlbum);
 	}

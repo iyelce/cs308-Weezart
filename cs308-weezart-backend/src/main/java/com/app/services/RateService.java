@@ -10,10 +10,10 @@ import com.app.payloads.ArtistPayload;
 import com.app.payloads.SongPayload;
 
 @Service
-public interface LikeService {
-	public UserSong relateLikeSong(SongPayload song, String userID);
+public interface RateService {
+	public UserSong relateRateSong(SongPayload song, String userID, int rating);
 
-	public UserArtist relateLikeArtist(ArtistPayload artist, String userId);
+	public UserArtist relateRateArtist(ArtistPayload artist, String userId, int rating);
 
-	public UserAlbum relateLikeAlbum(AlbumPayload album, String userId);
+	public UserAlbum relateRateAlbum(AlbumPayload album, String userId, int rating);
 }

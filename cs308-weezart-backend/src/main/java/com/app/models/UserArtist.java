@@ -1,5 +1,7 @@
 package com.app.models;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +25,15 @@ public class UserArtist {
     @JoinColumn(name = "artist_id")
     private Artist artist;
     
-    private String time;
+    private String addTime;
+    
+    private boolean liked;
+    
+    private String likeTime;
+    
+    private List<Integer> rating;
+    
+    private List<String> ratingTime;
 
 	public Long getId() {
 		return id;
@@ -49,13 +59,43 @@ public class UserArtist {
 		this.artist = artist;
 	}
 
-	public String getTime() {
-		return time;
+	public String getAddTime() {
+		return addTime;
 	}
 
-	public void setTime(String time) {
-		this.time = time;
+	public void setAddTime(String addTime) {
+		this.addTime = addTime;
 	}
-	
-	
+
+	public boolean isLiked() {
+		return liked;
+	}
+
+	public void setLiked(boolean liked) {
+		this.liked = liked;
+	}
+
+	public String getLikeTime() {
+		return likeTime;
+	}
+
+	public void setLikeTime(String likeTime) {
+		this.likeTime = likeTime;
+	}
+
+	public List<Integer> getRating() {
+		return rating;
+	}
+
+	public void setRating(List<Integer> rating) {
+		this.rating = rating;
+	}
+
+	public List<String> getRatingTime() {
+		return ratingTime;
+	}
+
+	public void setRatingTime(List<String> ratingTime) {
+		this.ratingTime = ratingTime;
+	}
 }

@@ -46,11 +46,11 @@ public class SpotifyController {
     }
 
     @GetMapping("/search-artist")
-    public ResponseEntity<List<Artist>> searchArtist(@RequestParam String query, @RequestParam String type) throws JsonMappingException, JsonProcessingException {
+    public ResponseEntity<List<Artist>> searchArtist(@RequestParam String query) throws JsonMappingException, JsonProcessingException {
         
     	log.info("search edicem");
     	
-    	List<Artist> results = spotifyService.artistSearch(query, type, spotifyAuthenticator.authenticateWithSpotify());
+    	List<Artist> results = spotifyService.artistSearch(query, spotifyAuthenticator.authenticateWithSpotify());
         return ResponseEntity.ok(results);
     }
     

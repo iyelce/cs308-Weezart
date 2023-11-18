@@ -1,5 +1,7 @@
 package com.app.models;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,18 +26,26 @@ public class UserAlbum {
     @JoinColumn(name = "album_id")
     private Album album;
     
-    private String time;
+    private String addTime;
+    
+    private boolean liked;
+    
+    private String likeTime;
+    
+    private List<Integer> rating;
+    
+    private List<String> ratingTime;
 
 	public UserAlbum() {
 		super();
 	}
 
-	public UserAlbum(Long id, User user, Album album, String time) {
+	public UserAlbum(Long id, User user, Album album, String addTime) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.album = album;
-		this.time = time;
+		this.addTime = addTime;
 	}
 
 	public Long getId() {
@@ -62,12 +72,44 @@ public class UserAlbum {
 		this.album = album;
 	}
 
-	public String getTime() {
-		return time;
+	public String getAddTime() {
+		return addTime;
 	}
 
-	public void setTime(String time) {
-		this.time = time;
+	public void setAddTime(String addTime) {
+		this.addTime = addTime;
+	}
+
+	public boolean isLiked() {
+		return liked;
+	}
+
+	public void setLiked(boolean liked) {
+		this.liked = liked;
+	}
+
+	public String getLikeTime() {
+		return likeTime;
+	}
+
+	public void setLikeTime(String likeTime) {
+		this.likeTime = likeTime;
+	}
+
+	public List<Integer> getRating() {
+		return rating;
+	}
+
+	public void setRating(List<Integer> rating) {
+		this.rating = rating;
+	}
+
+	public List<String> getRatingTime() {
+		return ratingTime;
+	}
+
+	public void setRatingTime(List<String> ratingTime) {
+		this.ratingTime = ratingTime;
 	}
 	
 }

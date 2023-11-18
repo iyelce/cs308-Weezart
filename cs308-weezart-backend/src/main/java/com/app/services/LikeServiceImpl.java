@@ -3,13 +3,17 @@ package com.app.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.models.Album;
 import com.app.models.Artist;
+import com.app.models.LikeAlbum;
 import com.app.models.LikeArtist;
 import com.app.models.LikeSong;
 import com.app.models.Song;
 import com.app.models.User;
+import com.app.payloads.AlbumPayload;
 import com.app.payloads.ArtistPayload;
 import com.app.payloads.SongPayload;
+import com.app.repo.LikeAlbumRepository;
 import com.app.repo.LikeArtistRepository;
 import com.app.repo.LikeSongRepository;
 
@@ -22,6 +26,9 @@ public class LikeServiceImpl implements LikeService {
 	
 	@Autowired
 	private LikeArtistRepository likeArtistRepo;
+	
+	@Autowired
+	private LikeAlbumRepository likeAlbumRepo;
 
 	public LikeSong relateLikeSong(SongPayload song, String userID) {
 		
@@ -52,5 +59,21 @@ public class LikeServiceImpl implements LikeService {
 		likeArtist.setUser(givenUser);
 		
 		return likeArtistRepo.save(likeArtist);
+	}
+	
+	public LikeAlbum relateLikeAlbum(AlbumPayload album, String userId) {
+		
+		LikeAlbum likeAlbum = new LikeAlbum();
+		
+		Album givenAlbum = new Album(album.getId(), album.getName(), album.getImageUrl(), album.getReleaseDate(),
+				album.getNumberOfTracks(), album.getArtistsName(), album.getArtistsId(), album.getSongsName(), album.getSongsId());
+		
+		likeAlbum.setAlbum(givenAlbum);
+		
+		User givenUser = new User(Long.parseLong(userId));
+		
+		likeAlbum.setUser(givenUser);
+		
+		return likeAlbumRepo.save(likeAlbum);
 	}
 }

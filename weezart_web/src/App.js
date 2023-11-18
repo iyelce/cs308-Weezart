@@ -7,24 +7,24 @@ import Layout from './Pages/Layout';
 import SignUp from './Pages/Authentication/SignUp';
 import Search from './Pages/Search/Search';
 import './App.css';
-import Sidebar from './Pages/Sidebar/Sidebar';
+import Sidebar from './Pages/Components/Sidebar/Sidebar.jsx'
 
 
 function App() {
   const [user, setUser] = useState(null);
   return (
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route path='/' element={<Layout />}>
-    //       <Route index element={<HomePage />} />
-    //       <Route path='login' element={<Login  ></Login>} />
-    //       <Route path='signup' element={<SignUp ></SignUp>} />
-    //       <Route path='search' element={<Search ></Search>} />
-    //       <Route path='*' element={<Error />} />
-    //     </Route>
-    //   </Routes>
-    // </BrowserRouter>
-    <Sidebar/>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path='login' element={<Login  ></Login>} />
+          <Route path='signup' element={<SignUp ></SignUp>} />
+          <Route path='search' element={<Search ></Search>} />
+          <Route path='*' element={<Error />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+    //<Sidebar/>
   );
 }
 

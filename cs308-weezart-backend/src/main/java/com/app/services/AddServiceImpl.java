@@ -1,5 +1,8 @@
 package com.app.services;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,8 +74,9 @@ public class AddServiceImpl implements AddService{
 		
 		User givenUser = new User(Long.parseLong(userID));
 		
-		
 		userSong.setUser(givenUser);
+		
+		userSong.setTime(getCurrentDateTimeAsString());
 		
 		return userSongRepo.save(userSong);
 		
@@ -103,8 +107,9 @@ public class AddServiceImpl implements AddService{
 		
 		User givenUser = new User(Long.parseLong(userID));
 		
-		
 		userArtist.setUser(givenUser);
+		
+		userArtist.setTime(getCurrentDateTimeAsString());
 		
 		return userArtistRepo.save(userArtist);
 		
@@ -134,7 +139,22 @@ public class AddServiceImpl implements AddService{
 		
 		userAlbum.setUser(givenUser);
 		
+		userAlbum.setTime(getCurrentDateTimeAsString());
+		
 		return userAlbumRepo.save(userAlbum);
 	}
+	
+	public String getCurrentDateTimeAsString() {
+        // Get the current date and time
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // Define the format for the date and time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        // Format the current date and time using the formatter
+        String formattedDateTime = currentDateTime.format(formatter);
+
+        return formattedDateTime;
+    }
 	
 }

@@ -23,6 +23,8 @@ public class UserSong {
     @ManyToOne
     @JoinColumn(name = "song_id")
     private Song song;
+    
+    private String time;
 
 	public Long getId() {
 		return id;
@@ -47,7 +49,13 @@ public class UserSong {
 	public void setSong(Song song) {
 		this.song = song;
 	}
-    
-    
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
 	
 }

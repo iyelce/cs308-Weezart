@@ -1,5 +1,8 @@
 package com.app.services;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +46,8 @@ public class LikeServiceImpl implements LikeService {
 		
 		likeSong.setUser(givenUser);
 		
+		likeSong.setTime(getCurrentDateTimeAsString());
+		
 		return likeSongRepo.save(likeSong);
 	}
 	
@@ -57,6 +62,8 @@ public class LikeServiceImpl implements LikeService {
 		User givenUser = new User(Long.parseLong(userId));
 		
 		likeArtist.setUser(givenUser);
+		
+		likeArtist.setTime(getCurrentDateTimeAsString());
 		
 		return likeArtistRepo.save(likeArtist);
 	}
@@ -74,6 +81,23 @@ public class LikeServiceImpl implements LikeService {
 		
 		likeAlbum.setUser(givenUser);
 		
+		likeAlbum.setTime(getCurrentDateTimeAsString());
+		
 		return likeAlbumRepo.save(likeAlbum);
 	}
+	
+	
+	public String getCurrentDateTimeAsString() {
+        // Get the current date and time
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // Define the format for the date and time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        // Format the current date and time using the formatter
+        String formattedDateTime = currentDateTime.format(formatter);
+
+        return formattedDateTime;
+    }
+	
 }

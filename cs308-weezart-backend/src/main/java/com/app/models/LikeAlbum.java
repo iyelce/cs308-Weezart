@@ -22,16 +22,19 @@ public class LikeAlbum {
 	@ManyToOne
     @JoinColumn(name = "album_id")
     private Album album;
+	
+	private String time;
 
 	public LikeAlbum() {
 		super();
 	}
 
-	public LikeAlbum(Long id, User user, Album album) {
+	public LikeAlbum(Long id, User user, Album album, String time) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.album = album;
+		this.time = time;
 	}
 
 	public Long getId() {
@@ -58,5 +61,11 @@ public class LikeAlbum {
 		this.album = album;
 	}
 	
+	public String getTime() {
+		return time;
+	}
 	
+	public void setTime(String time) {
+		this.time = time;
+	}
 }

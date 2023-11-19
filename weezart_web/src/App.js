@@ -7,7 +7,8 @@ import Layout from './Pages/Layout';
 import SignUp from './Pages/Authentication/SignUp';
 import Search from './Pages/Search/Search';
 import './App.css';
-import Sidebar from './Pages/Components/Sidebar/Sidebar.jsx'
+import Sidebar from './Pages/Sidebar/Sidebar.jsx';
+
 
 
 function App() {

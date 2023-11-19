@@ -36,7 +36,9 @@ const Login = () => {
     
 
   return (
-    <div className="main">
+    
+    <div className="authbody">
+      <div className="main">
     <div className="title">Login</div>
     <div className="register-content">
         <div className="register-form">
@@ -100,6 +102,7 @@ const Login = () => {
 
 
 </div>
+    </div>
         
             
   );

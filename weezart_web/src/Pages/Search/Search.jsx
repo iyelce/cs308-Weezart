@@ -3,6 +3,10 @@ import SongInfoPopup from "../Popups/SongInfoPopup";
 import ArtistInfoPopup from "../Popups/ArtistInfoPopup";
 import AlbumInfoPopup from "../Popups/AlbumInfoPopup";
 import './Search.css'
+import { LuClock3 } from "react-icons/lu";
+import { FaMusic, FaHatWizard } from "react-icons/fa";
+import { IoIosAlbums } from "react-icons/io";
+import { FaUser } from "react-icons/fa6";
 
 
 function Search() {
@@ -66,19 +70,66 @@ function Search() {
 
   ];
 
+  const profiles = [ 
+    {
+      profileName: "person1",
+      image: "https://images.theconversation.com/files/512871/original/file-20230301-26-ryosag.jpg?ixlib=rb-1.1.0&rect=97%2C79%2C5799%2C5817&q=45&auto=format&w=926&fit=clip",
+    },
+    {
+      profileName: "person1",
+      image: "https://images.theconversation.com/files/512871/original/file-20230301-26-ryosag.jpg?ixlib=rb-1.1.0&rect=97%2C79%2C5799%2C5817&q=45&auto=format&w=926&fit=clip",
+    },
+    {
+      profileName: "person1",
+      image: "https://images.theconversation.com/files/512871/original/file-20230301-26-ryosag.jpg?ixlib=rb-1.1.0&rect=97%2C79%2C5799%2C5817&q=45&auto=format&w=926&fit=clip",
+    },
+    {
+      profileName: "person1",
+      image: "https://images.theconversation.com/files/512871/original/file-20230301-26-ryosag.jpg?ixlib=rb-1.1.0&rect=97%2C79%2C5799%2C5817&q=45&auto=format&w=926&fit=clip",
+    },
+    {
+      profileName: "person1",
+      image: "https://images.theconversation.com/files/512871/original/file-20230301-26-ryosag.jpg?ixlib=rb-1.1.0&rect=97%2C79%2C5799%2C5817&q=45&auto=format&w=926&fit=clip",
+    },
+  ];
+
+
+
+//to check which itm is clicked in the tables
+  const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
+  const [selectedArtistIndex, setSelectedArtistIndex] = useState(-1);
+  const [selectedAlbumIndex, setSelectedAlbumIndex] = useState(-1);
+
+//to open and close popups
   const [showSongPopups, setShowSongPopups] = useState(new Map());
   const [showArtistPopups, setShowArtistPopups] = useState(new Map());
   const [showAlbumPopups, setShowAlbumPopups] = useState(new Map());
 
+  //sets active buttons and category to load correct tables
+  const [activeButton, setActiveButton] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
+
+//if sth is clicked from tables sets index and calls open popup functions
+  const handleSongClickTable = (index) => {
+    handleSongButtonClick(index);
+    setSelectedSongIndex(index);
+  };
+
+  const handleArtistClickTable = (index) => {
+    handleArtistButtonClick(index);
+    setSelectedArtistIndex(index);
+  };
+
+  const handleAlbumClickTable = (index) => {
+    handleAlbumButtonClick(index);
+    setSelectedAlbumIndex(index);
+  };
+//----------------------------------
+
+//to opens popup and maps the information
   const handleSongButtonClick = (index) => {
     const newShowSongPopups = new Map(showSongPopups);
     newShowSongPopups.set(index, true);
-    setShowSongPopups(newShowSongPopups);
-  };
-
-  const handleSongClosePopup = (index) => {
-    const newShowSongPopups = new Map(showSongPopups);
-    newShowSongPopups.set(index, false);
     setShowSongPopups(newShowSongPopups);
   };
 
@@ -88,136 +139,201 @@ function Search() {
     setShowArtistPopups(newShowArtistPopups);
   };
 
-  const handleArtistClosePopup = (index) => {
-    const newShowArtistPopups = new Map(showArtistPopups);
-    newShowArtistPopups.set(index, false);
-    setShowArtistPopups(newShowArtistPopups);
-  };
-
   const handleAlbumButtonClick = (index) => {
     const newShowAlbumPopups = new Map(showAlbumPopups);
     newShowAlbumPopups.set(index, true);
     setShowAlbumPopups(newShowAlbumPopups);
+  };
+//----------------------------------
+
+//to close popups and set selected index to -1
+  const handleSongClosePopup = (index) => {
+    const newShowSongPopups = new Map(showSongPopups);
+    newShowSongPopups.set(index, false);
+    setShowSongPopups(newShowSongPopups);
+
+    setSelectedSongIndex(-1);
+  };
+
+  const handleArtistClosePopup = (index) => {
+    const newShowArtistPopups = new Map(showArtistPopups);
+    newShowArtistPopups.set(index, false);
+    setShowArtistPopups(newShowArtistPopups);
+
+    setSelectedArtistIndex(-1);
   };
 
   const handleAlbumClosePopup = (index) => {
     const newShowAlbumPopups = new Map(showAlbumPopups);
     newShowAlbumPopups.set(index, false);
     setShowAlbumPopups(newShowAlbumPopups);
+
+    setSelectedAlbumIndex(-1);
   };
-
-// --------------------------------
-
-  const [activeButton, setActiveButton] = useState(null);
-  const [activeCategory, setActiveCategory] = useState(null);
-
-  const handleButtonClick = (buttonName) => {
-    setActiveButton(buttonName);
-    // Set active category based on the clicked button
-    switch (buttonName) {
-      case 'songs':
-        setActiveCategory('songs');
-        break;
-      case 'artists':
-        setActiveCategory('artists');
-        break;
-      case 'albums':
-        setActiveCategory('albums');
-        break;
-      case 'profiles':
-        setActiveCategory('profiles');
-        break;
-      default:
-        setActiveCategory(null);
-        break;
-    }
-  };
+  //----------------------------------
 
 
+// loads tables according to clicked button
   const renderSearchItems = () => {
     switch (activeCategory) {
+
       case 'songs':
-
-
-      // return songInfos.map((songInfo, index) => (
-      //   <div key={index}>
-      //     <button onClick={() => handleSongButtonClick(index)}>Song {index + 1}</button>
-      //     <SongInfoPopup
-      //       isOpen={showSongPopups.get(index) || false}
-      //       onRequestClose={() => handleSongClosePopup(index)}
-      //       songInfo={songInfo}
-      //       showModal={showSongPopups}
-      //     />
-      //     <br />
-      //     <br />
-      //   </div>
-      // ));
-
-
-      return songInfos.map((song, index) => (
-        <div className="search-items-container"> 
-           <div key={index} className="search-item" onClick={() => handleSongButtonClick(index)}>
-           <div className="searchbar-song-number">
-                  <span>{index + 1}</span>
-                </div>
-        
-                <img
-                  aria-hidden="false"
-                  draggable="false"
-                  loading="eager"
-                  src={song.image || "default-image-url"}
-                  alt={`Song ${index + 1}`}
-                  className="searchbar-song-img"
-                />
-        
-                <div className="searchbar-songname-artist">
-                  <p className="searchbar-songname-artist-songname">{song.songName}</p>
-                  <p className="searchbar-songname-artist-artist">{song.artists.join(", ")}</p>
-                </div>
-        
-                <p className="searchbar-song-album">{song.album}</p>
-        
-                <p className="seachbar-song-duration">{song.duration}</p>
-           
-           </div>
-        
+        return (
+          <div className="list_box">
+          <table className="custom-table">
+            <thead>
+              <tr>
+                <th scope="col"><FaMusic /></th>
+                <th scope="col"></th>
+                <th scope="col">Song Name</th>
+                <th scope="col">Artists</th>
+                <th scope="col">Album</th>
+                <th scope="col"><LuClock3 /></th>
+              </tr>
+            </thead>
+            <tbody>
+              {songInfos.map((val, index) => (
+                <tr key={index} onClick={() => handleSongClickTable(index)}>
+                  <th scope="row">{index + 1}</th>
+                  <td>
+                    <img
+                      src={val.image}
+                      alt={`Album cover for ${val.songName}`}
+                      style={{ width: '64px', height: '64px' }}
+                    />
+                  </td>
+                  <td>{val.songName}</td>
+                  <td>{val.artists}</td>
+                  <td>{val.album}</td>
+                  <td>{val.duration}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          
+          {selectedSongIndex !== -1 && (
+            <SongInfoPopup
+              isOpen={true}
+              onRequestClose={handleSongClosePopup}
+              songInfo={songInfos[selectedSongIndex]}
+            />
+      )}
         </div>
-
-      ));
-             
+        );
 
       case 'artists':
-        return artistInfos.map((artistInfo, index) => (
-          <div key={index}>
-            <button onClick={() => handleArtistButtonClick(index)}>Artist {index + 1}</button>
-            <ArtistInfoPopup
-              isOpen={showArtistPopups.get(index) || false}
-              onRequestClose={() => handleArtistClosePopup(index)}
-              artistInfo={artistInfo}
-              showModal={showSongPopups}
-            />
-            <br />
-            <br />
-          </div>
-        ));
-
+      return (
+        <div className="list_box">
+        <table className="custom-table">
+          <thead>
+            <tr>
+              <th scope="col"><FaUser /></th>
+              <th scope="col"></th>
+              <th scope="col">Artist Name</th>
+              <th scope="col">Followers</th>
+            </tr>
+          </thead>
+          <tbody>
+            {artistInfos.map((val, index) => (
+              <tr key={index} onClick={() => handleArtistClickTable(index)}>
+                <th scope="row">{index + 1}</th>
+                <td>
+                  <img
+                    src={val.image}
+                    alt={`Artist cover for ${val.artistName}`}
+                    style={{ width: '64px', height: '64px' }}
+                  />
+                </td>
+                <td>{val.artistName}</td>
+                <td>{val.artistsFollower}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+  
+        {selectedArtistIndex !== -1 && (
+          <ArtistInfoPopup
+            isOpen={true}
+            onRequestClose={handleArtistClosePopup}
+            artistInfo={artistInfos[selectedArtistIndex]}
+          />
+        )}
+      </div>
+      );
+      
       case 'albums':
-        return albumInfos.map((albumInfo, index) => (
-          <div key={index}>
-            <button onClick={() => handleAlbumButtonClick(index)}>Album {index + 1}</button>
+        return (
+          <div className="list_box">
+          <table className="custom-table">
+            <thead>
+              <tr>
+                <th scope="col"><IoIosAlbums /></th>
+                <th scope="col"></th>
+                <th scope="col">Album Name</th>
+                <th scope="col">Artists</th>
+                <th scope="col">Year</th>
+                <th scope="col">Songs</th>
+              </tr>
+            </thead>
+            <tbody>
+              {albumInfos.map((val, index) => (
+                <tr key={index} onClick={() => handleAlbumClickTable(index)}>
+                  <th scope="row">{index + 1}</th>
+                  <td>
+                    <img
+                      src={val.image}
+                      alt={`Album cover for ${val.albumName}`}
+                      style={{ width: '64px', height: '64px' }}
+                    />
+                  </td>
+                  <td>{val.albumName}</td>
+                  <td>{val.artists}</td>                  
+                  <td>{val.year}</td>
+                  <td>{val.songs.length}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+    
+          {selectedAlbumIndex !== -1 && (
             <AlbumInfoPopup
-              isOpen={showAlbumPopups.get(index) || false}
-              onRequestClose={() => handleAlbumClosePopup(index)}
-              albumInfo={albumInfo}
-              showModal={showAlbumPopups}
+              isOpen={true}
+              onRequestClose={handleAlbumClosePopup}
+              albumInfo={albumInfos[selectedAlbumIndex]}
             />
-            <br />
-            <br />
-          </div>
-        ));
+          )}
+        </div>
+        );
 
       case 'profiles':
-        return <div>Profiles</div>;
+        return (
+          <div className="list_box">
+          <table className="custom-table">
+            <thead>
+              <tr>
+                <th scope="col"><FaHatWizard /></th>
+                <th scope="col"></th>
+                <th scope="col">Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              {profiles.map((val, index) => (
+                <tr key={index} onClick={() => alert("clicked on user")}>
+                  <th scope="row"></th>
+                  <td>
+                    <img
+                      src={val.image}
+                      alt={`User image for ${val.profileName}`}
+                      style={{ width: '64px', height: '64px' }}
+                    />
+                  </td>
+                  <td>{val.profileName}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        );
 
       default:
         return null;
@@ -225,19 +341,11 @@ function Search() {
   };
 
 
-
-
-
-
-
-
-
-
   return (
     
-     <div>
+     <div className="search-page">
 
-
+      {/* searchbar */}
       <div class="navigation-search">
         <input type="search" placeholder="search" class="navigation-search__input" />
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="navigation-search__icon">
@@ -246,32 +354,33 @@ function Search() {
         </svg>
       </div>
 
-
+      {/* sets the selected variables when buttons are clicked 
+      so that it opens the correct table in renderSearchItems() function */}
       <div className="search-buttons">
         <button
           className={`search-button ${activeButton === 'songs' ? 'active' : ''}`}
-          onClick={() => handleButtonClick('songs')}
+          onClick={() => setActiveCategory('songs')}
         >
           <span>Songs</span>
         </button>
 
         <button
           className={`search-button ${activeButton === 'albums' ? 'active' : ''}`}
-          onClick={() => handleButtonClick('albums')}
+          onClick={() => setActiveCategory('albums')}
         >
           <span>Albums</span>
         </button>
 
         <button
           className={`search-button ${activeButton === 'artists' ? 'active' : ''}`}
-          onClick={() => handleButtonClick('artists')}
+          onClick={() => setActiveCategory('artists')}
         >
           <span>Artists</span>
         </button>
 
         <button
           className={`search-button ${activeButton === 'profiles' ? 'active' : ''}`}
-          onClick={() => handleButtonClick('profiles')}
+          onClick={() => setActiveCategory('profiles')}
         >
           <span>Profiles</span>
         </button>
@@ -279,15 +388,10 @@ function Search() {
 
 
 
+    {/* opens the table in function */}
       <div className="search-items-container">
         {renderSearchItems()}
       </div>
-
-
-
-
-
-
 
     </div> 
 

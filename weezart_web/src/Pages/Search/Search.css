@@ -3,6 +3,8 @@
 .navigation-search {
   margin-bottom: 24px;
   position: relative;
+  width: 70%;
+  margin-top: 30px;
 }
 
 .navigation-search__icon {
@@ -176,3 +178,53 @@
     height: 64px;
   }
   
+.search-page{
+  position: center;
+  width: 80%;
+  height: 80%;
+  background-color: lightblue; 
+}
+
+
+
+
+
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  color: #B9B4C7;
+  background-color: #352F44;
+  border-radius: 0.25rem;
+  border: 1px solid #1a1721;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #1a1721;
+}
+
+.custom-table th {
+  background-color: #1a1721;
+  border-top: 1px solid #1a1721;
+}
+
+
+.custom-table tbody tr:hover {
+  background-color: rgba(219, 219, 219, 0.075);
+}
+
+
+
+
+
+
+
+
+
+
+
+

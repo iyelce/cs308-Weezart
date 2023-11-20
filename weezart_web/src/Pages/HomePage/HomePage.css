@@ -12,10 +12,31 @@
 }
 
 .homepage-content {
-  flex: 8;
+  display: flex;
+  flex: 8; 
   background-color: #352F44;
   padding: 20px;
+  flex-wrap: wrap;
+
+  overflow-y: auto;
+  max-height: 100%;
 }
+
+/* Style the scrollbar */
+.homepage-content::-webkit-scrollbar {
+  width: 12px; /* Adjust the width of the scrollbar */
+}
+
+.homepage-content::-webkit-scrollbar-thumb {
+  background-color: red; /* Black color for the thumb */
+}
+
+
+
+
+
+
+
 
 .homepage-friend-activity {
   flex: 2;
@@ -32,7 +53,12 @@
 .homepage-recommendations p{
   font-size: 40px;
   font-weight: 800;
+
 }
+
+
+
+
 
 
 

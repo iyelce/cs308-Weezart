@@ -2,6 +2,7 @@
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import LoginApi from '../../API/LoginApi';
 
 
 const LOGO = require('../../weezart-removebg-preview.png');
@@ -22,9 +23,12 @@ const Login = () => {
         navigate('/signup');
       };
     
-    const handleRegisterClick = () => {
+    const handleRegisterClick  = async () => {
         // Navigate to the home page
-        navigate('/');
+
+        var response = await LoginApi(username, password);
+        console.log("login page response: ", response);
+        // navigate('/');
       };
    
   
@@ -78,7 +82,7 @@ const Login = () => {
                       </span>
                 </div>
 
-                <div className="register-button" onClick={handleRegisterClick} ><a href="">Register</a></div>
+                <div className="register-button" onClick={handleRegisterClick} ><a href="#">Register</a></div>
                 
             </form>
             <div className="social-registers">

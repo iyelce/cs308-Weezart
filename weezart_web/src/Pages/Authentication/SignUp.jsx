@@ -1,10 +1,13 @@
 // import './authStyle.css';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import { useState } from "react";
+import { useState, useNavigate } from "react";
+import SignUpApi from '../../API/SignUpApi';
 
 const LOGO = require('../../weezart-removebg-preview.png');
 
 const SignUp = () => {
+
+    // const navigate = useNavigate();
   
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);
     const [isVisibleRepeatPassword, setIsVisibleRepeatPassword] = useState(false);
@@ -12,10 +15,16 @@ const SignUp = () => {
     const [isFocusedEmail, setIsFocusedEmail] = useState(false);
     const [isFocusedPassword, setIsFocusedPassword] = useState(false);
     const [isFocusedRepeatPassword, setIsFocusedRepeatPassword] = useState(false);
+
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
     const [username, setUsername] = useState('');
     const [email,setEmail] = useState('');
+
+
+
+
+
  
     
     function isEmailValid(email) {
@@ -47,6 +56,22 @@ const SignUp = () => {
       //check if the username is unique via API
   
     }
+
+
+    const  loginFunc = async () => {
+
+      let newUser = {
+          username: username,
+          password: password,
+          email: email
+      }
+
+      console.log(newUser);
+      var response = await SignUpApi(newUser);
+
+      console.log("sign up response: " , response);
+  };
+
 
   return (
    <div className="authbody">
@@ -108,7 +133,7 @@ const SignUp = () => {
                       </span>
                 </div>
 
-                <div className="register-button"><a href="">Register</a></div>
+                <div className="register-button" onClick={()=> loginFunc()}><a href="#">Register</a></div>
                 
             </form>
             <div className="social-registers">

@@ -43,7 +43,9 @@ public class UserServiceImpl implements UserService{
 	    }
 	    
 	    public User loginUser(String username, String password) throws CustomException{
-	    		    	
+	    	
+	    	
+	    	
 	    	User userDetails = userRepository.findByUsername(username); 
 	    		    	
 	    	if(userDetails == null) throw new CustomException("Username is wrong");
@@ -55,6 +57,10 @@ public class UserServiceImpl implements UserService{
 	    	}
 	    	
 	    	log.info("login successful?");
+	    	
+	    	
+	    		
+	    	
 	    	return userRepository.findByUsername(username);
 	    }
 	    

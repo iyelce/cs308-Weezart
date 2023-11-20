@@ -14,10 +14,7 @@ import com.app.models.UserSong;
 import com.app.models.UserSongMixIn;
 import com.app.repo.UserSongRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;	
 
 @Service
 public class FileServiceImpl implements FileService{

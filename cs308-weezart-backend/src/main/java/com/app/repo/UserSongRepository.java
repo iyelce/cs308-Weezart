@@ -13,4 +13,5 @@ import com.app.models.UserSong;
 public interface UserSongRepository extends JpaRepository<UserSong, Long>{
 	UserSong findBySongAndUser(Song song, User user);
 	List<UserSong> findAllByUser(User user);
+	void deleteBySongId(String songId);
 }

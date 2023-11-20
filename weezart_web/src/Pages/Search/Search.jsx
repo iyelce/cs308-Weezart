@@ -95,6 +95,7 @@ function Search() {
 
 
 
+
 //to check which itm is clicked in the tables
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(-1);
@@ -105,7 +106,7 @@ function Search() {
   const [showArtistPopups, setShowArtistPopups] = useState(new Map());
   const [showAlbumPopups, setShowAlbumPopups] = useState(new Map());
 
-  //sets active buttons and category to load correct tables
+  //sets active buttons (css color) and category to load correct tables
   const [activeButton, setActiveButton] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
 
@@ -359,28 +360,41 @@ function Search() {
       <div className="search-buttons">
         <button
           className={`search-button ${activeButton === 'songs' ? 'active' : ''}`}
-          onClick={() => setActiveCategory('songs')}
+          onClick={() => {
+            setActiveCategory('songs');
+            setActiveButton('songs');
+          }}
         >
           <span>Songs</span>
         </button>
 
         <button
           className={`search-button ${activeButton === 'albums' ? 'active' : ''}`}
-          onClick={() => setActiveCategory('albums')}
+          onClick={() => {
+            setActiveCategory('albums');
+            setActiveButton('albums');
+          }}
+        
         >
           <span>Albums</span>
         </button>
 
         <button
           className={`search-button ${activeButton === 'artists' ? 'active' : ''}`}
-          onClick={() => setActiveCategory('artists')}
+          onClick={() => {
+            setActiveCategory('artists');
+            setActiveButton('artists');
+        }}
         >
           <span>Artists</span>
         </button>
 
         <button
           className={`search-button ${activeButton === 'profiles' ? 'active' : ''}`}
-          onClick={() => setActiveCategory('profiles')}
+          onClick={() => {
+            setActiveCategory('profiles');
+            setActiveButton('profiles');
+        }}
         >
           <span>Profiles</span>
         </button>

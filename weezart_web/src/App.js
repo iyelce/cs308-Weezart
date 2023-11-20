@@ -15,8 +15,9 @@ function App() {
   const [user, setUser] = useState(null);
   return (
     <BrowserRouter>
+      <Layout/>
       <Routes>
-        <Route path='/' element={<Layout />}>
+        <Route path='/' >
           <Route index element={<HomePage />} />
           <Route path='login' element={<Login  ></Login>} />
           <Route path='signup' element={<SignUp ></SignUp>} />

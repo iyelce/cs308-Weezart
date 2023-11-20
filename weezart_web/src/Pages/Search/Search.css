@@ -87,6 +87,7 @@
     padding: 15px 30px; /* Adjust padding for button size */
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
+    margin-left: 8rem;
   }
   
   .search-button.active {
@@ -179,10 +180,19 @@
   }
   
 .search-page{
-  position: center;
-  width: 80%;
-  height: 80%;
-  background-color: lightblue; 
+  
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #393646;
+    background-repeat: no-repeat;
+    font-family: Poppins;
+
+    margin:0;
+    padding:0;
+
 }
 
 
@@ -191,7 +201,7 @@
 
 
 .custom-table {
-  width: 100%;
+  width: 80rem;
   border-collapse: collapse;
   margin-bottom: 1rem;
   color: #B9B4C7;

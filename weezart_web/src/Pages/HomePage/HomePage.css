@@ -1,39 +1,99 @@
-
-
-
-/* #root{
-#root {
-    width: 100vw;
-    height: 100vh;
-  }
-  
-  #root .App {
-    width: 100%;
-    height: 100%;
-
-
+.homepage {
+  display: flex;
+  height: 100vh;
+  font-family: Poppins;
+  color: #B9B4C7;
 }
-#root .App{
-  
-    width: 100%;
-    height: 100%;
 
-} */
-.whole-page{
-    height: 100%;
-    background-color: aliceblue;
-    width: 100%;
-    display: flex;
-  }
-  
+.homepage-sidebar {
+  flex: 2;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
 
-  
-  .main-page {
-    width: 60%;
-    flex: 5; }
-  .friend-activity {
-    background: black;
-    width: 20%;
-    flex: 2;
-  }
-  
+.homepage-content {
+  flex: 8;
+  background-color: #352F44;
+  padding: 20px;
+}
+
+.homepage-friend-activity {
+  flex: 2;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.homepage-intro-img img{
+  background-color: red;
+  max-width:100%;
+}
+
+
+.homepage-recommendations p{
+  font-size: 40px;
+  font-weight: 800;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ .list {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+}
+ .list .item {
+  min-width: 140px;
+  width: 160px;
+  padding: 15px;
+  background-color: #181818;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all ease 0.4s;
+}
+.list .item:hover {
+  background-color: #252525;
+}
+ .list .item img {
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+ .list .item .play {
+  position: relative;
+}
+ .list .item:hover .play .fa {
+  opacity: 1;
+  transform: translateY(-20px);
+}
+ .list .item h4 {
+  color: #ffffff;
+  font-size: 14px;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+ .list .item p {
+  color: #989898;
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 600;
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   SafeAreaView,
@@ -7,8 +7,42 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { baseURL } from "./../../config/axios";
+import { saveToken } from "../../helpers/Utils";
 
 export default Email = ({ navigation }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const loginClicked = () => {
+    fetch(baseURL + "/auth/login", {
+      method: "POST",
+      headers: {
+        Accept: "text/plain",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    })
+      .then((res) => {
+        if (res.status == 200) {
+          return res.text();
+        } else {
+          throw new Error(`HTTP status ${res.status}`);
+        }
+      })
+      .then((res) => {
+        saveToken(res.toString()).then(() => {
+          navigation.navigate("Home");
+        });
+      })
+      .catch((error) => {
+        console.error("Login failed:", error.message);
+      });
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
       <KeyboardAvoidingView
@@ -56,8 +90,12 @@ export default Email = ({ navigation }) => {
             }}
           >
             <TextInput
-              required
-              placeholder="Enter email address"
+              // required
+              value={username}
+              placeholder="Enter username"
+              onChangeText={(text) => {
+                setUsername(text);
+              }}
               placeholderTextColor={"#9ba3af"}
               style={{
                 width: "100%",
@@ -78,10 +116,14 @@ export default Email = ({ navigation }) => {
             }}
           >
             <TextInput
-              required
+              // required
               placeholder="Enter password"
               placeholderTextColor={"#9ba3af"}
               textContentType="password"
+              value={password}
+              onChangeText={(text) => {
+                setPassword(text);
+              }}
               secureTextEntry
               keyboardShouldPersistTaps="always"
               style={{
@@ -104,9 +146,7 @@ export default Email = ({ navigation }) => {
               marginTop: 30,
               backgroundColor: "black",
             }}
-            onPress={() => {
-              navigation.navigate("Home");
-            }}
+            onPress={loginClicked}
           >
             <Text style={{ fontWeight: "bold", color: "white", fontSize: 17 }}>
               Login

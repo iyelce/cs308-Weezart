@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
   SafeAreaView,
@@ -7,8 +7,43 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { baseURL } from "../../config/axios";
 
 export default Signup = ({ navigation }) => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatedPassword, setRepeatedPassword] = useState("");
+
+  const handleSignup = () => {
+    if (password == repeatedPassword)
+      fetch(baseURL + "/auth/register", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+          email,
+        }),
+      })
+        .then((res) => {
+          if (res.status == 200) {
+            return res.json();
+          } else {
+            throw new Error(`HTTP status ${res.status}`);
+          }
+        })
+        .then((res) => {
+          navigation.goBack();
+        })
+        .catch((error) => {
+          console.error("Login failed:", error.message);
+        });
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
       <KeyboardAvoidingView
@@ -56,7 +91,11 @@ export default Signup = ({ navigation }) => {
           >
             <TextInput
               required
-              placeholder="Enter email address"
+              placeholder="Enter username"
+              value={username}
+              onChangeText={(text) => {
+                setUsername(text);
+              }}
               placeholderTextColor={"#9ba3af"}
               style={{
                 width: "100%",
@@ -78,9 +117,39 @@ export default Signup = ({ navigation }) => {
           >
             <TextInput
               required
+              placeholder="Enter email address"
+              value={email}
+              onChangeText={(text) => {
+                setEmail(text.toLowerCase());
+              }}
+              placeholderTextColor={"#9ba3af"}
+              style={{
+                width: "100%",
+                fontSize: 17,
+                fontWeight: "bold",
+              }}
+            />
+          </View>
+          <View
+            style={{
+              backgroundColor: "#f3f3f3",
+              borderRadius: 16,
+              padding: 16,
+              paddingLeft: 20,
+              paddingRight: 20,
+              width: "100%",
+              marginTop: 10,
+            }}
+          >
+            <TextInput
+              // required
               placeholder="Enter password"
               placeholderTextColor={"#9ba3af"}
               textContentType="password"
+              value={password}
+              onChangeText={(text) => {
+                setPassword(text);
+              }}
               secureTextEntry
               keyboardShouldPersistTaps="always"
               style={{
@@ -106,6 +175,10 @@ export default Signup = ({ navigation }) => {
               placeholder="Re-Enter password"
               placeholderTextColor={"#9ba3af"}
               textContentType="password"
+              value={repeatedPassword}
+              onChangeText={(text) => {
+                setRepeatedPassword(text);
+              }}
               secureTextEntry
               keyboardShouldPersistTaps="always"
               style={{
@@ -128,9 +201,7 @@ export default Signup = ({ navigation }) => {
               marginTop: 30,
               backgroundColor: "black",
             }}
-            onPress={() => {
-              navigation.navigate("Home");
-            }}
+            onPress={() => handleSignup()}
           >
             <Text style={{ fontWeight: "bold", color: "white", fontSize: 17 }}>
               Sign Up

@@ -6,7 +6,7 @@ import LoginApi from '../../API/LoginApi';
 
 
 const LOGO = require('../../weezart-removebg-preview.png');
-const Login = (props) => {
+const Login = ({...props}) => {
 
     const navigate = useNavigate();
   
@@ -39,9 +39,11 @@ const Login = (props) => {
           setErrorLabelHiden(false);
       }
 
+      //successful login
       else {
         props.changeUserInfo(username, 1); //userId şu an 1 -> sonradan değiştir
         props.storeToken(response); //id geldikten sonra arrayin indexini al
+        navigate("home");
       }
          
     };

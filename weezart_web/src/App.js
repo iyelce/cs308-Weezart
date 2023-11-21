@@ -57,6 +57,17 @@ function App() {
       setToken(e);                      //to pass it to the other pages as props
   };
 
+  const logoutFunc = () => {
+    localStorage.removeItem('token');                      
+    localStorage.removeItem('username');
+    localStorage.removeItem('userId');
+
+    setToken("");
+    setUserId("");
+    setUsername("");
+    setIsLoggedin(false);
+};
+
   //token chack api si olmadığı için o kısmı eklemedim ama sonradan alınan tokenleri burada check edip ona göre
   // yanlış ya da geçersiz tokense username id "" , is loggedin false yapabilriiz
 
@@ -64,16 +75,16 @@ function App() {
   return (
     <BrowserRouter>
 
-      <Layout username= {username} isLoggedin={isLoggedin} userId={userId}/>
-      
+      <Layout username= {username} isLoggedin={isLoggedin} userId={userId} logoutFunc={logoutFunc}/>
+
       <Routes>
         <Route path='/' >
 
           {/* localhost:3000 starts from login page */}
           <Route index element={ <Login 
             changeUserInfo = {changeUserInfo}
-            storeToken = {storeToken}
-            /> } /> 
+            storeToken = {storeToken} /> } 
+          /> 
 
           <Route path='home' element={<HomePage />} />
 

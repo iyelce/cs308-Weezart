@@ -1,30 +1,55 @@
-import { Outlet, Link } from "react-router-dom";
 
-const Layout = (props) => {
-  return (
-    <>
-      {props.isLoggedIn && (
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Login</Link>
-            </li>
-            <li>
-              <Link to="/home">Home</Link>
-            </li>
-            <li>
-              <Link to="/signup">SignUp</Link>
-            </li>
-            <li>
-              <Link to="/search">Search</Link>
-            </li>
-          </ul>
-        </nav>
-      )}
+import { Link, useNavigate } from 'react-router-dom';
 
-      <Outlet />
-    </>
-  );
+const Layout = ({...props}) => {
+
+	const navigate = useNavigate();
+	const hideNavbar = !props.isLoggedin;
+
+	return (
+		<nav className='navbar navbar-expand navbar bg mb-5'>
+
+			<div className="row-xs-6 col-md-1"></div>
+
+			<div className='container-fluid' 
+            hidden={hideNavbar}
+            >
+			<div>
+				<button
+					onClick={() => navigate("home")}
+					className='button_nav'
+				>
+					Home
+				</button>
+				
+				<button
+					onClick={() => navigate("search")}
+					className='button_nav'
+				>
+					Search
+				</button>
+			</div>
+				
+			<div>
+				<button
+					onClick={() =>  {
+            props.logoutFunc();
+						navigate("/");
+					}
+					}
+					className='button_nav'
+				>
+					Logout 
+				</button>
+				
+			</div>
+
+
+			</div>
+		</nav>
+
+
+	);
 };
 
 export default Layout;

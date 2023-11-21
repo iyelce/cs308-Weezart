@@ -1,28 +1,30 @@
 import { Outlet, Link } from "react-router-dom";
 
-const Layout = () => {
+const Layout = (props) => {
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-          <Link to="/signup">SignUp</Link>
-          </li>
-          <li>
-          <Link to="/search">Search</Link>
-          </li>
-        </ul>
-      </nav>
+      {props.isLoggedIn && (
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Login</Link>
+            </li>
+            <li>
+              <Link to="/home">Home</Link>
+            </li>
+            <li>
+              <Link to="/signup">SignUp</Link>
+            </li>
+            <li>
+              <Link to="/search">Search</Link>
+            </li>
+          </ul>
+        </nav>
+      )}
 
       <Outlet />
     </>
-  )
+  );
 };
 
 export default Layout;

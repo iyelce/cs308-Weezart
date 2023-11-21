@@ -19,10 +19,10 @@ async function LoginApi ( username, password) {
         const data = await response.text();
     
         if(!response.ok) {
-            console.log("aaaaaaaaaaaaaaaaaaaaa")
-            throw new Error ('network response is not ok')
-            
+            return (-1)
+            //throw new Error ('network response is not ok')
         }
+
         console.log("data in api:" , data);
 
         return data;

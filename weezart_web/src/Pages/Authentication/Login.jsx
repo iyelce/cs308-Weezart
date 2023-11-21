@@ -6,38 +6,47 @@ import LoginApi from '../../API/LoginApi';
 
 
 const LOGO = require('../../weezart-removebg-preview.png');
-const Login = () => {
+const Login = (props) => {
 
     const navigate = useNavigate();
   
+    //for css proporties
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);
     const [isFocusedUsername, setIsFocusedUsername] = useState(false);
     const [isFocusedEmail, setIsFocusedEmail] = useState(false);
     const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+    const [errorlabelHiden, setErrorLabelHiden] = useState(true);
+
+    // they came from props now
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const [email,setEmail] = useState('');
+
+    //to catch and print errors
+    const [error, setError] = useState(null);
  
     const handleSignupClick = () => {
         // Navigate to the signup page
         navigate('/signup');
       };
     
-    const handleRegisterClick  = async () => {
-        // Navigate to the home page
+    const handleRegisterClick = async () => {
 
-        var response = await LoginApi(username, password);
-        console.log("login page response: ", response);
-        // navigate('/');
-      };
-   
-  
-    function isEmailValid(email) {
-      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-      return emailRegex.test(email);
-    }
-  
+      //id gelince response string yerine array olmalı o zaman indexini al
+      const response = await LoginApi(username, password);
     
+      //unsuccessful login
+      if (response === -1) {
+          setErrorLabelHiden(false);
+      }
+
+      else {
+        props.changeUserInfo(username, 1); //userId şu an 1 -> sonradan değiştir
+        props.storeToken(response); //id geldikten sonra arrayin indexini al
+      }
+         
+    };
+   
+ 
 
   return (
     
@@ -47,6 +56,7 @@ const Login = () => {
     <div className="register-content">
         <div className="register-form">
             <form action="#" className="register-form-body">
+
                 <div className={'field '+(isFocusedUsername?'moved':'')} >
                     <input type="text" 
                     className="register-input-box"
@@ -56,15 +66,8 @@ const Login = () => {
                     ></input>
                     <label for="" className={'register-input-label '+(isFocusedUsername||(!isFocusedUsername&&username!=='')?'moved-upside':'')}>Username</label>
                 </div>
-                <div  className={'field '+(isFocusedEmail?'moved':'')}>
-                    <input type="text" 
-                    className='register-input-box'
-                    onChange={(e)=>setEmail(e.target.value)}
-                    onBlur={()=>setIsFocusedEmail(false)}
-                    onFocus={()=>setIsFocusedEmail(true)}
-                ></input>
-                    <label className={'register-input-label '+(isFocusedEmail||(!isFocusedEmail&&email!=='')?'moved-upside':'')}>Email Adress</label>
-                </div>
+
+
                 <div  className={'field '+(isFocusedPassword?'moved':'')}>
                     <input type={isVisiblePassword ? "text" : "password"}
                     className='register-input-box'
@@ -82,7 +85,9 @@ const Login = () => {
                       </span>
                 </div>
 
-                <div className="register-button" onClick={handleRegisterClick} ><a href="#">Register</a></div>
+                {errorlabelHiden ? null : <p className='login-error-p'>* Invalid username or password.</p>}
+
+                <div className="register-button" onClick={handleRegisterClick} ><a href="#">Login</a></div>
                 
             </form>
             <div className="social-registers">

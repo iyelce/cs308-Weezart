@@ -371,4 +371,11 @@ div.register-logo img{
     position: absolute;
 
 }
+
+.login-error-p{
+    color: #331055;
+    font-size: 20px;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgb(191, 186, 186);
+}
   

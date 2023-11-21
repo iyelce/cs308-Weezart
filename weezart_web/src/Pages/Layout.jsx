@@ -15,6 +15,8 @@ const Layout = ({...props}) => {
             hidden={hideNavbar}
             >
 			<div>
+        <p>{props.username}</p>
+        <p>{props.userId}</p>
 				<button
 					onClick={() => navigate("home")}
 					className='button_nav'

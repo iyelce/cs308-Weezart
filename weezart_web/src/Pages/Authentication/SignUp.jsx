@@ -24,6 +24,7 @@ const SignUp = () => {
     const [username, setUsername] = useState('');
     const [email,setEmail] = useState('');
 
+    //error label
     const [errorlabelHiden, setErrorLabelHiden] = useState(true);
     const[errorMessage, setErrorMessage] = useState("");
 

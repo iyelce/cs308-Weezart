@@ -72,10 +72,10 @@ public class UserServiceImpl implements UserService{
 	    	return passwordEncoder.matches(password, passwordHashed);
 	    }
 	    
-//	    public User getProfileById(String profileId) throws CustomException {
-//		     return userRepository.findById(profileId)
-//		             .orElseThrow(() -> new CustomException("Profile not found"));
-//		 }
+	    public User getProfileById(String profileId) throws CustomException {
+		     return userRepository.findByiduser(Long.parseLong(profileId))
+		             .orElseThrow(() -> new CustomException("Profile not found"));
+		 }
 	    
 	    @ResponseStatus(HttpStatus.BAD_REQUEST)
 	 	public class CustomException extends RuntimeException {

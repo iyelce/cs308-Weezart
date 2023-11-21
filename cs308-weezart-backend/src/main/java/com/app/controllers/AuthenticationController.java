@@ -104,14 +104,13 @@ public class AuthenticationController {
         }
     }
 	
-//	@GetMapping("/profile/{userId}")
-//	public ResponseEntity<?> getInstProfileById(@PathVariable String userId) {
-//		User user = userService.getProfileById(userId);
-//		// UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-//		
-//					
-//		log.info("user RETURNED");
-//		return ResponseEntity.ok(user);
-//	}
+	@GetMapping("/profile/{userId}")
+	public ResponseEntity<?> getUserProfileById(@PathVariable String userId) {
+		User user = userService.getProfileById(userId);
+				
+					
+		log.info("user RETURNED");
+		return ResponseEntity.ok(user);
+	}
 	
 }

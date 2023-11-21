@@ -1,5 +1,5 @@
 async function SignUpApi ( SignUpData) {
-    console.log("signup api fonk işçinde");
+    
     try {
         const response = await fetch('http://localhost:8080/auth/register', {
             headers: {
@@ -12,12 +12,14 @@ async function SignUpApi ( SignUpData) {
         });
 
         if (!response.ok) {
+            return (-1); //username dışında farklı errorler varsa bunu handle etmemiz lazım sonradan (page içinde de kod değişikliği lazım bu durumda)
             throw new Error('Network response is not ok');
         }
 
         const data = await response.json();
-        console.log("response in api: ", data);
+
         return data;
+
     } catch (error) {
         console.error('Error in fetching data:', error);
     }

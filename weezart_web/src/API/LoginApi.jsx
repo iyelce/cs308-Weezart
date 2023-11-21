@@ -1,7 +1,7 @@
 async function LoginApi ( username, password) {
-    console.log("login api fonk içinde");
 
-    let element = {username: username, password: password};
+    let element = {username: username, password: password}; //formats input to api
+    
     try{
 
         const response = await fetch('http://localhost:8080/auth/login', {
@@ -11,7 +11,7 @@ async function LoginApi ( username, password) {
                 'Content-Type': 'application/json',
             },
             mode: 'cors',
-            credentials: 'include', // Add this line
+            credentials: 'include', 
             body: JSON.stringify(element)
         });
 
@@ -23,9 +23,9 @@ async function LoginApi ( username, password) {
             //throw new Error ('network response is not ok')
         }
 
-        console.log("data in api:" , data);
+        const newResp = JSON.parse(data); //to parse it into json so that we can do .token and .userId
 
-        return data;
+        return newResp;
 
     }
     catch (error) {

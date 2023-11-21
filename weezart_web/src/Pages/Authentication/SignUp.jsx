@@ -1,14 +1,16 @@
 // import './authStyle.css';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import { useState, useNavigate } from "react";
+import { useState} from "react";
+import { useNavigate } from 'react-router-dom';
 import SignUpApi from '../../API/SignUpApi';
 
 const LOGO = require('../../weezart-removebg-preview.png');
 
 const SignUp = () => {
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
   
+    //for style
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);
     const [isVisibleRepeatPassword, setIsVisibleRepeatPassword] = useState(false);
     const [isFocusedUsername, setIsFocusedUsername] = useState(false);
@@ -16,12 +18,14 @@ const SignUp = () => {
     const [isFocusedPassword, setIsFocusedPassword] = useState(false);
     const [isFocusedRepeatPassword, setIsFocusedRepeatPassword] = useState(false);
 
+    //to send backend
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
     const [username, setUsername] = useState('');
     const [email,setEmail] = useState('');
 
-
+    const [errorlabelHiden, setErrorLabelHiden] = useState(true);
+    const[errorMessage, setErrorMessage] = useState("");
 
 
 
@@ -35,25 +39,24 @@ const SignUp = () => {
   
     function registerCheck(){
   
-      console.log("--------render--------");
-  
       //check mail format
-      if (isEmailValid(email)) {
-        console.log("Email is valid");
+      if (!isEmailValid(email)) {
+        setErrorLabelHiden(false);
+        setErrorMessage("* Invalid email format");
       } 
-      else {
-        console.log("Email is not valid");
-      }
-  
+
       //check password and repeat password
-      if (password === repeatPassword) {
-        console.log("Passwords are same");;
-      }
-      else {
-        console.log("Passwords do not match")
+      else if (password !== repeatPassword) {
+        setErrorLabelHiden(false);
+        setErrorMessage("* Passwords do not match");
       }
   
       //check if the username is unique via API
+      //bunun yerine -1 dönüyorsa username taken yüzünden diye varsayıp loginFunc içine koyduk
+
+      else{
+        loginFunc(); //no problem call login api
+      }
   
     }
 
@@ -68,8 +71,15 @@ const SignUp = () => {
 
       console.log(newUser);
       var response = await SignUpApi(newUser);
+      
+      if(response === -1){
+        setErrorLabelHiden(false);
+        setErrorMessage("* Username is taken");
+      }
 
-      console.log("sign up response: " , response);
+      else{
+        navigate("/");
+      }
   };
 
 
@@ -133,7 +143,9 @@ const SignUp = () => {
                       </span>
                 </div>
 
-                <div className="register-button" onClick={()=> loginFunc()}><a href="#">Register</a></div>
+                {errorlabelHiden ? null : <p className='login-error-p'>{errorMessage}</p>}
+
+                <div className="register-button" onClick={()=> registerCheck()}><a href="#">Register</a></div>
                 
             </form>
             <div className="social-registers">

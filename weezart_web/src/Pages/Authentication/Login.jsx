@@ -41,8 +41,8 @@ const Login = ({...props}) => {
 
       //successful login
       else {
-        props.changeUserInfo(username, 1); //userId şu an 1 -> sonradan değiştir
-        props.storeToken(response); //id geldikten sonra arrayin indexini al
+        props.changeUserInfo(username, response.userId); //userId şu an 1 -> sonradan değiştir
+        props.storeToken(response.token); //id geldikten sonra arrayin indexini al
         navigate("home");
       }
          

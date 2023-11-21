@@ -3,6 +3,7 @@ package com.app.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import com.app.payloads.ArtistPayload;
 import com.app.payloads.SongPayload;
 import com.app.services.AddService;
 import com.app.services.SpotifyService;
+import com.app.services.UserServiceImpl.CustomException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
@@ -33,10 +35,10 @@ public class AddController {
     private static final Logger log = LoggerFactory.getLogger(SpotifyService.class);
 
 	@PostMapping("/song/{userId}")
-	public ResponseEntity<UserSong> addSong(@RequestBody SongPayload songPayload, @PathVariable String userId) {
+	public ResponseEntity<?> addSong(@RequestBody SongPayload songPayload, @PathVariable String userId) {
 		
 		log.info("şarkı ekliyom");
-		
+		try {
 		addService.addSong(songPayload);
 		
 		log.info("şarkı ekledim, relate edicem");
@@ -45,32 +47,43 @@ public class AddController {
 		UserSong userSongRelation = addService.relateUserSong(songPayload, userId);
 		
 		log.info("relate ettim");
-		
 		return ResponseEntity.ok(userSongRelation);
+		} catch(CustomException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+		}
+		
 	}
 	
 	@PostMapping("/artist/{userId}")
-	public ResponseEntity<UserArtist> addArtist(@RequestBody ArtistPayload artistPayload, @PathVariable String userId) {
+	public ResponseEntity<?> addArtist(@RequestBody ArtistPayload artistPayload, @PathVariable String userId) {
 		
-		addService.addArtist(artistPayload);
-		
-		UserArtist userArtistRelation = addService.relateUserArtist(artistPayload, userId);
-		
-		return ResponseEntity.ok(userArtistRelation);
+		try { 
+			addService.addArtist(artistPayload);
+			
+			UserArtist userArtistRelation = addService.relateUserArtist(artistPayload, userId);
+			
+			return ResponseEntity.ok(userArtistRelation);
+		} catch(CustomException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+		}
 	}
 	
 	@PostMapping("/album/{userId}")
-	public ResponseEntity<UserAlbum> addAlbum(@RequestBody AlbumPayload albumPayload, @PathVariable String userId) {
+	public ResponseEntity<?> addAlbum(@RequestBody AlbumPayload albumPayload, @PathVariable String userId) {
 		
-		addService.addAlbum(albumPayload);
+		try {
+			addService.addAlbum(albumPayload);
+			
+			log.info("album adding");
+			
+			UserAlbum userAlbumRelation = addService.relateUserAlbum(albumPayload, userId);
+			
+			log.info("album added");
+			return ResponseEntity.ok(userAlbumRelation);
+		}catch(CustomException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+		}
 		
-		log.info("album adding");
-		
-		UserAlbum userAlbumRelation = addService.relateUserAlbum(albumPayload, userId);
-		
-		log.info("album added");
-		
-		return ResponseEntity.ok(userAlbumRelation);
 	}
 	
 	@PostMapping("/friend/{currentUsername}/{targetUsername}")

@@ -8,7 +8,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.app.models.Album;
 import com.app.models.Artist;
@@ -56,6 +58,7 @@ public class AddServiceImpl implements AddService{
 	
     private static final Logger log = LoggerFactory.getLogger(SpotifyService.class);
 	
+    // TODO: spotify checkleme yapilacak
 	public Song addSong(SongPayload song) {
 		
 		Song givenSong = new Song(song.getId(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
@@ -85,6 +88,10 @@ public class AddServiceImpl implements AddService{
 		userSong.setUser(givenUser);
 		
 		userSong.setAddTime(getCurrentDateTimeAsString());
+		
+		if(userSongRepo.findBySongAndUser(givenSong, givenUser) != null) {
+			throw new CustomException("Song is already added");
+		}
 		
 		return userSongRepo.save(userSong);
 		
@@ -119,6 +126,10 @@ public class AddServiceImpl implements AddService{
 		
 		userArtist.setAddTime(getCurrentDateTimeAsString());
 		
+		if(userArtistRepo.findByArtistAndUser(givenArtist, givenUser) != null) {
+			throw new CustomException("Artist is already added");
+		}
+		
 		return userArtistRepo.save(userArtist);
 		
 	}
@@ -148,6 +159,10 @@ public class AddServiceImpl implements AddService{
 		userAlbum.setUser(givenUser);
 		
 		userAlbum.setAddTime(getCurrentDateTimeAsString());
+		
+		if(userAlbumRepo.findByAlbumAndUser(givenAlbum, givenUser) != null) {
+			throw new CustomException("Album is already added");
+		}
 		
 		return userAlbumRepo.save(userAlbum);
 	}
@@ -184,6 +199,19 @@ public class AddServiceImpl implements AddService{
 		
 		userRepo.save(currentUser);
 		return userRepo.save(targetUser);
+	}
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+ 	public class CustomException extends RuntimeException {
+ 		private String message;
+
+	    public CustomException(String message) {
+	        this.message = message;
+	    }
+
+	    public String getMessage() {
+	        return message;
+	    }
 	}
 	
 }

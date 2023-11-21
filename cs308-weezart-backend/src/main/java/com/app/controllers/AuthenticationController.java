@@ -72,8 +72,7 @@ public class AuthenticationController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 		
-		//return userService.createUser(userPayload.getUsername(), userPayload.getPassword(), userPayload.getEmail());
-    }
+	}
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> loginIndividual(@RequestBody UserLoginPayload loginUser) {
@@ -100,17 +99,22 @@ public class AuthenticationController {
             log.info("TOKEN OLUSTU");
             return ResponseEntity.ok(authResponse);
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.toString());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
 	
 	@GetMapping("/profile/{userId}")
 	public ResponseEntity<?> getUserProfileById(@PathVariable String userId) {
-		User user = userService.getProfileById(userId);
-				
-					
-		log.info("user RETURNED");
-		return ResponseEntity.ok(user);
+		
+		try {
+			User user = userService.getProfileById(userId);
+							
+			log.info("user RETURNED");
+			return ResponseEntity.ok(user);
+		} catch(CustomException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			
+		}
 	}
 	
 }

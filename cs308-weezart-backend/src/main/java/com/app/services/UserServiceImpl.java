@@ -26,6 +26,9 @@ public class UserServiceImpl implements UserService{
 	    public User createUser(String username, String password, String email) {
 	    	
 	    	log.info("hi!");
+	    	if(userRepository.findByUsername(username) != null) {
+	    		throw new CustomException("Username already exist");
+	    	}
 	    	
 	    	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	    	String passwordHashed = passwordEncoder.encode(password);
@@ -44,23 +47,19 @@ public class UserServiceImpl implements UserService{
 	    
 	    public User loginUser(String username, String password) throws CustomException{
 	    	
-	    	
-	    	
 	    	User userDetails = userRepository.findByUsername(username); 
 	    		    	
-	    	if(userDetails == null) throw new CustomException("Username is wrong");
+	    	if(userDetails == null) {
+	    		throw new CustomException("Username is wrong");
+	    	}
 	    	
 	    	if(!matchesPassword(password, userDetails.getPassword())) {
 	    		
 	    		log.info("exception thrown, wrong username or password");
-	    		throw new CustomException("Username or password is wrong");
+	    		throw new CustomException("Password is wrong");
 	    	}
 	    	
-	    	log.info("login successful?");
-	    	
-	    	
-	    		
-	    	
+	    	log.info("login successful?");    	
 	    	return userRepository.findByUsername(username);
 	    }
 	    
@@ -73,6 +72,7 @@ public class UserServiceImpl implements UserService{
 	    }
 	    
 	    public User getProfileById(String profileId) throws CustomException {
+	    	
 		     return userRepository.findByiduser(Long.parseLong(profileId))
 		             .orElseThrow(() -> new CustomException("Profile not found"));
 		 }

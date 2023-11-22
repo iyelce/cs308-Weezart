@@ -1,0 +1,121 @@
+.importPage{
+    background-color: #222;
+    height: 100vh;
+   
+}
+
+
+.single-song-add {
+    display: flex;
+    flex-direction: column;
+    max-width: 80rem;
+    margin: auto;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .single-song-add-label{
+    margin-left: 3rem;
+    margin-top: 3rem;
+    font-family: Poppins;
+    font-size: 20px;
+    font-weight: 600;
+    color: #B9B4C7;
+  }
+  
+  .form-row {
+    margin-bottom: 10px;
+  }
+  
+  .add-artist-button,
+  .explicit-label,
+  .explicit-checkbox,
+  .submit-button,
+  .single-song-add-input,
+  .single-song-add-input-date {
+    color: #fff;
+    background-color: #444;
+    border: 1px solid #666;
+    border-radius: 4px;
+    padding: 8px;
+    margin-left: 3rem;
+    margin-top: 3rem;
+  }
+  
+  .explicit-checkbox {
+    width: auto;
+    margin-right: 5px;
+  }
+  
+  .artist-list {
+    padding: 0;
+    list-style: none;
+  }
+  
+  .add-artist-button {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-artist-button:hover {
+    background-color: #555;
+  }
+  
+  /* Styling for react-datepicker */
+  .date-picker {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .date-picker__header {
+    background-color: #555;
+    color: #fff;
+  }
+  
+  .date-picker__day-name,
+  .date-picker__day {
+    color: #fff;
+  }
+  
+  .date-picker__day:hover {
+    background-color: #777;
+  }
+
+
+
+
+  /* Styling for react-datepicker */
+.date-picker {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .date-picker__header {
+    background-color: #555;
+    color: #fff;
+  }
+  
+  .date-picker__year-dropdown-container {
+    background-color: #555;
+    border: 1px solid #666;
+    border-radius: 4px;
+    padding: 8px;
+    margin-top: 8px;
+  }
+  
+  .date-picker__year-dropdown {
+    color: #fff;
+  }
+  
+  .date-picker__year-option {
+    color: #fff;
+  }
+  
+  .date-picker__day-name,
+  .date-picker__day {
+    color: #fff;
+  }
+  
+  .date-picker__day:hover {
+    background-color: #777;
+  }

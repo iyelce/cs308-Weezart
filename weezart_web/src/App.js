@@ -7,6 +7,7 @@ import Layout from './Pages/Layout';
 import SignUp from './Pages/Authentication/SignUp';
 import Search from './Pages/Search/Search';
 import './App.css';
+import ImportsongPage from './Pages/ImportFile/ImportsongPage.jsx';
 import Sidebar from './Pages/Sidebar/Sidebar.jsx';
 
 
@@ -91,6 +92,8 @@ function App() {
           <Route path='signup' element={<SignUp ></SignUp>} />
 
           <Route path='search' element={<Search ></Search>} />
+          
+          <Route path='import' element={<ImportsongPage/>}/>
 
           <Route path='*' element={<Error />} />
 

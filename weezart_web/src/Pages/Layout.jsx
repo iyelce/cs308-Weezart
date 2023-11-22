@@ -30,6 +30,13 @@ const Layout = ({...props}) => {
 				>
 					Search
 				</button>
+
+        <button
+					onClick={() => navigate("import")}
+					className='button_nav'
+				>
+					Import
+				</button>
 			</div>
 				
 			<div>

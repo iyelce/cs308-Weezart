@@ -72,21 +72,26 @@ public class AddController {
 	}
 
 	@PostMapping("/manual-song-accepted/{userId}")
-	public ResponseEntity<?> maybeBaby(@RequestBody SongPayload songPayload, @PathVariable String userId) {
-
-		log.info("test1");
+	public ResponseEntity<?> maybeBaby(@RequestBody SongPayload songPayload, @PathVariable String userId)
+			throws JsonMappingException, JsonProcessingException {
 
 		Song didYouMeanSong = new Song(songPayload.getId(), songPayload.getName(), songPayload.getAlbumName(),
 				songPayload.getAlbumId(), songPayload.getArtistsName(), songPayload.getArtistsId(),
 				songPayload.getPopularity(), songPayload.getDuration_ms(), songPayload.isExplicit(),
 				songPayload.getAlbumRelease());
-		log.info("test2");
 
 		if (songRepo.findByid(didYouMeanSong.getId()) == null) {
 			songRepo.save(didYouMeanSong);
-			log.info("test3");
 		}
-		log.info("test4");
+
+		for (String artistName : didYouMeanSong.getArtistsName()) {
+
+			artistRepo.save(spotifyService.artistSearch(artistName, spotifyAuth.authenticateWithSpotify()).get(0));
+
+		}
+
+		albumRepo.save(spotifyService.albumSearch(didYouMeanSong.getAlbumName() + " " + didYouMeanSong.getName(),
+				spotifyAuth.authenticateWithSpotify()).get(0));
 
 		User givenUser = new User(Long.parseLong(userId));
 
@@ -94,10 +99,8 @@ public class AddController {
 		userSong.setSong(didYouMeanSong);
 		userSong.setUser(givenUser);
 
-		log.info("test5");
-
 		if (userSongRepo.findBySongAndUser(didYouMeanSong, givenUser) == null) {
-			log.info("test6");
+
 			return ResponseEntity.ok(userSongRepo.save(userSong));
 		} else {
 			String errorMessage = "SONG_ALREADY_EXISTS";

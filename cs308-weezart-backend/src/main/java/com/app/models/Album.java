@@ -23,6 +23,8 @@ public class Album {
 	List<String> songsName;
 	List<String> songsId;
 	
+	
+	
 	public Album() {
 		super();
 	}

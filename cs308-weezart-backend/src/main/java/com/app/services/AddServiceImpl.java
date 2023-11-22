@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,6 +146,7 @@ public class AddServiceImpl implements AddService{
 		else return null;
 	}
 	
+	// make a relation between user and added album
 	public UserAlbum relateUserAlbum(AlbumPayload album, String userID) {
 		
 		UserAlbum userAlbum = new UserAlbum();
@@ -180,6 +182,7 @@ public class AddServiceImpl implements AddService{
         return formattedDateTime;
     }
 
+	// follow another user by their unique username
 	@Transactional
 	public User followUser(String username, String targetUsername) {
 		User currentUser = userRepo.findByUsername(username);
@@ -199,6 +202,40 @@ public class AddServiceImpl implements AddService{
 		
 		userRepo.save(currentUser);
 		return userRepo.save(targetUser);
+	}
+	
+	// return the added songs by the user
+	public List<Song> addedSongs(String userId){
+		User user = userRepo.findByiduser(Long.parseLong(userId));
+		if (user == null) {
+			log.info("user YOKKKKK");
+			throw new CustomException("User not found");
+		}
+		
+		List<UserSong> userSongs = userSongRepo.findAllByUser(user);
+        return userSongs.stream().map(UserSong::getSong).collect(Collectors.toList());
+	}
+	
+	public List<Album> addedAlbums(String userId){
+		User user = userRepo.findByiduser(Long.parseLong(userId));
+		if (user == null) {
+			log.info("user YOKKKKK");
+			throw new CustomException("User not found");
+		}
+		
+		List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
+        return userAlbums.stream().map(UserAlbum::getAlbum).collect(Collectors.toList());
+	}
+	
+	public List<Artist> addedArtists(String userId){
+		User user = userRepo.findByiduser(Long.parseLong(userId));
+		if (user == null) {
+			log.info("user YOKKKKK");
+			throw new CustomException("User not found");
+		}
+		
+		List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
+        return userArtists.stream().map(UserArtist::getArtist).collect(Collectors.toList());
 	}
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

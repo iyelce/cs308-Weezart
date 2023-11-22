@@ -21,8 +21,6 @@ public class UserServiceImpl implements UserService{
 	        this.userRepository = userRepository;
 	    }
 	    
-	    //@Autowired private UserRepository userRepo;
-  
 	    public User createUser(String username, String password, String email) {
 	    	
 	    	log.info("hi!");
@@ -73,8 +71,10 @@ public class UserServiceImpl implements UserService{
 	    
 	    public User getProfileById(String profileId) throws CustomException {
 	    	
-		     return userRepository.findByiduser(Long.parseLong(profileId))
-		             .orElseThrow(() -> new CustomException("Profile not found"));
+	    	if(userRepository.findByiduser(Long.parseLong(profileId)) != null){
+	    		return userRepository.findByiduser(Long.parseLong(profileId));
+	    	}
+	    	else {throw new CustomException("Profile not found");}
 		 }
 	    
 	    @ResponseStatus(HttpStatus.BAD_REQUEST)

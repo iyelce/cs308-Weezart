@@ -85,13 +85,25 @@ public class AddController {
 		}
 
 		for (String artistName : didYouMeanSong.getArtistsName()) {
+			log.info("artist kaydedecem-----" + artistName);
 
-			artistRepo.save(spotifyService.artistSearch(artistName, spotifyAuth.authenticateWithSpotify()).get(0));
+			Artist artist = spotifyService.artistSearch(artistName, spotifyAuth.authenticateWithSpotify()).get(0);
+			
+			artistRepo.save(artist);
+			ArtistPayload artistPayload = new ArtistPayload(artist);
+			
+			addService.relateUserArtist(artistPayload, userId);
 
 		}
 
-		albumRepo.save(spotifyService.albumSearch(didYouMeanSong.getAlbumName() + " " + didYouMeanSong.getName(),
-				spotifyAuth.authenticateWithSpotify()).get(0));
+		log.info("album kaydedecem-------" + didYouMeanSong.getAlbumName());
+		Album album = spotifyService.albumSearch(didYouMeanSong.getAlbumName() + " " + didYouMeanSong.getName(),
+				spotifyAuth.authenticateWithSpotify()).get(0);
+		albumRepo.save(album);
+		
+		AlbumPayload albumPayload = new AlbumPayload(album);
+		addService.relateUserAlbum(albumPayload, userId);
+		
 
 		User givenUser = new User(Long.parseLong(userId));
 

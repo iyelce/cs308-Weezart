@@ -1,5 +1,7 @@
 package com.app.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.app.models.Album;
@@ -22,5 +24,7 @@ public interface AddService {
 	public Album addAlbum(AlbumPayload album);
 	public UserAlbum relateUserAlbum(AlbumPayload album, String userID);
 	public User followUser(String username, String targetUsername);
-	
+	public List<Song> addedSongs(String userId);
+	public List<Album> addedAlbums(String userId);
+	public List<Artist> addedArtists(String userId);
 }

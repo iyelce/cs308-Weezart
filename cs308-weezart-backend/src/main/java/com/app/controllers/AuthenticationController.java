@@ -103,18 +103,5 @@ public class AuthenticationController {
         }
     }
 	
-	@GetMapping("/profile/{userId}")
-	public ResponseEntity<?> getUserProfileById(@PathVariable String userId) {
-		
-		try {
-			User user = userService.getProfileById(userId);
-							
-			log.info("user RETURNED");
-			return ResponseEntity.ok(user);
-		} catch(CustomException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-			
-		}
-	}
 	
 }

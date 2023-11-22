@@ -2,6 +2,8 @@ package com.app.payloads;
 
 import java.util.List;
 
+import com.app.models.Artist;
+
 public class ArtistPayload {
 
 	public ArtistPayload(String name, List<String> genres, String imageUrl, int followerCount, String id) {
@@ -18,6 +20,15 @@ public class ArtistPayload {
 	List<String> genres;
 	String imageUrl;
 	int followerCount;
+	
+	public ArtistPayload(Artist artist) {
+        this.id = artist.getId();
+        this.name = artist.getName();
+        this.genres = artist.getGenres();
+        this.imageUrl = artist.getImageUrl();
+        this.followerCount = artist.getFollowerCount();
+    }
+	
 	public String getName() {
 		return name;
 	}

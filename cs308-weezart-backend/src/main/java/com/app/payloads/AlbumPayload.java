@@ -2,6 +2,8 @@ package com.app.payloads;
 
 import java.util.List;
 
+import com.app.models.Album;
+
 public class AlbumPayload {
 	String id;
 	String name;
@@ -14,6 +16,18 @@ public class AlbumPayload {
 	
 	List<String> songsName;
 	List<String> songsId;
+	
+	public AlbumPayload(Album album) {
+        this.id = album.getId();
+        this.name = album.getName();
+        this.imageUrl = album.getImageUrl();
+        this.releaseDate = album.getReleaseDate();
+        this.numberOfTracks = album.getNumberOfTracks();
+        this.artistsName = album.getArtistsName();
+        this.artistsId = album.getArtistsId();
+        this.songsName = album.getSongsName();
+        this.songsId = album.getSongsId();
+    }
 	
 	public AlbumPayload() {
 		super();

@@ -10,5 +10,5 @@ import com.app.models.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 	User findByUsername(String username);
-	Optional<User> findByiduser(long iduser);
+	User findByiduser(long iduser);
 }

@@ -92,7 +92,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 		}
 
 		private boolean isLoginRequest(HttpServletRequest request) {
-			return request.getRequestURI().equals("/auth/login");
+			return (request.getRequestURI().equals("/auth/login") || request.getRequestURI().equals("/auth/register"));
 		}
 
 }

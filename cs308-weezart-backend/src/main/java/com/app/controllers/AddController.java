@@ -66,9 +66,27 @@ public class AddController {
 
 		String query = songQuery + " " + artistQuery;
 		Song didYouMeanSong = spotifyService.songSearch(query, spotifyAuth.authenticateWithSpotify()).get(0);
+
+		return ResponseEntity.ok(didYouMeanSong);
+
+	}
+
+	@PostMapping("/manual-song-accepted/{userId}")
+	public ResponseEntity<?> maybeBaby(@RequestBody SongPayload songPayload, @PathVariable String userId) {
+
+		log.info("test1");
+
+		Song didYouMeanSong = new Song(songPayload.getId(), songPayload.getName(), songPayload.getAlbumName(),
+				songPayload.getAlbumId(), songPayload.getArtistsName(), songPayload.getArtistsId(),
+				songPayload.getPopularity(), songPayload.getDuration_ms(), songPayload.isExplicit(),
+				songPayload.getAlbumRelease());
+		log.info("test2");
+
 		if (songRepo.findByid(didYouMeanSong.getId()) == null) {
 			songRepo.save(didYouMeanSong);
+			log.info("test3");
 		}
+		log.info("test4");
 
 		User givenUser = new User(Long.parseLong(userId));
 
@@ -76,12 +94,16 @@ public class AddController {
 		userSong.setSong(didYouMeanSong);
 		userSong.setUser(givenUser);
 
+		log.info("test5");
+
 		if (userSongRepo.findBySongAndUser(didYouMeanSong, givenUser) == null) {
-			userSongRepo.save(userSong);
+			log.info("test6");
+			return ResponseEntity.ok(userSongRepo.save(userSong));
+		} else {
+			String errorMessage = "SONG_ALREADY_EXISTS";
+			log.info(errorMessage);
+			return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
 		}
-
-		return ResponseEntity.ok(didYouMeanSong);
-
 	}
 
 	// note for analysis later: -1 population and -1 follower count means they are
@@ -221,7 +243,7 @@ public class AddController {
 			log.info("album added");
 			return ResponseEntity.ok(userAlbumRelation);
 		} catch (CustomException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 
 	}

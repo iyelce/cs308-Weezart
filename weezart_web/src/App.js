@@ -28,6 +28,8 @@ function App() {
       //hepsini aynı fonksiyonda set ettiğimiz için böyle alınca problem olmaz ama yine kontrol edebiliriz if içinde
       setUsername(localStorage.getItem('username')); 
       setUserId(localStorage.getItem('userId'));
+      setIsLoggedin(localStorage.getItem('isLoggedin'));
+
     }           
   }, []); // [] sayfa ilk renderlandığında 1 defa çalışması için
 
@@ -50,6 +52,7 @@ function App() {
     //token check fonksiyonu olusa bu useeffect içine de girmeli
     localStorage.setItem('username', username);
     localStorage.setItem('userId', userId);
+    localStorage.setItem('isLoggedin', true);
   };
 
   //to set token in the login page
@@ -62,6 +65,7 @@ function App() {
     localStorage.removeItem('token');                      
     localStorage.removeItem('username');
     localStorage.removeItem('userId');
+    localStorage.removeItem('isLoggedin');
 
     setToken("");
     setUserId("");

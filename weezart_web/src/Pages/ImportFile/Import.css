@@ -1,11 +1,16 @@
 .importPage{
     background-color: #222;
-    height: 100vh;
-    background:url(https://github.com/iyelce/cs308-Weezart/blob/3467e0e5c53c5542a56a7babcecdc7d9a4a3d41e/weezart_web/src/5c3d75b71be137cbf5203ee866c9add4.png);
-   
+    margin: 0;
+    padding: 0;
+    background-image: url('../../5c3d75b71be137cbf5203ee866c9add4.png');
+    
 }
 
-
+.importPage > p {
+    text-align: center;
+    display: block;
+    margin: 10px 0;
+  }
 
 
 .single-song-add {
@@ -171,3 +176,19 @@
     background-color: #45a049;
   }
   
+
+  .song-add-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 27px;
+    font-weight: 800;
+    color: #FFA500;
+    text-shadow: 2px 2px 4px rgba(1, 1, 1, 1);
+  }
+
+  .weezart-text {
+    color: purple;
+  }
+
+  .spotify-text {
+    color: #45a049;
+  }

@@ -1,3 +1,4 @@
+import { BlurView } from "@react-native-community/blur";
 import React, { Profiler } from "react";
 import {
   Image,
@@ -34,141 +35,136 @@ const ListItem = ({ item }) => {
 export default Profile = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <View
-        style={{
-          width: "100%",
-        }}
-      >
-        <Image
-          source={require("./../../../assets/icons/wallpaper.png")}
-          resizeMode="cover"
-          style={{
-            height: 200,
-            width: "100%",
-            opacity: 0.5,
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20,
-          }}
-        />
-      </View>
-      <View style={{ flex: 1, alignItems: "center" }}>
-        <Image
-          source={require("./../../../assets/icons/pp3.png")}
-          resizeMode="contain"
-          style={{
-            height: 115,
-            width: 115,
-            borderRadius: 999,
-            borderWidth: 2,
-            marginTop: -90,
-          }}
-        />
-        <Text
-          style={{
-            color: "black",
-            marginVertical: 8,
-            fontSize: 20,
-            fontWeight: "bold",
-          }}
-        >
-          Raman Afravi
-        </Text>
-        <View
-          style={{
-            paddingVertical: 8,
-            flexDirection: "row",
-          }}
-        >
-          <View
+      <View style={{ flex: 1 }}>
+        <View style={{ flexDirection: "row", padding: 25, marginTop: 20 }}>
+          <Image
+            source={require("./../../../assets/icons/pp3.png")}
+            resizeMode="contain"
             style={{
-              flexDirection: "column",
-              alignItems: "center",
-              marginHorizontal: 10,
-            }}
-          >
-            <Text
-              style={{
-                color: "gray",
-                fontSize: 18,
-                fontWeight: "bold",
-              }}
-            >
-              385
-            </Text>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 16,
-              }}
-            >
-              Following
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "column",
-              alignItems: "center",
-              marginHorizontal: 10,
-            }}
-          >
-            <Text
-              style={{
-                color: "gray",
-                fontSize: 18,
-                fontWeight: "bold",
-              }}
-            >
-              1,7K
-            </Text>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 16,
-              }}
-            >
-              Followers
-            </Text>
-          </View>
-        </View>
-
-        <View
-          style={{
-            flex: 1,
-          }}
-        >
-          <SectionList
-            contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 60 }}
-            stickySectionHeadersEnabled={false}
-            sections={SECTIONS}
-            renderSectionHeader={({ section }) => (
-              <>
-                <Text style={styles.sectionHeader}>{section.title}</Text>
-                {section.horizontal ? (
-                  <FlatList
-                    style={{
-                      display: "flex",
-                      gap: 5,
-                      width: "100%",
-                      padding: 10,
-                    }}
-                    //   showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{}}
-                    horizontal
-                    data={section.data}
-                    renderItem={({ item }) => <ListItem item={item} />}
-                    showsHorizontalScrollIndicator={false}
-                  />
-                ) : null}
-              </>
-            )}
-            renderItem={({ item, section }) => {
-              if (section.horizontal) {
-                return null;
-              }
-              return <ListItem item={item} />;
+              height: 115,
+              width: 115,
+              borderRadius: 999,
+              borderWidth: 0,
             }}
           />
+          <View
+            style={{
+              displayContent: "flex",
+              alignItems: "center",
+              marginLeft: 25,
+              marginTop: 20,
+            }}
+          >
+            <Text
+              style={{
+                alignItems: "center",
+                color: "black",
+                fontSize: 20,
+                fontWeight: "bold",
+              }}
+            >
+              Raman Afravi
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: 15,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "column",
+                  alignItems: "center",
+                  marginRight: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "gray",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                >
+                  385
+                </Text>
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 16,
+                  }}
+                >
+                  Following
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "column",
+                  alignItems: "center",
+                  marginLeft: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "gray",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                >
+                  1,7K
+                </Text>
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 16,
+                  }}
+                >
+                  Followers
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
+      </View>
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
+        <SectionList
+          contentContainerStyle={{
+            paddingHorizontal: 10,
+            paddingBottom: 60,
+          }}
+          stickySectionHeadersEnabled={false}
+          sections={SECTIONS}
+          renderSectionHeader={({ section }) => (
+            <>
+              <Text style={styles.sectionHeader}>{section.title}</Text>
+              {section.horizontal ? (
+                <FlatList
+                  style={{
+                    display: "flex",
+                    gap: 5,
+                    width: "100%",
+                    padding: 10,
+                  }}
+                  //   showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{}}
+                  horizontal
+                  data={section.data}
+                  renderItem={({ item }) => <ListItem item={item} />}
+                  showsHorizontalScrollIndicator={false}
+                />
+              ) : null}
+            </>
+          )}
+          renderItem={({ item, section }) => {
+            if (section.horizontal) {
+              return null;
+            }
+            return <ListItem item={item} />;
+          }}
+        />
       </View>
     </SafeAreaView>
   );

@@ -14,11 +14,13 @@ import Search from "./search";
 import { BlurView } from "@react-native-community/blur";
 import Profile from "./profile";
 import Main from "./main";
+import axios from "./../../config/axios";
 
 const Tab = createBottomTabNavigator();
 
 export default Home = () => {
   // const context = React.useContext(AuthContext);
+
   return (
     <Tab.Navigator
       initialRouteName="Search"

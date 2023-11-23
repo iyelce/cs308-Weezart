@@ -28,7 +28,7 @@
 }
 
 .homepage-content::-webkit-scrollbar-thumb {
-  background-color: red; /* Black color for the thumb */
+  background-color: rgb(36, 2, 36); /* Black color for the thumb */
 }
 
 

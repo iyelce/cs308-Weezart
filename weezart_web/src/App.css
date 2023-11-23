@@ -3,3 +3,18 @@
 @import './Pages/Popups/Popup.css';
 @import './Pages/Sidebar/Sidebar.css';
 
+#root> .sc-bdfCDU.jAGuyT{
+    width:250px;
+}
+
+#root>.sc-bdfCDU.jAGuyT> .sideBar.MuiBox-root.css-jtrkzm{
+    height:100%;
+}
+
+aside.ps-sidebar-root.css-1wvake5{
+    height:100%;
+}
+
+#root{
+    display: flex;
+}

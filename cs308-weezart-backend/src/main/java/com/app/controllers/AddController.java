@@ -88,10 +88,10 @@ public class AddController {
 			log.info("artist kaydedecem-----" + artistName);
 
 			Artist artist = spotifyService.artistSearch(artistName, spotifyAuth.authenticateWithSpotify()).get(0);
-			
+
 			artistRepo.save(artist);
 			ArtistPayload artistPayload = new ArtistPayload(artist);
-			
+
 			addService.relateUserArtist(artistPayload, userId);
 
 		}
@@ -100,10 +100,9 @@ public class AddController {
 		Album album = spotifyService.albumSearch(didYouMeanSong.getAlbumName() + " " + didYouMeanSong.getName(),
 				spotifyAuth.authenticateWithSpotify()).get(0);
 		albumRepo.save(album);
-		
+
 		AlbumPayload albumPayload = new AlbumPayload(album);
 		addService.relateUserAlbum(albumPayload, userId);
-		
 
 		User givenUser = new User(Long.parseLong(userId));
 
@@ -112,8 +111,8 @@ public class AddController {
 		userSong.setUser(givenUser);
 
 		if (userSongRepo.findBySongAndUser(didYouMeanSong, givenUser) == null) {
-
-			return ResponseEntity.ok(userSongRepo.save(userSong));
+			userSongRepo.save(userSong);
+			return ResponseEntity.ok("SONG_SAVED");
 		} else {
 			String errorMessage = "SONG_ALREADY_EXISTS";
 			log.info(errorMessage);
@@ -182,6 +181,14 @@ public class AddController {
 					songPayload.getArtistsId(), songNames, songIds);
 
 			albumRepo.save(album);
+
+			AlbumPayload albumPayload = new AlbumPayload(album.getId(), album.getName(), null, album.getReleaseDate(),
+					album.getNumberOfTracks(), album.getArtistsName(), album.getArtistsId(), album.getSongsName(),
+					album.getSongsId());
+
+			addService.relateUserAlbum(albumPayload, userId);
+
+			// addService.relateUserAlbum(album, userId);
 		} else {
 
 			Album currentAlbum = albumRepo.findByName(songPayload.getAlbumName());

@@ -205,7 +205,7 @@ public class AddServiceImpl implements AddService{
 	}
 	
 	// return the added songs by the user
-	public List<Song> addedSongs(String userId){
+	public List<UserSong> addedSongs(String userId){
 		User user = userRepo.findByiduser(Long.parseLong(userId));
 		if (user == null) {
 			log.info("user YOKKKKK");
@@ -213,10 +213,10 @@ public class AddServiceImpl implements AddService{
 		}
 		
 		List<UserSong> userSongs = userSongRepo.findAllByUser(user);
-        return userSongs.stream().map(UserSong::getSong).collect(Collectors.toList());
+        return userSongs;
 	}
 	
-	public List<Album> addedAlbums(String userId){
+	public List<UserAlbum> addedAlbums(String userId){
 		User user = userRepo.findByiduser(Long.parseLong(userId));
 		if (user == null) {
 			log.info("user YOKKKKK");
@@ -224,10 +224,10 @@ public class AddServiceImpl implements AddService{
 		}
 		
 		List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
-        return userAlbums.stream().map(UserAlbum::getAlbum).collect(Collectors.toList());
+        return userAlbums;
 	}
 	
-	public List<Artist> addedArtists(String userId){
+	public List<UserArtist> addedArtists(String userId){
 		User user = userRepo.findByiduser(Long.parseLong(userId));
 		if (user == null) {
 			log.info("user YOKKKKK");
@@ -235,7 +235,7 @@ public class AddServiceImpl implements AddService{
 		}
 		
 		List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
-        return userArtists.stream().map(UserArtist::getArtist).collect(Collectors.toList());
+        return userArtists;
 	}
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

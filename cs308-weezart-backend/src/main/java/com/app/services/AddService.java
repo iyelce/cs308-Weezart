@@ -24,7 +24,7 @@ public interface AddService {
 	public Album addAlbum(AlbumPayload album);
 	public UserAlbum relateUserAlbum(AlbumPayload album, String userID);
 	public User followUser(String username, String targetUsername);
-	public List<Song> addedSongs(String userId);
-	public List<Album> addedAlbums(String userId);
-	public List<Artist> addedArtists(String userId);
+	public List<UserSong> addedSongs(String userId);
+	public List<UserAlbum> addedAlbums(String userId);
+	public List<UserArtist> addedArtists(String userId);
 }

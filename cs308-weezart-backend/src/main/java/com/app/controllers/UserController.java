@@ -18,6 +18,9 @@ import com.app.models.Album;
 import com.app.models.Artist;
 import com.app.models.Song;
 import com.app.models.User;
+import com.app.models.UserAlbum;
+import com.app.models.UserArtist;
+import com.app.models.UserSong;
 import com.app.repo.UserRepository;
 import com.app.services.AddService;
 import com.app.services.UserService;
@@ -60,7 +63,7 @@ public class UserController {
 	@GetMapping("/added-songs/{userId}")
 	public ResponseEntity<?> getAddedSongsById(@PathVariable String userId) {
 		try {
-			List<Song> songs = addService.addedSongs(userId);
+			List<UserSong> songs = addService.addedSongs(userId);
 			return ResponseEntity.ok(songs);
 		}
 		catch (CustomException e) {
@@ -72,7 +75,7 @@ public class UserController {
 	public ResponseEntity<?> getAddedAlbumsById(@PathVariable String userId) {
 		
 		try {
-			List<Album> albums = addService.addedAlbums(userId);
+			List<UserAlbum> albums = addService.addedAlbums(userId);
 			return ResponseEntity.ok(albums);
 
 		}catch (CustomException e) {
@@ -85,7 +88,7 @@ public class UserController {
 	public ResponseEntity<?> getAddedArtistsById(@PathVariable String userId) {
 		
 		try {
-			List<Artist> artists = addService.addedArtists(userId);
+			List<UserArtist> artists = addService.addedArtists(userId);
 			return ResponseEntity.ok(artists);
 
 		}catch (CustomException e) {

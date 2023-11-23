@@ -65,8 +65,9 @@ function ImportSingleSong() {
 
 
     return (
-        
-        <form className="single-song-add" onSubmit={handleSubmit}>
+
+        <div className="song-add-page">
+ <form className="single-song-add" onSubmit={handleSubmit}>
         {/* First row */}
         <div className="form-row">
           <label className="single-song-add-label">Song Name:</label>
@@ -153,6 +154,9 @@ function ImportSingleSong() {
         </button>
       </form>
 
+        </div>
+        
+       
 
     );
   }

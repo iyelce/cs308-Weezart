@@ -1,8 +1,11 @@
 .importPage{
     background-color: #222;
     height: 100vh;
+    background:url(C:\Users\Pc\cs308-Weezart\weezart_web\src\5c3d75b71be137cbf5203ee866c9add4.png);
    
 }
+
+
 
 
 .single-song-add {
@@ -119,3 +122,52 @@
   .date-picker__day:hover {
     background-color: #777;
   }
+
+
+  
+
+  /* SpotifySearch.css or your preferred CSS file */
+
+.spotify-search-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .input-row {
+    margin-bottom: 15px;
+  }
+  
+  .input-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #fff;
+  }
+  
+  .input-text {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #666;
+    border-radius: 4px;
+    background-color: #444;
+    color: #fff;
+  }
+  
+  .search-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .search-button:hover {
+    background-color: #45a049;
+  }
+  

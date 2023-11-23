@@ -1,5 +1,6 @@
 import React from "react";
 import ImportSingleSong from "./ImportSingleSong";
+import AddSongSearch from "./AddSongSearch";
 
 function ImportsongPage() {
   
@@ -7,6 +8,8 @@ function ImportsongPage() {
     return (
         <div className="importPage">
 
+            <AddSongSearch/>
+            
             <ImportSingleSong/>
         </div>
 

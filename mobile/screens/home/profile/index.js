@@ -34,100 +34,93 @@ const ListItem = ({ item }) => {
 export default Profile = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <View
-        style={{
-          width: "100%",
-        }}
-      >
-        <Image
-          source={require("./../../../assets/icons/wallpaper.png")}
-          resizeMode="cover"
-          style={{
-            height: 200,
-            width: "100%",
-            opacity: 0.5,
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20,
-          }}
-        />
-      </View>
-      <View style={{ flex: 1, alignItems: "center" }}>
-        <Image
-          source={require("./../../../assets/icons/pp3.png")}
-          resizeMode="contain"
-          style={{
-            height: 115,
-            width: 115,
-            borderRadius: 999,
-            borderWidth: 2,
-            marginTop: -90,
-          }}
-        />
-        <Text
-          style={{
-            color: "black",
-            marginVertical: 8,
-            fontSize: 20,
-            fontWeight: "bold",
-          }}
-        >
-          Raman Afravi
-        </Text>
-        <View
-          style={{
-            paddingVertical: 8,
-            flexDirection: "row",
-          }}
-        >
+      <View style={{ flex: 1 }}>
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            source={require("./../../../assets/icons/pp3.png")}
+            resizeMode="contain"
+            style={{
+              height: 115,
+              width: 115,
+              borderRadius: 999,
+              borderWidth: 2,
+              marginTop: 30,
+              marginLeft: 20,
+            }}
+          />
           <View
             style={{
-              flexDirection: "column",
+              marginTop: 30,
               alignItems: "center",
-              marginHorizontal: 10,
             }}
           >
             <Text
               style={{
-                color: "gray",
-                fontSize: 18,
+                color: "black",
+                marginVertical: 8,
+                fontSize: 20,
                 fontWeight: "bold",
               }}
             >
-              385
+              Raman Afravi
             </Text>
-            <Text
+            <View
               style={{
-                color: "black",
-                fontSize: 16,
+                paddingVertical: 8,
+                flexDirection: "row",
               }}
             >
-              Following
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "column",
-              alignItems: "center",
-              marginHorizontal: 10,
-            }}
-          >
-            <Text
-              style={{
-                color: "gray",
-                fontSize: 18,
-                fontWeight: "bold",
-              }}
-            >
-              1,7K
-            </Text>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 16,
-              }}
-            >
-              Followers
-            </Text>
+              <View
+                style={{
+                  flexDirection: "column",
+                  alignItems: "center",
+                  marginHorizontal: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "gray",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                >
+                  385
+                </Text>
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 16,
+                  }}
+                >
+                  Following
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "column",
+                  alignItems: "center",
+                  marginHorizontal: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "gray",
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                >
+                  1,7K
+                </Text>
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 16,
+                  }}
+                >
+                  Followers
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
 

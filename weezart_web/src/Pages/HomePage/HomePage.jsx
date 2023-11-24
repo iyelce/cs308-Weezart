@@ -9,10 +9,7 @@ const HomePage = () => {
     
     <div className="homepage">
 
-      <div className="homepage-sidebar">
-        Sidebar
-      </div>
-
+    
       <div className="homepage-content">
         <div className="homepage-intro-img">
           <span>

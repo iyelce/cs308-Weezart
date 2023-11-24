@@ -13,11 +13,14 @@ import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import MicIcon from '@mui/icons-material/Mic';
 import AlbumIcon from '@mui/icons-material/Album';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from "react-router-dom";
 
 const LOGO = require('../../weezart-removebg-preview.png');
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
-    const theme = useTheme();
+const navigate=useNavigate();
+const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
     <MenuItem
@@ -34,12 +37,11 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-const SideBar = () => {
+const SideBar = (...props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-
   return (
     <Container>
       <Box
@@ -106,12 +108,12 @@ const SideBar = () => {
               </Box> */}
                 <Box textAlign="center">
                   <Typography
-                    variant="h2"
+                    variant="h3"
                     color={colors.grey[100]}
-                    fontWeight="bold"
+
                     sx={{ m: "10px 0 0 0" }}
                   >
-                    User Name
+                   {props[0].username}
                   </Typography>
                   <Typography variant="h5" color={colors.greenAccent[500]}>
                     Welcome
@@ -132,7 +134,7 @@ const SideBar = () => {
          
               <Item
                 title="Home"
-                to="/team"
+                to="/HomePage"
                 icon={<HomeOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
@@ -146,10 +148,10 @@ const SideBar = () => {
             /> */}
               <Item
                 title="Search"
-                to="/invoices"
                 icon={<SearchIcon />}
                 selected={selected}
                 setSelected={setSelected}
+                onclick={()=>navigate('search')}
               />
               <SubMenu label='Library' icon={<LibraryMusicIcon/>}>
                 <Item
@@ -186,6 +188,14 @@ const SideBar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
+               <Item
+                title="Logout"
+                to="/faq"
+                icon={<LogoutIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            
             
 
               {/* <Typography

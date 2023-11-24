@@ -1,9 +1,7 @@
 .importPage{
     background-color: #222;
-    margin: 0;
-    padding: 0;
-    background-image: url('../../5c3d75b71be137cbf5203ee866c9add4.png');
-    
+    height: 100vh;
+    background-image:url('../../5c3d75b71be137cbf5203ee866c9add4.png');
 }
 
 .importPage > p {

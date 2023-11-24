@@ -83,16 +83,18 @@ function App() {
       <div style={{ display: isLoggedin ? 'flex' : 'block' }} id="root">
         <Sidebar username={username} isLoggedin={isLoggedin} userId={userId} logoutFunc={logoutFunc} />
 
-        <Routes>
-          <Route path='/'>
-            <Route index element={<Login changeUserInfo={changeUserInfo} storeToken={storeToken} />} />
-            <Route path='home' element={<HomePage />} />
-            <Route path='signup' element={<SignUp />} />
-            <Route path='search' element={<Search />} />
-            <Route path='import' element={<ImportsongPage />} />
-            <Route path='*' element={<Error />} />
-          </Route>
-        </Routes>
+        <div style={{ flex: 1, padding: '20px', boxSizing: 'border-box' }}>
+          <Routes>
+            <Route path='/'>
+              <Route index element={<Login changeUserInfo={changeUserInfo} storeToken={storeToken} />} />
+              <Route path='home' element={<HomePage />} />
+              <Route path='signup' element={<SignUp />} />
+              <Route path='search' element={<Search />} />
+              <Route path='import' element={<ImportsongPage />} />
+              <Route path='*' element={<Error />} />
+            </Route>
+          </Routes>
+        </div>
       </div>
     </BrowserRouter>
     

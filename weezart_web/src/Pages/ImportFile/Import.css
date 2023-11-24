@@ -13,7 +13,7 @@
   }
 
 
-.single-song-add {
+.single-song-add{
     display: flex;
     flex-direction: column;
     max-width: 80rem;
@@ -134,7 +134,7 @@
   /* SpotifySearch.css or your preferred CSS file */
 
 .spotify-search-container {
-    max-width: 400px;
+    max-width: 40rem;
     margin: auto;
     padding: 20px;
     background-color: #333;
@@ -162,7 +162,7 @@
   }
   
   .search-button {
-    width: 100%;
+    width: 40%;
     padding: 10px;
     border: none;
     border-radius: 4px;

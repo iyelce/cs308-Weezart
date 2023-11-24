@@ -15,6 +15,10 @@ aside.ps-sidebar-root.css-1wvake5{
     height:100%;
 }
 
-#root{
+.flex-container {
     display: flex;
-}
+  }
+  
+  .block-container {
+    display: block;
+  }

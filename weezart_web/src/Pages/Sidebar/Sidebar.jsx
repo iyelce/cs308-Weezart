@@ -9,41 +9,25 @@ import SearchIcon from '@mui/icons-material/Search';
 import InsightsIcon from '@mui/icons-material/Insights';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
-import MusicNoteIcon from '@mui/icons-material/MusicNote';
-import MicIcon from '@mui/icons-material/Mic';
-import AlbumIcon from '@mui/icons-material/Album';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router-dom";
 
 const LOGO = require('../../weezart-removebg-preview.png');
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
-const navigate=useNavigate();
-const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  return (
-    <MenuItem
-      active={selected === title}
-      style={{
-        color: colors.grey[100],
-      }}
-      onClick={() => setSelected(title)}
-      icon={icon}
-    >
-      <Typography>{title}</Typography>
 
-    </MenuItem>
-  );
-};
+// username= {username} isLoggedin={isLoggedin} userId={userId} logoutFunc={logoutFunc}
 
-const SideBar = (...props) => {
+const SideBar = ({...props}) => {
+
+  const hideNavbar = !props.isLoggedin;
+
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selected, setSelected] = useState("Dashboard");
   return (
-    <Container>
+   <div hidden={hideNavbar}>
+     <Container>
       <Box
         className="sideBar"
         sx={{
@@ -97,15 +81,6 @@ const SideBar = (...props) => {
 
             {!isCollapsed && (
               <Box mb="25px">
-                {/* <Box display="flex" justifyContent="center" alignItems="center">
-                <img
-                  alt="profile-user"
-                  width="100px"
-                  height="100px"
-                  src={`../../assets/user.png`}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
-                />
-              </Box> */}
                 <Box textAlign="center">
                   <Typography
                     variant="h3"
@@ -113,7 +88,7 @@ const SideBar = (...props) => {
 
                     sx={{ m: "10px 0 0 0" }}
                   >
-                   {props[0].username}
+                   {props.username}
                   </Typography>
                   <Typography variant="h5" color={colors.greenAccent[500]}>
                     Welcome
@@ -123,37 +98,38 @@ const SideBar = (...props) => {
             )}
 
             <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-              {/* <Item
-              title="Dashboard"
-              to="/"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
 
-         
-              <Item
-                title="Home"
-                to="/HomePage"
+              <MenuItem
+                active={true}
+                style={{
+                  color: colors.grey[100],
+                }}
+                onClick={() => {
+                  navigate("home")
+                }}
                 icon={<HomeOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              {/* <Item
-              title="Contacts Information"
-              to="/contacts"
-              icon={<ContactsOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
-              <Item
-                title="Search"
+              >
+                <Typography>{"Home"}</Typography>
+
+              </MenuItem>
+
+
+              <MenuItem
+                active={true}
+                style={{
+                  color: colors.grey[100],
+                }}
+                onClick={() => {
+                  navigate("search")
+                }}
                 icon={<SearchIcon />}
-                selected={selected}
-                setSelected={setSelected}
-                onclick={()=>navigate('search')}
-              />
-              <SubMenu label='Library' icon={<LibraryMusicIcon/>}>
+              >
+                <Typography>{"Search"}</Typography>
+
+              </MenuItem>
+
+
+              {/* <SubMenu label='Library' icon={<LibraryMusicIcon/>}>
                 <Item
                 title="Songs"
                 icon={<MusicNoteIcon/>}></Item>
@@ -164,80 +140,70 @@ const SideBar = (...props) => {
                 title="Artist"
                 icon={<MicIcon/>}></Item>
 
-              </SubMenu>
-              
-              
-              <Item
-                title="Analyze"
-                to="/form"
-                icon={<InsightsIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Add Song"
-                to="/calendar"
-                icon={<AddCircleOutlineIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Export Songs"
-                to="/faq"
-                icon={<FileDownloadIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-               <Item
-                title="Logout"
-                to="/faq"
-                icon={<LogoutIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            
-            
+              </SubMenu> */}
 
-              {/* <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Charts
-            </Typography>
-            <Item
-              title="Bar Chart"
-              to="/bar"
-              icon={<BarChartOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Pie Chart"
-              to="/pie"
-              icon={<PieChartOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Line Chart"
-              to="/line"
-              icon={<TimelineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
-              {/* <Item
-              title="Geography Chart"
-              to="/geography"
-              icon={<MapOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
+              <MenuItem
+                active={true}
+                style={{
+                  color: colors.grey[100],
+                }}
+                onClick={() => {
+                  alert("clicked analyze")
+                }}
+                icon={<InsightsIcon />}
+              >
+                <Typography>{"Analyze"}</Typography>
+
+              </MenuItem>
+
+
+              <MenuItem
+                active={true}
+                style={{
+                  color: colors.grey[100],
+                }}
+                onClick={() => {navigate("import")}}
+                icon={<AddCircleOutlineIcon />}
+              >
+                <Typography>{"Add Song"}</Typography>
+
+              </MenuItem>
+
+              <MenuItem
+                active={true}
+                style={{
+                  color: colors.grey[100],
+                }}
+                onClick={() => {alert("clicked on export")}}
+                icon={<FileDownloadIcon />}
+              >
+                <Typography>{"Export Songs"}</Typography>
+
+              </MenuItem>
+
+              <MenuItem
+                active={true}
+                style={{
+                  color: colors.grey[100],
+                }}
+                onClick={() =>  {
+                  console.log("bastı")
+                  props.logoutFunc();
+                  navigate("/");
+                } }
+                icon={<LogoutIcon />}
+              >
+                <Typography>{"Logout"}</Typography>
+
+              </MenuItem>
+
+
             </Box>
           </Menu>
         </Sidebar>
       </Box>
     </Container>
+   </div>
   );
 };
 

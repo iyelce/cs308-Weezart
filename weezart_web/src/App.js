@@ -3,13 +3,11 @@ import { useState, useEffect } from 'react';
 import HomePage from './Pages/HomePage/HomePage'
 import Login from './Pages/Authentication/Login';
 import Error from './Pages/Error';
-import Layout from './Pages/Layout';
 import SignUp from './Pages/Authentication/SignUp';
 import Search from './Pages/Search/Search';
 import './App.css';
-import ImportsongPage from './Pages/ImportFile/ImportsongPage.jsx';
 import Sidebar from './Pages/Sidebar/Sidebar.jsx';
-
+import AddSong from './Pages/ImportFile/AddSong.jsx';
 
 
 function App() {
@@ -90,7 +88,7 @@ function App() {
               <Route path='home' element={<HomePage />} />
               <Route path='signup' element={<SignUp />} />
               <Route path='search' element={<Search />} />
-              <Route path='import' element={<ImportsongPage />} />
+              <Route path='import' element={<AddSong/>} />
               <Route path='*' element={<Error />} />
             </Route>
           </Routes>

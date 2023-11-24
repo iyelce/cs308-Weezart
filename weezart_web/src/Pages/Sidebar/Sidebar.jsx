@@ -128,7 +128,6 @@ const SideBar = ({...props}) => {
 
               </MenuItem>
 
-
               {/* <SubMenu label='Library' icon={<LibraryMusicIcon/>}>
                 <Item
                 title="Songs"
@@ -156,18 +155,30 @@ const SideBar = ({...props}) => {
 
               </MenuItem>
 
+              <SubMenu label='Add Song' icon={<AddCircleOutlineIcon />}>
+                <MenuItem
+                  active={true}
+                  style={{
+                    color: colors.grey[100],
+                  }}
+                  onClick={() => {navigate("import")}}
+                  icon={<AddCircleOutlineIcon />}
+                >
+                  <Typography>{"Add Song"}</Typography>
+                </MenuItem>
 
-              <MenuItem
-                active={true}
-                style={{
-                  color: colors.grey[100],
-                }}
-                onClick={() => {navigate("import")}}
-                icon={<AddCircleOutlineIcon />}
-              >
-                <Typography>{"Add Song"}</Typography>
+                <MenuItem
+                  active={true}
+                  style={{
+                    color: colors.grey[100],
+                  }}
+                  onClick={() => {alert("clicked import song")}}
+                  icon={<AddCircleOutlineIcon />}
+                >
+                  <Typography>{"Import Song File"}</Typography>
+                </MenuItem>
 
-              </MenuItem>
+              </SubMenu>
 
               <MenuItem
                 active={true}

@@ -1,7 +1,8 @@
 .importPage{
     background-color: #222;
     height: 100vh;
-    background-image:url('../../5c3d75b71be137cbf5203ee866c9add4.png');
+    background-image:url('../../add_page.png');
+    background-size: cover;
 }
 
 .importPage > p {
@@ -10,15 +11,24 @@
     margin: 10px 0;
   }
 
+.song-add-page{
+    height: 100vh;
+    position: relative;
+}
 
-.single-song-add{
+  .single-song-add {
     display: flex;
     flex-direction: column;
-    max-width: 80rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    height: 75%;
     margin: auto;
     padding: 20px;
-    background-color: #333;
-    border-radius: 10px;
+    background-color: rgba(26, 23, 33, 0.9);
+    border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
@@ -190,3 +200,32 @@
   .spotify-text {
     color: #45a049;
   }
+
+
+.column{
+    display: flex;
+    flex-direction: row;
+}
+
+.spotify-add-table {
+    width: 40rem;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    color: #B9B4C7;
+    background-color: #352F44;
+    border-radius: 0.25rem;
+    border: 1px solid #1a1721;
+    margin-left: 300px;
+  }
+
+.spotify-add-table th,
+.spotify-add-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #1a1721;
+}
+
+.spotify-add-table th {
+  background-color: #1a1721;
+  border-top: 1px solid #1a1721;
+}

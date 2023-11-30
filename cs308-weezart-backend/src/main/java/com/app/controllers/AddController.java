@@ -149,6 +149,10 @@ public class AddController {
 
 				artistRepo.save(current);
 
+				ArtistPayload artistPay = new ArtistPayload(current);
+
+				addService.relateUserArtist(artistPay, userId);
+
 			} else {
 				newList.add(artistRepo.findByName(artistName).getId());
 			}
@@ -182,9 +186,7 @@ public class AddController {
 
 			albumRepo.save(album);
 
-			AlbumPayload albumPayload = new AlbumPayload(album.getId(), album.getName(), null, album.getReleaseDate(),
-					album.getNumberOfTracks(), album.getArtistsName(), album.getArtistsId(), album.getSongsName(),
-					album.getSongsId());
+			AlbumPayload albumPayload = new AlbumPayload(album);
 
 			addService.relateUserAlbum(albumPayload, userId);
 
@@ -208,14 +210,7 @@ public class AddController {
 
 		songRepo.save(givenSong);
 
-		User givenUser = new User(Long.parseLong(userId));
-
-		UserSong userSong = new UserSong();
-
-		userSong.setUser(givenUser);
-		userSong.setSong(givenSong);
-
-		return ResponseEntity.ok(userSongRepo.save(userSong));
+		return ResponseEntity.ok(addService.relateUserSong(songPayload, userId));
 
 	}
 

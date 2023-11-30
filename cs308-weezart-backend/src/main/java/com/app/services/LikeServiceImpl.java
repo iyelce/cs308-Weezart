@@ -38,7 +38,7 @@ public class LikeServiceImpl implements LikeService {
 	@Transactional
 	public UserSong relateLikeSong(SongPayload song, String userID) {
 		
-		Song givenSong = new Song(song.getId(), song.getAlbumImage(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
+		Song givenSong = new Song(song.getId(), song.getAlbumImageURL(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
 				song.getDuration_ms(), song.isExplicit(), song.getAlbumRelease());
 		
 		User givenUser = new User(Long.parseLong(userID));

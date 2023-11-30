@@ -27,10 +27,10 @@ public class SongPayload {
 				+ ", popularity=" + popularity + ", duration_ms=" + duration_ms + ", explicit=" + explicit
 				+ ", albumRelease=" + albumRelease + "]";
 	}
-	public String getAlbumImage() {
+	public String getAlbumImageURL() {
 		return albumImageURL;
 	}
-	public void setAlbumImage(String albumImage) {
+	public void setAlbumImageURL(String albumImage) {
 		this.albumImageURL = albumImage;
 	}
 

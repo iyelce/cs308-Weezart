@@ -62,7 +62,7 @@ public class AddServiceImpl implements AddService{
     // TODO: spotify checkleme yapilacak
 	public Song addSong(SongPayload song) {
 		
-		Song givenSong = new Song(song.getId(), song.getAlbumImage(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
+		Song givenSong = new Song(song.getId(), song.getAlbumImageURL(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
 				song.getDuration_ms(), song.isExplicit(), song.getAlbumRelease());
 		
 		log.info("eklemeden önce var mı diye bakıyorum");
@@ -79,7 +79,7 @@ public class AddServiceImpl implements AddService{
 		
 		UserSong userSong = new UserSong();
 		
-		Song givenSong = new Song(song.getId(), song.getAlbumImage(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
+		Song givenSong = new Song(song.getId(), song.getAlbumImageURL(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
 				song.getDuration_ms(), song.isExplicit(), song.getAlbumRelease());
 		
 		userSong.setSong(givenSong);

@@ -49,7 +49,7 @@ public class Song {
 
 	public Song(SongPayload songPayload) {
         this.id = songPayload.getId();
-        this.albumImageURL = songPayload.getAlbumImage();
+        this.albumImageURL = songPayload.getAlbumImageURL();
         this.name = songPayload.getName();
         this.albumName = songPayload.getAlbumName();
         this.albumId = songPayload.getAlbumId();

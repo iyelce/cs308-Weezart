@@ -201,7 +201,7 @@ public class AddController {
 
 		songPayload.setPopularity(-1);
 
-		Song givenSong = new Song(songPayload.getId(), songPayload.getAlbumImage(), songPayload.getName(), songPayload.getAlbumName(),
+		Song givenSong = new Song(songPayload.getId(), songPayload.getAlbumImageURL(), songPayload.getName(), songPayload.getAlbumName(),
 				songPayload.getAlbumId(), songPayload.getArtistsName(), songPayload.getArtistsId(),
 				songPayload.getPopularity(), songPayload.getDuration_ms(), songPayload.isExplicit(),
 				songPayload.getAlbumRelease());

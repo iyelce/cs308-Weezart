@@ -43,7 +43,7 @@ public class RateServiceImpl implements RateService{
 	@Transactional 
 	public UserSong relateRateSong(SongPayload song, String userID, int rating) {
 
-		Song givenSong = new Song(song.getId(), song.getAlbumImage(), song.getName(), song.getAlbumName(),
+		Song givenSong = new Song(song.getId(), song.getAlbumImageURL(), song.getName(), song.getAlbumName(),
 				song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
 				song.getDuration_ms(), song.isExplicit(), song.getAlbumRelease());
 		

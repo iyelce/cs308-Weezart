@@ -62,7 +62,7 @@ public class AddServiceImpl implements AddService{
     // TODO: spotify checkleme yapilacak
 	public Song addSong(SongPayload song) {
 		
-		Song givenSong = new Song(song.getId(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
+		Song givenSong = new Song(song.getId(), song.getAlbumImage(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
 				song.getDuration_ms(), song.isExplicit(), song.getAlbumRelease());
 		
 		log.info("eklemeden önce var mı diye bakıyorum");
@@ -79,7 +79,7 @@ public class AddServiceImpl implements AddService{
 		
 		UserSong userSong = new UserSong();
 		
-		Song givenSong = new Song(song.getId(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
+		Song givenSong = new Song(song.getId(), song.getAlbumImage(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
 				song.getDuration_ms(), song.isExplicit(), song.getAlbumRelease());
 		
 		userSong.setSong(givenSong);
@@ -128,7 +128,7 @@ public class AddServiceImpl implements AddService{
 		userArtist.setAddTime(getCurrentDateTimeAsString());
 		
 		if(userArtistRepo.findByArtistAndUser(givenArtist, givenUser) != null) {
-			throw new CustomException("Artist is already added");
+			return userArtist;
 		}
 		
 		return userArtistRepo.save(userArtist);
@@ -143,7 +143,7 @@ public class AddServiceImpl implements AddService{
 		if(albumRepo.findByid(album.getId()) == null) {
 			return albumRepo.save(givenAlbum);
 		}
-		else return null;
+		else return givenAlbum;
 	}
 	
 	// make a relation between user and added album
@@ -163,7 +163,7 @@ public class AddServiceImpl implements AddService{
 		userAlbum.setAddTime(getCurrentDateTimeAsString());
 		
 		if(userAlbumRepo.findByAlbumAndUser(givenAlbum, givenUser) != null) {
-			throw new CustomException("Album is already added");
+			return userAlbum;
 		}
 		
 		return userAlbumRepo.save(userAlbum);

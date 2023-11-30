@@ -9,6 +9,13 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "artists")
 public class Artist {
+	@Id
+	String id;
+	String name;
+	List<String> genres;
+	String imageUrl;
+	int followerCount;
+	
 	
 	public Artist(String name, List<String> genres, String imageUrl, int followerCount, String id) {
 		super();
@@ -25,14 +32,6 @@ public class Artist {
 		super();
 	}
 
-
-
-	@Id
-	String id;
-	String name;
-	List<String> genres;
-	String imageUrl;
-	int followerCount;
 	public String getName() {
 		return name;
 	}

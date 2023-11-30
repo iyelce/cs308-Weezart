@@ -7,6 +7,7 @@ public class SongPayload {
 	String name; 
 	String albumName; 
 	String albumId;
+	String albumImageURL;
 	List<String> artistsName;
 	List<String> artistsId;
 	int popularity; 
@@ -14,6 +15,21 @@ public class SongPayload {
 	boolean explicit;
 	String albumRelease;
 	
+	
+	
+	@Override
+	public String toString() {
+		return "SongPayload [id=" + id + ", name=" + name + ", albumName=" + albumName + ", albumId=" + albumId
+				+ ", albumImageURL=" + albumImageURL + ", artistsName=" + artistsName + ", artistsId=" + artistsId
+				+ ", popularity=" + popularity + ", duration_ms=" + duration_ms + ", explicit=" + explicit
+				+ ", albumRelease=" + albumRelease + "]";
+	}
+	public String getAlbumImage() {
+		return albumImageURL;
+	}
+	public void setAlbumImage(String albumImage) {
+		this.albumImageURL = albumImage;
+	}
 	public String getAlbumRelease() {
 		return albumRelease;
 	}

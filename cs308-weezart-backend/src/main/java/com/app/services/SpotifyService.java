@@ -47,6 +47,7 @@ public class SpotifyService {
 		// Process the JSON response and extract artists
 		List<Artist> artists = spotifySearchResponse.artistJsonParser(responseEntity.getBody());
 
+		log.info("artist döndümmmmmm");
 		return artists;
 	}
 

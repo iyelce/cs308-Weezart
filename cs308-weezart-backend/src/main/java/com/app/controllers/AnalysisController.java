@@ -33,4 +33,9 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisReleaseDateManual(userId, dateRange.getStartDate(), dateRange.getEndDate()));
 	}
 	
+	@GetMapping("/song/genre/{genre}/{userId}")
+	public ResponseEntity<List<Song>> genreAnalysisController(@PathVariable String genre, @PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisGenreManual(userId, genre));
+	}
+	
 }

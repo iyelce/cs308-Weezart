@@ -13,9 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.app.controllers.AuthenticationController;
+import com.app.models.Artist;
 import com.app.models.Song;
 import com.app.models.User;
 import com.app.models.UserSong;
+import com.app.repo.ArtistRepository;
 import com.app.repo.UserRepository;
 import com.app.repo.UserSongRepository;
 
@@ -37,6 +39,9 @@ public class AnalysisServiceImpl implements AnalysisService{
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired 
+	private ArtistRepository artistRepo;
 	
 	
 	
@@ -80,5 +85,61 @@ public class AnalysisServiceImpl implements AnalysisService{
     	
     	log.info("analizin sonuna geldiiik");
     	return top2Songs;
+    }
+    
+    
+    public List<Song> analysisGenreManual(String userId, String genre){
+    	User user = userRepo.findByiduser(Long.parseLong(userId));
+    	List<UserSong> userSongs = userSongRepo.findAllByUser(user);
+    	List<Song> filteredSongs = new ArrayList<>();
+    	for (UserSong userSong : userSongs) {
+    		if(userSong.getSong().getPopularity()!=-1) {
+	    		boolean genreFound = false;
+	    		Song song = userSong.getSong();
+	    		List<String> artistsId = song.getArtistsId();
+	    		
+	    		for (String artistId : artistsId) {
+	    			log.info(artistId);
+	    			Artist givenArtist = artistRepo.findByid(artistId);
+	    			log.info("2. analizin sonuna geldiiik");
+	    			List<String> genresList = givenArtist.getGenres();
+	    			log.info(genre);
+	    			if (genresList.contains(genre)) {
+	    				genreFound = true;
+	    				break;
+	    			}
+	    		}
+	    		
+	    		if (genreFound == true) {
+	    			log.info("boola girdi");
+	    			filteredSongs.add(song);
+	    		}
+    		}
+    	}
+    	
+    	filteredSongs.sort((song1, song2) -> {
+    	    List<Integer> ratings1 = userSongRepo.findBySongAndUser(song1, user).getRating();
+    	    List<Integer> ratings2 = userSongRepo.findBySongAndUser(song2, user).getRating();
+
+    	    int lastRating1 = ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
+    	    int lastRating2 = ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
+
+    	    // Sort in descending order
+    	    return Integer.compare(lastRating2, lastRating1);
+    	});
+
+        // Take the top 5 songs
+        List<Song> top2Songs = filteredSongs.size() > 5 ? filteredSongs.subList(0, 5) : filteredSongs;
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	log.info("2. analizin sonuna geldiiik");
+    	return top2Songs;
+    	
+    	
     }
 }

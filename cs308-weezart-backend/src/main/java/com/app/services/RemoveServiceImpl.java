@@ -38,7 +38,7 @@ public class RemoveServiceImpl implements RemoveService{
 
 	
 	public void removeSong(SongPayload song, String userId) {
-		Song givenSong = new Song(song.getId(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
+		Song givenSong = new Song(song.getId(), song.getAlbumImageURL(), song.getName(), song.getAlbumName(), song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
 				song.getDuration_ms(), song.isExplicit(), song.getAlbumRelease());
 		
 		User givenUser = new User(Long.parseLong(userId));

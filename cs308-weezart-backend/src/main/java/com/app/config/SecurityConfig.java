@@ -1,5 +1,5 @@
 // security configuration
-package com.app.security;
+package com.app.config;
 
 
 import org.slf4j.Logger;

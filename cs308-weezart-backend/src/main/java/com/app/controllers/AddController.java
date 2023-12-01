@@ -75,49 +75,47 @@ public class AddController {
 	public ResponseEntity<?> maybeBaby(@RequestBody SongPayload songPayload, @PathVariable String userId)
 			throws JsonMappingException, JsonProcessingException {
 
-		Song didYouMeanSong = new Song(songPayload.getId(), songPayload.getName(), songPayload.getAlbumName(),
-				songPayload.getAlbumId(), songPayload.getArtistsName(), songPayload.getArtistsId(),
-				songPayload.getPopularity(), songPayload.getDuration_ms(), songPayload.isExplicit(),
-				songPayload.getAlbumRelease());
-
-		if (songRepo.findByid(didYouMeanSong.getId()) == null) {
-			songRepo.save(didYouMeanSong);
-		}
-
-		for (String artistName : didYouMeanSong.getArtistsName()) {
-			log.info("artist kaydedecem-----" + artistName);
-
-			Artist artist = spotifyService.artistSearch(artistName, spotifyAuth.authenticateWithSpotify()).get(0);
-
-			artistRepo.save(artist);
-			ArtistPayload artistPayload = new ArtistPayload(artist);
-
-			addService.relateUserArtist(artistPayload, userId);
-
-		}
-
-		log.info("album kaydedecem-------" + didYouMeanSong.getAlbumName());
-		Album album = spotifyService.albumSearch(didYouMeanSong.getAlbumName() + " " + didYouMeanSong.getName(),
-				spotifyAuth.authenticateWithSpotify()).get(0);
-		albumRepo.save(album);
-
-		AlbumPayload albumPayload = new AlbumPayload(album);
-		addService.relateUserAlbum(albumPayload, userId);
-
-		User givenUser = new User(Long.parseLong(userId));
-
-		UserSong userSong = new UserSong();
-		userSong.setSong(didYouMeanSong);
-		userSong.setUser(givenUser);
-
-		if (userSongRepo.findBySongAndUser(didYouMeanSong, givenUser) == null) {
-			userSongRepo.save(userSong);
+		try {
+			Song didYouMeanSong = new Song(songPayload);
+			
+			log.info("song id:_____" + didYouMeanSong.getId());
+			
+			log.info(songPayload.toString());
+	
+			if (songRepo.findByid(didYouMeanSong.getId()) == null) {
+				songRepo.save(didYouMeanSong);
+			}
+			UserSong userSong = addService.relateUserSong(songPayload, userId);
+	
+			for (String artistName : didYouMeanSong.getArtistsName()) {
+				log.info("artist kaydedecem-----" + artistName);
+	
+				Artist artist = spotifyService.artistSearch(artistName, spotifyAuth.authenticateWithSpotify()).get(0);
+	
+				log.info("artist kaydediyooommmmmm");
+				artistRepo.save(artist);
+				log.info("artist kayedttiimm");
+				ArtistPayload artistPayload = new ArtistPayload(artist);
+	
+				addService.relateUserArtist(artistPayload, userId);
+	
+			}
+	
+			log.info("album kaydedecem-------" + didYouMeanSong.getAlbumName());
+			Album album = spotifyService.albumSearch(didYouMeanSong.getAlbumName() + " " + didYouMeanSong.getName(),
+					spotifyAuth.authenticateWithSpotify()).get(0);
+			albumRepo.save(album);
+	
+			AlbumPayload albumPayload = new AlbumPayload(album);
+			addService.relateUserAlbum(albumPayload, userId);
 			return ResponseEntity.ok("SONG_SAVED");
-		} else {
+
+		} catch(CustomException e) {
 			String errorMessage = "SONG_ALREADY_EXISTS";
 			log.info(errorMessage);
 			return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
 		}
+
 	}
 
 	// note for analysis later: -1 population and -1 follower count means they are
@@ -148,6 +146,10 @@ public class AddController {
 				Artist current = new Artist(artistName, null, "", -1, "wzrtart_" + idGeneratorArt);
 
 				artistRepo.save(current);
+
+				ArtistPayload artistPay = new ArtistPayload(current);
+
+				addService.relateUserArtist(artistPay, userId);
 
 			} else {
 				newList.add(artistRepo.findByName(artistName).getId());
@@ -182,9 +184,7 @@ public class AddController {
 
 			albumRepo.save(album);
 
-			AlbumPayload albumPayload = new AlbumPayload(album.getId(), album.getName(), null, album.getReleaseDate(),
-					album.getNumberOfTracks(), album.getArtistsName(), album.getArtistsId(), album.getSongsName(),
-					album.getSongsId());
+			AlbumPayload albumPayload = new AlbumPayload(album);
 
 			addService.relateUserAlbum(albumPayload, userId);
 
@@ -201,21 +201,14 @@ public class AddController {
 
 		songPayload.setPopularity(-1);
 
-		Song givenSong = new Song(songPayload.getId(), songPayload.getName(), songPayload.getAlbumName(),
+		Song givenSong = new Song(songPayload.getId(), songPayload.getAlbumImageURL(), songPayload.getName(), songPayload.getAlbumName(),
 				songPayload.getAlbumId(), songPayload.getArtistsName(), songPayload.getArtistsId(),
 				songPayload.getPopularity(), songPayload.getDuration_ms(), songPayload.isExplicit(),
 				songPayload.getAlbumRelease());
 
 		songRepo.save(givenSong);
 
-		User givenUser = new User(Long.parseLong(userId));
-
-		UserSong userSong = new UserSong();
-
-		userSong.setUser(givenUser);
-		userSong.setSong(givenSong);
-
-		return ResponseEntity.ok(userSongRepo.save(userSong));
+		return ResponseEntity.ok(addService.relateUserSong(songPayload, userId));
 
 	}
 

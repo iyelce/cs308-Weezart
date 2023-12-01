@@ -123,7 +123,7 @@ public class SpotifySearchResponse {
 		
 		for(JsonNode item : itemsNode) {	
 			
-			String id = "", name = "", albumName = "", albumId = "", albumRelease = "";
+			String id = "", name = "", albumName = "", albumId = "", albumRelease = "", albumImage = "";
 			int popularity = 0, duration_ms = 0;
 			boolean explicit = false;
 			
@@ -146,6 +146,9 @@ public class SpotifySearchResponse {
 			
 			albumName = albumNode.get("name").asText();
 			
+			JsonNode imageNode = albumNode.get("images");
+			albumImage = imageNode.get(0).get("url").asText();
+			
 			albumRelease = albumNode.get("release_date").asText();
 			
 			JsonNode artistNode = item.get("artists");
@@ -155,7 +158,7 @@ public class SpotifySearchResponse {
 				artistsId.add(artists.get("id").asText());
 			}
 			
-			Song song = new Song(id, name, albumName, albumId, artistsName, artistsId, popularity, duration_ms, explicit, albumRelease);
+			Song song = new Song(id, albumImage, name, albumName, albumId, artistsName, artistsId, popularity, duration_ms, explicit, albumRelease);
 			songList.add(song);
 		}
 		

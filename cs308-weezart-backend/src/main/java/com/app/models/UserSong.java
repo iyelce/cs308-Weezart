@@ -16,30 +16,30 @@ import jakarta.persistence.Table;
 public class UserSong {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-    
-    @ManyToOne
-    @JoinColumn(name = "song_id")
-    private Song song;
-    
-    private String addTime;
-    
-    private boolean liked;
-    
-    private String likeTime;
-    
-    private List<Integer> rating;
-    
-    private List<String> ratingTime;
-    
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	@ManyToOne
+	@JoinColumn(name = "song_id")
+	private Song song;
+
+	private String addTime;
+
+	private boolean liked;
+
+	private String likeTime;
+
+	private List<Integer> rating;
+
+	private List<String> ratingTime;
+
 	public UserSong() {
 		super();
-		
+
 		rating = new ArrayList<>();
 		rating.add(0);
 	}
@@ -107,7 +107,5 @@ public class UserSong {
 	public void setRatingTime(List<String> ratingTime) {
 		this.ratingTime = ratingTime;
 	}
-	
-	
-	
+
 }

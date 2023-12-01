@@ -1,63 +1,44 @@
-package com.app.payloads;
+package com.app.models;
 
 import java.util.List;
 
-import com.app.models.External;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-public class SongPayload {
+@Entity
+@Table(name = "external")
+public class External {
+
+	@Id
 	String id;
 	String name;
 	String albumName;
 	String albumId;
-	String albumImageURL;
+	String albumRelease;
 	List<String> artistsName;
 	List<String> artistsId;
 	int popularity;
 	int duration_ms;
 	boolean explicit;
-	String albumRelease;
 
-	
-	
-	
-	@Override
-	public String toString() {
-		return "SongPayload [id=" + id + ", name=" + name + ", albumName=" + albumName + ", albumId=" + albumId
-				+ ", albumImageURL=" + albumImageURL + ", artistsName=" + artistsName + ", artistsId=" + artistsId
-				+ ", popularity=" + popularity + ", duration_ms=" + duration_ms + ", explicit=" + explicit
-				+ ", albumRelease=" + albumRelease + "]";
-	}
-	public String getAlbumImageURL() {
-		return albumImageURL;
-	}
-	public void setAlbumImageURL(String albumImage) {
-		this.albumImageURL = albumImage;
-	}
-
-	public SongPayload() {
+	public External() {
 		super();
 	}
 
-	public SongPayload(External e) {
-		this.id = e.getId();
-		this.name = e.getName();
-		this.albumName = e.getAlbumName();
-		this.albumId = e.getAlbumId();
-		this.artistsName = e.getArtistsName();
-		this.artistsId = e.getArtistsId();
-		this.popularity = e.getPopularity();
-		this.duration_ms = e.getDuration_ms();
-		this.explicit = e.isExplicit();
-		this.albumRelease = e.getAlbumRelease();
-	}
-
-
-	public String getAlbumRelease() {
-		return albumRelease;
-	}
-
-	public void setAlbumRelease(String albumRelease) {
+	public External(String id, String name, String albumName, String albumId, String albumRelease,
+			List<String> artistsName, List<String> artistsId, int popularity, int duration_ms, boolean explicit) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.albumName = albumName;
+		this.albumId = albumId;
 		this.albumRelease = albumRelease;
+		this.artistsName = artistsName;
+		this.artistsId = artistsId;
+		this.popularity = popularity;
+		this.duration_ms = duration_ms;
+		this.explicit = explicit;
 	}
 
 	public String getId() {
@@ -90,6 +71,14 @@ public class SongPayload {
 
 	public void setAlbumId(String albumId) {
 		this.albumId = albumId;
+	}
+
+	public String getAlbumRelease() {
+		return albumRelease;
+	}
+
+	public void setAlbumRelease(String albumRelease) {
+		this.albumRelease = albumRelease;
 	}
 
 	public List<String> getArtistsName() {
@@ -131,4 +120,5 @@ public class SongPayload {
 	public void setExplicit(boolean explicit) {
 		this.explicit = explicit;
 	}
+
 }

@@ -38,4 +38,11 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisGenreManual(userId, genre));
 	}
 	
+	@GetMapping("/song/last5Liked/{userId}")
+	public ResponseEntity<List<Song>> latest5AnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisLatest5Manual(userId));
+	}
+	
+	
+	
 }

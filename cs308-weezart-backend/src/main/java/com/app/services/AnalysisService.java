@@ -11,4 +11,5 @@ public interface AnalysisService {
 	//List<Song> analysisReleaseDate(String userId, String StartYear, String FinishYear);
 	List<Song> analysisReleaseDateManual(String userId, int StartYear, int FinishYear);
 	List<Song> analysisGenreManual(String userId, String genre);
+	List<Song> analysisLatest5Manual(String userId);
 }

@@ -61,7 +61,7 @@ public class RateServiceImpl implements RateService{
 		
 		currentSong.setRating(rates);
 		currentSong.setRatingTime(rateDates);
-		currentSong.setLikeTime(getCurrentDateTimeAsString());
+		//currentSong.setLikeTime(getCurrentDateTimeAsString());
 		
 		return userSongRepo.save(currentSong);
 	}
@@ -85,7 +85,7 @@ public class RateServiceImpl implements RateService{
 		
 		currentArtist.setRating(rates);
 		currentArtist.setRatingTime(rateDates);
-		currentArtist.setLikeTime(getCurrentDateTimeAsString());
+		//currentArtist.setLikeTime(getCurrentDateTimeAsString());
 		
 		return userArtistRepo.save(currentArtist);
 	}
@@ -112,7 +112,7 @@ public class RateServiceImpl implements RateService{
 		
 		currentAlbum.setRating(rates);
 		currentAlbum.setRatingTime(rateDates);
-		currentAlbum.setLikeTime(getCurrentDateTimeAsString());
+		//currentAlbum.setLikeTime(getCurrentDateTimeAsString());
 		
 		return userAlbumRepo.save(currentAlbum);
 	}

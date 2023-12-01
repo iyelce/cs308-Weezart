@@ -2,6 +2,7 @@ package com.app.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,6 +141,27 @@ public class AnalysisServiceImpl implements AnalysisService{
     	log.info("2. analizin sonuna geldiiik");
     	return top2Songs;
     	
+    	
+    }
+    
+    
+    public List<Song> analysisLatest5Manual(String userId){
+    	User user = userRepo.findByiduser(Long.parseLong(userId));
+    	List<UserSong> userSongs = userSongRepo.findAllByUser(user);
+    	List<Song> filteredSongs = new ArrayList<>();
+    	
+        List<UserSong> sortedUserSongs = userSongs.stream()
+                .sorted((us1, us2) -> us2.getLikeTime().compareTo(us1.getLikeTime()))
+                .collect(Collectors.toList());
+
+        // Extract Song objects from sortedUserSongs
+        List<Song> top5Songs = sortedUserSongs.stream()
+                .limit(5)
+                .map(UserSong::getSong)
+                .collect(Collectors.toList());
+
+        return top5Songs;
+    
     	
     }
 }

@@ -43,6 +43,9 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisLatest5Manual(userId));
 	}
 	
-	
+	@GetMapping("/song/top5Liked/{userId}")
+	public ResponseEntity<List<Song>> top5AnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisTop5Manual(userId));
+	}	
 	
 }

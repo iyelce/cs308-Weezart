@@ -164,4 +164,31 @@ public class AnalysisServiceImpl implements AnalysisService{
     
     	
     }
+    
+    
+    
+    public List<Song> analysisTop5Manual(String userId){
+    	User user = userRepo.findByiduser(Long.parseLong(userId));
+    	List<UserSong> userSongs = userSongRepo.findAllByUser(user);
+    	List<Song> filteredSongs = new ArrayList<>();
+    	
+    	for(UserSong userSong: userSongs) {
+    		Song song = userSong.getSong();
+    		filteredSongs.add(song);
+    	}
+   	
+    	
+    	filteredSongs.sort((song1, song2) -> {
+    	    List<Integer> ratings1 = userSongRepo.findBySongAndUser(song1, user).getRating();
+    	    List<Integer> ratings2 = userSongRepo.findBySongAndUser(song2, user).getRating();
+
+    	    int lastRating1 = ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
+    	    int lastRating2 = ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
+
+    	    // Sort in descending order
+    	    return Integer.compare(lastRating2, lastRating1);
+    	});
+    	List<Song> top2Songs = filteredSongs.size() > 5 ? filteredSongs.subList(0, 5) : filteredSongs;
+    	return top2Songs;
+    }
 }

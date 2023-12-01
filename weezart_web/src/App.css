@@ -3,12 +3,16 @@
 @import './Pages/Popups/Popup.css';
 @import './Pages/Sidebar/Sidebar.css';
 
-#root> .sc-bdfCDU.jAGuyT{
-    width:250px;
-}
 
-#root>.sc-bdfCDU.jAGuyT> .sideBar.MuiBox-root.css-jtrkzm{
+
+#root>:nth-child(1){
     height:100%;
+    display:flex;
+    width: 100%;
+
+}
+#root > div > div:nth-child(1) > div > div.sideBar{
+height:100%;
 }
 
 aside.ps-sidebar-root.css-1wvake5{
@@ -22,3 +26,18 @@ aside.ps-sidebar-root.css-1wvake5{
   .block-container {
     display: block;
   }
+
+
+
+/* For sidebar component hover effects */
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > div.MuiBox-root.css-1l8icbj > li > a > span {
+    color:#FFFFFF;
+  }
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > div.MuiBox-root.css-1l8icbj > li > a:hover span,
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > div.MuiBox-root.css-1l8icbj > li.ps-submenu-root>div>ul>li>a:hover span {
+    color:#620d79;
+  }
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > div.MuiBox-root.css-1l8icbj > li > a:hover{
+    background-color:#1F2A40;
+  }
+/* For sidebar component hover effects Finished  */

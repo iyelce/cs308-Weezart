@@ -8,6 +8,7 @@ import Search from './Pages/Search/Search';
 import './App.css';
 import Sidebar from './Pages/Sidebar/Sidebar.jsx';
 import AddSong from './Pages/ImportFile/AddSong.jsx';
+import Analyze from './Pages/Analyze/Analyze.jsx';
 
 
 function App() {
@@ -78,7 +79,7 @@ function App() {
   return (
     <BrowserRouter>
 
-      <div style={{ display: isLoggedin ? 'flex' : 'block' }} id="root">
+      <div style={{ display: isLoggedin ? 'flex' : 'block' }}  >
         <Sidebar username={username} isLoggedin={isLoggedin} userId={userId} logoutFunc={logoutFunc} />
 
         <div style={{ flex: 1, padding: '20px', boxSizing: 'border-box' }}>
@@ -89,6 +90,7 @@ function App() {
               <Route path='signup' element={<SignUp />} />
               <Route path='search' element={<Search />} />
               <Route path='import' element={<AddSong/>} />
+              <Route path='analyze' element={<Analyze/>} />
               <Route path='*' element={<Error />} />
             </Route>
           </Routes>

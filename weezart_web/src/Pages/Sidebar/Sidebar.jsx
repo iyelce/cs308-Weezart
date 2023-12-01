@@ -23,32 +23,16 @@ const SideBar = ({...props}) => {
 
   const navigate = useNavigate();
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const colors = tokens("dark");
   const [isCollapsed, setIsCollapsed] = useState(false);
   return (
    <div hidden={hideNavbar}>
      <Container>
       <Box
         className="sideBar"
-        sx={{
-          "& .pro-sidebar-inner": {
-            background: `${colors.primary[400]} !important`,
-          },
-          "& .pro-icon-wrapper": {
-            backgroundColor: "transparent !important",
-          },
-          "& .pro-inner-item": {
-            padding: "5px 35px 5px 20px !important",
-          },
-          "& .pro-inner-item:hover": {
-            color: "#868dfb !important",
-          },
-          "& .pro-menu-item.active": {
-            color: "#6870fa !important",
-          },
-        }}
-      >
-        <Sidebar collapsed={isCollapsed}>
+       >
+        <Sidebar collapsed={isCollapsed} backgroundColor={colors.primary[400]} height='100%'>
+        
           <Menu iconShape="square">
             {/* LOGO AND MENU ICON */}
             <MenuItem
@@ -56,7 +40,7 @@ const SideBar = ({...props}) => {
               icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
               style={{
                 margin: "10px 0 20px 0",
-                color: colors.grey[100],
+                color: colors.primary[400],
               }}
             >
               {!isCollapsed && (
@@ -147,19 +131,24 @@ const SideBar = ({...props}) => {
                   color: colors.grey[100],
                 }}
                 onClick={() => {
-                  alert("clicked analyze")
+                  navigate("analyze")
                 }}
+              
                 icon={<InsightsIcon />}
               >
                 <Typography>{"Analyze"}</Typography>
 
               </MenuItem>
 
-              <SubMenu label='Add Song' icon={<AddCircleOutlineIcon />}>
+              <SubMenu label='Add Song' icon={<AddCircleOutlineIcon />} 
+                backgroundColor={colors.primary[100]}
+                color={colors.grey[100]}
+               >
                 <MenuItem
                   active={true}
                   style={{
-                    color: colors.grey[100],
+                    color:colors.grey[100],
+                    backgroundColor:colors.primary[400]
                   }}
                   onClick={() => {navigate("import")}}
                   icon={<AddCircleOutlineIcon />}
@@ -171,6 +160,7 @@ const SideBar = ({...props}) => {
                   active={true}
                   style={{
                     color: colors.grey[100],
+                    backgroundColor:colors.primary[400]
                   }}
                   onClick={() => {alert("clicked import song")}}
                   icon={<AddCircleOutlineIcon />}

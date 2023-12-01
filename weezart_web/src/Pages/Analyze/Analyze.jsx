@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { BarChart } from '@mui/x-charts/BarChart';
-import {Box} from '@mui/material';
+import { LineChart } from '@mui/x-charts/LineChart';
+import {Box,Typography} from '@mui/material';
 import StatBox from './Statbox';
 import { useTheme } from '@mui/material/styles';
 import { tokens } from './theme';
+import { ChartsReferenceLine } from '@mui/x-charts/ChartsReferenceLine';
+
 
 
 export default function Analyze() {
@@ -42,7 +44,7 @@ export default function Analyze() {
             title="431,225"
             subtitle="Sales Obtained"
             progress="0.50"
-            increase="+21%"
+            increase="-21%"
             
               />
             
@@ -84,14 +86,119 @@ export default function Analyze() {
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
-            <BarChart
-                xAxis={[{ scaleType: 'band', data: ['group A', 'group B', 'group C'] }]}
-                series={[{ data: [4, 3, 5] }, { data: [1, 6, 3] }, { data: [2, 5, 6] }]}
-                width={500}
-                height={300}
-            />
+            <Typography fontSize={"20px"} color={"green"}>Adds</Typography>
+            <LineChart
+                xAxis={[{ data: [1, 2, 3, 5, 8, 10]  }]}
+                series={[
+                        {
+                            data: [2, 5.5, 2, 8.5, 1.5, 5],
+                        },
+                        ]}
+                        sx={{"& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
+                            fill:"#332FD0",
+                            fontSize:"3rem"
+                           },
+                           // change all labels fontFamily shown on both xAxis and yAxis
+                           "& .MuiChartsAxis-tickContainer .MuiChartsAxis-tickLabel":{
+                               fontFamily: "Roboto",
+                                 fontSize:"20px"
+                            },
+                            // change bottom label styles
+                            "& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel":{
+                                strokeWidth:"0.5",
+                                fill:"#6528F7"
+                             },
+                              // bottomAxis Line Styles
+                             "& .MuiChartsAxis-bottom .MuiChartsAxis-line":{
+                              stroke:"#6528F7",
+                              strokeWidth:0.4
+                             },
+                             // leftAxis Line Styles
+                             "& .MuiChartsAxis-left .MuiChartsAxis-line":{
+                              stroke:"#AED2FF",
+                              strokeWidth:0.4
+                             }}}
+                             />
         </Box>
-
+        <Box
+          gridColumn="span 12"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+            <Typography fontSize={"20px"} color={"red"}>Likes</Typography>
+            <LineChart
+                xAxis={[{ data: [1, 2, 3, 5, 8, 10]  }]}
+                series={[
+                        {
+                            data: [2, 5.5, 2, 8.5, 1.5, 5],
+                        },
+                        ]}
+                        sx={{"& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
+                            fill:"#332FD0",
+                            fontSize:"3rem"
+                           },
+                           // change all labels fontFamily shown on both xAxis and yAxis
+                           "& .MuiChartsAxis-tickContainer .MuiChartsAxis-tickLabel":{
+                               fontFamily: "Roboto",
+                                 fontSize:"20px"
+                            },
+                            // change bottom label styles
+                            "& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel":{
+                                strokeWidth:"0.5",
+                                fill:"#6528F7"
+                             },
+                              // bottomAxis Line Styles
+                             "& .MuiChartsAxis-bottom .MuiChartsAxis-line":{
+                              stroke:"#6528F7",
+                              strokeWidth:0.4
+                             },
+                             // leftAxis Line Styles
+                             "& .MuiChartsAxis-left .MuiChartsAxis-line":{
+                              stroke:"#AED2FF",
+                              strokeWidth:0.4
+                             }}}
+                             />
+        </Box>
+        <Box
+          gridColumn="span 12"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+            <Typography fontSize={"20px"} color={"yellow"}>Rates</Typography>
+            <LineChart
+                xAxis={[{ data: [1, 2, 3, 5, 8, 10]  }]}
+                series={[
+                        {
+                            data: [2, 5.5, 2, 8.5, 1.5, 5],
+                        },
+                        ]}
+                        sx={{"& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
+                            fill:"#332FD0",
+                            fontSize:"3rem"
+                           },
+                           // change all labels fontFamily shown on both xAxis and yAxis
+                           "& .MuiChartsAxis-tickContainer .MuiChartsAxis-tickLabel":{
+                               fontFamily: "Roboto",
+                                 fontSize:"20px"
+                            },
+                            // change bottom label styles
+                            "& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel":{
+                                strokeWidth:"0.5",
+                                fill:"#6528F7"
+                             },
+                              // bottomAxis Line Styles
+                             "& .MuiChartsAxis-bottom .MuiChartsAxis-line":{
+                              stroke:"#6528F7",
+                              strokeWidth:0.4
+                             },
+                             // leftAxis Line Styles
+                             "& .MuiChartsAxis-left .MuiChartsAxis-line":{
+                              stroke:"#AED2FF",
+                              strokeWidth:0.4
+                             }}}
+                             />
+        </Box>
+        
 
 
         </Box>

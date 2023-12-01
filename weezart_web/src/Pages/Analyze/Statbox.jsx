@@ -13,7 +13,7 @@ const Statbox = ({ title, subtitle, increase }) => {
           <Typography
             variant="h4"
             fontWeight="bold"
-            sx={{ color: "#331055" }}
+            sx={{ color: "#6528F7" }}
           >
             {title}
           </Typography>
@@ -21,13 +21,13 @@ const Statbox = ({ title, subtitle, increase }) => {
    
       </Box>
       <Box display="flex" justifyContent="space-between" mt="2px">
-        <Typography variant="h5" sx={{ color: colors.greenAccent[500] }}>
+        <Typography variant="h5" sx={{ color: "#AED2FF" }}>
           {subtitle}
         </Typography>
         <Typography
           variant="h5"
           fontStyle="italic"
-          sx={{ color: "#331055" }}
+          sx={{ color: increase[0] === "+" ? colors.greenAccent[400] : colors.redAccent[400] }}
         >
           {increase}
         </Typography>

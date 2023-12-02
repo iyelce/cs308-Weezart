@@ -16,4 +16,5 @@ public interface AnalysisService {
 	List<Song> analysisTop5Manual(String userId);
 	Map<String, Long> analysisDailyAddedSongs(String userId);
 	Map<String, Long> analysisDailyLikedSongs(String userId);
+	Map<String, Double> analysisDailyAverageRating(String userId);
 }

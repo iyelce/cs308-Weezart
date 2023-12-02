@@ -260,5 +260,19 @@ public class AnalysisServiceImpl implements AnalysisService{
     }
     
     
+    public List<Integer> analysisSongCounts(String userId) {
+        User user = userRepo.findByiduser(Long.parseLong(userId));
+        List<UserSong> userSongs = userSongRepo.findAllByUser(user);
+
+        int totalAddedCount = userSongs.size();
+        int likedCount = (int) userSongs.stream().filter(UserSong::isLiked).count();
+        int ratedCount = (int) userSongs.stream().filter(userSong -> !userSong.getRating().isEmpty()).count();
+
+        return List.of(totalAddedCount, likedCount, ratedCount);
+    }
+
+    
+    
+    
     
 }

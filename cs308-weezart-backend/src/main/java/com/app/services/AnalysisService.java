@@ -17,4 +17,5 @@ public interface AnalysisService {
 	Map<String, Long> analysisDailyAddedSongs(String userId);
 	Map<String, Long> analysisDailyLikedSongs(String userId);
 	Map<String, Double> analysisDailyAverageRating(String userId);
+	List<Integer> analysisSongCounts(String userId);
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.models.Album;
 import com.app.models.DateRange;
 import com.app.models.Song;
 import com.app.models.UserSong;
@@ -68,5 +69,13 @@ public class AnalysisController {
 	public ResponseEntity<List<Integer>> songCountsAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisSongCounts(userId));
 	}
+	
+	/*
+	@GetMapping("/album/last5Liked/{userId}")
+	public ResponseEntity<List<Album>> latest5AlbumAnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisLatest5Album(userId));
+	}*/
+	
+	
 	
 }

@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.app.models.Album;
 import com.app.models.Song;
 import com.app.models.UserSong;
 
@@ -18,4 +19,6 @@ public interface AnalysisService {
 	Map<String, Long> analysisDailyLikedSongs(String userId);
 	Map<String, Double> analysisDailyAverageRating(String userId);
 	List<Integer> analysisSongCounts(String userId);
+	
+	//List<Album> analysisLatest5Album(String userId);
 }

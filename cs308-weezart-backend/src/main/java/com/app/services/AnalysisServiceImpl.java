@@ -3,6 +3,7 @@ package com.app.services;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +19,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.app.controllers.AuthenticationController;
+import com.app.models.Album;
 import com.app.models.Artist;
 import com.app.models.Song;
 import com.app.models.User;
 import com.app.models.UserSong;
+import com.app.models.UserAlbum;
+import com.app.repo.AlbumRepository;
 import com.app.repo.ArtistRepository;
+import com.app.repo.UserAlbumRepository;
 import com.app.repo.UserRepository;
 import com.app.repo.UserSongRepository;
 
@@ -43,10 +48,16 @@ public class AnalysisServiceImpl implements AnalysisService{
 	private UserSongRepository userSongRepo;
 	
 	@Autowired
+	private UserAlbumRepository userAlbumRepo;
+	
+	@Autowired
 	private UserRepository userRepo;
 	
 	@Autowired 
 	private ArtistRepository artistRepo;
+	
+	@Autowired
+	private AlbumRepository albumRepo;
 	
 	
 	
@@ -148,7 +159,7 @@ public class AnalysisServiceImpl implements AnalysisService{
     	
     }
     
-    
+    /*
     public List<Song> analysisLatest5Manual(String userId){
     	User user = userRepo.findByiduser(Long.parseLong(userId));
     	List<UserSong> userSongs = userSongRepo.findAllByUser(user);
@@ -167,6 +178,26 @@ public class AnalysisServiceImpl implements AnalysisService{
         return top5Songs;
     
     	
+    }*/
+    
+    public List<Song> analysisLatest5Manual(String userId) {
+        User user = userRepo.findByiduser(Long.parseLong(userId));
+
+        // Retrieve all songs associated with the user
+        List<UserSong> userSongs = userSongRepo.findAllByUser(user);
+
+        // Sort user songs based on the liketime in descending order, considering null values
+        List<UserSong> sortedUserSongs = userSongs.stream()
+                .sorted(Comparator.comparing(UserSong::getLikeTime, Comparator.nullsLast(Comparator.reverseOrder())))
+                .collect(Collectors.toList());
+
+        // Extract Song objects from sortedUserSongs
+        List<Song> top5Songs = sortedUserSongs.stream()
+                .limit(5)
+                .map(UserSong::getSong)
+                .collect(Collectors.toList());
+
+        return top5Songs;
     }
     
     
@@ -271,7 +302,26 @@ public class AnalysisServiceImpl implements AnalysisService{
         return List.of(totalAddedCount, likedCount, ratedCount);
     }
 
+    /*
+    public List<Album> analysisLatest5Album(String userId){
+    	User user = userRepo.findByiduser(Long.parseLong(userId));
+    	List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
+    	List<Album> filteredAlbums = new ArrayList<>();
+    	
+        List<UserAlbum> sortedUserAlbums = userAlbums.stream()
+                .sorted((us1, us2) -> us2.getLikeTime().compareTo(us1.getLikeTime()))
+                .collect(Collectors.toList());
+
+        // Extract Album objects from sortedUserSongs
+        List<Album> top5Albums = sortedUserAlbums.stream()
+                .limit(5)
+                .map(UserAlbum::getAlbum)
+                .collect(Collectors.toList());
+
+        return top5Albums;
     
+    	
+    }*/
     
     
     

@@ -93,6 +93,7 @@ public class AddController {
 				Artist artist = spotifyService.artistSearch(artistName, spotifyAuth.authenticateWithSpotify()).get(0);
 	
 				log.info("artist kaydediyooommmmmm");
+				log.info(artist.getName());
 				artistRepo.save(artist);
 				log.info("artist kayedttiimm");
 				ArtistPayload artistPayload = new ArtistPayload(artist);
@@ -105,7 +106,7 @@ public class AddController {
 			Album album = spotifyService.albumSearch(didYouMeanSong.getAlbumName() + " " + didYouMeanSong.getName(),
 					spotifyAuth.authenticateWithSpotify()).get(0);
 			albumRepo.save(album);
-	
+			log.info("albumun insoun=hun alayyimrim" + album.getArtistsName().get(0));
 			AlbumPayload albumPayload = new AlbumPayload(album);
 			addService.relateUserAlbum(albumPayload, userId);
 			return ResponseEntity.ok("SONG_SAVED");

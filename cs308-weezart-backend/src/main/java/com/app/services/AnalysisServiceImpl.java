@@ -1,7 +1,11 @@
 package com.app.services;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -191,4 +195,26 @@ public class AnalysisServiceImpl implements AnalysisService{
     	List<Song> top2Songs = filteredSongs.size() > 5 ? filteredSongs.subList(0, 5) : filteredSongs;
     	return top2Songs;
     }
+    
+    
+    public Map<String, Long> analysisDailyAddedSongs(String userId) {
+            User user = userRepo.findByiduser(Long.parseLong(userId));
+            List<UserSong> userSongs = userSongRepo.findAllByUser(user);
+
+            // Create a map to store the count of songs added per day
+            Map<String, Long> songsAddedPerDay = new HashMap<>();
+
+            // Group userSongs by addTime date and count songs for each date
+            songsAddedPerDay = userSongs.stream()
+                    .collect(Collectors.groupingBy(
+                            userSong -> LocalDate.parse(userSong.getAddTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                                    .toString(),
+                            Collectors.counting()
+                    ));
+
+            return songsAddedPerDay;
+        }
+    
+    
+    
 }

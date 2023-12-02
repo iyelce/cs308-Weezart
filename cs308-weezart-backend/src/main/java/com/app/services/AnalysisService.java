@@ -1,5 +1,6 @@
 package com.app.services;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -13,4 +14,5 @@ public interface AnalysisService {
 	List<Song> analysisGenreManual(String userId, String genre);
 	List<Song> analysisLatest5Manual(String userId);
 	List<Song> analysisTop5Manual(String userId);
+	Map<String, Long> analysisDailyAddedSongs(String userId);
 }

@@ -1,6 +1,7 @@
 package com.app.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,5 +48,10 @@ public class AnalysisController {
 	public ResponseEntity<List<Song>> top5AnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisTop5Manual(userId));
 	}	
+	
+	@GetMapping("/song/dailySongs/{userId}")
+	public ResponseEntity<Map<String, Long>> dailySongsAnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisDailyAddedSongs(userId));
+	}
 	
 }

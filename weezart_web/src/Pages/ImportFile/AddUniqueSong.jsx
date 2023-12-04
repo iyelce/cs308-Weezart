@@ -45,15 +45,11 @@ function AddUniqueSong({...props}) {
     // Handle song click action
   };
 
-
-
   const handleDelete = (index) => {
     const updatedList = [...artistsList];
     updatedList.splice(index, 1);
     setArtistsList(updatedList);
   };
-
-
 
     return (
 
@@ -68,7 +64,7 @@ function AddUniqueSong({...props}) {
         </p>
             
             {/* First row */}
-            <div className="form-row">
+            <div className="new-song-add-row">
             <label className="single-song-add-label">Song Name:</label>
             <input
                 type="text"
@@ -87,7 +83,7 @@ function AddUniqueSong({...props}) {
             </div>
         
             {/* Second row */}
-            <div className="form-row">
+            <div className="new-song-add-row">
             <label className="single-song-add-label" >Artist Name:</label>
             <input
                 type="text"
@@ -102,7 +98,7 @@ function AddUniqueSong({...props}) {
             </div>
 
             <div className="form-row">
-            <table className="spotify-add-table">
+            <table className="artist-add-table-unique">
                     <thead>
                         <tr>
                         <th>Artist Name</th>
@@ -128,7 +124,7 @@ function AddUniqueSong({...props}) {
             </div>
 
             {/* Thirth row */}
-            <div className="form-row">
+            <div className="new-song-add-row">
                 <label className="single-song-add-label">Release Date:</label>
                 <DatePicker
                     className="input-text"
@@ -145,7 +141,7 @@ function AddUniqueSong({...props}) {
                     <br/>
 
             {/* Fourth row */}
-            <div className="form-row">
+            <div className="new-song-add-row">
             <label className="single-song-add-label" >Time:</label>
             <input
                 type="number"

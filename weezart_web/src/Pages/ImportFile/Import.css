@@ -35,15 +35,24 @@
   }
 
   .single-song-add-label{
-    margin-left: 3rem;
-
-    margin-right: 2rem;
-    
-    margin-bottom: 100px;
+    margin-top: 1rem;
+    margin-left: 2rem;    
+    margin-right: 1rem;
     font-family: Poppins;
     font-size: 17px;
     font-weight: 600;
     color: #B9B4C7;
+  }
+
+  .single-song-add-unique-label{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3rem;
+    font-family: Poppins;
+    font-size: 17px;
+    font-weight: 600;
+    color: #B9B4C7;
+    font-size: 15px;
   }
   
   .form-row {
@@ -81,6 +90,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease; /* Smooth color transition */
     margin-left: 2rem;
+    font-family: Poppins;
   
     /* Optional: Add hover effect */
     &:hover {
@@ -100,6 +110,7 @@
     margin-left: 10rem;
     margin-right: 10rem;
     margin-top: 3rem;
+    font-family: Poppins;
     
   
     /* Optional: Add hover effect */
@@ -111,6 +122,7 @@
   /* Styling for react-datepicker */
   .date-picker {
     font-family: 'Arial', sans-serif;
+    font-family: Poppins;
   }
   
   .date-picker__header {
@@ -126,9 +138,6 @@
   .date-picker__day:hover {
     background-color: #777;
   }
-
-
-
 
   /* Styling for react-datepicker */
 .date-picker {
@@ -165,9 +174,6 @@
     background-color: #777;
   }
 
-
-  
-
   /* SpotifySearch.css or your preferred CSS file */
 
 .spotify-search-container {
@@ -177,6 +183,7 @@
     background-color: #333;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Poppins;
   }
   
   .input-row {
@@ -187,6 +194,7 @@
     display: block;
     margin-bottom: 5px;
     color: #fff;
+    font-family: Poppins;
   }
   
   .input-text {
@@ -196,48 +204,52 @@
     border-radius: 4px;
     background-color: #352F44;
     color: #fff;
-
-
+    font-family: Poppins;
     width: 200px;
     height: 20px;
+    
   }
 
-  
   .explicit-checkbox{
     margin-left: 1rem;
 
   }
   
-  .search-button {
-    width: 40%;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #4CAF50;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .search-button:hover {
+  .search-button{
+    margin-left: 7rem;
+    margin-top: 1rem;
     background-color: #45a049;
+    color: #fff;
+    border: none;
+    padding: 10px 20px; 
+    border-radius: 25px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+    font-family: Poppins;
+  
+    &:hover {
+      background-color: #2e7632; 
+    }
   }
   
 
   .song-add-label {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins';
     font-size: 20px;
     font-weight: 800;
-    color: #FFA500;
+    color: #B9B4C7;
     text-shadow: 2px 2px 4px rgba(1, 1, 1, 1);
+    font-family: Poppins;
   }
 
   .weezart-text {
     color: #9416ad;
+    font-family: Poppins;
   }
 
   .spotify-text {
     color: #45a049;
+    font-family: Poppins;
   }
 
 
@@ -247,29 +259,44 @@
     
 }
 
-.spotify-add-table {
+.spotify-add-table,
+.artist-add-table-unique {
     width: 30rem;
     border-collapse: collapse;
-    margin-bottom: 1rem;
+    margin-top: 1.7rem;
     color: #B9B4C7;
     background-color: #352F44;
     border-radius: 0.25rem;
     border: 1px solid #1a1721;
-    margin-left: 7rem;
+    font-family: Poppins;
+  }
+
+  .spotify-add-table{
+    margin-left: 25%;
+  }
+
+  .artist-add-table-unique {
+    margin-left: 2rem;
   }
 
 .spotify-add-table th,
-.spotify-add-table td {
+.spotify-add-table td,
+.artist-add-table-unique th,
+.artist-add-table-unique td {
   padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #1a1721;
+  font-family: Poppins;
 }
 
-.spotify-add-table th {
+.spotify-add-table th,
+.artist-add-table-unique th {
   background-color: #1a1721;
   border-top: 1px solid #1a1721;
   padding-bottom: 0.1rem;
+  font-family: Poppins;
 }
+
 
 .add-from-spotify-row > * {
   margin-bottom: 20px;
@@ -292,6 +319,7 @@
   justify-content: center;
   cursor: pointer;
   color: #B9B4C7;
+  font-family: Poppins;
 }
 
 .file-upload-container p {
@@ -319,4 +347,16 @@
   background-color: rgba(26, 23, 33, 0.8);
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Poppins;
+}
+
+.add_song_row{
+  display: flex;
+  flex-direction: row;
+}
+
+
+.new-song-add-row{
+  height: 2%;
+  margin-top: 2rem;
 }

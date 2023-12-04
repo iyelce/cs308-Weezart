@@ -103,7 +103,7 @@ public class AddController {
 			}
 	
 			log.info("album kaydedecem-------" + didYouMeanSong.getAlbumName());
-			Album album = spotifyService.albumSearch(didYouMeanSong.getAlbumName() + " " + didYouMeanSong.getName(),
+			Album album = spotifyService.albumSearch(didYouMeanSong.getAlbumName() + " " + didYouMeanSong.getArtistsName().get(0),
 					spotifyAuth.authenticateWithSpotify()).get(0);
 			albumRepo.save(album);
 			log.info("albumun insoun=hun alayyimrim" + album.getArtistsName().get(0));

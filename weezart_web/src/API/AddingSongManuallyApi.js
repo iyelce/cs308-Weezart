@@ -76,7 +76,11 @@ async function AddingSongManuallyApi (songQuery, artistQuery, token, userId  ) {
         console.log("result123: ", data)
     
         if(!response.ok) {
-            throw new Error('Network response is not ok');
+            if (response.status === 403) {
+                return('Song not found');
+            } else {
+                throw new Error('Network response is not ok');
+            }
         }
 
         const newResp = JSON.parse(data);

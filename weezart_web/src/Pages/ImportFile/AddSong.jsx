@@ -20,35 +20,10 @@ function AddSong({...props}) {
     const [showLabel, setShowLabel] = useState(false);
 
 
-    const [songName, setSongName] = useState('');
-    const [albumName, setAlbumName] = useState('');
-    const [albumReleaseDate, setAlbumReleaseDate] = useState(null);
-    const [artistName, setArtistName] = useState('');
-    const [artistsList, setArtistsList] = useState([]);
-    const [timeMinutes, setTimeMinutes] = useState('');
-    const [timeSeconds, setTimeSeconds] = useState('');
-    const [isExplicit, setIsExplicit] = useState(false);
-  
-   // Function to handle adding an artist to the list
-   const addArtistToList = () => {
-    if (artistName) {
-      setArtistsList([...artistsList, artistName]);
-      setArtistName('');
-    }
-  };
 
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can handle form submission logic here
-    console.log('Form submitted:', {
-      songName,
-      albumName,
-      albumReleaseDate,
-      artistsList,
-      time: `${timeMinutes}:${timeSeconds}`,
-      isExplicit,
-    });
   };
 
   const handleSpotifySearch = async () => {
@@ -60,8 +35,16 @@ function AddSong({...props}) {
         setShowLabel(false);
         console.log(props.token);
         const response = await AddingSongManuallyApi(spotifySongName, spotifyArtistName, props.token, props.userId );
-        console.log("response in page: ", response);
-        console.log(`Searching for ${spotifySongName} by ${spotifyArtistName} on Spotify`);
+        
+        if ( response === "Song not found") {
+            console.log("--------------song bulamadı gerçekten wow")
+        }
+
+        else {
+            console.log("response in page: ", response);
+        }
+
+
     }
     
   };

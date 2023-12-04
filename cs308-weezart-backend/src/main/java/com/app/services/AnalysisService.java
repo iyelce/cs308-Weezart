@@ -15,10 +15,15 @@ public interface AnalysisService {
 	List<Song> analysisGenreManual(String userId, String genre);
 	List<Song> analysisLatest5Manual(String userId);
 	List<Song> analysisTop5Manual(String userId);
+	
 	Map<String, Long> analysisDailyAddedSongs(String userId);
 	Map<String, Long> analysisDailyLikedSongs(String userId);
 	Map<String, Double> analysisDailyAverageRating(String userId);
+	
 	List<Integer> analysisSongCounts(String userId);
+	List<Integer> analysisConstrainedSongCounts(String userId, String dateConstraint);
+	
+	
 	
 	//List<Album> analysisLatest5Album(String userId);
 }

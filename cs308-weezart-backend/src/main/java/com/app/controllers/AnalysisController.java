@@ -70,6 +70,16 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisSongCounts(userId));
 	}
 	
+	@GetMapping("/song/songConstrainedCounts/{userId}/{dateConstraint}")
+	public ResponseEntity<List<Integer>> songConstainedCountsAnalysisController(@PathVariable String userId, @PathVariable String dateConstraint){
+		return ResponseEntity.ok(analysisService.analysisConstrainedSongCounts(userId, dateConstraint));
+	}
+	
+	
+	
+	
+	
+	
 	/*
 	@GetMapping("/album/last5Liked/{userId}")
 	public ResponseEntity<List<Album>> latest5AlbumAnalysisController(@PathVariable String userId){

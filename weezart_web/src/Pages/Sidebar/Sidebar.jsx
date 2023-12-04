@@ -64,9 +64,11 @@ const SideBar = ({...props}) => {
             </MenuItem>
 
             {!isCollapsed && (
-              <Box mb="25px">
-                <Box textAlign="center">
+              <Box  mb="25px">
+                <Box  textAlign="center" style={{ cursor: 'pointer' }} onClick={()=>{navigate("myProfile")}}>
                   <Typography
+                  
+                   
                     variant="h3"
                     color={colors.grey[100]}
 
@@ -162,7 +164,7 @@ const SideBar = ({...props}) => {
                     color: colors.grey[100],
                     backgroundColor:colors.primary[400]
                   }}
-                  onClick={() => {alert("clicked import song")}}
+                  onClick={() => {navigate("songFileUpload")}}
                   icon={<AddCircleOutlineIcon />}
                 >
                   <Typography>{"Import Song File"}</Typography>

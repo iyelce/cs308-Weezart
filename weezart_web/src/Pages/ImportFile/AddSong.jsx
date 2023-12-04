@@ -6,12 +6,18 @@ import { MdOutlineNoAdultContent } from "react-icons/md";
 import { FaMusic } from "react-icons/fa";
 import { LuClock3 } from "react-icons/lu";
 import './Import.css';
+import AddingSongManuallyApi from "../../API/AddingSongManuallyApi";
+import { useNavigate } from "react-router-dom";
 
 
-function AddSong() {
+function AddSong({...props}) {
+
+    const navigate = useNavigate();
 
     const[spotifySongName, setSpotifySongName] = useState('');
     const [spotifyArtistName, setSpotifyName] = useState('');
+
+    const [showLabel, setShowLabel] = useState(false);
 
 
     const [songName, setSongName] = useState('');
@@ -45,9 +51,19 @@ function AddSong() {
     });
   };
 
-  const handleSpotifySearch = () => {
+  const handleSpotifySearch = async () => {
     // You can perform the Spotify search logic here
-    console.log(`Searching for ${songName} by ${artistName} on Spotify`);
+    if(spotifySongName==='' || spotifyArtistName==='') {
+        setShowLabel(true);
+    }
+    else {
+        setShowLabel(false);
+        console.log(props.token);
+        const response = await AddingSongManuallyApi(spotifySongName, spotifyArtistName, props.token, props.userId );
+        console.log("response in page: ", response);
+        console.log(`Searching for ${spotifySongName} by ${spotifyArtistName} on Spotify`);
+    }
+    
   };
 
 
@@ -65,15 +81,24 @@ function AddSong() {
 
         <div className="song-add-page">
 
+            
+
         <form className="single-song-add" onSubmit={handleSubmit}>
+            {/* <p> --{props.token}</p> */}
 
             <p className="song-add-label">ADD SONG FROM{' '}
                 <span className="spotify-text">SPOTIFY</span> 
             </p>
 
-            <div className="column">
+            <p style={{ display: showLabel ? 'block' : 'none' }} className="single-song-add-label">
+                Fill song and artist name
+            </p>
 
-                <div className="row">
+            <div className="column_addsong">
+
+                
+
+                <div className="add-from-spotify-row">
                     {/* First row */}
                     <div className="form-row">
                         <label className="single-song-add-label" htmlFor="songNameInput">
@@ -83,8 +108,8 @@ function AddSong() {
                             type="text"
                             id="songNameInput"
                             className="input-text"
-                            value={songName}
-                            onChange={(e) => setSongName(e.target.value)}
+                            value={spotifySongName}
+                            onChange={(e) => setSpotifySongName(e.target.value)}
                         />
                     </div>
 
@@ -97,12 +122,12 @@ function AddSong() {
                             type="text"
                             id="artistNameInput"
                             className="input-text"
-                            value={artistName}
-                            onChange={(e) => setArtistName(e.target.value)}
+                            value={spotifyArtistName}
+                            onChange={(e) => setSpotifyName(e.target.value)}
                         />
                     </div>
 
-                    <button className="search-button" onClick={handleSpotifySearch()}>
+                    <button className="search-button" onClick={handleSpotifySearch}>
                         Search in Spotify
                     </button>
                 </div>
@@ -144,18 +169,20 @@ function AddSong() {
                     </tbody>
                 </table>
                 </div>
+
+                <button onClick={() => {navigate('/importUniqueSong')}}> to add unique song</button>
             </div>
 
 
             
 
 
-            <p className="song-add-label">WANT TO ADD YOUR UNIQUE SONG TO{' '}
+            {/* <p className="song-add-label">WANT TO ADD YOUR UNIQUE SONG TO{' '}
                     <span style={{ color: 'purple' }}>WEEZART</span> DATABASE
-            </p>
+            </p> */}
             
             {/* First row */}
-            <div className="form-row">
+            {/* <div className="form-row">
             <label className="single-song-add-label">Song Name:</label>
             <input
                 type="text"
@@ -180,10 +207,10 @@ function AddSong() {
                 yearDropdownItemNumber={250}
                 maxDate={new Date()}  
                 />
-            </div>
+            </div> */}
         
             {/* Second row */}
-            <div className="form-row">
+            {/* <div className="form-row">
             <label className="single-song-add-label" >Artist Name:</label>
             <input
                 type="text"
@@ -199,10 +226,10 @@ function AddSong() {
                 <li key={index}>{artist}</li>
                 ))}
             </ul>
-            </div>
+            </div> */}
         
             {/* Third row */}
-            <div className="form-row">
+            {/* <div className="form-row">
             <label className="single-song-add-label" >Time:</label>
             <input
                 type="number"
@@ -229,12 +256,12 @@ function AddSong() {
                 <span><MdOutlineNoAdultContent /></span>
             </label>
 
-            </div>
+            </div> */}
         
             {/* Submit button */}
-            <button type="submit" className="submit-button">
+            {/* <button type="submit" className="submit-button">
             Submit
-            </button>
+            </button> */}
         </form>
 
     </div>

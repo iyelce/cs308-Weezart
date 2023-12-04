@@ -1,8 +1,6 @@
 .importPage{
     background-color: #222;
     height: 100vh;
-    background-image:url('../../add_page.png');
-    background-size: cover;
 }
 
 .importPage > p {
@@ -14,6 +12,10 @@
 .song-add-page{
     height: 100vh;
     position: relative;
+    background-image:url('../../add_page.png');
+    background-size: cover;
+    width: 100%;
+    height: 100%;
 }
 
   .single-song-add {
@@ -24,40 +26,39 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 75%;
-    height: 75%;
+    height: auto;
     margin: auto;
     padding: 20px;
-    background-color: rgba(26, 23, 33, 0.9);
+    background-color: rgba(26, 23, 33, 0.8);
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   .single-song-add-label{
     margin-left: 3rem;
-    margin-top: 3rem;
+
+    margin-right: 2rem;
+    
+    margin-bottom: 100px;
     font-family: Poppins;
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 600;
     color: #B9B4C7;
   }
   
   .form-row {
-    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Optional: Adjust as needed for vertical alignment */
+    margin-top: 1.5rem;
   }
   
-  .add-artist-button,
-  .explicit-label,
-  .explicit-checkbox,
-  .submit-button,
-  .single-song-add-input,
-  .single-song-add-input-date {
-    color: #fff;
-    background-color: #444;
-    border: 1px solid #666;
-    border-radius: 4px;
-    padding: 8px;
-    margin-left: 3rem;
-    margin-top: 3rem;
+  .form-row > * {
+    margin-bottom: 20px; /* Adjust as needed for vertical spacing between items */
+  }
+  
+  .form-row > *:last-child {
+    margin-bottom: 0;
   }
   
   .explicit-checkbox {
@@ -70,13 +71,41 @@
     list-style: none;
   }
   
+
   .add-artist-button {
+    background-color: #9416ad; /* Purple color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px 20px; /* Adjust padding as needed */
+    border-radius: 25px; /* Adjust border-radius for rounded corners */
     cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+    transition: background-color 0.3s ease; /* Smooth color transition */
+    margin-left: 2rem;
   
-  .add-artist-button:hover {
-    background-color: #555;
+    /* Optional: Add hover effect */
+    &:hover {
+      background-color: #780d8e; 
+    }
+  }
+
+
+  .submit-button{
+    background-color: #9416ad; /* Purple color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px 20px; /* Adjust padding as needed */
+    border-radius: 25px; /* Adjust border-radius for rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth color transition */
+    margin-left: 10rem;
+    margin-right: 10rem;
+    margin-top: 3rem;
+    
+  
+    /* Optional: Add hover effect */
+    &:hover {
+      background-color: #780d8e; 
+    }
   }
   
   /* Styling for react-datepicker */
@@ -163,10 +192,20 @@
   .input-text {
     width: 100%;
     padding: 8px;
-    border: 1px solid #666;
+    border: 1px solid #1a1721;
     border-radius: 4px;
-    background-color: #444;
+    background-color: #352F44;
     color: #fff;
+
+
+    width: 200px;
+    height: 20px;
+  }
+
+  
+  .explicit-checkbox{
+    margin-left: 1rem;
+
   }
   
   .search-button {
@@ -187,14 +226,14 @@
 
   .song-add-label {
     font-family: 'Poppins', sans-serif;
-    font-size: 27px;
+    font-size: 20px;
     font-weight: 800;
     color: #FFA500;
     text-shadow: 2px 2px 4px rgba(1, 1, 1, 1);
   }
 
   .weezart-text {
-    color: purple;
+    color: #9416ad;
   }
 
   .spotify-text {
@@ -202,20 +241,21 @@
   }
 
 
-.column{
+.column_addsong{
     display: flex;
     flex-direction: row;
+    
 }
 
 .spotify-add-table {
-    width: 40rem;
+    width: 30rem;
     border-collapse: collapse;
     margin-bottom: 1rem;
     color: #B9B4C7;
     background-color: #352F44;
     border-radius: 0.25rem;
     border: 1px solid #1a1721;
-    margin-left: 300px;
+    margin-left: 7rem;
   }
 
 .spotify-add-table th,
@@ -228,4 +268,55 @@
 .spotify-add-table th {
   background-color: #1a1721;
   border-top: 1px solid #1a1721;
+  padding-bottom: 0.1rem;
+}
+
+.add-from-spotify-row > * {
+  margin-bottom: 20px;
+}
+
+.add-from-spotify-row > *:last-child {
+  margin-bottom: 0;
+}
+
+
+/* FileUploadPage.css */
+
+.file-upload-container {
+  width: 100%;
+  height: 300px;
+  border: 2px dashed #B9B4C7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #B9B4C7;
+}
+
+.file-upload-container p {
+  margin: 10px 0;
+}
+
+.file-upload-buttons {
+  margin-top: 10px;
+}
+
+.file-upload-buttons button {
+  margin-right: 10px;
+}
+.file-upload-container-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  height: auto;
+  margin: auto;
+  padding: 20px;
+  background-color: rgba(26, 23, 33, 0.8);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

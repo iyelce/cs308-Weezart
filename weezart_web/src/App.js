@@ -9,6 +9,14 @@ import './App.css';
 import Sidebar from './Pages/Sidebar/Sidebar.jsx';
 import AddSong from './Pages/ImportFile/AddSong.jsx';
 import Analyze from './Pages/Analyze/Analyze.jsx';
+import AddUniqueSong from './Pages/ImportFile/AddUniqueSong.jsx';
+import SongFileUpload from './Pages/ImportFile/SongFileUpload.jsx';
+import MyProfile from './Pages/Profile/MyProfile.jsx';
+import FollowersList from './Pages/Profile/FollowersList.jsx';
+import FollowingList from './Pages/Profile/FollowingList.jsx';
+import LikedSongsList from './Pages/Lists/LikedSongsList.jsx';
+import LikedArtistsList from './Pages/Lists/LikedArtists.jsx';
+import LikedAlbumsList from './Pages/Lists/LikedAlbumsList.jsx';
 
 
 function App() {
@@ -86,11 +94,28 @@ function App() {
           <Routes>
             <Route path='/'>
               <Route index element={<Login changeUserInfo={changeUserInfo} storeToken={storeToken} />} />
+
               <Route path='home' element={<HomePage />} />
               <Route path='signup' element={<SignUp />} />
+
               <Route path='search' element={<Search />} />
-              <Route path='import' element={<AddSong/>} />
+
+              <Route path='import' element={<AddSong token={token} userId = {userId} />} />
+              <Route path = 'importUniqueSong' element={<AddUniqueSong token={token} userId={userId}/>}/>
+              <Route path = 'songFileUpload' element={<SongFileUpload token={token} userId={userId}/>}/>
+
+              <Route path = 'myProfile' element={<MyProfile token={token} userId={userId} username={username}/>}/>
+              <Route path = 'followers' element={<FollowersList token={token} userId={userId} username={username}/>}/>
+              <Route path = 'following' element={<FollowingList token={token} userId={userId} username={username}/>}/>
+
+              {/* farklı kullanıcılara girince nasıl yapmalıyız */}
+
+              <Route path = 'likedSongs' element={<LikedSongsList token={token} userId={userId}/>}/>
+              <Route path = 'likedArtists' element={<LikedArtistsList token={token} userId={userId}/>}/>
+              <Route path = 'likedAlbums' element={<LikedAlbumsList token={token} userId={userId}/>}/>
+
               <Route path='analyze' element={<Analyze/>} />
+
               <Route path='*' element={<Error />} />
             </Route>
           </Routes>

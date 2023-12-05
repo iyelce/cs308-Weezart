@@ -35,4 +35,5 @@ public interface AnalysisService {
 	Map<String, Double> analysisDailyAverageRatingAlbums(String userId);
 	// these are the numerical analysis for albums, one for total one for date constrained
 	List<Integer> analysisAlbumCounts(String userId);
+	List<Integer> analysisConstrainedAlbumCounts(String userId, String dateConstraint);
 }

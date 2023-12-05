@@ -329,10 +329,13 @@ public class AnalysisServiceImpl implements AnalysisService{
         // Perform count operations on the constrained userSongs
         int totalAddedCount = constrainedUserSongs.size();
         int likedCount = (int) constrainedUserSongs.stream().filter(UserSong::isLiked).count();
-        int ratedCount = (int) constrainedUserSongs.stream().filter(userSong -> !userSong.getRating().isEmpty()).count();
+        int ratedCount = (int) constrainedUserSongs.stream()
+                .filter(userSong -> userSong.getRating() != null && !userSong.getRating().isEmpty())
+                .count();
 
         return List.of(totalAddedCount, likedCount, ratedCount);
     }
+
     
     
     public List<Album> analysisLatest5Album(String userId){
@@ -600,6 +603,32 @@ public class AnalysisServiceImpl implements AnalysisService{
         int totalAddedCount = userAlbums.size();
         int likedCount = (int) userAlbums.stream().filter(UserAlbum::isLiked).count();
         int ratedCount = (int) userAlbums.stream()
+                .filter(userAlbum -> userAlbum.getRating() != null && !userAlbum.getRating().isEmpty())
+                .count();
+
+        return List.of(totalAddedCount, likedCount, ratedCount);
+    }
+    
+    public List<Integer> analysisConstrainedAlbumCounts(String userId, String dateConstraint) {
+        User user = userRepo.findByiduser(Long.parseLong(userId));
+        List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
+
+        // Parse the dateConstraint string to LocalDate
+        LocalDate constraintDate = LocalDate.parse(dateConstraint, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        // Filter userAlbums based on the date constraint
+        List<UserAlbum> constrainedUserAlbums = userAlbums.stream()
+                .filter(userAlbum -> {
+                    // Assuming getAddTime returns a string in "yyyy-MM-dd HH:mm:ss" format
+                    LocalDate albumDate = LocalDate.parse(userAlbum.getAddTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    return !albumDate.isBefore(constraintDate);
+                })
+                .collect(Collectors.toList());
+
+        // Perform count operations on the constrained userAlbums
+        int totalAddedCount = constrainedUserAlbums.size();
+        int likedCount = (int) constrainedUserAlbums.stream().filter(UserAlbum::isLiked).count();
+        int ratedCount = (int) constrainedUserAlbums.stream()
                 .filter(userAlbum -> userAlbum.getRating() != null && !userAlbum.getRating().isEmpty())
                 .count();
 

@@ -527,4 +527,23 @@ public class AnalysisServiceImpl implements AnalysisService{
     }
     
     
+    public Map<String, Long> analysisDailyAddedAlbums(String userId) {
+        User user = userRepo.findByiduser(Long.parseLong(userId));
+        List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
+
+        // Create a map to store the count of songs added per day
+        Map<String, Long> albumsAddedPerDay = new HashMap<>();
+
+        // Group userSongs by addTime date and count songs for each date
+        albumsAddedPerDay = userAlbums.stream()
+                .collect(Collectors.groupingBy(
+                        userSong -> LocalDate.parse(userSong.getAddTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                                .toString(),
+                        Collectors.counting()
+                ));
+
+        return albumsAddedPerDay;
+    }
+    
+    
 }

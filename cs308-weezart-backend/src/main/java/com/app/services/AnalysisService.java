@@ -24,9 +24,11 @@ public interface AnalysisService {
 	List<Integer> analysisSongCounts(String userId);
 	List<Integer> analysisConstrainedSongCounts(String userId, String dateConstraint);
 	
-	
+	// these are the table analysis for albums
 	List<Album> analysisLatest5Album(String userId);
 	List<Album> analysisTop5Album(String userId);
 	List<Album> analysisGenreAlbum(String userId, String genre);
 	List<Album> analysisReleaseDateAlbum(String userId, int StartYear, int FinishYear);
+	//these are the chart analysis for albums
+	Map<String, Long> analysisDailyAddedAlbums(String userId);
 }

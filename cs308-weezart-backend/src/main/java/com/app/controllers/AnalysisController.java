@@ -101,5 +101,10 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisReleaseDateAlbum(userId, dateRange.getStartDate(), dateRange.getEndDate()));
 	}
 	
+	@GetMapping("/album/dailyAlbums/{userId}")
+	public ResponseEntity<Map<String, Long>> dailyAlbumsAnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisDailyAddedAlbums(userId));
+	}
+	
 	
 }

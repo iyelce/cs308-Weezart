@@ -372,7 +372,8 @@ public class AnalysisServiceImpl implements AnalysisService{
 
             int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
             int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
-
+            log.info(String.valueOf(lastRating1));
+            log.info(String.valueOf(lastRating2));
             // Sort in descending order
             return Integer.compare(lastRating2, lastRating1);
         });
@@ -565,5 +566,28 @@ public class AnalysisServiceImpl implements AnalysisService{
         return albumsAddedPerDay;
     }
     
+    public Map<String, Double> analysisDailyAverageRatingAlbums(String userId) {
+        User user = userRepo.findByiduser(Long.parseLong(userId));
+        List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
+
+        // Create a map to store the average rating per day
+        Map<String, Double> averageRatingPerDay = userAlbums.stream()
+                .filter(userAlbum -> userAlbum.getRatingTime() != null && !userAlbum.getRatingTime().isEmpty())  // Null check and filter out UserSongs with empty rating times
+                .collect(Collectors.groupingBy(
+                        userAlbum -> LocalDate.parse(userAlbum.getRatingTime().get(userAlbum.getRatingTime().size() - 1), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                                .toString(),
+                        HashMap::new, // Explicitly specify HashMap as the map type
+                        Collectors.averagingDouble(userAlbum -> {
+                            List<Integer> ratings = userAlbum.getRating();
+                            if (!ratings.isEmpty()) {
+                                // Use the last index of the ratings array
+                                return ratings.get(ratings.size() - 1);
+                            }
+                            return 0; // Default value if ratings array is empty
+                        })
+                ));
+
+        return averageRatingPerDay;
+    }
     
 }

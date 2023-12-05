@@ -1,11 +1,38 @@
 import React from "react";
 import './ProfilePage.css'; 
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import UserProfileApi from "../../API/UserProfileApi";
 
 
 const MyProfile = ({...props}) => {
 
+  // useEffect(() => {
+  //   setUserInfo({});
+
+  //   const fetchUserProfile = async () => {
+  //     try {
+  //       const userProfileData = await UserProfileApi(props.token, props.userId);
+  //       setUserInfo(userProfileData);
+  //     } 
+  //     catch (error) {
+  //       console.error('Error fetching user profile:', error);
+  //     }
+  //   };
+
+  //   // Invoke the fetchUserProfile function
+  //   fetchUserProfile();
+
+  //   // Cleanup function (optional)
+  //   return () => {
+  //     // Perform cleanup tasks if needed
+  //   };
+  // }, [props.token, props.userId]); // Add dependencies if needed
+
+
     const navigate = useNavigate();
+
+    const [userInfo, setUserInfo] = useState({});
 
 
     const user = {
@@ -29,7 +56,9 @@ const MyProfile = ({...props}) => {
             <br/>
             <br/>
 
-<div className="profile-container">
+            <p>{userInfo}</p>
+
+       <div className="profile-container">
         <div className="profile-header">
           {/* User Image */}
           <img
@@ -40,7 +69,7 @@ const MyProfile = ({...props}) => {
   
           {/* User Details */}
           <div className="user-details">
-            <h2>{props.username}</h2>
+            <h2>{user.username}</h2>
             <p >
                 <span className="profile_followers" onClick={()=>{navigate("/followers")}}>Followers: {user.followersCount} </span>
                 | 

@@ -106,5 +106,9 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisDailyAddedAlbums(userId));
 	}
 	
+	@GetMapping("/album/dailyLikedAlbums/{userId}")
+	public ResponseEntity<Map<String, Long>> dailyLikedAlbumsAnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisDailyLikedAlbums(userId));
+	}
 	
 }

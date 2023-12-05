@@ -380,64 +380,6 @@ public class AnalysisServiceImpl implements AnalysisService{
         List<Album> top2Albums = filteredAlbums.size() > 5 ? filteredAlbums.subList(0, 5) : filteredAlbums;
         return top2Albums;
     }
-
-    /*
-     * 
-     *     public List<Song> analysisGenreManual(String userId, String genre){
-    	User user = userRepo.findByiduser(Long.parseLong(userId));
-    	List<UserSong> userSongs = userSongRepo.findAllByUser(user);
-    	List<Song> filteredSongs = new ArrayList<>();
-    	for (UserSong userSong : userSongs) {
-    		if(userSong.getSong().getPopularity()!=-1) {
-	    		boolean genreFound = false;
-	    		Song song = userSong.getSong();
-	    		List<String> artistsId = song.getArtistsId();
-	    		
-	    		for (String artistId : artistsId) {
-	    			log.info(artistId);
-	    			Artist givenArtist = artistRepo.findByid(artistId);
-	    			log.info("2. analizin sonuna geldiiik");
-	    			List<String> genresList = givenArtist.getGenres();
-	    			log.info(genre);
-	    			if (genresList.contains(genre)) {
-	    				genreFound = true;
-	    				break;
-	    			}
-	    		}
-	    		
-	    		if (genreFound == true) {
-	    			log.info("boola girdi");
-	    			filteredSongs.add(song);
-	    		}
-    		}
-    	}
-    	
-    	filteredSongs.sort((song1, song2) -> {
-    	    List<Integer> ratings1 = userSongRepo.findBySongAndUser(song1, user).getRating();
-    	    List<Integer> ratings2 = userSongRepo.findBySongAndUser(song2, user).getRating();
-
-    	    int lastRating1 = ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
-    	    int lastRating2 = ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
-
-    	    // Sort in descending order
-    	    return Integer.compare(lastRating2, lastRating1);
-    	});
-
-        // Take the top 5 songs
-        List<Song> top2Songs = filteredSongs.size() > 5 ? filteredSongs.subList(0, 5) : filteredSongs;
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	log.info("2. analizin sonuna geldiiik");
-    	return top2Songs;
-    	
-    	
-    }
-     */
     
     public List<Album> analysisGenreAlbum(String userId, String genre){
     	User user = userRepo.findByiduser(Long.parseLong(userId));
@@ -495,6 +437,93 @@ public class AnalysisServiceImpl implements AnalysisService{
     	
     	log.info("2. analizin sonuna geldiiik");
     	return top2Albums;
+    }
+    
+    /*
+     * 
+     *     public List<Song> analysisReleaseDateManual(String userId, int StartYear, int FinishYear) {
+    	User user = userRepo.findByiduser(Long.parseLong(userId));
+    	List<UserSong> userSongs = userSongRepo.findAllByUser(user);
+    	List<Song> filteredSongs = new ArrayList<>();
+    	// now we have all usersongs by a given id
+    	
+    	for (UserSong userSong : userSongs) {
+    		Song song = userSong.getSong();
+    		String albumReleaseYear = song.getAlbumRelease();
+    		int year = Integer.parseInt(albumReleaseYear.substring(0,4));
+    		if (year >= StartYear && year <= FinishYear) {
+    			filteredSongs.add(song);
+    		}
+    	}
+    	
+    	
+    	// this part is supposed to work have not been able to test whether rating is correctly sortted or not
+        // Sort the filtered songs based on the last value in the rating array
+    	filteredSongs.sort((song1, song2) -> {
+    	    List<Integer> ratings1 = userSongRepo.findBySongAndUser(song1, user).getRating();
+    	    List<Integer> ratings2 = userSongRepo.findBySongAndUser(song2, user).getRating();
+
+    	    int lastRating1 = ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
+    	    int lastRating2 = ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
+
+    	    // Sort in descending order
+    	    return Integer.compare(lastRating2, lastRating1);
+    	});
+
+        // Take the top 5 songs
+        List<Song> top2Songs = filteredSongs.size() > 2 ? filteredSongs.subList(0, 2) : filteredSongs;
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	log.info("analizin sonuna geldiiik");
+    	return top2Songs;
+    }
+     */
+    
+    
+    
+    public List<Album> analysisReleaseDateAlbum(String userId, int StartYear, int FinishYear){
+    	User user = userRepo.findByiduser(Long.parseLong(userId));
+    	List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
+    	List<Album> filteredAlbums = new ArrayList<>();    	
+    
+    
+		for (UserAlbum userAlbum : userAlbums) {
+			Album album = userAlbum.getAlbum();
+			String albumReleaseYear = album.getReleaseDate();
+			int year = Integer.parseInt(albumReleaseYear.substring(0,4));
+			if (year >= StartYear && year <= FinishYear) {
+				filteredAlbums.add(album);
+			}
+		}
+		
+    	filteredAlbums.sort((album1, album2) -> {
+    	    List<Integer> ratings1 = userAlbumRepo.findByAlbumAndUser(album1, user).getRating();
+    	    List<Integer> ratings2 = userAlbumRepo.findByAlbumAndUser(album2, user).getRating();
+
+            int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
+            int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
+
+    	    // Sort in descending order
+    	    return Integer.compare(lastRating2, lastRating1);
+    	});
+
+        // Take the top 5 songs
+        List<Album> top2Albums = filteredAlbums.size() > 2 ? filteredAlbums.subList(0, 2) : filteredAlbums;
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	log.info("analizin sonuna geldiiik");
+    	return top2Albums;
+	
     }
     
     

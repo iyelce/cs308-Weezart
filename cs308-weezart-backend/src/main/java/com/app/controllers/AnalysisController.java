@@ -86,6 +86,10 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisLatest5Album(userId));
 	}
 	
+	@GetMapping("/album/top5Liked/{userId}")
+	public ResponseEntity<List<Album>> top5AlbumAnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisTop5Album(userId));
+	}
 	
 	
 }

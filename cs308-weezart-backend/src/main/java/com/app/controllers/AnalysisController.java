@@ -80,11 +80,11 @@ public class AnalysisController {
 	
 	
 	
-	/*
+	
 	@GetMapping("/album/last5Liked/{userId}")
 	public ResponseEntity<List<Album>> latest5AlbumAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisLatest5Album(userId));
-	}*/
+	}
 	
 	
 	

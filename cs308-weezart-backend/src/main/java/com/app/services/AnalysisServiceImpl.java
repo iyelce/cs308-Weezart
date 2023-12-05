@@ -188,6 +188,7 @@ public class AnalysisServiceImpl implements AnalysisService{
 
         // Sort user songs based on the liketime in descending order, considering null values
         List<UserSong> sortedUserSongs = userSongs.stream()
+        		.filter(UserSong::isLiked)
                 .sorted(Comparator.comparing(UserSong::getLikeTime, Comparator.nullsLast(Comparator.reverseOrder())))
                 .collect(Collectors.toList());
 
@@ -331,25 +332,15 @@ public class AnalysisServiceImpl implements AnalysisService{
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    /*
     public List<Album> analysisLatest5Album(String userId){
+
     	User user = userRepo.findByiduser(Long.parseLong(userId));
     	List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
     	List<Album> filteredAlbums = new ArrayList<>();
     	
         List<UserAlbum> sortedUserAlbums = userAlbums.stream()
-                .sorted((us1, us2) -> us2.getLikeTime().compareTo(us1.getLikeTime()))
+        		.filter(UserAlbum::isLiked)
+                .sorted(Comparator.comparing(UserAlbum::getLikeTime, Comparator.nullsLast(Comparator.reverseOrder())))
                 .collect(Collectors.toList());
 
         // Extract Album objects from sortedUserSongs
@@ -361,7 +352,7 @@ public class AnalysisServiceImpl implements AnalysisService{
         return top5Albums;
     
     	
-    }*/
+    }
     
     
     

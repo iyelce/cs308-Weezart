@@ -24,6 +24,5 @@ public interface AnalysisService {
 	List<Integer> analysisConstrainedSongCounts(String userId, String dateConstraint);
 	
 	
-	
-	//List<Album> analysisLatest5Album(String userId);
+	List<Album> analysisLatest5Album(String userId);
 }

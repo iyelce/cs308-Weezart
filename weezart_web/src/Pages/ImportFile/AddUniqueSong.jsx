@@ -2,8 +2,8 @@ import React from "react";
 import { useState } from "react";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { MdOutlineNoAdultContent } from "react-icons/md";
 import './Import.css';
+import AddingUniqueSongApi from "../../API/AddingUniqueSongApi";
 
 
 function AddUniqueSong({...props}) {
@@ -16,6 +16,13 @@ function AddUniqueSong({...props}) {
     const [timeMinutes, setTimeMinutes] = useState('');
     const [timeSeconds, setTimeSeconds] = useState('');
     const [isExplicit, setIsExplicit] = useState(false);
+
+    const [showErrorLabel, setShowErrorLabel] = useState(false);
+    
+    //0 nothing happened
+    //1 added song
+    //-1 error in adding song
+    const [showmsglabel,setshowmsglabel] = useState(0);
   
    // Function to handle adding an artist to the list
    const addArtistToList = () => {
@@ -28,15 +35,6 @@ function AddUniqueSong({...props}) {
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can handle form submission logic here
-    console.log('Form submitted:', {
-      songName,
-      albumName,
-      albumReleaseDate,
-      artistsList,
-      time: `${timeMinutes}:${timeSeconds}`,
-      isExplicit,
-    });
   };
 
 //   -----------------------------
@@ -45,11 +43,70 @@ function AddUniqueSong({...props}) {
     // Handle song click action
   };
 
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const submitSong = async () => {
+
+    if( songName === '' || albumName === '' || albumReleaseDate === '' || artistsList.length === 0
+        || timeMinutes ==='' || timeSeconds === '') {
+            setShowErrorLabel(true);
+    }
+    else {
+        setShowErrorLabel(false);
+        
+
+        const formattedDate = formatDate(albumReleaseDate);
+
+        let newSong = {
+            name : songName,
+            albumName : albumName,
+            artistsName : artistsList,
+            minutes : timeMinutes,
+            seconds : timeSeconds,
+            explicit : isExplicit,
+            albumRelease : formattedDate,
+
+            token : props.token,
+            userId : props.userId
+
+        }
+
+        
+        const response = await AddingUniqueSongApi(newSong);
+        
+        if (response === 1 ) {
+            //added song
+            setshowmsglabel(1);
+        }
+
+        else {
+            //sth went wrong
+            setshowmsglabel(-1);
+        }
+
+        setSongName('');
+        setAlbumName('');
+        setAlbumReleaseDate(null);
+        setArtistName('');
+        setArtistsList([]);
+        setTimeMinutes('');
+        setTimeSeconds('');
+        setIsExplicit(false);
+    }
+  }
+
   const handleDelete = (index) => {
     const updatedList = [...artistsList];
     updatedList.splice(index, 1);
     setArtistsList(updatedList);
   };
+
+  
 
     return (
 
@@ -171,14 +228,31 @@ function AddUniqueSong({...props}) {
 
             </div>
 
-            
+            <p style={{ display: showErrorLabel ? 'block' : 'none' }} className="single-song-add-fill-label">
+                Fill all areas
+            </p>
+          
         
             {/* Submit button */}
-            <button type="submit" className="submit-button">
+            <button type="submit" className="submit-button" onClick={()=> submitSong()}>
             Submit
             </button>
-        </form>
 
+
+            {showmsglabel === -1 && (
+                <p className="single-song-add-unique-label">
+                    Something went wrong. Try again.
+                </p>
+            )}
+
+            {showmsglabel === 1 && (
+                <p className="single-song-add-unique-label">
+                    Added Song Succesfully.
+                </p>
+            )}            
+
+
+        </form>
     </div>
         
        

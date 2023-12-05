@@ -1,3 +1,5 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
 .importPage{
     background-color: #222;
     height: 100vh;
@@ -44,15 +46,23 @@
     color: #B9B4C7;
   }
 
-  .single-song-add-unique-label{
+  .single-song-add-unique-label,
+  .single-song-add-fill-label {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 3rem;
     font-family: Poppins;
-    font-size: 17px;
     font-weight: 600;
     color: #B9B4C7;
-    font-size: 15px;
+  }
+
+  .single-song-add-unique-label{
+    margin-top: 3rem;
+    font-size: 17px;
+  }
+
+  .single-song-add-fill-label {
+    margin-top: 1.5rem;
+    font-size: 20px;
   }
   
   .form-row {
@@ -360,3 +370,6 @@
   height: 2%;
   margin-top: 2rem;
 }
+
+
+

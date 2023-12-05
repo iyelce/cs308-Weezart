@@ -73,7 +73,6 @@ async function AddingSongManuallyApi (songQuery, artistQuery, token, userId  ) {
         });
         
         const data = await response.text();
-        console.log("result123: ", data)
     
         if(!response.ok) {
             if (response.status === 403) {

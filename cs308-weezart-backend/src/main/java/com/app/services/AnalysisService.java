@@ -27,5 +27,5 @@ public interface AnalysisService {
 	
 	List<Album> analysisLatest5Album(String userId);
 	List<Album> analysisTop5Album(String userId);
-	
+	List<Album> analysisGenreAlbum(String userId, String genre);
 }

@@ -91,5 +91,10 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisTop5Album(userId));
 	}
 	
+	@GetMapping("/album/genre/{genre}/{userId}")
+	public ResponseEntity<List<Album>> genreAlbumAnalysisController(@PathVariable String genre, @PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisGenreAlbum(userId, genre));
+	}
+	
 	
 }

@@ -298,10 +298,13 @@ public class AnalysisServiceImpl implements AnalysisService{
 
         int totalAddedCount = userSongs.size();
         int likedCount = (int) userSongs.stream().filter(UserSong::isLiked).count();
-        int ratedCount = (int) userSongs.stream().filter(userSong -> !userSong.getRating().isEmpty()).count();
+        int ratedCount = (int) userSongs.stream()
+                .filter(userSong -> userSong.getRating() != null && !userSong.getRating().isEmpty())
+                .count();
 
         return List.of(totalAddedCount, likedCount, ratedCount);
     }
+
     
     
     
@@ -588,6 +591,19 @@ public class AnalysisServiceImpl implements AnalysisService{
                 ));
 
         return averageRatingPerDay;
+    }
+    
+    public List<Integer> analysisAlbumCounts(String userId) {
+        User user = userRepo.findByiduser(Long.parseLong(userId));
+        List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
+
+        int totalAddedCount = userAlbums.size();
+        int likedCount = (int) userAlbums.stream().filter(UserAlbum::isLiked).count();
+        int ratedCount = (int) userAlbums.stream()
+                .filter(userAlbum -> userAlbum.getRating() != null && !userAlbum.getRating().isEmpty())
+                .count();
+
+        return List.of(totalAddedCount, likedCount, ratedCount);
     }
     
 }

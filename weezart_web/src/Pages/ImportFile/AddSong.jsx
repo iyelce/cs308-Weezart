@@ -6,6 +6,7 @@ import { LuClock3 } from "react-icons/lu";
 import './Import.css';
 import AddingSongManuallyApi from "../../API/AddingSongManuallyApi";
 import { useNavigate } from "react-router-dom";
+import AddingAcceptedSong from "../../API/AddingAcceptedSong";
 
 
 function AddSong({...props}) {
@@ -17,6 +18,7 @@ function AddSong({...props}) {
     const [showLabel, setShowLabel] = useState(false);
     const [songInfos, setSongInfos] = useState([]);
     const [showUniqueLabel, setShowUniqueLabel] = useState(false);
+    const [showAddButton, setShowAddButton] = useState(false);
 
     //0 for not searched yet
     //1 found a song
@@ -65,9 +67,22 @@ function AddSong({...props}) {
             setSongInfos([foundSong]);
 
             setShowUniqueLabel(true); 
+            setShowAddButton(true);
         }
     }
   };
+
+  const handleSAddSong  = async () => {
+
+    console.log("--> song info: " , songInfos[0]);
+
+
+    const result = await AddingAcceptedSong(songInfos[0] , props.token, props.userId);
+
+    console.log("response in page: ", result);
+
+  }
+
 
 
 //   -----------------------------
@@ -126,9 +141,9 @@ function AddSong({...props}) {
                         />
                     </div>
 
-                    <button className="search-button" onClick={handleSpotifySearch}>
+                    {/* <button className="search-button" onClick={handleSpotifySearch}>
                         Search in Spotify
-                    </button>
+                    </button> */}
                     </div>
 
                 </div>
@@ -180,15 +195,34 @@ function AddSong({...props}) {
                         </tbody>
                     </table>
 
+
+
+
+
                     </div>
                 </div>
             </div>
 
+            <div className="add-from-spotify-row">
+
+                <button className="search-button" onClick={handleSpotifySearch}>
+                            Search in Spotify
+                </button>
+
+
+                {showAddButton && (
+                            <button className="add-song-button" onClick={handleSAddSong}>
+                                Add to my list
+                            </button>
+                )}
+
+            </div>
+
             
             <p style={{ display: showUniqueLabel ? 'block' : 'none' }} className="single-song-add-unique-label">
-                        Can't find the song you are looking for : 
-                        <a href="#/" onClick={()=> {navigate('/importUniqueSong')}}> Add your song to Weezart</a>
-                    </p>
+                Can't find the song you are looking for : 
+                <a href="#/" onClick={()=> {navigate('/importUniqueSong')}}> Add your song to Weezart</a>
+            </p>
            
         </form>
 

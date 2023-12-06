@@ -17,6 +17,7 @@ import SegmentedControl from "@react-native-segmented-control/segmented-control"
 import { BlurView } from "@react-native-community/blur";
 import axios from "./../../../config/axios";
 import { getToken, getUserId } from "../../../helpers/Utils";
+import manualAdd from "./manual-add";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,11 @@ export default Search = () => {
         <Stack.Screen
           name="Details"
           component={Details}
+          options={{ headerShown: false, presentation: "modal" }}
+        />
+        <Stack.Screen
+          name="ManualAdd"
+          component={manualAdd}
           options={{ headerShown: false, presentation: "modal" }}
         />
       </Stack.Group>

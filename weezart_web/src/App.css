@@ -75,11 +75,18 @@ border-color:#150426;
 #root > div {
     height:100%;
 }
+#root>div>div:nth-child(1){
+  z-index: 1;
+}
 #root > div > div:nth-child(1) > div{
     height:100%;
 }
 
 #root > div > div:nth-child(2) > div > div > div:nth-child(7) > div{
-
     height: 90%;
+}
+
+body > div.ReactModalPortal > div{
+  z-index: 100;
+  background-color: rgba(0,0,0,0.0) !important;
 }

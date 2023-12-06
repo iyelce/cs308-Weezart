@@ -1,11 +1,16 @@
+
 .ReactModal__Content.ReactModal__Content--after-open{
     height: 70%;
     width: 80%;
+    z-index: 100;
+    
 }
 
  
 .information-modal{
     height: 60%;
+    z-index: 1000;
+    
 }
 .information-modal, .song-details, .attributes, .song-like, .song-add {
     display: flex;

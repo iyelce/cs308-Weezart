@@ -73,6 +73,8 @@ function ArtistInfoPopup(props) {
       isOpen={props.isOpen}
       onRequestClose={props.onRequestClose}
       className="information-modal"
+     
+
     >
         {/* close button */}
         <div className="close-page"> 

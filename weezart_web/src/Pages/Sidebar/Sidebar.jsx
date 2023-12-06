@@ -28,10 +28,11 @@ const SideBar = ({...props}) => {
   return (
    <div hidden={hideNavbar}>
      <Container>
-      <Box
+      <Box 
         className="sideBar"
+       
        >
-        <Sidebar collapsed={isCollapsed} backgroundColor={colors.primary[400]} height='100%'>
+        <Sidebar collapsed={isCollapsed} backgroundColor={"#3B0944"} height='100%'>
         
           <Menu iconShape="square">
             {/* LOGO AND MENU ICON */}
@@ -150,7 +151,8 @@ const SideBar = ({...props}) => {
                   active={true}
                   style={{
                     color:colors.grey[100],
-                    backgroundColor:colors.primary[400]
+                    backgroundColor:"#3B0944"
+                    
                   }}
                   onClick={() => {navigate("import")}}
                   icon={<AddCircleOutlineIcon />}
@@ -162,7 +164,7 @@ const SideBar = ({...props}) => {
                   active={true}
                   style={{
                     color: colors.grey[100],
-                    backgroundColor:colors.primary[400]
+                    backgroundColor:"#3B0944"
                   }}
                   onClick={() => {navigate("songFileUpload")}}
                   icon={<AddCircleOutlineIcon />}

@@ -815,4 +815,24 @@ public class AnalysisServiceImpl implements AnalysisService{
         return artistsAddedPerDay;
     }
     
+    public Map<String, Long> analysisDailyLikedArtists(String userId) {
+    	// empty check
+        User user = userRepo.findByiduser(Long.parseLong(userId));
+        List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
+
+        // Create a map to store the count of songs added per day
+        Map<String, Long> artistsAddedPerDay = new HashMap<>();
+
+        // Group userSongs by addTime date and count songs for each date
+        artistsAddedPerDay = userArtists.stream()
+        		.filter(userArtist->userArtist.getLikeTime()!= null)
+                .collect(Collectors.groupingBy(
+                        userArtist -> LocalDate.parse(userArtist.getLikeTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                                .toString(),
+                        Collectors.counting()
+                ));
+
+        return artistsAddedPerDay;
+    }
+    
 }

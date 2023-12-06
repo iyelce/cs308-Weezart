@@ -157,4 +157,9 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisDailyAddedArtists(userId));
 	}
 	
+	@GetMapping("/artist/dailyLikedArtists/{userId}")
+	public ResponseEntity<Map<String, Long>> dailyLikedArtistsAnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisDailyLikedArtists(userId));
+	}
+	
 }

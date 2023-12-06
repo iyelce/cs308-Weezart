@@ -4,23 +4,20 @@ import {Box,Typography} from '@mui/material';
 import StatBox from './Statbox';
 import { useTheme } from '@mui/material/styles';
 import { tokens } from './theme';
-import { ChartsReferenceLine } from '@mui/x-charts/ChartsReferenceLine';
 
 
 
 export default function Analyze() {
-    const theme = useTheme();
-    const colors = tokens("dark");
   return (
-    <div>
+    <div >
     <Box display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
+        gridAutoRows="120px"
         gap="20px">
         {/* ROW 1 */}
         <Box
           gridColumn="span 3"
-          backgroundColor={"#351F39"}
+          backgroundColor={"#"}
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -35,7 +32,7 @@ export default function Analyze() {
 
         <Box
           gridColumn="span 3"
-          backgroundColor={"#48233C"}
+          backgroundColor={"#"}
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -51,7 +48,7 @@ export default function Analyze() {
         </Box>
         <Box
           gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={"#120719"}
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -67,7 +64,7 @@ export default function Analyze() {
         </Box>
         <Box
           gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={"#120719"}
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -84,7 +81,7 @@ export default function Analyze() {
         <Box
           gridColumn="span 12"
           gridRow="span 2"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={"#120719"}
         >
             <Typography fontSize={"20px"} >Adds</Typography>
             <LineChart
@@ -92,6 +89,7 @@ export default function Analyze() {
                 series={[
                         {
                             data: [2, 5.5, 2, 8.5, 1.5, 5],
+                            color:"#39FF14"
                         },
                         ]}
                         sx={{"& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
@@ -123,14 +121,16 @@ export default function Analyze() {
         <Box
           gridColumn="span 12"
           gridRow="span 2"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={"#"}
         >
             <Typography fontSize={"20px"} color={"red"}>Likes</Typography>
+
             <LineChart
                 xAxis={[{ data: [1, 2, 3, 5, 8, 10]  }]}
                 series={[
                         {
                             data: [2, 5.5, 2, 8.5, 1.5, 5],
+                            color:"#FF3131"
                         },
                         ]}
                         sx={{"& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
@@ -162,20 +162,27 @@ export default function Analyze() {
         <Box
           gridColumn="span 12"
           gridRow="span 2"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={"#"}
         >
             <Typography fontSize={"20px"} color={"red"}>Rates</Typography>
             <LineChart
+                margin={{ bottom: 40}}
                 xAxis={[{ data: [1, 2, 3, 5, 8, 10]  }]}
                 series={[
                         {
                             data: [2, 5.5, 2, 8.5, 1.5, 5],
+                            color:"#FFF01F"
+
                         },
+
                         ]}
                         sx={{"& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
                             fill:"#332FD0",
                             fontSize:"3rem"
                            },
+                           '& .MuiLineElement-root': {
+                            strokeWidth: 2,
+                          },
                            // change all labels fontFamily shown on both xAxis and yAxis
                            "& .MuiChartsAxis-tickContainer .MuiChartsAxis-tickLabel":{
                                fontFamily: "Roboto",

@@ -5,8 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -737,6 +739,61 @@ public class AnalysisServiceImpl implements AnalysisService{
     	
     	log.info("2. analizin sonuna geldiiik");
     	return top2Artists;
+    }
+    
+    
+    
+    
+    
+    
+    public List<Artist> analysisReleaseDateArtist(String userId, int StartYear, int FinishYear){
+    	User user = userRepo.findByiduser(Long.parseLong(userId));
+    	List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
+    	Set<String> filteredArtistsId = new HashSet<>(); 
+    	List<Artist> filteredArtists = new ArrayList<>();    	
+    
+    
+		for (UserAlbum userAlbum : userAlbums) {
+			Album album = userAlbum.getAlbum();
+			String albumReleaseYear = album.getReleaseDate();
+			int year = Integer.parseInt(albumReleaseYear.substring(0,4));
+			if (year >= StartYear && year <= FinishYear) {
+				filteredArtistsId.addAll(album.getArtistsId());
+			}
+		}
+		
+		for (String artistId : filteredArtistsId) {
+		    Artist artist = artistRepo.findByid(artistId);
+		    
+		    // Check if the artist is not null before adding
+		    if (artist != null) {
+		        filteredArtists.add(artist);
+		    }
+		}
+		
+    	filteredArtists.sort((artist1, artist2) -> {
+    	    List<Integer> ratings1 = userArtistRepo.findByArtistAndUser(artist1, user).getRating();
+    	    List<Integer> ratings2 = userArtistRepo.findByArtistAndUser(artist2, user).getRating();
+
+            int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
+            int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
+
+    	    // Sort in descending order
+    	    return Integer.compare(lastRating2, lastRating1);
+    	});
+
+        // Take the top 5 songs
+        List<Artist> top2Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	log.info("analizin sonuna geldiiik");
+    	return top2Artists;
+	
     }
     
 }

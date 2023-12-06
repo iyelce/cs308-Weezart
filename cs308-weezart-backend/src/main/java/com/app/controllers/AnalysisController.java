@@ -147,4 +147,9 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisGenreArtist(userId, genre));
 	}
 	
+	@GetMapping("/artist/releaseDate/{userId}")
+	public ResponseEntity<List<Artist>> releaseDateArtistAnalysisController(@RequestBody DateRange dateRange, @PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisReleaseDateArtist(userId, dateRange.getStartDate(), dateRange.getEndDate()));
+	}
+	
 }

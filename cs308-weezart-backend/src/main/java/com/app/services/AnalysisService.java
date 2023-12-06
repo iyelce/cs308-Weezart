@@ -42,4 +42,5 @@ public interface AnalysisService {
 	List<Artist> analysisLatest5Artist(String userId);
 	List<Artist> analysisTop5Artist(String userId);
 	List<Artist> analysisGenreArtist(String userId, String genre);
+	List<Artist> analysisReleaseDateArtist(String userId, int StartYear, int FinishYear);
 }

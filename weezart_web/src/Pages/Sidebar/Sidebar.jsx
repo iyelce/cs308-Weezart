@@ -101,7 +101,7 @@ const SideBar = ({...props}) => {
               </MenuItem>
 
 
-              <MenuItem
+              {/* <MenuItem
                 active={true}
                 style={{
                   color: colors.grey[100],
@@ -113,7 +113,7 @@ const SideBar = ({...props}) => {
               >
                 <Typography>{"Search"}</Typography>
 
-              </MenuItem>
+              </MenuItem> */}
 
               {/* <SubMenu label='Library' icon={<LibraryMusicIcon/>}>
                 <Item

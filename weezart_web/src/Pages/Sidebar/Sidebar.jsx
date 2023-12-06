@@ -32,7 +32,7 @@ const SideBar = ({...props}) => {
         className="sideBar"
        
        >
-        <Sidebar collapsed={isCollapsed} backgroundColor={"#3B0944"} height='100%'>
+        <Sidebar collapsed={isCollapsed} backgroundColor={"#3B0944"} height='100%' tabIndex="-1">
         
           <Menu iconShape="square">
             {/* LOGO AND MENU ICON */}
@@ -101,7 +101,7 @@ const SideBar = ({...props}) => {
               </MenuItem>
 
 
-              {/* <MenuItem
+              <MenuItem
                 active={true}
                 style={{
                   color: colors.grey[100],
@@ -113,7 +113,7 @@ const SideBar = ({...props}) => {
               >
                 <Typography>{"Search"}</Typography>
 
-              </MenuItem> */}
+              </MenuItem>
 
               {/* <SubMenu label='Library' icon={<LibraryMusicIcon/>}>
                 <Item
@@ -155,7 +155,6 @@ const SideBar = ({...props}) => {
                     
                   }}
                   onClick={() => {navigate("import")}}
-                  icon={<AddCircleOutlineIcon />}
                 >
                   <Typography>{"Add Song"}</Typography>
                 </MenuItem>
@@ -167,7 +166,6 @@ const SideBar = ({...props}) => {
                     backgroundColor:"#3B0944"
                   }}
                   onClick={() => {navigate("songFileUpload")}}
-                  icon={<AddCircleOutlineIcon />}
                 >
                   <Typography>{"Import Song File"}</Typography>
                 </MenuItem>

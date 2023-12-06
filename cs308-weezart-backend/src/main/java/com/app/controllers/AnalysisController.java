@@ -128,10 +128,18 @@ public class AnalysisController {
 	}
 	
 	
+	
+	
+	
+	
 	@GetMapping("/artist/last5Liked/{userId}")
 	public ResponseEntity<List<Artist>> latest5ArtistAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisLatest5Artist(userId));
 	}
 	
+	@GetMapping("/artist/top5Liked/{userId}")
+	public ResponseEntity<List<Artist>> top5ArtistAnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisTop5Artist(userId));
+	}
 	
 }

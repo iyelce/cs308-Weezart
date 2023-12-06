@@ -341,7 +341,7 @@ public class AnalysisServiceImpl implements AnalysisService{
         return List.of(totalAddedCount, likedCount, ratedCount);
     }
 
-    
+    //---------------------------------------------------------------------
     
     public List<Album> analysisLatest5Album(String userId){
 
@@ -640,6 +640,12 @@ public class AnalysisServiceImpl implements AnalysisService{
         return List.of(totalAddedCount, likedCount, ratedCount);
     }
     
+    
+    
+    
+    //-------------------------------------------------
+    
+    
     public List<Artist> analysisLatest5Artist(String userId){
 
     	User user = userRepo.findByiduser(Long.parseLong(userId));
@@ -660,6 +666,32 @@ public class AnalysisServiceImpl implements AnalysisService{
         return top5Artists;
     
     	
+    }
+    
+    public List<Artist> analysisTop5Artist(String userId) {
+        User user = userRepo.findByiduser(Long.parseLong(userId));
+        List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
+        List<Artist> filteredArtists = new ArrayList<>();
+
+        for (UserArtist userArtist : userArtists) {
+        	Artist artist = userArtist.getArtist();
+            filteredArtists.add(artist);
+        }
+
+        filteredArtists.sort((artist1, artist2) -> {
+            List<Integer> ratings1 = userArtistRepo.findByArtistAndUser(artist1, user).getRating();
+            List<Integer> ratings2 = userArtistRepo.findByArtistAndUser(artist2, user).getRating();
+
+            int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
+            int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
+            log.info(String.valueOf(lastRating1));
+            log.info(String.valueOf(lastRating2));
+            // Sort in descending order
+            return Integer.compare(lastRating2, lastRating1);
+        });
+
+        List<Artist> top2Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
+        return top2Artists;
     }
     
 }

@@ -16,15 +16,21 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(
-  (config) => {
-    const token = getToken();
-    if (token) {
-      config.headers["Authorization"] = "Bearer " + token;
+  async (config) => {
+    try {
+      const token = await getToken();
+
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
+      return config;
+    } catch (error) {
+      console.error("Error adding Bearer Token to request:", error);
+      return Promise.reject(error);
     }
-    return config;
   },
   (error) => {
-    Promise.reject(error);
+    return Promise.reject(error);
   }
 );
 instance.interceptors.response.use(

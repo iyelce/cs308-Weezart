@@ -47,5 +47,8 @@ public interface AnalysisService {
 	Map<String, Long> analysisDailyAddedArtists(String userId);
 	Map<String, Long> analysisDailyLikedArtists(String userId);
 	Map<String, Double> analysisDailyAverageRatingArtists(String userId);
+	// these are the numerical analysis for artists, one for total one for date constrained
+	List<Integer> analysisArtistCounts(String userId);
+	
 	
 }

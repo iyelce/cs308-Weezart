@@ -859,4 +859,17 @@ public class AnalysisServiceImpl implements AnalysisService{
         return averageRatingPerDay;
     }
     
+    public List<Integer> analysisArtistCounts(String userId) {
+        User user = userRepo.findByiduser(Long.parseLong(userId));
+        List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
+
+        int totalAddedCount = userArtists.size();
+        int likedCount = (int) userArtists.stream().filter(UserArtist::isLiked).count();
+        int ratedCount = (int) userArtists.stream()
+                .filter(userArtist -> userArtist.getRating() != null && !userArtist.getRating().isEmpty())
+                .count();
+
+        return List.of(totalAddedCount, likedCount, ratedCount);
+    }
+    
 }

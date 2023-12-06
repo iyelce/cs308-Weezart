@@ -167,4 +167,9 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisDailyAverageRatingArtists(userId));
 	}
 	
+	@GetMapping("/artist/artistCounts/{userId}")
+	public ResponseEntity<List<Integer>> artistCountsAnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisArtistCounts(userId));
+	}
+	
 }

@@ -18,7 +18,7 @@ export default Email = ({ navigation }) => {
     fetch(baseURL + "/auth/login", {
       method: "POST",
       headers: {
-        Accept: "text/plain",
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -28,13 +28,13 @@ export default Email = ({ navigation }) => {
     })
       .then((res) => {
         if (res.status == 200) {
-          return res.text();
+          return res.json();
         } else {
           throw new Error(`HTTP status ${res.status}`);
         }
       })
       .then((res) => {
-        saveToken(res.toString()).then(() => {
+        saveToken(res.token, res.userId.toString()).then(() => {
           navigation.navigate("Home");
         });
       })

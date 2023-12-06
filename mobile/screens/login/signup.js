@@ -209,7 +209,7 @@ export default Signup = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ marginTop: 10 }}
-            onPress={() => navigation.goBack()} //here
+            onPress={() => navigation.goBack()}
           >
             <Text style={{ fontSize: 12, color: "#7e7e7e" }}>
               {"Already have an account? "}

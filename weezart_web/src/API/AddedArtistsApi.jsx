@@ -37,8 +37,6 @@ async function AddedArtistsApi (token, userId ) {
             artistResponse.push(newResp[i].artist);
         }
 
-        console.log("returned artist api: " , artistResponse)
-
         return artistResponse;
     }
     catch (error) {

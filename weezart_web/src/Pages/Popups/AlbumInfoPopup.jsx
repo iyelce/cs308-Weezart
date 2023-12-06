@@ -20,7 +20,7 @@ function imgsrc(val) {
     }
 }
 
-function ArtistInfoPopup(props) {
+function AlbumInfoPopup(props) {
 
     const [rating, setRating] = useState(0);
     const stars = [1, 2, 3, 4, 5];
@@ -37,6 +37,19 @@ function ArtistInfoPopup(props) {
             setAdded(true); 
           }
     };
+
+// artistsId:['3Uqu1mEdkUJxPe7s31n1M9']
+// artistsName:['Weyes Blood']
+// id:"0Cuqhgy8vm96JEkBY3polk"
+// imageUrl:"https://i.scdn.co/image/ab67616d0000b2730c64e752dec4c08362cc4a88"
+// name:"Titanic Rising"
+// songsId:(10) ['6Jy6p1xGv0n4c5hH0CH3VP', '7s9I4aCM8cfe2cSgPaPezg', '1ki6pB2iYh9nSmlG4WPdqf', '6f4itfvWzS59Qu7JWorhxn', '51EMSRpNm9Rg5rGViVCczv', '2ujzo6cl7jAcLCnyKyYWwM', '5qspeKX1xBacLJMm2t3Yc0', '30TCAxiC8zVb5NVdUoUuCS', '2VYqgye3Wf9ySE4qYM3iJn', '5V25JNAs17PQ3dJfmMIqSG']
+
+
+// songsName:(10) ['Picture Me Better', 'Nearer to Thee', 'Titanic Rising', 'Movies', 'Andromeda', 'Mirror Forever', "A Lot's Gonna Change", 'Something to Believe', 'Everyday', 'Wild Time']
+
+// releaseDate:"2019-04-05"
+// numberOfTracks:10
 
 
   return (
@@ -55,12 +68,12 @@ function ArtistInfoPopup(props) {
         </div>
 
         <div className="three-column-container">
-            <div className="column column-try ">
+            <div className="column column-try" style={{ backgroundImage: `url(${props.albumInfo.imageUrl !== "" ? props.albumInfo.imageUrl : 'yourCatPhotoUrl'})` }}>
                 <div className="content">
-                    <h2 className="title">{props.albumInfo.albumName} <span>{props.albumInfo.year}</span></h2>
+                    <h2 className="title">{props.albumInfo.name} <span>{props.albumInfo.year}</span></h2>
 
-                    <p className="copy">{props.albumInfo.artists.join(', ')}</p>
-                    <p className="copy">Genre: {props.albumInfo.genre.join(', ')}</p>
+                    <p className="copy">{props.albumInfo.artistsName.join(', ')}</p>
+                    {/* <p className="copy">Genre: {props.albumInfo.genre.join(', ')}</p> */}
 
                     <div className="stars">
                         {stars.map((star) => (
@@ -83,34 +96,10 @@ function ArtistInfoPopup(props) {
 
                 <div className="top5songlist">
                     <ul>
-                    <li className="songs">Rhythm of the Rain</li>
-                    <li className="songs">Moonlight Sonata</li>
-                    <li className="songs">Dreamcatcher</li>
-                    <li className="songs">Eternal Echo</li>
-                    <li className="songs">Whispers in the Wind</li>
-                    <li className="songs">Serenade of Stars</li>
-                    <li className="songs">Lost in Harmony</li>
-                    <li className="songs">Mystic Melodies</li>
-                    <li className="songs">Sunset Serenade</li>
-                    <li className="songs">Aurora Lullaby</li>
-                    <li className="songs">Echoes of Eternity</li>
-                    <li className="songs">Silent Symphony</li>
-                    <li className="songs">Enchanted Dreams</li>
-                    <li className="songs">Dancing Shadows</li>
-                    <li className="songs">Midnight Sonata</li>
-                    <li className="songs">Crimson Crescendo</li>
-                    <li className="songs">Infinite Melody</li>
-                    <li className="songs">Stardust Serenade</li>
-                    <li className="songs">Emerald Elegy</li>
-                    <li className="songs">Waves of Whispers</li>
-                    <li className="songs">Celestial Cadence</li>
-                    <li className="songs">Lullaby for the Soul</li>
-                    <li className="songs">Ephemeral Echos</li>
-                    <li className="songs">Chasing Rainbows</li>
-                    <li className="songs">Astral Aria</li>
-
+                        {props.albumInfo.songsName.map((song, index) => (
+                        <li key={index} className="songs">{song}</li>
+                        ))}
                     </ul>
-                
                 </div>
 
 
@@ -175,4 +164,4 @@ function ArtistInfoPopup(props) {
   );
 }
 
-export default ArtistInfoPopup;
+export default AlbumInfoPopup;

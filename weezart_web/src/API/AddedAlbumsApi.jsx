@@ -37,6 +37,8 @@ async function AddedAlbumsApi (token, userId ) {
             albumResponse.push(newResp[i].album);
         }
 
+        console.log("returned alnum api: " , albumResponse)
+
         return albumResponse;
     }
     catch (error) {

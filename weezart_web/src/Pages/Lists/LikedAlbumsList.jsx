@@ -3,8 +3,38 @@ import { useEffect } from "react";
 import { useState } from "react";
 import AddedAlbumsApi from "../../API/AddedAlbumsApi";
 import { IoIosAlbums } from "react-icons/io";
+import AlbumInfoPopup from '../Popups/AlbumInfoPopup';
 
 function LikedAlbumsList({...props}) {
+
+//to check which itm is clicked in the tables
+const [selectedAlbumIndex, setSelectedAlbumIndex] = useState(-1);
+
+//to open and close popups
+const [showAlbumPopups, setShowAlbumPopups] = useState(new Map());
+
+//if sth is clicked from tables sets index and calls open popup functions
+const handleAlbumClickTable = (index) => {
+  handleAlbumButtonClick(index);
+  setSelectedAlbumIndex(index);
+};
+
+//to opens popup and maps the information
+const handleAlbumButtonClick = (index) => {
+  const newShowAlbumPopups = new Map(showAlbumPopups);
+  newShowAlbumPopups.set(index, true);
+  setShowAlbumPopups(newShowAlbumPopups);
+};
+
+//to close popups and set selected index to -1
+const handleAlbumClosePopup = (index) => {
+  const newShowAlbumPopups = new Map(showAlbumPopups);
+  newShowAlbumPopups.set(index, false);
+  setShowAlbumPopups(newShowAlbumPopups);
+
+  setSelectedAlbumIndex(-1);
+};
+
 
   const[albumList, setAlbumList] = useState([]);
 
@@ -48,8 +78,7 @@ function imgsrc(val) {
             </thead>
             <tbody>
             {albumList && albumList.map((val, index) => (
-                // <tr key={index} onClick={() => handleArtistClickTable(index)}>
-                <tr key={index} >
+                <tr key={index} onClick={() => handleAlbumClickTable(index)}>
                   <th scope="row">{index + 1}</th>
                   <td>
                   <img
@@ -68,13 +97,13 @@ function imgsrc(val) {
             </tbody>
           </table>
     
-          {/* {selectedArtistIndex !== -1 && (
-            <ArtistInfoPopup
+          {selectedAlbumIndex !== -1 && (
+            <AlbumInfoPopup
               isOpen={true}
-              onRequestClose={handleArtistClosePopup}
-              artistInfo={artistInfos[selectedArtistIndex]}
+              onRequestClose={handleAlbumClosePopup}
+              albumInfo={albumList[selectedAlbumIndex]}
             />
-          )} */}
+          )}
         </div>
 
 

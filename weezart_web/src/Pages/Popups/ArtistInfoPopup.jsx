@@ -26,36 +26,6 @@ function ArtistInfoPopup(props) {
     const [liked, setLiked] = useState(false);
     const [added, setAdded] = useState(false);
 
-    const [songs, setSongs] = useState([
-        { songName: 'Rhythm of the Rain', duration: '3:20' },
-        { songName: 'Moonlight Sonata', duration: '4:45' },
-        { songName: 'Dreamcatcher', duration: '2:58' },
-        { songName: 'Eternal Echo', duration: '3:30' },
-        { songName: 'Whispers in the Wind', duration: '2:45' },
-        { songName: 'Serenade of Stars', duration: '4:10' },
-        { songName: 'Lost in Harmony', duration: '3:15' },
-        { songName: 'Mystic Melodies', duration: '3:05' },
-        { songName: 'Sunset Serenade', duration: '2:30' },
-        { songName: 'Aurora Lullaby', duration: '4:00' },
-        { songName: 'Echoes of Eternity', duration: '3:50' },
-        { songName: 'Silent Symphony', duration: '2:55' },
-        { songName: 'Enchanted Dreams', duration: '3:40' },
-        { songName: 'Dancing Shadows', duration: '2:48' },
-        { songName: 'Midnight Sonata', duration: '3:25' },
-        { songName: 'Crimson Crescendo', duration: '3:12' },
-        { songName: 'Infinite Melody', duration: '2:38' },
-        { songName: 'Stardust Serenade', duration: '3:18' },
-        { songName: 'Emerald Elegy', duration: '3:08' },
-        { songName: 'Waves of Whispers', duration: '2:52' },
-        { songName: 'Celestial Cadence', duration: '3:22' },
-        { songName: 'Lullaby for the Soul', duration: '3:35' },
-        { songName: 'Ephemeral Echos', duration: '2:42' },
-        { songName: 'Chasing Rainbows', duration: '3:15' },
-        { songName: 'Astral Aria', duration: '3:55' }
-      ]);
-
-
-
     const handleStarClick = (selectedRating) => {
         if (selectedRating === rating) {
             // If the clicked star is the same as the current rating, remove the rating (set it to 0)
@@ -66,6 +36,12 @@ function ArtistInfoPopup(props) {
             setAdded(true); 
           }
     };
+
+// followerCount :411109
+// genres :(5) ['art pop', 'chamber pop', 'experimental folk', 'experimental pop', 'indie pop']
+// id : "3Uqu1mEdkUJxPe7s31n1M9"
+// imageUrl : "https://i.scdn.co/image/ab6761610000e5eb92b2757e7003d4f77e5a5d05"
+// name : "Weyes Blood"
 
 
   return (
@@ -86,9 +62,9 @@ function ArtistInfoPopup(props) {
         </div>
 
         <div className="three-column-container">
-            <div className="column column-try ">
+        <div className="column column-try" style={{ backgroundImage: `url(${props.artistInfo.imageUrl !== "" ? props.artistInfo.imageUrl : 'yourCatPhotoUrl'})` }}>
                 <div className="content">
-                    <h2 className="title">{props.artistInfo.artistName}</h2>
+                    <h2 className="title">{props.artistInfo.name}</h2>
 
                     <div className="stars">
                         {stars.map((star) => (
@@ -108,16 +84,15 @@ function ArtistInfoPopup(props) {
 
 
 
-            <div className="top5songlist" >
+            {/* <div className="top5songlist" >
                 <ul>
-                    {/* Map over the songs array and render each song */}
                     {songs.map((song, index) => (
                     <li key={index} className="songs">
                         {`${song.songName} - ${song.duration}`}
                     </li>
                     ))}
                 </ul>
-            </div>
+            </div> */}
 
 
             </div>
@@ -143,8 +118,8 @@ function ArtistInfoPopup(props) {
                 </form>
 
                 <div className="attributes">
-                    <p className="artistsFollower"> Followers: {props.artistInfo.artistsFollower}</p>
-                    <p className="songGenre">Genre: {props.artistInfo.genre.join(', ')}</p>
+                    <p className="artistsFollower"> Followers: {props.artistInfo.followerCount}</p>
+                    <p className="songGenre">Genre: {props.artistInfo.genres.join(', ')}</p>
                 </div>
 
             </div>

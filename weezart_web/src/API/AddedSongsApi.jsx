@@ -1,14 +1,13 @@
-// User Controller → /user
-// User Profile → GET /profile/{userId}
+// Added songs → GET /added-songs/{userId}
 
-// RequestParam: string userId
+// PathVariable: string userId
 
-// Response: User object
+// Response: List of user’s added songs as UserSong objects (empty list if the user did not add any song)
 
 
-async function UserProfileApi (token, userId ) {
+async function AddedSongsApi (token, userId ) {
 
-    const url = `http://localhost:8080/user/profile/${userId}`;  
+    const url = `http://localhost:8080/user/added-songs/${userId}`;  
     const auth = "Bearer " + token;
 
     try{        
@@ -32,7 +31,7 @@ async function UserProfileApi (token, userId ) {
 
         const newResp = JSON.parse(data); 
 
-        console.log("--> user in api : ", newResp);
+        console.log("--> song list in api : ", newResp);
 
         return newResp;
 
@@ -42,4 +41,4 @@ async function UserProfileApi (token, userId ) {
     }
 }
 
-export default UserProfileApi;
+export default AddedSongsApi;

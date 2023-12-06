@@ -25,9 +25,11 @@ import com.app.models.Song;
 import com.app.models.User;
 import com.app.models.UserSong;
 import com.app.models.UserAlbum;
+import com.app.models.UserArtist;
 import com.app.repo.AlbumRepository;
 import com.app.repo.ArtistRepository;
 import com.app.repo.UserAlbumRepository;
+import com.app.repo.UserArtistRepository;
 import com.app.repo.UserRepository;
 import com.app.repo.UserSongRepository;
 
@@ -49,6 +51,9 @@ public class AnalysisServiceImpl implements AnalysisService{
 	
 	@Autowired
 	private UserAlbumRepository userAlbumRepo;
+	
+	@Autowired
+	private UserArtistRepository userArtistRepo;
 	
 	@Autowired
 	private UserRepository userRepo;
@@ -633,6 +638,28 @@ public class AnalysisServiceImpl implements AnalysisService{
                 .count();
 
         return List.of(totalAddedCount, likedCount, ratedCount);
+    }
+    
+    public List<Artist> analysisLatest5Artist(String userId){
+
+    	User user = userRepo.findByiduser(Long.parseLong(userId));
+    	List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
+    	List<Artist> filteredArtists = new ArrayList<>();
+    	
+        List<UserArtist> sortedUserArtists = userArtists.stream()
+        		.filter(UserArtist::isLiked)
+                .sorted(Comparator.comparing(UserArtist::getLikeTime, Comparator.nullsLast(Comparator.reverseOrder())))
+                .collect(Collectors.toList());
+
+        // Extract Album objects from sortedUserSongs
+        List<Artist> top5Artists = sortedUserArtists.stream()
+                .limit(5)
+                .map(UserArtist::getArtist)
+                .collect(Collectors.toList());
+
+        return top5Artists;
+    
+    	
     }
     
 }

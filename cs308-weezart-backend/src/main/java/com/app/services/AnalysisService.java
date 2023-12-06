@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.app.models.Album;
+import com.app.models.Artist;
 import com.app.models.Song;
 import com.app.models.UserSong;
 
@@ -36,4 +37,7 @@ public interface AnalysisService {
 	// these are the numerical analysis for albums, one for total one for date constrained
 	List<Integer> analysisAlbumCounts(String userId);
 	List<Integer> analysisConstrainedAlbumCounts(String userId, String dateConstraint);
+	
+	//these are the table analysis for artists
+	List<Artist> analysisLatest5Artist(String userId);
 }

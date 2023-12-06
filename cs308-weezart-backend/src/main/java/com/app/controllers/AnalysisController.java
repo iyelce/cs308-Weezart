@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.models.Album;
+import com.app.models.Artist;
 import com.app.models.DateRange;
 import com.app.models.Song;
 import com.app.models.UserSong;
@@ -125,4 +126,12 @@ public class AnalysisController {
 	public ResponseEntity<List<Integer>> albumConstainedCountsAnalysisController(@PathVariable String userId, @PathVariable String dateConstraint){
 		return ResponseEntity.ok(analysisService.analysisConstrainedAlbumCounts(userId, dateConstraint));
 	}
+	
+	
+	@GetMapping("/artist/last5Liked/{userId}")
+	public ResponseEntity<List<Artist>> latest5ArtistAnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisLatest5Artist(userId));
+	}
+	
+	
 }

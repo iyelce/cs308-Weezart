@@ -3,6 +3,7 @@ import { FaUser } from "react-icons/fa6";
 import { useEffect } from "react";
 import AddedArtistsApi from "../../API/AddedArtistsApi";
 import './List.css';
+import ArtistInfoPopup from "../Popups/ArtistInfoPopup";
 
 function LikedArtistsList({...props}) {
 
@@ -25,7 +26,17 @@ function LikedArtistsList({...props}) {
     setShowArtistPopups(newShowArtistPopups);
   };
 
+  //to close popups and set selected index to -1
+  const handleArtistClosePopup = (index) => {
+    const newShowArtistPopups = new Map(showArtistPopups);
+    newShowArtistPopups.set(index, false);
+    setShowArtistPopups(newShowArtistPopups);
 
+    setSelectedArtistIndex(-1);
+  };
+
+
+  
   const[artistList, setArtistList] = useState([]);
 
   useEffect(() => {
@@ -71,8 +82,8 @@ function imgsrc(val) {
           </thead>
           <tbody>
           {artistList && artistList.map((val, index) => (
-              // <tr key={index} onClick={() => handleArtistClickTable(index)}>
-              <tr key={index} >
+              <tr key={index} onClick={() => handleArtistClickTable(index)}>
+              {/* </tr><tr key={index} > */}
                 <th scope="row">{index + 1}</th>
                 <td>
                 <img
@@ -95,13 +106,13 @@ function imgsrc(val) {
           </tbody>
         </table>
   
-        {/* {selectedArtistIndex !== -1 && (
+        {selectedArtistIndex !== -1 && (
           <ArtistInfoPopup
             isOpen={true}
             onRequestClose={handleArtistClosePopup}
-            artistInfo={artistInfos[selectedArtistIndex]}
+            artistInfo={artistList[selectedArtistIndex]}
           />
-        )} */}
+        )}
       </div>
   );
 }

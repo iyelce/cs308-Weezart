@@ -1,4 +1,4 @@
-import React, { Profiler } from "react";
+import React, { Profiler, useEffect, useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -13,364 +13,549 @@ import {
   SectionList,
   FlatList,
   ImageBlurShadow,
+  RefreshControl,
+  ImageBackground,
 } from "react-native";
+import SegmentedControl from "react-native-segmented-control-2";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import axios from "./../../../config/axios";
+import { getUserId } from "../../../helpers/Utils";
+import { Rating } from "@kolking/react-native-rating";
+import _ from "lodash";
+import details from "../search/album/details";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { BlurView } from "@react-native-community/blur";
+import Album from "../search/album";
+import Artist from "../search/album/artist";
 
-const ListItem = ({ item }) => {
-  return (
-    <View style={styles.item}>
-      <Image
-        source={{
-          uri: item.uri,
-        }}
-        style={styles.itemPhoto}
-        resizeMode="cover"
-      />
-      <Text style={styles.itemText}>{item.text}</Text>
-    </View>
-  );
-};
+const Stack = createNativeStackNavigator();
 
 export default Profile = () => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <View style={{ flex: 1 }}>
-        <View style={{ flexDirection: "row" }}>
-          <Image
-            source={require("./../../../assets/icons/pp3.png")}
-            resizeMode="contain"
-            style={{
-              height: 115,
-              width: 115,
-              borderRadius: 999,
-              borderWidth: 2,
-              marginTop: 30,
-              marginLeft: 20,
-            }}
-          />
-          <View
-            style={{
-              marginTop: 30,
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                color: "black",
-                marginVertical: 8,
-                fontSize: 20,
-                fontWeight: "bold",
-              }}
-            >
-              Raman Afravi
-            </Text>
-            <View
-              style={{
-                paddingVertical: 8,
-                flexDirection: "row",
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "column",
-                  alignItems: "center",
-                  marginHorizontal: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    color: "gray",
-                    fontSize: 18,
-                    fontWeight: "bold",
-                  }}
-                >
-                  385
-                </Text>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 16,
-                  }}
-                >
-                  Following
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "column",
-                  alignItems: "center",
-                  marginHorizontal: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    color: "gray",
-                    fontSize: 18,
-                    fontWeight: "bold",
-                  }}
-                >
-                  1,7K
-                </Text>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 16,
-                  }}
-                >
-                  Followers
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View
-          style={{
-            flex: 1,
-          }}
-        >
-          <SectionList
-            contentContainerStyle={{ paddingHorizontal: 10, paddingBottom: 60 }}
-            stickySectionHeadersEnabled={false}
-            sections={SECTIONS}
-            renderSectionHeader={({ section }) => (
-              <>
-                <Text style={styles.sectionHeader}>{section.title}</Text>
-                {section.horizontal ? (
-                  <FlatList
-                    style={{
-                      display: "flex",
-                      gap: 5,
-                      width: "100%",
-                      padding: 10,
-                    }}
-                    //   showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{}}
-                    horizontal
-                    data={section.data}
-                    renderItem={({ item }) => <ListItem item={item} />}
-                    showsHorizontalScrollIndicator={false}
-                  />
-                ) : null}
-              </>
-            )}
-            renderItem={({ item, section }) => {
-              if (section.horizontal) {
-                return null;
-              }
-              return <ListItem item={item} />;
-            }}
-          />
-        </View>
-      </View>
-    </SafeAreaView>
+    <Stack.Navigator
+      screenOptions={{
+        gestureEnabled: true,
+        gestureDirection: "horizontal",
+      }}
+    >
+      <Stack.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Group>
+        <Stack.Screen
+          name="Details"
+          component={details}
+          options={{ headerShown: false, presentation: "modal" }}
+        />
+        <Stack.Screen name="Album" component={Album} />
+        <Stack.Screen name="Artist" component={Artist} />
+      </Stack.Group>
+    </Stack.Navigator>
   );
 };
 
-const SECTIONS = [
-  {
-    title: "Favorite Songs",
-    horizontal: true,
-    data: [
-      {
-        key: "1",
-        text: "Item text 1",
-        uri: "https://picsum.photos/id/1/200",
-      },
-      {
-        key: "2",
-        text: "Item text 2",
-        uri: "https://picsum.photos/id/10/200",
-      },
+const ProfileScreen = ({ navigation }) => {
+  const [refreshing, setRefreshing] = useState(false);
 
-      {
-        key: "3",
-        text: "Item text 3",
-        uri: "https://picsum.photos/id/1002/200",
-      },
-      {
-        key: "4",
-        text: "Item text 4",
-        uri: "https://picsum.photos/id/1006/200",
-      },
-      {
-        key: "5",
-        text: "Item text 5",
-        uri: "https://picsum.photos/id/1008/200",
-      },
-    ],
-  },
-  {
-    title: "Favorite Albums",
-    horizontal: true,
-    data: [
-      {
-        key: "1",
-        text: "Item text 1",
-        uri: "https://picsum.photos/id/1011/200",
-      },
-      {
-        key: "2",
-        text: "Item text 2",
-        uri: "https://picsum.photos/id/1012/200",
-      },
+  const [userInfo, setUserInfo] = useState({});
+  const [addedSongs, setAddedSongs] = useState(null);
+  const [addedAlbums, setAddedAlbums] = useState(null);
+  const [addedArtists, setAddedArtists] = useState(null);
 
-      {
-        key: "3",
-        text: "Item text 3",
-        uri: "https://picsum.photos/id/1013/200",
-      },
-      {
-        key: "4",
-        text: "Item text 4",
-        uri: "https://picsum.photos/id/1015/200",
-      },
-      {
-        key: "5",
-        text: "Item text 5",
-        uri: "https://picsum.photos/id/1016/200",
-      },
-    ],
-  },
-  {
-    title: "Favorite Artists",
-    horizontal: true,
-    data: [
-      {
-        key: "1",
-        text: "Item text 1",
-        uri: "https://picsum.photos/id/1020/200",
-      },
-      {
-        key: "2",
-        text: "Item text 2",
-        uri: "https://picsum.photos/id/1024/200",
-      },
+  const [currentSegment, setCurrentSegment] = useState(0);
 
-      {
-        key: "3",
-        text: "Item text 3",
-        uri: "https://picsum.photos/id/1027/200",
+  const fetchStuff = () => {
+    getUserId().then((userId) => {
+      // axios.get("/user/profile/" + userId).then((res) => {
+      //   setUserInfo(res);
+      // });
+      axios.get("/user/added-songs/" + userId).then((res) => {
+        setUserInfo(res[0].user);
+        const addedSongs = res.map((item) => {
+          return {
+            song: item.song,
+            userState: {
+              addTime: item.addTime,
+              liked: item.liked,
+              likeTime: item.likeTime,
+              rating: item.rating,
+              ratingTime: item.ratingTime,
+            },
+          };
+        });
+        setAddedSongs(addedSongs);
+      });
+      axios.get("/user/added-albums/" + userId).then((res) => {
+        const addedAlbums = res.map((item) => {
+          return {
+            album: item.album,
+            userState: {
+              addTime: item.addTime,
+              liked: item.liked,
+              likeTime: item.likeTime,
+              rating: item.rating,
+              ratingTime: item.ratingTime,
+            },
+          };
+        });
+        setAddedAlbums(addedAlbums);
+      });
+      axios.get("/user/added-artists/" + userId).then((res) => {
+        const artistsArray = res.map((item) => {
+          return {
+            artist: item.artist,
+            userState: {
+              addTime: item.addTime,
+              liked: item.liked,
+              likeTime: item.likeTime,
+              rating: item.rating,
+              ratingTime: item.ratingTime,
+            },
+          };
+        });
+        setAddedArtists(artistsArray);
+      });
+    });
+  };
+
+  useEffect(() => {
+    fetchStuff();
+  }, []);
+
+  const onRefresh = () => {
+    fetchStuff();
+  };
+
+  const onRatingChange = (track, rating, i) => {
+    const updatedAddedSongs = [...addedSongs];
+    const indexOfItemToUpdate = i;
+    updatedAddedSongs[indexOfItemToUpdate] = {
+      song: track.song,
+      userState: {
+        ...track.userState,
+        rating: [...track.userState.rating, rating],
+        ratingTime: [...track.userState.ratingTime, Date.now()],
       },
-      {
-        key: "4",
-        text: "Item text 4",
-        uri: "https://picsum.photos/id/1035/200",
-      },
-      {
-        key: "5",
-        text: "Item text 5",
-        uri: "https://picsum.photos/id/1038/200",
-      },
-    ],
-  },
-];
-const sampleData = [
-  {
-    image: [require("./../../../assets/temp/cover/boniver.jpg")],
-    name: "For Emma, Forever Ago",
-    artists: ["Bon Iver"],
-    type: "album",
-    trackAmount: 9,
-    releaseDate: "2008",
-    tracks: [
-      { name: "Flume", duration: "3:39", explicit: false, popularity: 0.5 },
-      { name: "Lump Sum", duration: "3:21", explicit: false, popularity: 0.5 },
-      {
-        name: "Skinny Love",
-        duration: "3:59",
-        explicit: false,
-        popularity: 0.5,
-      },
-      {
-        name: "The Wolves (Act I and II)",
-        duration: "5:22",
-        explicit: false,
-        popularity: 0.5,
-      },
-      {
-        name: "Blindsided",
-        duration: "5:29",
-        explicit: false,
-        popularity: 0.5,
-      },
-      {
-        name: "Creature Fear",
-        duration: "3:06",
-        explicit: false,
-        popularity: 0.5,
-      },
-      { name: "Team", duration: "1:57", explicit: false, popularity: 0.5 },
-      { name: "For Emma", duration: "3:41", explicit: false, popularity: 0.5 },
-      {
-        name: "Re: Stacks",
-        duration: "6:41",
-        explicit: false,
-        popularity: 0.5,
-      },
-    ],
-  },
-  {
-    image: [require("./../../../assets/temp/cover/weyesblood.jpg")],
-    name: "Titanic Rising",
-    artists: ["Weyes Blood"],
-    type: "album",
-    trackAmount: 10,
-    releaseDate: "2019",
-    tracks: [
-      {
-        name: "A Lot's Gonna Change",
-        duration: "4:22",
-        explicit: false,
-        popularity: 0.5,
-      },
-      { name: "Andromeda", duration: "4:40", explicit: false, popularity: 0.5 },
-      {
-        name: "Everyday",
-        duration: "5:07",
-        explicit: false,
-        popularity: 0.5,
-      },
-      {
-        name: "Something To Believe",
-        duration: "4:46",
-        explicit: false,
-        popularity: 0.5,
-      },
-      {
-        name: "Titanic Rising",
-        duration: "1:36",
-        explicit: false,
-        popularity: 0.5,
-      },
-      {
-        name: "Movies",
-        duration: "5:54",
-        explicit: false,
-        popularity: 0.5,
-      },
-      {
-        name: "Mirror Forever",
-        duration: "5:06",
-        explicit: false,
-        popularity: 0.5,
-      },
-      { name: "Wild Time", duration: "6:09", explicit: false, popularity: 0.5 },
-      {
-        name: "Picture Me Better",
-        duration: "3:42",
-        explicit: false,
-        popularity: 0.5,
-      },
-      {
-        name: "Nearer To Thee",
-        duration: "1:06",
-        explicit: false,
-        popularity: 0.5,
-      },
-    ],
-  },
-];
+    };
+    setAddedSongs(updatedAddedSongs);
+
+    debouncedRatingChange(track, rating, i);
+  };
+
+  const debouncedRatingChange = _.debounce((track, rating, i) => {
+    getUserId().then((userId) => {
+      // const indexOfItemToUpdate = updatedAddedSongs.findIndex(
+      //   (item) => item.song.id === res.song.id
+      // );
+      axios
+        .post("/rate/song/" + userId + "/" + rating, track.song)
+        .then((res) => {
+          const updatedAddedSongs = [...addedSongs];
+          const indexOfItemToUpdate = i;
+          updatedAddedSongs[indexOfItemToUpdate] = {
+            song: res.song,
+            userState: {
+              addTime: res.addTime,
+              liked: res.liked,
+              likeTime: res.likeTime,
+              rating: res.rating,
+              ratingTime: res.ratingTime,
+            },
+          };
+          setAddedSongs(updatedAddedSongs);
+        });
+    });
+  }, 1000);
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {addedSongs && addedAlbums && addedArtists && userInfo && (
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                backgroundColor: "#c0c3c0",
+                display: "flex",
+                height: 85,
+                width: 85,
+                borderRadius: 999,
+                marginTop: 25,
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              <Image
+                source={require("./../../../assets/icons/pp.png")}
+                resizeMode="contain"
+                style={{
+                  height: 85,
+                  width: 85,
+                  borderRadius: 999,
+                }}
+              />
+            </View>
+            <Text
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 10,
+                fontWeight: "bold",
+                fontSize: 22,
+              }}
+            >
+              {userInfo.username}
+            </Text>
+            <Text
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 5,
+                fontWeight: "bold",
+                fontSize: 12,
+                color: "#9ba3af",
+              }}
+            >
+              {userInfo.email + " | profile"}
+            </Text>
+            <Text
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 8,
+                fontWeight: "bold",
+                fontSize: 13,
+                color: "#7e7e7e",
+              }}
+            >
+              {userInfo.followers
+                ? userInfo.followers
+                : 0 +
+                  " followers • " +
+                  (userInfo.following ? userInfo.following : 0 + " following")}
+            </Text>
+
+            <View
+              style={{
+                backgroundColor: "white",
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
+                marginTop: 20,
+                height: "100%",
+                padding: 10,
+              }}
+            >
+              <SegmentedControl
+                style={{
+                  // marginTop: 32,
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  // width: "100%",
+                  backgroundColor: "#f9f9f9",
+                }}
+                activeTabColor="#e8e8e8"
+                onChange={(index) => setCurrentSegment(index)}
+                // activeTextColor="#fff"
+                tabs={[
+                  <View
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      paddingTop: 8,
+                      paddingBottom: 8,
+                    }}
+                  >
+                    <Image
+                      style={{
+                        width: 28,
+                        height: 28,
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        tintColor: "#9ba3af",
+                      }}
+                      source={require("./../../../assets/icons/songs.png")}
+                    />
+                    <Text
+                      style={{
+                        color: "#7e7e7e",
+                        fontWeight: "bold",
+                        fontSize: 12,
+                      }}
+                    >
+                      Songs
+                    </Text>
+                  </View>,
+                  <View
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      paddingTop: 8,
+                      paddingBottom: 8,
+                    }}
+                  >
+                    <Image
+                      style={{
+                        width: 28,
+                        height: 28,
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        tintColor: "#9ba3af",
+                      }}
+                      source={require("./../../../assets/icons/albums.png")}
+                    />
+                    <Text
+                      style={{
+                        color: "#7e7e7e",
+                        fontWeight: "bold",
+                        fontSize: 12,
+                      }}
+                    >
+                      Albums
+                    </Text>
+                  </View>,
+                  <View
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      paddingTop: 8,
+                      paddingBottom: 8,
+                    }}
+                  >
+                    <Image
+                      style={{
+                        width: 28,
+                        height: 28,
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        tintColor: "#9ba3af",
+                      }}
+                      source={require("./../../../assets/icons/artists.png")}
+                    />
+                    <Text
+                      style={{
+                        color: "#7e7e7e",
+                        fontWeight: "bold",
+                        fontSize: 12,
+                      }}
+                    >
+                      Artists
+                    </Text>
+                  </View>,
+                ]}
+                // onChange={(index: number) => console.log("Index: ", index)}
+              />
+              <View style={{ marginTop: 20 }}>
+                {currentSegment == 0
+                  ? addedSongs.map((track, i) => {
+                      return (
+                        <TouchableOpacity
+                          style={{
+                            //   backgroundColor: "#f3f3f3",
+                            padding: 20,
+                            paddingBottom: 15,
+                            paddingTop: 15,
+                            borderRadius: 10,
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            // backgroundColor: "#f9f9f9",
+                          }}
+                          key={i}
+                          onPress={() =>
+                            navigation.navigate("Details", {
+                              data: track.song,
+                              source: "profile",
+                            })
+                          }
+                        >
+                          <Rating
+                            size={15}
+                            rating={track.userState.liked}
+                            maxRating={1}
+                            variant="hearts-outline"
+                            // fillColor="#fff"
+                            baseColor="#48484A"
+                            // onChange={handleLikedChange}
+                          />
+                          <View style={{ marginLeft: 20 }}>
+                            <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+                              {track.song.name}
+                              {/* <Text
+                                style={{
+                                  color: "#48484A",
+                                  fontSize: 12,
+                                  fontWeight: "normal",
+                                }}
+                              >
+                                {track.song.artistsName[0]}
+                              </Text> */}
+                            </Text>
+
+                            <Text
+                              style={{
+                                color: "#48484A",
+                                fontSize: 12,
+                                fontWeight: "normal",
+                                marginTop: 5,
+                              }}
+                            >
+                              {track.song.artistsName[0]}
+                            </Text>
+                            <Rating
+                              size={15}
+                              rating={
+                                track.userState.rating[
+                                  track.userState.rating.length - 1
+                                ]
+                              }
+                              variant="stars-outline"
+                              fillColor="#c2a30a"
+                              baseColor="#48484A"
+                              touchColor="#c2a30a"
+                              style={{ marginTop: 5 }}
+                              onChange={(rating) =>
+                                onRatingChange(track, rating, i)
+                              }
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    })
+                  : currentSegment == 1
+                  ? addedAlbums.map((record, i) => {
+                      return (
+                        <TouchableOpacity
+                          key={record.album.name}
+                          style={{
+                            width: "100%",
+                            //   padding: 5,
+                            borderRadius: 5,
+                            overflow: "hidden",
+                            marginTop: 10,
+                          }}
+                          onPress={() =>
+                            navigation.navigate("Album", { data: record })
+                          }
+                        >
+                          <ImageBackground
+                            source={{ uri: record.album.imageUrl }}
+                            resizeMode="cover"
+                            style={{
+                              height: "100%",
+                              width: "100%",
+                              position: "absolute",
+                            }}
+                          ></ImageBackground>
+                          <BlurView
+                            style={{
+                              height: "100%",
+                              width: "100%",
+                              position: "absolute",
+                            }}
+                            blurType="light"
+                            blurAmount={100}
+                            // reducedTransparencyFallbackColor="white"
+                            // overlayColor="rgba(255, 255, 255)"
+                          />
+                          <View
+                            style={{
+                              padding: 5,
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Image
+                              source={{ uri: record.album.imageUrl }}
+                              style={{ width: 80, height: 80, borderRadius: 5 }}
+                            />
+                            <View style={{ marginLeft: 15, gap: 5 }}>
+                              <Text
+                                style={{ fontWeight: "bold", fontSize: 15 }}
+                              >
+                                {record.album.name}
+                              </Text>
+                              <Text style={{ color: "#0007", fontWeight: 500 }}>
+                                {record.album.artistsName[0] + " • "}
+                                <Text style={{ fontWeight: "normal" }}>
+                                  {record.album.releaseDate}
+                                </Text>
+                              </Text>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    })
+                  : currentSegment == 2 &&
+                    addedArtists.map((item, i) => {
+                      return (
+                        <TouchableOpacity
+                          key={item.artist.name}
+                          style={{
+                            width: "100%",
+                            //   padding: 5,
+                            borderRadius: 5,
+                            overflow: "hidden",
+                            marginTop: 10,
+                          }}
+                          onPress={() =>
+                            navigation.navigate("Artist", { data: item })
+                          }
+                        >
+                          <View
+                            style={{
+                              padding: 5,
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Image
+                              source={{ uri: item.artist.imageUrl }}
+                              style={{
+                                width: 80,
+                                height: 80,
+                                borderRadius: 40,
+                              }}
+                            />
+                            <View style={{ marginLeft: 15, gap: 5 }}>
+                              <Text
+                                style={{ fontWeight: "bold", fontSize: 15 }}
+                              >
+                                {item.artist.name}
+                              </Text>
+                              <Text style={{ color: "#0007" }}>
+                                <Text style={{ fontWeight: 500 }}>
+                                  {"artist"}
+                                </Text>
+                              </Text>
+                            </View>
+                            <Image
+                              style={{
+                                width: 24,
+                                height: 24,
+                                marginLeft: "auto",
+                              }}
+                              source={require("./../../../assets/icons/arrow.png")}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    })}
+              </View>
+            </View>
+          </View>
+        )}
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

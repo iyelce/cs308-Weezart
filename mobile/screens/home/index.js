@@ -14,11 +14,14 @@ import Search from "./search";
 import { BlurView } from "@react-native-community/blur";
 import Profile from "./profile";
 import Main from "./main";
+import details from "./search/album/details";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Tab = createBottomTabNavigator();
 
 export default Home = () => {
-  // const context = React.useContext(AuthContext);
+  const Stack = createNativeStackNavigator();
+
   return (
     <Tab.Navigator
       initialRouteName="Search"
@@ -42,6 +45,7 @@ export default Home = () => {
       />
       <Tab.Screen
         name="Profile"
+        options={{ headerShown: false }}
         component={Profile}
         initialParams={{
           icon: require("./../../assets/icons/profile.png"),

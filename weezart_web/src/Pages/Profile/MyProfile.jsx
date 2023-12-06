@@ -1,24 +1,46 @@
 import React from "react";
 import './ProfilePage.css'; 
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import UserProfileApi from "../../API/UserProfileApi";
+
 
 
 const MyProfile = ({...props}) => {
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const user = await UserProfileApi(props.token, props.userId);
+
+        console.log("user info in page is : ", user);
+
+        setEmail(user.email);
+        setUsername(user.username);
+        setFollowers(user.followers === null ? 0 : user.followers);
+        setFollowing(user.following === null ? 0 : user.following);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    fetchData();
+  }, [props.token, props.userId]);
+    
+
     const navigate = useNavigate();
 
+    const [email, setEmail] = useState('');
+    const [followers, setFollowers] = useState(0);
+    const [following, setFollowing] = useState(0);
+    const [username, setUsername] = useState('');
 
-    const user = {
-      username: 'JohnDoe',
-      followersCount: 150,
-      followingCount: 100,
-      email: 'john.doe@example.com',
-      // Add other user details as needed
-    };
-  
+
+
+    
     const handleEditProfile = () => {
       // Add logic to handle edit profile
-      console.log('Edit Profile clicked');
+      alert('Edit Profile clicked');
     };
   
 
@@ -29,22 +51,22 @@ const MyProfile = ({...props}) => {
             <br/>
             <br/>
 
-<div className="profile-container">
+       <div className="profile-container">
         <div className="profile-header">
           {/* User Image */}
           <img
             className="profile-image"
-            src="https://placekitten.com/200/200" // Replace with the actual user image URL
+            src="https://i.pinimg.com/564x/84/c2/af/84c2aff38526671371b2fd051ca782aa.jpg" // Replace with the actual user image URL
             alt="User"
           />
   
           {/* User Details */}
           <div className="user-details">
-            <h2>{props.username}</h2>
+            <h2>{username}</h2>
             <p >
-                <span className="profile_followers" onClick={()=>{navigate("/followers")}}>Followers: {user.followersCount} </span>
+                <span className="profile_followers" onClick={()=>{navigate("/followers")}}>Followers: {followers} </span>
                 | 
-                <span className="profile_following" onClick={()=>{navigate("/following")}}>Following: {user.followingCount} </span>
+                <span className="profile_following" onClick={()=>{navigate("/following")}}>Following: {following} </span>
             </p>
           </div>
   

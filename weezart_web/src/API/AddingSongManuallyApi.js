@@ -84,6 +84,8 @@ async function AddingSongManuallyApi (songQuery, artistQuery, token, userId  ) {
 
         const newResp = JSON.parse(data);
 
+        console.log("--> search api response: ", newResp);
+
         return newResp;
 
     }

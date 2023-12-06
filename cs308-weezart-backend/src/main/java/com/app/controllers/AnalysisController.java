@@ -142,4 +142,9 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisTop5Artist(userId));
 	}
 	
+	@GetMapping("/artist/genre/{genre}/{userId}")
+	public ResponseEntity<List<Artist>> genreArtistAnalysisController(@PathVariable String genre, @PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisGenreArtist(userId, genre));
+	}
+	
 }

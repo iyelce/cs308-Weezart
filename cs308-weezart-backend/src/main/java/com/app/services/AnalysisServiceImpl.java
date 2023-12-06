@@ -694,4 +694,49 @@ public class AnalysisServiceImpl implements AnalysisService{
         return top2Artists;
     }
     
+    // returns null if non found
+    public List<Artist> analysisGenreArtist(String userId, String genre){
+    	User user = userRepo.findByiduser(Long.parseLong(userId));
+    	List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
+    	List<Artist> filteredArtists = new ArrayList<>();
+    	for (UserArtist userArtist : userArtists) {
+    		if(userArtist.getArtist().getFollowerCount()!=-1) {
+	    		boolean genreFound = false;
+	    		Artist givenArtist = userArtist.getArtist();
+	    		List<String> genresList = givenArtist.getGenres();
+	    		if (genresList.contains(genre)) {
+    				genreFound = true;
+    			}	    		
+	    		if (genreFound == true) {
+	    			log.info("boola girdi");
+	    			filteredArtists.add(givenArtist);
+	    		}
+    		}
+    	}
+    	
+    	
+    	filteredArtists.sort((artist1, artist2) -> {
+    	    List<Integer> ratings1 = userArtistRepo.findByArtistAndUser(artist1, user).getRating();
+    	    List<Integer> ratings2 = userArtistRepo.findByArtistAndUser(artist2, user).getRating();
+
+            int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
+            int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
+
+    	    // Sort in descending order
+    	    return Integer.compare(lastRating2, lastRating1);
+    	});
+
+        // Take the top 5 songs
+        List<Artist> top2Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	log.info("2. analizin sonuna geldiiik");
+    	return top2Artists;
+    }
+    
 }

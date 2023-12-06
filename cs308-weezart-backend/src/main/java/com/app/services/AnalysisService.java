@@ -41,4 +41,5 @@ public interface AnalysisService {
 	//these are the table analysis for artists
 	List<Artist> analysisLatest5Artist(String userId);
 	List<Artist> analysisTop5Artist(String userId);
+	List<Artist> analysisGenreArtist(String userId, String genre);
 }

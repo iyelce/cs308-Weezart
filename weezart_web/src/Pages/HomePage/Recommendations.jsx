@@ -17,7 +17,6 @@ const Recommendations = () => {
                 <div class="item" onClick={()=> {alert("clicked div")}}>
                 <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
                 <div class="play">
-                    <span class="fa fa-play"></span>
                 </div>
                 <h4>Today's Top Hits</h4>
                 <p>Rema & Selena Gomez are on top of the...</p>
@@ -26,7 +25,7 @@ const Recommendations = () => {
                 <div class="item">
                 <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
                 <div class="play">
-                    <span class="fa fa-play"></span>
+
                 </div>
                 <h4>Today's Top Hits</h4>
                 <p>Rema & Selena Gomez are on top of the...</p>
@@ -42,7 +41,7 @@ const Recommendations = () => {
                 <div class="item" onClick={()=> {alert("clicked div")}}>
                 <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
                 <div className="play">
-                    <span className="fa fa-play"></span>
+                    
                 </div>
                 <h4>Today's Top Hits</h4>
                 <p>Rema & Selena Gomez are on top of the...</p>
@@ -51,7 +50,7 @@ const Recommendations = () => {
             <div class="item">
                 <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
                 <div className="play">
-                    <span className="fa fa-play"></span>
+                    
                 </div>
                 <h4>Today's Top Hits</h4>
                 <p>Rema & Selena Gomez are on top of the...</p>
@@ -60,7 +59,7 @@ const Recommendations = () => {
             <div class="item">
                 <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
                 <div className="play">
-                    <span className="fa fa-play"></span>
+                    
                 </div>
                 <h4>Today's Top Hits</h4>
                 <p>Rema & Selena Gomez are on top of the...</p>
@@ -69,7 +68,7 @@ const Recommendations = () => {
             <div class="item">
                 <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
                 <div className="play">
-                    <span className="fa fa-play"></span>
+                    
                 </div>
                 <h4>Today's Top Hits</h4>
                 <p>Rema & Selena Gomez are on top of the...</p>
@@ -78,7 +77,7 @@ const Recommendations = () => {
             <div class="item">
                 <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
                 <div className="play">
-                    <span className="fa fa-play"></span>
+                    
                 </div>
                 <h4>Today's Top Hits</h4>
                 <p>Rema & Selena Gomez are on top of the...</p>
@@ -86,7 +85,6 @@ const Recommendations = () => {
             <div className="item">
                 <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
                 <div className="play">
-                    <span class="fa fa-play"></span>
                 </div>
                 <h4>Today's Top Hits</h4>
                 <p>Rema & Selena Gomez are on top of the...</p>

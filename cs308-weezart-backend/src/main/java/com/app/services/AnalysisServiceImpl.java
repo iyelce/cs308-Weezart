@@ -551,7 +551,7 @@ public class AnalysisServiceImpl implements AnalysisService{
         // Group userSongs by addTime date and count songs for each date
         albumsAddedPerDay = userAlbums.stream()
                 .collect(Collectors.groupingBy(
-                        userSong -> LocalDate.parse(userSong.getAddTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                        userAlbum -> LocalDate.parse(userAlbum.getAddTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                                 .toString(),
                         Collectors.counting()
                 ));
@@ -794,6 +794,25 @@ public class AnalysisServiceImpl implements AnalysisService{
     	log.info("analizin sonuna geldiiik");
     	return top2Artists;
 	
+    }
+    
+    
+    public Map<String, Long> analysisDailyAddedArtists(String userId) {
+        User user = userRepo.findByiduser(Long.parseLong(userId));
+        List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
+
+        // Create a map to store the count of songs added per day
+        Map<String, Long> artistsAddedPerDay = new HashMap<>();
+
+        // Group userSongs by addTime date and count songs for each date
+        artistsAddedPerDay = userArtists.stream()
+                .collect(Collectors.groupingBy(
+                        userArtist -> LocalDate.parse(userArtist.getAddTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                                .toString(),
+                        Collectors.counting()
+                ));
+
+        return artistsAddedPerDay;
     }
     
 }

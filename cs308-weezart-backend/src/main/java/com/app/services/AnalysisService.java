@@ -43,4 +43,7 @@ public interface AnalysisService {
 	List<Artist> analysisTop5Artist(String userId);
 	List<Artist> analysisGenreArtist(String userId, String genre);
 	List<Artist> analysisReleaseDateArtist(String userId, int StartYear, int FinishYear);
+	// these are the chart analysis for artists
+	Map<String, Long> analysisDailyAddedArtists(String userId);
+	
 }

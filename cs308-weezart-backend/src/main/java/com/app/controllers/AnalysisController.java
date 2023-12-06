@@ -152,4 +152,9 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisReleaseDateArtist(userId, dateRange.getStartDate(), dateRange.getEndDate()));
 	}
 	
+	@GetMapping("/artist/dailyArtists/{userId}")
+	public ResponseEntity<Map<String, Long>> dailyArtistsAnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisDailyAddedArtists(userId));
+	}
+	
 }

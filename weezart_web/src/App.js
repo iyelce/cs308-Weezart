@@ -90,7 +90,7 @@ function App() {
       <div style={{ display: isLoggedin ? 'flex' : 'block' }}  >
         <Sidebar username={username} isLoggedin={isLoggedin} userId={userId} logoutFunc={logoutFunc} />
 
-        <div style={{ flex: 1, padding: '20px', boxSizing: 'border-box' }}>
+        <div style={{ flex: 1,  boxSizing: 'border-box' }}>
           <Routes>
             <Route path='/'>
               <Route index element={<Login changeUserInfo={changeUserInfo} storeToken={storeToken} />} />

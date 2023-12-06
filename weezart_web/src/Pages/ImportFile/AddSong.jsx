@@ -95,7 +95,7 @@ function AddSong({...props}) {
 
     return (
 
-    <div className="song-add-page">
+    <div className="song-add-page" height="100%">
 
         <form className="single-song-add" onSubmit={handleSubmit}>
 

@@ -20,7 +20,7 @@ export default function Analyze() {
         {/* ROW 1 */}
         <Box
           gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={"#351F39"}
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -35,7 +35,7 @@ export default function Analyze() {
 
         <Box
           gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
+          backgroundColor={"#48233C"}
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -86,7 +86,7 @@ export default function Analyze() {
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
-            <Typography fontSize={"20px"} color={"green"}>Adds</Typography>
+            <Typography fontSize={"20px"} >Adds</Typography>
             <LineChart
                 xAxis={[{ data: [1, 2, 3, 5, 8, 10]  }]}
                 series={[
@@ -164,7 +164,7 @@ export default function Analyze() {
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
-            <Typography fontSize={"20px"} color={"yellow"}>Rates</Typography>
+            <Typography fontSize={"20px"} color={"red"}>Rates</Typography>
             <LineChart
                 xAxis={[{ data: [1, 2, 3, 5, 8, 10]  }]}
                 series={[

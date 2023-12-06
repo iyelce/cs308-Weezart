@@ -14,13 +14,20 @@
 .homepage-content {
   display: flex;
   flex: 8; 
-  background-color: #352F44;
+  background-image:url('../../WhatsApp\ Image\ 2023-12-06\ at\ 03.31.16.jpeg');
+  background-color: white;
+  background-size:cover;
+  background-position:center;
+  background-repeat: no-repeat;
+
   padding: 20px;
   flex-wrap: wrap;
 
   overflow-y: auto;
   max-height: 100%;
 }
+
+
 
 /* Style the scrollbar */
 .homepage-content::-webkit-scrollbar {

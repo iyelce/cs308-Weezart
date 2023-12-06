@@ -5,6 +5,7 @@
   position: relative;
   width: 70%;
   margin-top: 30px;
+  
 }
 
 .navigation-search__icon {
@@ -186,8 +187,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #393646;
-    background-repeat: no-repeat;
+    background-image:url('../../WhatsApp\ Image\ 2023-12-06\ at\ 03.31.16.jpeg');
+    background-color: white;
+    background-size:cover;
+    background-position:center;
+    background-repeat: no-repeat;    background-repeat: no-repeat;
     font-family: Poppins;
 
     margin:0;

@@ -36,6 +36,18 @@ function SongInfoPopup(props) {
           }
     };
 
+// albumId : "4Qy0SOU9Jg7Td10K68SanP"
+// albumImageURL :"https://i.scdn.co/image/ab67616d0000b27358816b5b546bdc2c0e7f6416"
+// albumName:"Buddy Holly"
+// albumRelease:"1958"
+// artistsId:(2) ['3wYyutjgII8LJVVOLrGI0D', '4r7JUeiYy24L7BuzCq9EjR']
+// artistsName:(2) ['Buddy Holly', 'The Crickets']
+// duration_ms:129120
+// id:"39lnzOIUCSNaQmgBHoz7rt"
+// name:"Everyday"
+// popularity:68
+
+// explicit:false
 
   return (
     <Modal
@@ -56,16 +68,16 @@ function SongInfoPopup(props) {
 
         <div className="three-column-container">
             <div className="column">
-                <img className="cover-img" src= {imgsrc(props.songInfo.image)} alt="cover"/>
-                <p className="duration"> 3:05</p>
+                <img className="cover-img" src= {imgsrc(props.songInfo.albumImageURL)} alt="cover"/>
+                <p className="duration"> {props.songInfo.duration_ms}</p>
             </div>
 
             <div className="column">
                 <div className="attributes">
-                    <p className="songName">{props.songInfo.songName}</p>
-                    <p className="songArtists">{props.songInfo.artists.join(', ')}</p>
-                    <p className="songAlbum">{props.songInfo.album}</p>
-                    <p className="songGenre">Genre: {props.songInfo.genre.join(', ')}</p>
+                    <p className="songName">{props.songInfo.name}</p>
+                    <p className="songArtists">{props.songInfo.artistsName.join(', ')}</p>
+                    <p className="songAlbum">{props.songInfo.albumName}</p>
+                    {/* <p className="songGenre">Genre: {props.songInfo.genre.join(', ')}</p> */}
                 </div>
             </div>
 

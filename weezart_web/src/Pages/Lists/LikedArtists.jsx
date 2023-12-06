@@ -6,6 +6,26 @@ import './List.css';
 
 function LikedArtistsList({...props}) {
 
+  //to check which itm is clicked in the tables
+  const [selectedArtistIndex, setSelectedArtistIndex] = useState(-1);
+
+  //to open and close popups
+  const [showArtistPopups, setShowArtistPopups] = useState(new Map());
+
+  //if sth is clicked from tables sets index and calls open popup functions
+  const handleArtistClickTable = (index) => {
+    handleArtistButtonClick(index);
+    setSelectedArtistIndex(index);
+  };
+
+  //to opens popup and maps the information
+  const handleArtistButtonClick = (index) => {
+    const newShowArtistPopups = new Map(showArtistPopups);
+    newShowArtistPopups.set(index, true);
+    setShowArtistPopups(newShowArtistPopups);
+  };
+
+
   const[artistList, setArtistList] = useState([]);
 
   useEffect(() => {

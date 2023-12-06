@@ -36,6 +36,7 @@ async function AddedSongsApi (token, userId ) {
             songResponse.push(newResp[i].song);
         }
 
+        console.log("returned song api: " , songResponse)
         return songResponse;
 
     }

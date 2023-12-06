@@ -3,16 +3,41 @@ import { LuClock3 } from "react-icons/lu";
 import { FaMusic } from "react-icons/fa";
 import './List.css';
 import AddedSongsApi from "../../API/AddedSongsApi";
+import SongInfoPopup from "../Popups/SongInfoPopup";
 
 function LikedSongsList({ ...props }) {
   const [songs, setSongs] = useState([]); 
+
+  const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
+  const [showSongPopups, setShowSongPopups] = useState(new Map());
+
+  //if sth is clicked from tables sets index and calls open popup functions
+  const handleSongClickTable = (index) => {
+    handleSongButtonClick(index);
+    setSelectedSongIndex(index);
+  };
+
+  //to opens popup and maps the information
+  const handleSongButtonClick = (index) => {
+    const newShowSongPopups = new Map(showSongPopups);
+    newShowSongPopups.set(index, true);
+    setShowSongPopups(newShowSongPopups);
+  };
+
+  //to close popups and set selected index to -1
+  const handleSongClosePopup = (index) => {
+    const newShowSongPopups = new Map(showSongPopups);
+    newShowSongPopups.set(index, false);
+    setShowSongPopups(newShowSongPopups);
+
+    setSelectedSongIndex(-1);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const songList = await AddedSongsApi(props.token, props.userId);
         setSongs(songList);
-        console.log("songs in page are : ", songs);
 
       } catch (error) {
         console.error("Error fetching user profile:", error);
@@ -56,10 +81,8 @@ function LikedSongsList({ ...props }) {
           </tr>
         </thead>
         <tbody>
-          {songs && songs.map((val, index) => (
-
-            
-            <tr key={index}>
+          {songs && songs.map((val, index) => (            
+            <tr key={index} onClick={() => handleSongClickTable(index)} >
               <th scope="row">{index + 1}</th>
               <td>
                 <img
@@ -83,6 +106,15 @@ function LikedSongsList({ ...props }) {
           )}
         </tbody>
       </table>
+
+      {selectedSongIndex !== -1 && (
+            <SongInfoPopup
+              isOpen={true}
+              onRequestClose={handleSongClosePopup}
+              songInfo={songs[selectedSongIndex]}
+            />
+      )}
+
     </div>
   );
 }

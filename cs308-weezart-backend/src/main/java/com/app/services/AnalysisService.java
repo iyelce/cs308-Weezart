@@ -46,5 +46,6 @@ public interface AnalysisService {
 	// these are the chart analysis for artists
 	Map<String, Long> analysisDailyAddedArtists(String userId);
 	Map<String, Long> analysisDailyLikedArtists(String userId);
+	Map<String, Double> analysisDailyAverageRatingArtists(String userId);
 	
 }

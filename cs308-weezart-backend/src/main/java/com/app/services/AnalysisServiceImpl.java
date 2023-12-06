@@ -835,4 +835,28 @@ public class AnalysisServiceImpl implements AnalysisService{
         return artistsAddedPerDay;
     }
     
+    public Map<String, Double> analysisDailyAverageRatingArtists(String userId) {
+        User user = userRepo.findByiduser(Long.parseLong(userId));
+        List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
+
+        // Create a map to store the average rating per day
+        Map<String, Double> averageRatingPerDay = userArtists.stream()
+                .filter(userArtist -> userArtist.getRatingTime() != null && !userArtist.getRatingTime().isEmpty())  // Null check and filter out UserSongs with empty rating times
+                .collect(Collectors.groupingBy(
+                        userArtist -> LocalDate.parse(userArtist.getRatingTime().get(userArtist.getRatingTime().size() - 1), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                                .toString(),
+                        HashMap::new, // Explicitly specify HashMap as the map type
+                        Collectors.averagingDouble(userArtist -> {
+                            List<Integer> ratings = userArtist.getRating();
+                            if (!ratings.isEmpty()) {
+                                // Use the last index of the ratings array
+                                return ratings.get(ratings.size() - 1);
+                            }
+                            return 0; // Default value if ratings array is empty
+                        })
+                ));
+
+        return averageRatingPerDay;
+    }
+    
 }

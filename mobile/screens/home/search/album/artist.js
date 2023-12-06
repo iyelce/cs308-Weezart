@@ -78,7 +78,7 @@ export default Artist = ({ route, navigation }) => {
       >
         <View style={{ position: "relative" }}>
           <Image
-            source={data.image}
+            source={{ uri: data.artist.imageUrl }}
             style={{ height: 400, resizeMode: "cover", width: "100%" }}
           />
 
@@ -93,7 +93,7 @@ export default Artist = ({ route, navigation }) => {
               margin: 15,
             }}
           >
-            {data.name}
+            {data.artist.name}
           </Text>
           <BlurView
             blurType="light"
@@ -118,60 +118,28 @@ export default Artist = ({ route, navigation }) => {
         </View>
         <View
           style={{
-            marginTop: 20,
             flexDirection: "row",
-            marginLeft: 20,
+            flexWrap: "wrap",
+            gap: 10,
+            margin: 20,
           }}
         >
-          <Text style={{ fontWeight: "bold", color: "black", fontSize: 20 }}>
-            Albums
-          </Text>
-          <Image
-            style={{ width: 24, height: 24 }}
-            source={require("./../../../../assets/icons/arrow.png")}
-          />
+          {data.artist.genres.map((genre) => {
+            return (
+              <View
+                style={{
+                  padding: 15,
+                  paddingRight: 20,
+                  paddingLeft: 20,
+                  backgroundColor: "#dbdbdb",
+                  borderRadius: 30,
+                }}
+              >
+                <Text style={{ fontWeight: "bold" }}>{genre}</Text>
+              </View>
+            );
+          })}
         </View>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ marginTop: 10, paddingLeft: 10, paddingRight: 20 }}
-        >
-          <View style={{ width: 150 }}>
-            <View
-              style={{
-                width: 150,
-                height: 150,
-                backgroundColor: "#102331",
-                borderRadius: 5,
-              }}
-            ></View>
-            <Text style={{ marginTop: 8 }}>
-              {"And in the Darkness, Hearts Aglow"}
-            </Text>
-          </View>
-          <View style={{ width: 150, marginLeft: 15 }}>
-            <View
-              style={{
-                width: 150,
-                height: 150,
-                backgroundColor: "#27422e",
-                borderRadius: 5,
-              }}
-            ></View>
-            <Text style={{ marginTop: 8 }}>{"Titanic Rising"}</Text>
-          </View>
-          <View style={{ width: 150, marginLeft: 15 }}>
-            <View
-              style={{
-                width: 150,
-                height: 150,
-                backgroundColor: "#414227",
-                borderRadius: 5,
-              }}
-            ></View>
-            <Text style={{ marginTop: 8 }}>{"Front Row Seat to Earth"}</Text>
-          </View>
-        </ScrollView>
       </ScrollView>
     </View>
   );

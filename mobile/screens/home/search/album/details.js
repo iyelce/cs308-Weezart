@@ -10,21 +10,43 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BlurView } from "@react-native-community/blur";
 // import { Rating } from "react-native-ratings";
 import { Rating } from "@kolking/react-native-rating";
+import axios from "./../../../../config/axios";
+import { getUserId } from "../../../../helpers/Utils";
 
 const Tab = createBottomTabNavigator();
 
 export default Details = ({ route, navigation }) => {
-  const { data, track, type } = route.params;
+  // const { data, track, type } = route.data;
+  const { data, source } = route.params;
 
-  const [rating, setRating] = useState(0);
-
-  const handleChange = useCallback(
-    // (value: number) => setRating(Math.round((rating + value) * 5) / 10),
-    [rating]
-  );
+  const handleSave = () => {
+    getUserId().then((userId) => {
+      axios.post("/add/manual-song-accepted/" + userId, data).then((res) => {
+        navigation.goBack();
+        // if (res == "SONG_SAVED") {
+        // axios
+        //   .post("/like/song/" + userId, {
+        //     id: data.id,
+        //     name: data.name,
+        //     albumName: data.albumName,
+        //     albumId: data.albumId,
+        //     albumRelease: data.albumRelease,
+        //     artistsName: data.artistsName,
+        //     artistsId: data.artistsId,
+        //     popularity: data.popularity,
+        //     duration_ms: data.duration_ms,
+        //     explicit: data.explicit,
+        //   })
+        //   .then((likeRes) => {
+        //     console.log("result be here", likeRes);
+        //   });
+        // }
+      });
+    });
+  };
 
   return (
-    <View style={{ height: "100%", padding: 10 }}>
+    <View style={{ height: "100%", padding: 10, backgroundColor: "white" }}>
       <View
         style={{
           flexDirection: "row",
@@ -33,131 +55,195 @@ export default Details = ({ route, navigation }) => {
         }}
       >
         <TouchableOpacity>
-          <Text style={{ fontWeight: "bold", color: "#7e7e7e" }}>Cancel</Text>
+          <Text
+            style={{ fontWeight: "bold", color: "#7e7e7e" }}
+            onPress={() => navigation.goBack()}
+          >
+            Cancel
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={{ fontWeight: "bold", color: "#349eeb" }}>Save</Text>
-        </TouchableOpacity>
+        {source != "profile" && (
+          <TouchableOpacity onPress={handleSave}>
+            <Text style={{ fontWeight: "bold", color: "#349eeb" }}>
+              Save & Add
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
-      <View
-        style={{
-          width: "100%",
-          //   padding: 5,
-          borderRadius: 5,
-          overflow: "hidden",
-        }}
-      >
-        <ImageBackground
-          source={data.image[0]}
-          resizeMode="cover"
-          style={{
-            height: "100%",
-            width: "100%",
-            position: "absolute",
-          }}
-        ></ImageBackground>
-        <BlurView
-          style={{
-            height: "100%",
-            width: "100%",
-            position: "absolute",
-          }}
-          blurType="light"
-          blurAmount={100}
-          // reducedTransparencyFallbackColor="white"
-          // overlayColor="rgba(255, 255, 255)"
-        />
+      <View style={{ paddingRight: 5, paddingLeft: 5 }}>
         <View
           style={{
-            padding: 5,
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
+            width: "100%",
+            //   padding: 5,
+            borderRadius: 5,
+            overflow: "hidden",
           }}
         >
-          <Image
-            source={data.image[0]}
-            style={{ width: 100, height: 100, borderRadius: 5 }}
+          <ImageBackground
+            source={{ uri: data.albumImageURL }}
+            resizeMode="cover"
+            style={{
+              height: "100%",
+              width: "100%",
+              position: "absolute",
+            }}
+          ></ImageBackground>
+          <BlurView
+            style={{
+              height: "100%",
+              width: "100%",
+              position: "absolute",
+            }}
+            blurType="light"
+            blurAmount={100}
+            // reducedTransparencyFallbackColor="white"
+            // overlayColor="rgba(255, 255, 255)"
           />
-          <View style={{ marginLeft: 15, gap: 5 }}>
-            <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-              {type == "song" ? data.tracks[track].name : data.name}
-            </Text>
-            <Text style={{ color: "#0007" }}>
-              {data.artists[0].name + " • "}
-              <Text style={{ fontWeight: 500 }}>
-                {type == "song" ? type : data.type}
+          <View
+            style={{
+              padding: 5,
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={{ uri: data.albumImageURL }}
+              style={{ width: 100, height: 100, borderRadius: 5 }}
+            />
+            <View style={{ marginLeft: 15, gap: 5 }}>
+              <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+                {data.name}
               </Text>
-            </Text>
+              <Text style={{ color: "#0007" }}>
+                {data.artistsName[0] + " • "}
+                <Text style={{ fontWeight: 500 }}>{"song"}</Text>
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
-      <View
-        style={{
-          // borderWidth: 1,
-          // borderColor: "black",
-          borderRadius: 5,
-          marginTop: 10,
-          backgroundColor: "#e3e3e3",
-          padding: 20,
-          paddingLeft: 40,
-          paddingRight: 40,
-          // shadowColor: "#000",
-          // shadowOffset: {
-          //   width: 0,
-          //   height: 1,
-          // },
-          // shadowOpacity: 0.18,
-          // shadowRadius: 1.0,
-
-          // elevation: 1,
-        }}
-      >
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            // borderWidth: 1,
+            // borderColor: "black",
+            borderRadius: 5,
+            marginTop: 10,
+            backgroundColor: "#f3f3f3",
+            // backgroundColor: "white",
+            // padding: 20,
+            // paddingLeft: 40,
+            // paddingRight: 40,
+            // shadowColor: "#000",
+            // shadowOffset: {
+            //   width: 0,
+            //   height: 1,
+            // },
+            // shadowOpacity: 0.18,
+            // shadowRadius: 1.0,
+
+            // elevation: 1,
           }}
         >
-          <View style={{ alignItems: "center", gap: 10 }}>
-            <Image
-              style={{ width: 15, height: 15 }}
-              source={require("../../../../assets/icons/share.png")}
+          <View>
+            {/* <View
+              style={{
+                flexDirection: "row",
+                padding: 13,
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Rating
+                size={18}
+                rating={rating}
+                variant="stars-outline"
+                fillColor="#c2a30a"
+                baseColor="#48484A"
+                touchColor="#c2a30a"
+                onChange={handleRatingChange}
+              />
+              <Rating
+                size={18}
+                rating={liked}
+                maxRating={1}
+                variant="hearts-outline"
+                // fillColor="#fff"
+                baseColor="#48484A"
+                onChange={handleLikedChange}
+              />
+            </View> */}
+            <View
+              style={{ height: 2, backgroundColor: "white", width: "100%" }}
             />
-            <Text>Share</Text>
-          </View>
-          <View style={{ alignItems: "center", gap: 10 }}>
-            <Image
-              style={{ width: 15, height: 15 }}
-              source={require("../../../../assets/icons/love.png")}
+            <View
+              style={{
+                justifyContent: "space-between",
+                flexDirection: "row",
+                padding: 13,
+              }}
+            >
+              <Text style={{ fontSize: 13 }}>{"Album"}</Text>
+              <Text style={{ fontSize: 13, fontWeight: "bold" }}>
+                {data.albumName}
+              </Text>
+            </View>
+            <View
+              style={{ height: 2, backgroundColor: "white", width: "100%" }}
             />
-            <Text>Like</Text>
-          </View>
-          <View style={{ alignItems: "center", gap: 10 }}>
-            <Image
-              style={{ width: 15, height: 15 }}
-              source={require("../../../../assets/icons/add.png")}
+            <View
+              style={{
+                justifyContent: "space-between",
+                flexDirection: "row",
+                padding: 13,
+              }}
+            >
+              <Text style={{ fontSize: 13 }}>{"Release Date"}</Text>
+              <Text style={{ fontSize: 13, fontWeight: "bold" }}>
+                {data.albumRelease}
+              </Text>
+            </View>
+            <View
+              style={{ height: 2, backgroundColor: "white", width: "100%" }}
             />
-            <Text>Add</Text>
+            <View
+              style={{
+                justifyContent: "space-between",
+                flexDirection: "row",
+                padding: 13,
+              }}
+            >
+              <Text style={{ fontSize: 13 }}>{"Duration"}</Text>
+              <Text style={{ fontSize: 13, fontWeight: "bold" }}>
+                {Math.floor(Math.floor(data.duration_ms / 1000) / 60) +
+                  ":" +
+                  (Math.floor(data.duration_ms / 1000) % 60)}
+              </Text>
+            </View>
+            <View
+              style={{ height: 2, backgroundColor: "white", width: "100%" }}
+            />
+            <View
+              style={{
+                justifyContent: "space-between",
+                flexDirection: "row",
+                padding: 13,
+              }}
+            >
+              <Text style={{ fontSize: 13 }}>{"Popularity"}</Text>
+              <Text style={{ fontSize: 13, fontWeight: "bold" }}>
+                {data.popularity + "/100"}
+              </Text>
+            </View>
           </View>
         </View>
-        <View style={{ alignItems: "center", marginTop: 20 }}>
-          <Rating
-            size={20}
-            rating={rating}
-            fillColor="#000"
-            baseColor="#000"
-            //  onChange={handleChange}
-          />
-        </View>
-      </View>
 
-      {/* <Rating
+        {/* <Rating
         type="star"
         ratingCount={5}
         imageSize={60}
         // onFinishRating={this.ratingCompleted}
       /> */}
+      </View>
     </View>
   );
 };

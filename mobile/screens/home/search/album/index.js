@@ -28,7 +28,7 @@ export default Album = ({ route, navigation }) => {
       >
         <ImageBlurShadow
           style={{ marginTop: 20 }}
-          source={data.image[0]}
+          source={{ uri: data.album.imageUrl }}
           imageWidth={260}
           imageHeight={260}
           imageBorderRadius={30}
@@ -37,14 +37,14 @@ export default Album = ({ route, navigation }) => {
           shadowBackgroundColor={"#ffffff"}
         />
         <Text style={{ fontSize: 23, fontWeight: "bold", marginTop: -10 }}>
-          {data.name}
+          {data.album.name}
         </Text>
         <Text style={{ marginTop: 10, color: "#7e7e7e", fontSize: 15 }}>
-          {data.type +
+          {"album" +
             " • " +
-            data.releaseDate +
+            data.album.releaseDate +
             " • " +
-            data.trackAmount +
+            data.album.numberOfTracks +
             " Tracks"}
         </Text>
         <View
@@ -60,9 +60,9 @@ export default Album = ({ route, navigation }) => {
             source={require("./../../../../assets/icons/mic.png")}
           />
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("Artist", { data: data.artists[0] })
-            }
+          // onPress={() =>
+          // navigation.navigate("Artist", { data: data.album.artistsName[0] })
+          // }
           >
             <Text
               style={{
@@ -70,7 +70,8 @@ export default Album = ({ route, navigation }) => {
                 marginLeft: 5,
               }}
             >
-              {data.artists[0].name}
+              {data.album.artistsName[0]}
+              {/* {"Bon Iver"} */}
             </Text>
           </TouchableOpacity>
         </View>
@@ -84,7 +85,7 @@ export default Album = ({ route, navigation }) => {
               borderRadius: 10,
               alignItems: "center",
             }}
-            onPress={() => navigation.navigate("Details", { data: data })}
+            onPress={() => navigation.navigate("Details", { data: data.album })}
           >
             <View
               style={{
@@ -110,7 +111,7 @@ export default Album = ({ route, navigation }) => {
             paddingBottom: 60,
           }}
         >
-          {data.tracks.map((track, i) => {
+          {data.album.songsName.map((track, i) => {
             return (
               <TouchableOpacity
                 style={{
@@ -135,10 +136,10 @@ export default Album = ({ route, navigation }) => {
                 <Text style={{ color: "#7e7e7e" }}>{i + 1}</Text>
                 <View style={{ marginLeft: 20 }}>
                   <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                    {track.name}
+                    {track}
                   </Text>
                   <Text style={{ color: "#7e7e7e", marginTop: 5 }}>
-                    {track.duration}
+                    {/* {track.duration} */}
                   </Text>
                 </View>
               </TouchableOpacity>

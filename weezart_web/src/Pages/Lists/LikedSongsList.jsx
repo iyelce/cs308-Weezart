@@ -5,16 +5,15 @@ import './List.css';
 import AddedSongsApi from "../../API/AddedSongsApi";
 
 function LikedSongsList({ ...props }) {
-  const [songInfos, setSongInfos] = useState({ song: [] });
+  const [songs, setSongs] = useState([]); 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const songList = await AddedSongsApi(props.token, props.userId);
-        console.log("songs in page are : ", songList);
+        setSongs(songList);
+        console.log("songs in page are : ", songs);
 
-        // Assuming the API response has a 'song' property containing the array of songs
-        setSongInfos({ song: songList.song });
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -22,6 +21,25 @@ function LikedSongsList({ ...props }) {
 
     fetchData();
   }, [props.token, props.userId]);
+
+
+  function imgsrc(val) {
+    if(val === null || val==="") {
+        return "https://i.pinimg.com/564x/47/99/fd/4799fdb80098968bf6ff4c311eed1110.jpg";
+    }
+    else {
+        return val;
+    }
+  }
+
+  const formatDuration = (duration_ms) => {
+    const totalSeconds = Math.floor(duration_ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+
+
 
   return (
     <div className="table-container">
@@ -38,12 +56,14 @@ function LikedSongsList({ ...props }) {
           </tr>
         </thead>
         <tbody>
-          {songInfos.song && songInfos.song.map((val, index) => (
+          {songs && songs.map((val, index) => (
+
+            
             <tr key={index}>
               <th scope="row">{index + 1}</th>
               <td>
                 <img
-                  src={val.albumImageURL}
+                  src={imgsrc(val.albumImageURL)}
                   alt={`Album cover for ${val.name}`}
                   style={{ width: '64px', height: '64px' }}
                 />
@@ -51,12 +71,12 @@ function LikedSongsList({ ...props }) {
               <td>{val.name}</td>
               <td>{val.artistsName}</td>
               <td>{val.albumName}</td>
-              <td>{val.popularity}</td>
-              <td>{val.duration_ms}</td>
+              <td>{val.popularity === -1 ? "NaN" : val.popularity}</td>
+              <td>{formatDuration(val.duration_ms)}</td>
             </tr>
           ))}
 
-          {songInfos.song && songInfos.song.length === 0 && (
+          {songs && songs.length === 0 && (
             <tr>
               <td colSpan="6">No songs added</td>
             </tr>

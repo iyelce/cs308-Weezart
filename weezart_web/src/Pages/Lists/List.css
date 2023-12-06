@@ -4,6 +4,9 @@
     display: flex;
     justify-content: center;
     background-color: #1a1721;
+
+    max-height: 93vh; /* Set a maximum height for the container */
+    overflow-y: auto; /* Enable vertical scrollbar */
   }
   
   .list_song_table {
@@ -32,7 +35,30 @@
     background-color: #1a1721;
     border-top: 1px solid #1a1721;
   }
+
+  .list_song_table thead tr {
+    position: sticky;
+    top: 0; /* Stick to the top of the container */
+    z-index: 1; /* Ensure the header is above the content */
+  }
   
   .list_song_table tbody tr:hover {
     background-color: rgba(219, 219, 219, 0.075);
   }
+
+
+
+
+  /* Customize the scrollbar */
+.table-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background-color: #352F44; /* Background color of the scrollbar track */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #1a1721; /* Color of the scrollbar thumb */
+  border-radius: 6px; /* Border radius of the scrollbar thumb */
+}

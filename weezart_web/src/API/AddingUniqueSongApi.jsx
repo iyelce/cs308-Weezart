@@ -11,14 +11,14 @@ async function AddingUniqueSongApi ({...props} ) {
         artistsName : props.artistsName,
         artistsId : [],
         popularity : -1,
-        duration :  (props.minutes * 60 + props.seconds) * 1000  ,
+        duration_ms :  (props.minutes * 60 + props.seconds) * 1000  ,
         explicit : props.explicit,
         albumRelease : props.albumRelease 
     }
 
     try{        
 
-        console.log("holaa soy dora");
+        console.log("uniwue eklerken yolladığım : ", newSong);
 
 
         const response = await fetch(url, {

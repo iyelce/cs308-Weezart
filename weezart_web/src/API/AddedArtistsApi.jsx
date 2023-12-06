@@ -1,13 +1,13 @@
-// Added songs → GET /added-songs/{userId}
+// Added artists→ GET /added-artists/{userId}
 
 // PathVariable: string userId
 
-// Response: List of user’s added songs as UserSong objects (empty list if the user did not add any song)
+// Response: List of user’s added artists as UserArtist objects (empty list if the user did not add any artist)
 
 
-async function AddedSongsApi (token, userId ) {
+async function AddedArtistsApi (token, userId ) {
 
-    const url = `http://localhost:8080/user/added-songs/${userId}`;  
+    const url = `http://localhost:8080/user/added-artists/${userId}`;  
     const auth = "Bearer " + token;
 
     try{        
@@ -30,18 +30,22 @@ async function AddedSongsApi (token, userId ) {
         }
 
         const newResp = JSON.parse(data); 
-        const songResponse = [];
+
+        const artistResponse = [];
+
+        console.log("--> gelen response artist api : ", newResp)
 
         for (let i=0; i<newResp.length; i++) {
-            songResponse.push(newResp[i].song);
+            artistResponse.push(newResp[i].artist);
         }
 
-        return songResponse;
+        console.log(" api artist listesi : " , artistResponse);
 
+        return artistResponse;
     }
     catch (error) {
         console.error('error in fetching data:', error);
     }
 }
 
-export default AddedSongsApi;
+export default AddedArtistsApi;

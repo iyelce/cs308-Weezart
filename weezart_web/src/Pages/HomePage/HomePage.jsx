@@ -11,11 +11,7 @@ const HomePage = () => {
 
     
       <div className="homepage-content">
-        <div className="homepage-intro-img">
-          <span>
-            <img src='https://iastate.pressbooks.pub/app/uploads/sites/67/2022/11/Bach-Minuet-in-G-with-sentences.png' alt=''/>
-          </span>
-        </div>
+       
 
         <div className='homepage-recommendations'> 
           <p >
@@ -39,7 +35,7 @@ const HomePage = () => {
         </div>
         
       </div>
-      <div className="homepage-friend-activity">Friend Activity</div>
+
     </div>
   );
 }

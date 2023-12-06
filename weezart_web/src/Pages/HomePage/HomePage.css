@@ -60,6 +60,7 @@
 .homepage-recommendations p{
   font-size: 40px;
   font-weight: 800;
+  color:rgb(255, 255, 255,0.7);
 
 }
 
@@ -96,13 +97,13 @@
   min-width: 140px;
   width: 160px;
   padding: 15px;
-  background-color: #181818;
+  background-color: rgba(24, 4, 45, 0.7);
   border-radius: 6px;
   cursor: pointer;
   transition: all ease 0.4s;
 }
 .list .item:hover {
-  background-color: #252525;
+  background-color: rgba(24, 4, 45, 1);
 }
  .list .item img {
   width: 100%;

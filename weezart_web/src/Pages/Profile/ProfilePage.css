@@ -3,7 +3,7 @@
 .profile_page{
     height: 100vh;
     position: relative;
-    background-image:url('../../profile.png');
+    background-image:url('../../output-onlinepngtools.png');
     background-size: cover;
     width: 100%;
     height: 100%;
@@ -11,7 +11,7 @@
 }
 
 .profile-container {
-    background-color: rgba(26, 23, 33, 0.8);
+    background-color: rgba(26, 23, 33, 0.5);
     color: #ffffff;
     padding: 25px;
     border-radius: 15px;
@@ -19,6 +19,8 @@
     margin-left: 2rem;
     margin-right: 2rem;
     color: #B9B4C7;
+  }
+  .profile-container::before{
   }
   
   .profile-header {
@@ -38,15 +40,7 @@
     flex-grow: 1;
   }
   
-  .edit-profile-button {
-    background-color: #3498db;
-    color: #ffffff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+ 
   .clickable-items {
     display: flex;
     gap: 20px;
@@ -105,4 +99,19 @@
   text-decoration: underline; /* Add underline on hover if desired */
   /* Add any additional styling for hover state as needed */
 }
-  
+.add-artist-button {
+  background-color: #331055; /* Purple color */
+  color: #fff; /* White text color */
+  border: none;
+  padding: 10px 20px; /* Adjust padding as needed */
+  border-radius: 25px; /* Adjust border-radius for rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth color transition */
+  margin-left: 2rem;
+  font-family: Poppins;
+
+  /* Optional: Add hover effect */
+  &:hover {
+    background-color: #3B0944; 
+  }
+}

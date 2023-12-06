@@ -172,4 +172,9 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisArtistCounts(userId));
 	}
 	
+	@GetMapping("/artist/artistConstrainedCounts/{userId}/{dateConstraint}")
+	public ResponseEntity<List<Integer>> artistConstainedCountsAnalysisController(@PathVariable String userId, @PathVariable String dateConstraint){
+		return ResponseEntity.ok(analysisService.analysisConstrainedArtistCounts(userId, dateConstraint));
+	}
+	
 }

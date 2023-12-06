@@ -872,4 +872,30 @@ public class AnalysisServiceImpl implements AnalysisService{
         return List.of(totalAddedCount, likedCount, ratedCount);
     }
     
+    public List<Integer> analysisConstrainedArtistCounts(String userId, String dateConstraint) {
+        User user = userRepo.findByiduser(Long.parseLong(userId));
+        List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
+
+        // Parse the dateConstraint string to LocalDate
+        LocalDate constraintDate = LocalDate.parse(dateConstraint, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        // Filter userAlbums based on the date constraint
+        List<UserArtist> constrainedUserArtists = userArtists.stream()
+                .filter(userArtist -> {
+                    // Assuming getAddTime returns a string in "yyyy-MM-dd HH:mm:ss" format
+                    LocalDate artistDate = LocalDate.parse(userArtist.getAddTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    return !artistDate.isBefore(constraintDate);
+                })
+                .collect(Collectors.toList());
+
+        // Perform count operations on the constrained userAlbums
+        int totalAddedCount = constrainedUserArtists.size();
+        int likedCount = (int) constrainedUserArtists.stream().filter(UserArtist::isLiked).count();
+        int ratedCount = (int) constrainedUserArtists.stream()
+                .filter(userArtist -> userArtist.getRating() != null && !userArtist.getRating().isEmpty())
+                .count();
+
+        return List.of(totalAddedCount, likedCount, ratedCount);
+    }
+    
 }

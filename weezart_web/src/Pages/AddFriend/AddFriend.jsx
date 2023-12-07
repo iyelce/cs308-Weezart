@@ -9,38 +9,40 @@ async function addFriend(username, token,addingUsername) {
 
 
 const AddFriend = ({...props}) => {
-  const [username, setUsername] = useState("");
-
-  const handleChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Your logic for adding the friend with username goes here
-    // For example, you can send a request to your backend API
-    console.log(`Adding friend: ${username}`);
-    console.log("token122121212121",props.token);
-    console.log("usernameadasdsadasdadsada ",props.username);
+    const [username, setUsername] = useState("");
+    const [isFocusedUsername, setIsFocusedUsername] = useState(false);
+    
+    const handleChange = (event) => {
+        setUsername(event.target.value);
+    };
+    
+    
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Your logic for adding the friend with username goes here
+        // For example, you can send a request to your backend API
+        
 
     let response=addFriend(props.username,props.token,username);
+    if (response==="USER_ALREADY_FRIEND") {
+      console.log("couldnt add friend");
+    }
 
 
   };
 
   return (
-    <div className="container">
+    <div className="container-add">
       <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Add Friend:</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={username}
-          onChange={handleChange}
-          required
-        />
+        <div className={'field '+(isFocusedUsername?'moved':'')} >
+                    <input type="text" 
+                    className="register-input-box"
+                    onChange={handleChange}
+                    onBlur={()=>setIsFocusedUsername(false)}
+                    onFocus={()=>setIsFocusedUsername(true)}
+                    ></input>
+                    <label for="" className={'register-input-label '+(isFocusedUsername||(!isFocusedUsername&&username!=='')?'moved-upside':'')}>Username</label>
+                </div>
         <button type="submit">Add</button>
       </form>
     </div>

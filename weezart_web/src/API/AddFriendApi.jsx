@@ -1,10 +1,14 @@
-async function AnalyzeApi (token, userId  ) {
+// Added songs → GET /added-songs/{userId}
 
-    const url = `http://localhost:8080/analysis/song/counts/${userId}`;  
+// PathVariable: string userId
+
+// Response: List of user’s added songs as UserSong objects (empty list if the user did not add any song)
+
+
+async function AddFriendApi (token, username,addingUsername ) {
+
+    const url = `http://localhost:8080/friend/${username}/${addingUsername}`;  
     const auth = "Bearer " + token;
-
-
-  
 
     try{        
         console.log("url", url);
@@ -28,17 +32,15 @@ async function AnalyzeApi (token, userId  ) {
 
         const newResp = JSON.parse(data); 
 
-        const artistResponse = [];
+        console.log("song orj response: ", newResp);
+        
 
-        for (let i=0; i<newResp.length; i++) {
-            artistResponse.push(newResp[i].artist);
-        }
-        console.log(artistResponse);
-        return artistResponse;
+        return newResp;
+
     }
     catch (error) {
         console.error('error in fetching data:', error);
     }
 }
 
-export default AnalyzeApi;
+export default AddFriendApi;

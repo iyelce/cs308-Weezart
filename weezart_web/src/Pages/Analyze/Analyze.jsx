@@ -10,6 +10,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import AnalyzeApi from '../../API/AnalyzeApi';
 
 
 
@@ -17,12 +18,23 @@ function isDateBeforeToday(date) {
   return date >= new Date();
 }
 
+async function getAnalyze(token,userId) {
+  console.log("token123123123213 : ", token);
+  console.log("userId12321312231 : ", userId);
+  const response = await AnalyzeApi(token,userId);
+  return response;
+
+}
+
 export default function Analyze({...props}) {
+  
+  let response= getAnalyze(props.token,props.userId);
   const options=[
     {value:"Song",label:"Song"},
     {value:"Album",label:"Album"},
     {value:"Artist",label:"Artist"}
   ];
+
   const styles = {
     control: (provided) => ({
       ...provided,
@@ -44,7 +56,6 @@ export default function Analyze({...props}) {
   };
   return (
     <div >
-      <p>--- {props.token}</p>
     <Box display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows="repeat(24, 1fr)"

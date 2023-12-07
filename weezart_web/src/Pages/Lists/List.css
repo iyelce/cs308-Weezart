@@ -3,7 +3,11 @@
     height: 100%;
     display: flex;
     justify-content: center;
-    background-color: #1a1721;
+    background-image:url('../../WhatsApp\ Image\ 2023-12-06\ at\ 03.31.16.jpeg');
+  background-color: white;
+  background-size:cover;
+  background-position:center;
+  background-repeat: no-repeat;
 
     max-height: 100vh; /* Set a maximum height for the container */
     overflow-y: auto; /* Enable vertical scrollbar */
@@ -15,9 +19,9 @@
     height: auto;
     border-collapse: collapse;
     color: #B9B4C7;
-    background-color: #352F44;
+    background-color: rgba(7, 0, 8,0.8);
     border-radius: 0.25rem;
-    border: 1px solid #1a1721;
+    border: none;
     cursor: pointer;
     
   }
@@ -26,14 +30,15 @@
   .list_song_table td {
     padding: 10px;
     text-align: left;
-    border-top: 1px solid #1a1721;
+    border-top: none;
   }
 
   
 
   .list_song_table th {
-    background-color: #1a1721;
-    border-top: 1px solid #1a1721;
+    background-color: rgba(7,0,8,0.8);
+    opacity: 0.8;
+    border-top: none;
   }
 
   .list_song_table thead tr {

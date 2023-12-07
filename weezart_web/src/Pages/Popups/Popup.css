@@ -3,7 +3,11 @@
     height: 70%;
     width: 80%;
     z-index: 100;
+  
     
+}
+.ReactModal__Content.ReactModal__Content--after-open:active{
+  border:none;
 }
 
  

@@ -119,7 +119,7 @@ function ArtistInfoPopup(props) {
 
                 <div className="attributes">
                     <p className="artistsFollower"> Followers: {props.artistInfo.followerCount}</p>
-                    <p className="songGenre">Genre: {props.artistInfo.genres.join(', ')}</p>
+                    <p className="songGenre">Genre: {props.artistInfo.genres===null?"Unknown":props.artistInfo.genres.join(', ')}</p>
                 </div>
 
             </div>

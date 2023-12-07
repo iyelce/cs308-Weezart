@@ -35,5 +35,11 @@ public class RecommendationController {
 		return ResponseEntity.ok(recommendationService.popularityRec());
 	}
 	
+	@GetMapping("/genre-artist/{userId}")
+	public ResponseEntity<List<Artist>> artistGenreRecommendationController(@PathVariable String userId){
+		return ResponseEntity.ok(recommendationService.genreArtistRec(userId));
+	}
+	
+	
 
 }

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,9 +57,54 @@ public class RecommendationServiceImpl implements RecommendationService {
 	@Autowired 
 	private ArtistRepository artistRepo;
 	
-	@Autowired SongRepository songRepo;
+	@Autowired 
+	private SongRepository songRepo;
+	
+	@Autowired
+	private AnalysisServiceImpl analysisService;
 	
 	public List<Song> popularityRec(){
 		return songRepo.findTop10ByPopularityIsNotOrderByPopularityDesc(-1);
+	}
+	
+	public List<Artist> genreArtistRec(String userId){
+		List<Song> topRatedSongs = analysisService.analysisTop5Manual(userId);
+		if(topRatedSongs!=null) {
+			Set<String> topRatedGenres = new HashSet<>();
+			for (Song song: topRatedSongs) {
+				if (song.getPopularity()!=-1) {
+					List<String> artistsId = song.getArtistsId();
+					for (String artistId : artistsId) {
+						Artist givenArtist = artistRepo.findByid(artistId);
+						List<String> genresList = givenArtist.getGenres();
+						topRatedGenres.addAll(genresList);
+					 }
+				}
+			}
+
+			List<Artist> allArtists = artistRepo.findAll();
+			List<UserArtist> artistsAddedByUser = userArtistRepo.findAllByUser(userRepo.findByiduser(Long.parseLong(userId)));
+
+			List<Artist> filteredArtists = allArtists.stream()
+			        .filter(artist -> {
+			            // Check if the artist is not in the list of artists added by the user
+			            return artistsAddedByUser.stream().noneMatch(userArtist -> userArtist.getArtist().getId().equals(artist.getId()));
+			        })
+			        .filter(artist -> {
+			            List<String> artistGenres = Optional.ofNullable(artist.getGenres()).orElse(Collections.emptyList());
+			            return !artistGenres.isEmpty() && artistGenres.stream().anyMatch(topRatedGenres::contains);
+			        })
+			        .collect(Collectors.toList());
+
+			Collections.shuffle(filteredArtists);
+
+			return filteredArtists.stream().limit(5).collect(Collectors.toList());
+
+		}
+		
+		
+		else {
+			return null;
+		}
 	}
 }

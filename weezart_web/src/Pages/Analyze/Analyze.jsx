@@ -17,7 +17,7 @@ function isDateBeforeToday(date) {
   return date >= new Date();
 }
 
-export default function Analyze() {
+export default function Analyze({...props}) {
   const options=[
     {value:"Song",label:"Song"},
     {value:"Album",label:"Album"},
@@ -44,6 +44,7 @@ export default function Analyze() {
   };
   return (
     <div >
+      <p>--- {props.token}</p>
     <Box display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows="repeat(24, 1fr)"

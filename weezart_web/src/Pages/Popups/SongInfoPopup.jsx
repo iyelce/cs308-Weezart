@@ -4,6 +4,7 @@ import { AiOutlineClose } from "react-icons/ai";
 // import './Popup.css';
 import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckCircle, AiFillCheckCircle, AiFillCrown } from 'react-icons/ai'; 
 import LikeSongApi from "../../API/LikeSongApi";
+import { useEffect } from "react";
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
@@ -18,11 +19,13 @@ function imgsrc(val) {
     }
 }
 
-function SongInfoPopup(props) {
+function SongInfoPopup({...props}) {
+    useEffect(() => {
+        setLiked(props.liked);
+      }, [props.liked]);
 
     const [rating, setRating] = useState(0);
     const stars = [1, 2, 3, 4, 5];
-    const [liked, setLiked] = useState(false);
     const [added, setAdded] = useState(false);
 
     const handleStarClick = (selectedRating) => {
@@ -47,6 +50,28 @@ function SongInfoPopup(props) {
 // name:"Everyday"
 // popularity:68
 // explicit:false
+
+const [liked, setLiked] = useState(props.liked);
+
+const handleLikeClick = async () => {
+  if (liked) {
+    // Call unlike API if the heart is already filled
+    alert("unlike api");
+
+    setLiked(false);
+  } else {
+    
+    const likeResp = await LikeSongApi(props.token, props.userId, props.songInfo);
+
+    console.log("page içinde like: ",likeResp);
+
+    setLiked(true);
+
+  }
+
+  // Toggle the local liked state
+  
+};
 
 
 
@@ -104,9 +129,9 @@ function SongInfoPopup(props) {
 
                     <div className="like-add">
                             <div className="half-width">
-                                <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={() => { setLiked(!liked); setAdded(true);}}>
-                                    {liked ? <AiFillHeart /> : <AiOutlineHeart />}
-                                </div>
+                            <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={handleLikeClick}>
+                                {liked ? <AiFillHeart /> : <AiOutlineHeart />}
+                            </div>
                                 <p>{liked ? 'Liked' : 'Like'}</p>
                             </div>
                             <div className="half-width">

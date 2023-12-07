@@ -6,7 +6,11 @@ import AddedSongsApi from "../../API/AddedSongsApi";
 import SongInfoPopup from "../Popups/SongInfoPopup";
 
 function LikedSongsList({ ...props }) {
+
+  //to map to table -> only song info
   const [songs, setSongs] = useState([]); 
+  //whole response from liked songs api
+  const [wholeSongResp, setWholeSongResp] = useState([]);
 
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
   const [showSongPopups, setShowSongPopups] = useState(new Map());
@@ -38,6 +42,16 @@ function LikedSongsList({ ...props }) {
       try {
         const songList = await AddedSongsApi(props.token, props.userId);
         setSongs(songList);
+
+        const songResponse = [];
+
+        for (let i=0; i<songList.length; i++) {
+            songResponse.push(songList[i].song);
+        }
+
+        setSongs(songResponse);
+
+        setWholeSongResp(songList);        
 
       } catch (error) {
         console.error("Error fetching user profile:", error);
@@ -111,7 +125,11 @@ function LikedSongsList({ ...props }) {
             <SongInfoPopup
               isOpen={true}
               onRequestClose={handleSongClosePopup}
-              songInfo={songs[selectedSongIndex]}
+              songInfo = {songs[selectedSongIndex]}
+              liked = {wholeSongResp[selectedSongIndex].liked}
+              rating = {wholeSongResp[selectedSongIndex].rating}
+              token = {props.token}
+              userId = {props.userId}
             />
       )}
 

@@ -30,13 +30,11 @@ async function AddedSongsApi (token, userId ) {
         }
 
         const newResp = JSON.parse(data); 
-        const songResponse = [];
 
-        for (let i=0; i<newResp.length; i++) {
-            songResponse.push(newResp[i].song);
-        }
+        console.log("song orj response: ", newResp);
+        
 
-        return songResponse;
+        return newResp;
 
     }
     catch (error) {

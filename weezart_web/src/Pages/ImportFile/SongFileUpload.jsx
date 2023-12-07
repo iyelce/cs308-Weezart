@@ -39,11 +39,12 @@ const SongFileUpload = ({...props}) => {
   
       if (isFileTypeAllowed || isFileExtensionAllowed) {
         // File type is allowed, you can proceed with the upload
-        console.log('Uploading file:', selectedFile);
-
+        
         const uploadResponse = await ImportSongFromFileApi(props.token, props.userId, selectedFile);
-  
+
+
         // You can also read the file content if needed
+        
         const reader = new FileReader();
         reader.onload = (e) => {
           const fileContent = e.target.result;

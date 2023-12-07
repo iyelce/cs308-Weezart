@@ -19,7 +19,8 @@ async function ImportSongFromFileApi(token, userId, file) {
             headers: {
                 accept: 'application/json',
                 'Authorization': auth,
-                'Content-Type': 'application/json'
+                //'Content-Type': 'application/json'
+                'Content-Type':'multipart/form-data'
             },
             body: JSON.stringify(file),
             method: 'POST',

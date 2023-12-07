@@ -72,14 +72,21 @@ function AddSong({...props}) {
     }
   };
 
+  const[addedLabelInfo , setAddedLabelInfo] = useState("");
+  const [addedLabelShow, setAddedLabelShow] = useState(false);
+
   const handleSAddSong  = async () => {
-
-    console.log("--> song info: " , songInfos[0]);
-
-
     const result = await AddingAcceptedSong(songInfos[0] , props.token, props.userId);
 
-    console.log("response in page: ", result);
+    if (result === "Song is already added") {
+        setAddedLabelInfo("Song is already added.");
+        setAddedLabelShow(true);
+    }
+
+    else {
+        setAddedLabelInfo("Song Added");
+        setAddedLabelShow(true);
+    }
 
   }
 
@@ -219,6 +226,11 @@ function AddSong({...props}) {
             </div>
 
             
+            <p style={{ display: addedLabelShow ? 'block' : 'none' }} className="single-song-add-unique-label">
+               {addedLabelInfo}
+            </p>
+
+
             <p style={{ display: showUniqueLabel ? 'block' : 'none' }} className="single-song-add-unique-label">
                 Can't find the song you are looking for : 
                 <a href="#/" onClick={()=> {navigate('/importUniqueSong')}}> Add your song to Weezart</a>

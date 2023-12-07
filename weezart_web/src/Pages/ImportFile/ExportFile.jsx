@@ -1,8 +1,9 @@
 import React from 'react';
+import { useState } from 'react';
 
 const ExportPage = ({...props}) => {
 
-
+//api is here
   const handleExport = async () => {
     const url = `http://localhost:8080/file/export/${props.userId}`;  
     const auth = "Bearer " + props.token;
@@ -37,16 +38,40 @@ const ExportPage = ({...props}) => {
             document.body.removeChild(a);
             }
         }
+
+        else {
+            setShowerrorLabel(true);
+        }
           
       } catch (error) {
         console.error('Error in fetching data:', error);
       }
     };
 
+
+    const [showErrorLabel, setShowerrorLabel] = useState(false);
+
+      // Function to handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
-    <div>
-      <h1>Export Page</h1>
-      <button onClick={handleExport}>Export File</button>
+    <div className="song-add-page" height="100%">
+
+        <form className="single-song-add" onSubmit={handleSubmit}>
+
+            <p className="song-add-label"> Click to Export Your Song List </p>
+
+            <button className="export-button" onClick={handleExport}>Export File</button>
+
+            <p style={{ display: showErrorLabel ? 'block' : 'none' }} className="single-song-add-unique-label">
+                Something went wrong. Try again.
+            </p>
+
+        </form>
+
+
     </div>
   );
 };

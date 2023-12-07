@@ -43,24 +43,15 @@ function LikedArtistsList({...props}) {
 
   const fetchData = async () => {
     try {
-      const artists = await AddedArtistsApi(props.token, props.userId);
-
-      console.log("gelen artists page içinde :  ", artists)
-      
-      setWholeArtistList(artists);
-
-      console.log("8888888888888   ", wholeArtistList)
-      
+      const artists = await AddedArtistsApi(props.token, props.userId);      
+      setWholeArtistList(artists);    
 
       const artistResponse = [];
 
       for (let i=0; i<artists.length; i++) {
           artistResponse.push(artists[i].artist);
       }
-
       setArtistList(artistResponse);
-
-      console.log("artist list page : ", artistList);
 
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -116,6 +107,13 @@ function imgsrc(val) {
                 <td>{val.followerCount === -1 ? "NaN" : val.followerCount}</td>
               </tr>
             ))}
+
+            {artistList && artistList.length === 0 && (
+            <tr>
+              <td colSpan="6">No artist added</td>
+            </tr>
+          )}
+
           </tbody>
         </table>
   

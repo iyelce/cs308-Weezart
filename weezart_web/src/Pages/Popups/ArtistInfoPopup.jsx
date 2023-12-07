@@ -5,6 +5,7 @@ import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineDelete
 import { useEffect } from "react";
 import LikeArtistApi from "../../API/LikeArtistApi";
 import ArtistRemoveApi from "../../API/ArtistRemoveApi";
+import RateArtistApi from "../../API/RateArtistApi";
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
@@ -22,30 +23,37 @@ function imgsrc(val) {
 
 function ArtistInfoPopup({...props}) {
 
-    const [rating, setRating] = useState(0);
-    const stars = [1, 2, 3, 4, 5];
     const [liked, setLiked] = useState(props.liked);
+    const [rating, setRating] = useState(props.rating ? props.rating[props.rating.length - 1] : 0);
     const [deleted, setDeleted] = useState(false);
+    const stars = [1, 2, 3, 4, 5];
+  
+    useEffect(() => {
+      setLiked(props.liked);
+      setRating(props.rating ? props.rating[props.rating.length - 1] : 0);
+      setDeleted(false);
+    }, [props.liked, props.rating]);
 
-    const handleStarClick = (selectedRating) => {
-        if (selectedRating === rating) {
-            // If the clicked star is the same as the current rating, remove the rating (set it to 0)
-            setRating(0);
+    const handleStarClick = async (selectedRating) => {
+        // if (selectedRating === rating) {
+        //   // If the clicked star is the same as the current rating, remove the rating (set it to 0)
+        //   setRating(0);
+        // } else {
+        //     setRating(selectedRating);
+        //     setAdded(true);
+        //     // Call your rating API with the selected rating
+        //     onRatingChange(selectedRating);
+        // }
 
-          } else {
-            setRating(selectedRating);
-          }
-    };
+        const ratingResponse = await RateArtistApi(props.token, props.userId, props.artistInfo, selectedRating);
+        setRating(selectedRating);
+      };
 
 // followerCount :411109
 // genres :(5) ['art pop', 'chamber pop', 'experimental folk', 'experimental pop', 'indie pop']
 // id : "3Uqu1mEdkUJxPe7s31n1M9"
 // imageUrl : "https://i.scdn.co/image/ab6761610000e5eb92b2757e7003d4f77e5a5d05"
 // name : "Weyes Blood"
-
-useEffect(() => {
-    setLiked(props.liked);
-  }, [props.liked]);
 
 
 
@@ -94,6 +102,7 @@ useEffect(() => {
         </div>
 
         <div className="three-column-container">
+            {/* <p>---- {props.artistInfo.id}</p> */}
         <div className="column column-try" style={{ backgroundImage: `url(${props.artistInfo.imageUrl !== "" ? props.artistInfo.imageUrl : 'yourCatPhotoUrl'})` }}>
                 <div className="content">
                     <h2 className="title">{props.artistInfo.name}</h2>

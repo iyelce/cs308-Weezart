@@ -43,9 +43,8 @@ const handleAlbumClosePopup = (index) => {
   const fetchData = async () => {
     try {
       const albums = await AddedAlbumsApi(props.token, props.userId);
+      console.log("+++ albums return in page: ", albums)
       setWholeAlbumList(albums);
-      console.log("first -->  " , wholeAlbumList);
-
       const albumResponse = [];
 
       for (let i=0; i<albums.length; i++) {

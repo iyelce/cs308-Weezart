@@ -24,11 +24,10 @@ function imgsrc(val) {
 function SongInfoPopup({...props}) {
     useEffect(() => {
         setLiked(props.liked);
-        setRating(props.rating || 0)
-        
+        setRating(props.rating[props.rating.length -1 ]);
       }, [props.liked, props.rating]);
 
-    const [rating, setRating] = useState(props.rating);
+    const [rating, setRating] = useState(props.rating[props.rating.length -1 ]);
     const stars = [1, 2, 3, 4, 5];
     const [deleted, setDeleted] = useState(false);
 
@@ -43,9 +42,8 @@ function SongInfoPopup({...props}) {
         //     onRatingChange(selectedRating);
         // }
 
-        const ratingResponse = await RateSongApi(props.token, props.userId, props.songInfo, props.rating);
+        const ratingResponse = await RateSongApi(props.token, props.userId, props.songInfo, selectedRating);
         setRating(selectedRating);
-        console.log("rating song response in page: ", ratingResponse);
       };
 
 // albumId : "4Qy0SOU9Jg7Td10K68SanP"
@@ -117,7 +115,6 @@ const handleDeleteClick = async () => {
                     <p className="songName">{props.songInfo.name}</p>
                     <p className="songArtists">{props.songInfo.artistsName.join(', ')}</p>
                     <p className="songAlbum">{props.songInfo.albumName}</p>
-                    {/* <p className="songGenre">Genre: {props.songInfo.genre.join(', ')}</p> */}
                 </div>
             </div>
 

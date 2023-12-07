@@ -6,6 +6,7 @@ import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineDelete
 import { useEffect } from "react";
 import LikeAlbumApi from "../../API/LikeAlbumApi";
 import AlbumRemoveaApi from "../../API/AlbumRemoveaApi";
+import RateAlbumApi from "../../API/RateAlbumApi";
 
 // Make sure to set appElement to avoid a11y violations
 ReactModal.setAppElement('#root'); // Replace '#root' with the ID of your app root element
@@ -24,20 +25,31 @@ function imgsrc(val) {
 function AlbumInfoPopup({...props}) {
     
 
-    const [rating, setRating] = useState(0);
-    const stars = [1, 2, 3, 4, 5];
     const [liked, setLiked] = useState(props.liked);
+    const [rating, setRating] = useState(props.rating ? props.rating[props.rating.length - 1] : 0);
     const [deleted, setDeleted] = useState(false);
+    const stars = [1, 2, 3, 4, 5];
+  
+    useEffect(() => {
+      setLiked(props.liked);
+      setRating(props.rating ? props.rating[props.rating.length - 1] : 0);
+      setDeleted(false);
+    }, [props.liked, props.rating]);
 
-    const handleStarClick = (selectedRating) => {
-        if (selectedRating === rating) {
-            // If the clicked star is the same as the current rating, remove the rating (set it to 0)
-            setRating(0);
+    const handleStarClick = async (selectedRating) => {
+        // if (selectedRating === rating) {
+        //   // If the clicked star is the same as the current rating, remove the rating (set it to 0)
+        //   setRating(0);
+        // } else {
+        //     setRating(selectedRating);
+        //     setAdded(true);
+        //     // Call your rating API with the selected rating
+        //     onRatingChange(selectedRating);
+        // }
 
-          } else {
-            setRating(selectedRating);
-          }
-    };
+        const ratingResponse = await RateAlbumApi(props.token, props.userId, props.albumInfo, selectedRating);
+        setRating(selectedRating);
+      };
 
 // artistsId:['3Uqu1mEdkUJxPe7s31n1M9']
 // artistsName:['Weyes Blood']
@@ -51,11 +63,6 @@ function AlbumInfoPopup({...props}) {
 
 // releaseDate:"2019-04-05"
 // numberOfTracks:10
-
-useEffect(() => {
-    setLiked(props.liked);
-  }, [props.liked]);
-
 
 
   const handleLikeClick = async () => {
@@ -108,7 +115,7 @@ useEffect(() => {
                     <p className="copy">{props.albumInfo.artistsName.join(', ')}</p>
                     {/* <p className="copy">Genre: {props.albumInfo.genre.join(', ')}</p> */}
 
-                    <div className="stars">
+                    {/* <div className="stars">
                         {stars.map((star) => (
                         <span
                             key={star}
@@ -118,7 +125,7 @@ useEffect(() => {
                             {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
                         </span>
                         ))}
-                    </div>
+                    </div> */}
                 </div>
 
 

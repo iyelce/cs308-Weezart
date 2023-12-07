@@ -187,6 +187,25 @@ const SearchScreen = ({ navigation }) => {
             Assisted Search
           </Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#f3f3f3",
+            borderRadius: 16,
+            padding: 16,
+            paddingLeft: 20,
+            paddingRight: 20,
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            marginTop: 10,
+            backgroundColor: "black",
+          }}
+          onPress={() => navigation.navigate("ManualAdd")}
+        >
+          <Text style={{ fontWeight: "bold", color: "white", fontSize: 17 }}>
+            Add Your Song Manually
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

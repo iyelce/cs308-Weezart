@@ -37,6 +37,7 @@ async function RateSongApi(token, userId, songInfo, rating) {
 
     try{        
 
+        console.log("RATING I SEND in api-> ", rating)
         const response = await fetch(url, {
             headers: {
                 accept: 'application/json',

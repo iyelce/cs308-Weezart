@@ -5,6 +5,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckCircle, AiFillCheckCircle, AiFillCrown } from 'react-icons/ai'; 
 import LikeSongApi from "../../API/LikeSongApi";
 import { useEffect } from "react";
+import RateSongApi from "../../API/RateSongApi";
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
@@ -22,22 +23,29 @@ function imgsrc(val) {
 function SongInfoPopup({...props}) {
     useEffect(() => {
         setLiked(props.liked);
-      }, [props.liked]);
+        setRating(props.rating || 0)
+        
+      }, [props.liked, props.rating]);
 
-    const [rating, setRating] = useState(0);
+    const [rating, setRating] = useState(props.rating);
     const stars = [1, 2, 3, 4, 5];
     const [added, setAdded] = useState(false);
 
-    const handleStarClick = (selectedRating) => {
-        if (selectedRating === rating) {
-            // If the clicked star is the same as the current rating, remove the rating (set it to 0)
-            setRating(0);
+    const handleStarClick = async (selectedRating) => {
+        // if (selectedRating === rating) {
+        //   // If the clicked star is the same as the current rating, remove the rating (set it to 0)
+        //   setRating(0);
+        // } else {
+        //     setRating(selectedRating);
+        //     setAdded(true);
+        //     // Call your rating API with the selected rating
+        //     onRatingChange(selectedRating);
+        // }
 
-          } else {
-            setRating(selectedRating);
-            setAdded(true);
-          }
-    };
+        const ratingResponse = await RateSongApi(props.token, props.userId, props.songInfo, props.rating);
+        setRating(selectedRating);
+        console.log("rating song response in page: ", ratingResponse);
+      };
 
 // albumId : "4Qy0SOU9Jg7Td10K68SanP"
 // albumImageURL :"https://i.scdn.co/image/ab67616d0000b27358816b5b546bdc2c0e7f6416"
@@ -114,16 +122,16 @@ const handleLikeClick = async () => {
                     <p>{rating > 0 ? 'Rated' : 'Rate'}</p>
 
                     <div className="stars">
-                        {stars.map((star) => (
-                        <span
-                            key={star}
-                            className={`star ${star <= rating ? 'selected' : ''}`}
-                            onClick={() => handleStarClick(star)}
-                        >
-                            {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
-                        </span>
-                        ))}
-                    </div>
+      {stars.map((star) => (
+        <span
+          key={star}
+          className={`star ${star <= rating ? 'selected' : ''}`}
+          onClick={() => handleStarClick(star)}
+        >
+          {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
+        </span>
+      ))}
+    </div>
 
                     <hr/>
 

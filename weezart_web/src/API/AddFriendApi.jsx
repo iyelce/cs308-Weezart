@@ -5,9 +5,9 @@
 // Response: List of user’s added songs as UserSong objects (empty list if the user did not add any song)
 
 
-async function AddFriendApi (token, username,addingUsername ) {
+async function AddFriendApi (token, username, addingUsername ) {
 
-    const url = `http://localhost:8080/friend/${username}/${addingUsername}`;  
+    const url = `http://localhost:8080/add/friend/${username}/${addingUsername}`;  
     const auth = "Bearer " + token;
 
     try{        

@@ -480,15 +480,12 @@ public class AnalysisServiceImpl implements AnalysisService{
     public List<Artist> analysisLatest5Artist(String userId){
 
     	User user = userRepo.findByiduser(Long.parseLong(userId));
-    	List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
-    	List<Artist> filteredArtists = new ArrayList<>();
-    	
+    	List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);    	
         List<UserArtist> sortedUserArtists = userArtists.stream()
         		.filter(UserArtist::isLiked)
                 .sorted(Comparator.comparing(UserArtist::getLikeTime, Comparator.nullsLast(Comparator.reverseOrder())))
                 .collect(Collectors.toList());
 
-        // Extract Album objects from sortedUserSongs
         List<Artist> top5Artists = sortedUserArtists.stream()
                 .limit(5)
                 .map(UserArtist::getArtist)
@@ -517,15 +514,14 @@ public class AnalysisServiceImpl implements AnalysisService{
             int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
             log.info(String.valueOf(lastRating1));
             log.info(String.valueOf(lastRating2));
-            // Sort in descending order
+
             return Integer.compare(lastRating2, lastRating1);
         });
 
-        List<Artist> top2Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
-        return top2Artists;
+        List<Artist> top5Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
+        return top5Artists;
     }
     
-    // returns null if non found
     public List<Artist> analysisGenreArtist(String userId, String genre){
     	User user = userRepo.findByiduser(Long.parseLong(userId));
     	List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
@@ -539,7 +535,6 @@ public class AnalysisServiceImpl implements AnalysisService{
     				genreFound = true;
     			}	    		
 	    		if (genreFound == true) {
-	    			log.info("boola girdi");
 	    			filteredArtists.add(givenArtist);
 	    		}
     		}
@@ -553,34 +548,19 @@ public class AnalysisServiceImpl implements AnalysisService{
             int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
             int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
 
-    	    // Sort in descending order
     	    return Integer.compare(lastRating2, lastRating1);
     	});
 
-        // Take the top 5 songs
-        List<Artist> top2Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	log.info("2. analizin sonuna geldiiik");
-    	return top2Artists;
+
+        List<Artist> top5Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
+      	return top5Artists;
     }
-    
-    
-    
-    
-    
-    
+       
     public List<Artist> analysisReleaseDateArtist(String userId, int StartYear, int FinishYear){
     	User user = userRepo.findByiduser(Long.parseLong(userId));
     	List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
     	Set<String> filteredArtistsId = new HashSet<>(); 
     	List<Artist> filteredArtists = new ArrayList<>();    	
-    
     
 		for (UserAlbum userAlbum : userAlbums) {
 			Album album = userAlbum.getAlbum();
@@ -593,8 +573,7 @@ public class AnalysisServiceImpl implements AnalysisService{
 		
 		for (String artistId : filteredArtistsId) {
 		    Artist artist = artistRepo.findByid(artistId);
-		    
-		    // Check if the artist is not null before adding
+
 		    if (artist != null) {
 		        filteredArtists.add(artist);
 		    }
@@ -607,21 +586,12 @@ public class AnalysisServiceImpl implements AnalysisService{
             int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
             int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
 
-    	    // Sort in descending order
     	    return Integer.compare(lastRating2, lastRating1);
     	});
 
-        // Take the top 5 songs
-        List<Artist> top2Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	log.info("analizin sonuna geldiiik");
-    	return top2Artists;
+
+        List<Artist> top5Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
+    	return top5Artists;
 	
     }
     
@@ -629,11 +599,8 @@ public class AnalysisServiceImpl implements AnalysisService{
     public Map<String, Long> analysisDailyAddedArtists(String userId) {
         User user = userRepo.findByiduser(Long.parseLong(userId));
         List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
-
-        // Create a map to store the count of songs added per day
         Map<String, Long> artistsAddedPerDay = new HashMap<>();
 
-        // Group userSongs by addTime date and count songs for each date
         artistsAddedPerDay = userArtists.stream()
                 .collect(Collectors.groupingBy(
                         userArtist -> LocalDate.parse(userArtist.getAddTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
@@ -645,14 +612,10 @@ public class AnalysisServiceImpl implements AnalysisService{
     }
     
     public Map<String, Long> analysisDailyLikedArtists(String userId) {
-    	// empty check
         User user = userRepo.findByiduser(Long.parseLong(userId));
         List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
-
-        // Create a map to store the count of songs added per day
         Map<String, Long> artistsAddedPerDay = new HashMap<>();
 
-        // Group userSongs by addTime date and count songs for each date
         artistsAddedPerDay = userArtists.stream()
         		.filter(userArtist->userArtist.getLikeTime()!= null)
                 .collect(Collectors.groupingBy(
@@ -668,20 +631,18 @@ public class AnalysisServiceImpl implements AnalysisService{
         User user = userRepo.findByiduser(Long.parseLong(userId));
         List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
 
-        // Create a map to store the average rating per day
         Map<String, Double> averageRatingPerDay = userArtists.stream()
-                .filter(userArtist -> userArtist.getRatingTime() != null && !userArtist.getRatingTime().isEmpty())  // Null check and filter out UserSongs with empty rating times
+                .filter(userArtist -> userArtist.getRatingTime() != null && !userArtist.getRatingTime().isEmpty())  
                 .collect(Collectors.groupingBy(
                         userArtist -> LocalDate.parse(userArtist.getRatingTime().get(userArtist.getRatingTime().size() - 1), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                                 .toString(),
-                        HashMap::new, // Explicitly specify HashMap as the map type
+                        HashMap::new, 
                         Collectors.averagingDouble(userArtist -> {
                             List<Integer> ratings = userArtist.getRating();
                             if (!ratings.isEmpty()) {
-                                // Use the last index of the ratings array
                                 return ratings.get(ratings.size() - 1);
                             }
-                            return 0; // Default value if ratings array is empty
+                            return 0; 
                         })
                 ));
 
@@ -705,19 +666,16 @@ public class AnalysisServiceImpl implements AnalysisService{
         User user = userRepo.findByiduser(Long.parseLong(userId));
         List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
 
-        // Parse the dateConstraint string to LocalDate
         LocalDate constraintDate = LocalDate.parse(dateConstraint, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-        // Filter userAlbums based on the date constraint
         List<UserArtist> constrainedUserArtists = userArtists.stream()
                 .filter(userArtist -> {
-                    // Assuming getAddTime returns a string in "yyyy-MM-dd HH:mm:ss" format
+
                     LocalDate artistDate = LocalDate.parse(userArtist.getAddTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                     return !artistDate.isBefore(constraintDate);
                 })
                 .collect(Collectors.toList());
 
-        // Perform count operations on the constrained userAlbums
         int totalAddedCount = constrainedUserArtists.size();
         int likedCount = (int) constrainedUserArtists.stream().filter(UserArtist::isLiked).count();
         int ratedCount = (int) constrainedUserArtists.stream()

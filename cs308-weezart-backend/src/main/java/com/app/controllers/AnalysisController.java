@@ -132,12 +132,12 @@ public class AnalysisController {
 	//------------------------- ARTIST ANALYSIS -----------------------------------
 	
 	
-	@GetMapping("/artist/last5Liked/{userId}")
+	@GetMapping("/artist/last-5/{userId}")
 	public ResponseEntity<List<Artist>> latest5ArtistAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisLatest5Artist(userId));
 	}
 	
-	@GetMapping("/artist/top5Liked/{userId}")
+	@GetMapping("/artist/top-5/{userId}")
 	public ResponseEntity<List<Artist>> top5ArtistAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisTop5Artist(userId));
 	}
@@ -147,32 +147,32 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisGenreArtist(userId, genre));
 	}
 	
-	@GetMapping("/artist/releaseDate/{userId}")
+	@GetMapping("/artist/release-date/{userId}")
 	public ResponseEntity<List<Artist>> releaseDateArtistAnalysisController(@RequestBody DateRange dateRange, @PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisReleaseDateArtist(userId, dateRange.getStartDate(), dateRange.getEndDate()));
 	}
 	
-	@GetMapping("/artist/dailyArtists/{userId}")
+	@GetMapping("/artist/daily-added/{userId}")
 	public ResponseEntity<Map<String, Long>> dailyArtistsAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisDailyAddedArtists(userId));
 	}
 	
-	@GetMapping("/artist/dailyLikedArtists/{userId}")
+	@GetMapping("/artist/daily-liked/{userId}")
 	public ResponseEntity<Map<String, Long>> dailyLikedArtistsAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisDailyLikedArtists(userId));
 	}
 	
-	@GetMapping("/artist/dailyAverageRatingArtists/{userId}")
+	@GetMapping("/artist/daily-rating/{userId}")
 	public ResponseEntity<Map<String, Double>> dailyAverageRatingArtistsAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisDailyAverageRatingArtists(userId));
 	}
 	
-	@GetMapping("/artist/artistCounts/{userId}")
+	@GetMapping("/artist/counts/{userId}")
 	public ResponseEntity<List<Integer>> artistCountsAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisArtistCounts(userId));
 	}
 	
-	@GetMapping("/artist/artistConstrainedCounts/{userId}/{dateConstraint}")
+	@GetMapping("/artist/constrained-counts/{userId}/{dateConstraint}")
 	public ResponseEntity<List<Integer>> artistConstainedCountsAnalysisController(@PathVariable String userId, @PathVariable String dateConstraint){
 		return ResponseEntity.ok(analysisService.analysisConstrainedArtistCounts(userId, dateConstraint));
 	}

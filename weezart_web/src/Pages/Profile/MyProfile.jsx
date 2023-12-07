@@ -17,8 +17,11 @@ const MyProfile = ({...props}) => {
 
         setEmail(user.email);
         setUsername(user.username);
-        setFollowers(user.followers === null ? 0 : user.followers);
-        setFollowing(user.following === null ? 0 : user.following);
+
+        setFollowerCount(user.followers === null ? 0 : user.followers.length);
+        setFollowers(user.followers === null ? [] : user.followers);
+
+        setFollowing(user.following === null ? 0 : user.following.length);
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -31,13 +34,11 @@ const MyProfile = ({...props}) => {
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
-    const [followers, setFollowers] = useState(0);
+    const [followers, setFollowers] = useState([]);
+    const [followerCount, setFollowerCount] = useState(0);
     const [following, setFollowing] = useState(0);
     const [username, setUsername] = useState('');
 
-
-
-    
     const handleEditProfile = () => {
       // Add logic to handle edit profile
       alert('Edit Profile clicked');
@@ -64,7 +65,9 @@ const MyProfile = ({...props}) => {
           <div className="user-details">
             <h2>{username}</h2>
             <p >
-                <span className="profile_followers" onClick={()=>{navigate("/followers")}}>Followers: {followers} </span>
+                {/* <span className="profile_followers" onClick={()=>{navigate(`/followers/${followers}`)}}>Followers: {followerCount} </span> */}
+
+                <span className="profile_followers" onClick={()=>{navigate("/followers")}}>Followers: {followerCount} </span>
                 | 
                 <span className="profile_following" onClick={()=>{navigate("/following")}}>Following: {following} </span>
             </p>

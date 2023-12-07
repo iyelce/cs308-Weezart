@@ -191,7 +191,7 @@ const SideBar = ({...props}) => {
                 style={{
                   color: colors.grey[100],
                 }}
-                onClick={() => {alert("clicked on export")}}
+                onClick={() => {navigate("exportFile")}}
                 icon={<FileDownloadIcon />}
               >
                 <Typography>{"Export Songs"}</Typography>

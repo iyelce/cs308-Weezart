@@ -18,6 +18,7 @@ import LikedSongsList from './Pages/Lists/LikedSongsList.jsx';
 import LikedArtistsList from './Pages/Lists/LikedArtists.jsx';
 import LikedAlbumsList from './Pages/Lists/LikedAlbumsList.jsx';
 import AddFriend from './Pages/AddFriend/AddFriend.jsx';
+import ExportPage from './Pages/ImportFile/ExportFile.jsx';
 
 
 function App() {
@@ -106,6 +107,7 @@ function App() {
               <Route path='import' element={<AddSong token={token} userId = {userId} />} />
               <Route path = 'importUniqueSong' element={<AddUniqueSong token={token} userId={userId}/>}/>
               <Route path = 'songFileUpload' element={<SongFileUpload token={token} userId={userId}/>}/>
+              <Route path = 'exportFile' element={<ExportPage token={token} userId={userId}/>}/>
 
               <Route path = 'myProfile' element={<MyProfile token={token} userId={userId}/>}/>
               <Route path = 'followers' element={<FollowersList token={token} userId={userId} username={username}/>}/>

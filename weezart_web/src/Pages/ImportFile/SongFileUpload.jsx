@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
+import ImportSongFromFileApi from '../../API/ImportSongFromFileApi';
 
-const SongFileUpload = () => {
+const SongFileUpload = ({...props}) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -25,7 +26,7 @@ const SongFileUpload = () => {
     fileInputRef.current.click();
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (selectedFile) {
       // Check file type by MIME type or file extension
       const allowedFileTypes = ['application/json'];
@@ -39,6 +40,8 @@ const SongFileUpload = () => {
       if (isFileTypeAllowed || isFileExtensionAllowed) {
         // File type is allowed, you can proceed with the upload
         console.log('Uploading file:', selectedFile);
+
+        const uploadResponse = await ImportSongFromFileApi(props.token, props.userId, selectedFile);
   
         // You can also read the file content if needed
         const reader = new FileReader();

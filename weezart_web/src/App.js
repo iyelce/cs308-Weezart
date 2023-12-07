@@ -17,6 +17,7 @@ import FollowingList from './Pages/Profile/FollowingList.jsx';
 import LikedSongsList from './Pages/Lists/LikedSongsList.jsx';
 import LikedArtistsList from './Pages/Lists/LikedArtists.jsx';
 import LikedAlbumsList from './Pages/Lists/LikedAlbumsList.jsx';
+import AddFriend from './Pages/AddFriend/AddFriend.jsx';
 
 
 function App() {
@@ -97,6 +98,8 @@ function App() {
 
               <Route path='home' element={<HomePage />} />
               <Route path='signup' element={<SignUp />} />
+              <Route path='addFriend' element={<AddFriend token={token} userId={userId} username={username}/>} />
+
 
               <Route path='search' element={<Search />} />
 
@@ -113,8 +116,8 @@ function App() {
               <Route path = 'likedSongs' element={<LikedSongsList token={token} userId={userId}/>}/>
               <Route path = 'likedArtists' element={<LikedArtistsList token={token} userId={userId}/>}/>
               <Route path = 'likedAlbums' element={<LikedAlbumsList token={token} userId={userId}/>}/>
-              artistInfo
-              <Route path='analyze' element={<Analyze  token={token} userId={userId}/>} />
+
+              <Route path='analyze' element={<Analyze token={token} userId={userId}/>} />
 
               <Route path='*' element={<Error />} />
             </Route>

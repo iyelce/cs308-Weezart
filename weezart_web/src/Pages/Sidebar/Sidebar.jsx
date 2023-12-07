@@ -11,6 +11,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router-dom";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const LOGO = require('../../weezart-removebg-preview.png');
 
@@ -100,6 +101,19 @@ const SideBar = ({...props}) => {
 
               </MenuItem>
 
+              <MenuItem
+                active={true}
+                style={{
+                  color: colors.grey[100],
+                }}
+                onClick={() => {
+                  navigate("addFriend")
+                }}
+                icon={<PersonAddIcon />}
+              >
+                <Typography>{"Add Friend"}</Typography>
+
+              </MenuItem>
 
               <MenuItem
                 active={true}

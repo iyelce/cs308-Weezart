@@ -195,8 +195,12 @@ public class AddServiceImpl implements AddService {
 	// follow another user by their unique username
 	@Transactional
 	public User followUser(String username, String targetUsername) {
+
 		User currentUser = userRepo.findByUsername(username);
 		User targetUser = userRepo.findByUsername(targetUsername);
+
+		if (username == targetUsername)
+			return currentUser;
 
 		List<String> currentFollowing = currentUser.getFollowing();
 		if (currentFollowing == null)

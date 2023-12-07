@@ -35,29 +35,34 @@ function LikedSongsList({ ...props }) {
     setShowSongPopups(newShowSongPopups);
 
     setSelectedSongIndex(-1);
+    fetchData();
+
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const songList = await AddedSongsApi(props.token, props.userId);
-        setSongs(songList);
 
-        const songResponse = [];
+  const fetchData = async () => {
+    try {
+      const songList = await AddedSongsApi(props.token, props.userId);
+      setSongs(songList);
 
-        for (let i=0; i<songList.length; i++) {
-            songResponse.push(songList[i].song);
-        }
+      const songResponse = [];
 
-        setSongs(songResponse);
-
-        setWholeSongResp(songList);        
-
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
+      for (let i=0; i<songList.length; i++) {
+          songResponse.push(songList[i].song);
       }
-    };
 
+      setSongs(songResponse);
+
+      setWholeSongResp(songList);        
+
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
+
+
+
+  useEffect(() => {
     fetchData();
   }, [props.token, props.userId]);
 
@@ -132,7 +137,6 @@ function LikedSongsList({ ...props }) {
               userId = {props.userId}
             />
       )}
-
     </div>
   );
 }

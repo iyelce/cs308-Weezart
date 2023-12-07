@@ -3,7 +3,8 @@ import Modal from "react-modal";
 import { AiOutlineClose } from "react-icons/ai";
 // import './Popup.css';
 import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckCircle, AiFillCheckCircle, AiFillCrown } from 'react-icons/ai'; 
- 
+import { useEffect } from "react";
+import LikeArtistApi from "../../API/LikeArtistApi";
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
@@ -19,11 +20,11 @@ function imgsrc(val) {
     }
 }
 
-function ArtistInfoPopup(props) {
+function ArtistInfoPopup({...props}) {
 
     const [rating, setRating] = useState(0);
     const stars = [1, 2, 3, 4, 5];
-    const [liked, setLiked] = useState(false);
+    const [liked, setLiked] = useState(props.liked);
     const [added, setAdded] = useState(false);
 
     const handleStarClick = (selectedRating) => {
@@ -42,6 +43,30 @@ function ArtistInfoPopup(props) {
 // id : "3Uqu1mEdkUJxPe7s31n1M9"
 // imageUrl : "https://i.scdn.co/image/ab6761610000e5eb92b2757e7003d4f77e5a5d05"
 // name : "Weyes Blood"
+
+useEffect(() => {
+    setLiked(props.liked);
+  }, [props.liked]);
+
+
+
+  const handleLikeClick = async () => {
+    if (liked) {
+      // Call unlike API if the heart is already filled
+      alert("unlike api");
+  
+      setLiked(false);
+    } else {
+
+        console.log("qqqq->  ", props.artistInfo)
+      
+      const likeResp = await LikeArtistApi(props.token, props.userId, props.artistInfo);
+  
+      console.log("page içinde like: ", likeResp);
+  
+      setLiked(true);
+    }    
+  };
 
 
   return (
@@ -102,9 +127,9 @@ function ArtistInfoPopup(props) {
             <form className="rating-artist">
                     <div className="like-add">
                             <div className="half-width">
-                                <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={() => { setLiked(!liked); setAdded(true);}}>
-                                    {liked ? <AiFillHeart /> : <AiOutlineHeart />}
-                                </div>
+                            <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={handleLikeClick}>
+                                {liked ? <AiFillHeart /> : <AiOutlineHeart />}
+                            </div>
                                 <p>{liked ? 'Liked' : 'Like'}</p>
                             </div>
                            

@@ -31,13 +31,7 @@ async function AddedArtistsApi (token, userId ) {
 
         const newResp = JSON.parse(data); 
 
-        const artistResponse = [];
-
-        for (let i=0; i<newResp.length; i++) {
-            artistResponse.push(newResp[i].artist);
-        }
-
-        return artistResponse;
+        return newResp;
     }
     catch (error) {
         console.error('error in fetching data:', error);

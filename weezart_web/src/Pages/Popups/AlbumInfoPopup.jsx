@@ -4,7 +4,8 @@ import ReactModal from 'react-modal';
 import { AiOutlineClose } from "react-icons/ai";
 // import './Popup.css';
 import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckCircle, AiFillCheckCircle, AiFillCrown } from 'react-icons/ai'; 
- 
+import { useEffect } from "react";
+import LikeAlbumApi from "../../API/LikeAlbumApi";
 
 // Make sure to set appElement to avoid a11y violations
 ReactModal.setAppElement('#root'); // Replace '#root' with the ID of your app root element
@@ -20,11 +21,12 @@ function imgsrc(val) {
     }
 }
 
-function AlbumInfoPopup(props) {
+function AlbumInfoPopup({...props}) {
+    
 
     const [rating, setRating] = useState(0);
     const stars = [1, 2, 3, 4, 5];
-    const [liked, setLiked] = useState(false);
+    const [liked, setLiked] = useState(props.liked);
     const [added, setAdded] = useState(false);
 
     const handleStarClick = (selectedRating) => {
@@ -51,6 +53,30 @@ function AlbumInfoPopup(props) {
 // releaseDate:"2019-04-05"
 // numberOfTracks:10
 
+useEffect(() => {
+    setLiked(props.liked);
+  }, [props.liked]);
+
+
+
+  const handleLikeClick = async () => {
+    if (liked) {
+      // Call unlike API if the heart is already filled
+      alert("unlike api");
+  
+      setLiked(false);
+    } else {
+
+        console.log("qqqq->  ", props.albumInfo)
+      
+      const likeResp = await LikeAlbumApi(props.token, props.userId, props.albumInfo);
+  
+      console.log("page içinde like: ", likeResp);
+  
+      setLiked(true);
+  
+    }    
+  };
 
   return (
     <Modal
@@ -127,9 +153,9 @@ function AlbumInfoPopup(props) {
 
                     <div className="like-add">
                             <div className="half-width">
-                                <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={() => { setLiked(!liked); setAdded(true);}}>
-                                    {liked ? <AiFillHeart /> : <AiOutlineHeart />}
-                                </div>
+                            <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={handleLikeClick}>
+                                {liked ? <AiFillHeart /> : <AiOutlineHeart />}
+                            </div>
                                 <p>{liked ? 'Liked' : 'Like'}</p>
                             </div>
                             <div className="half-width">

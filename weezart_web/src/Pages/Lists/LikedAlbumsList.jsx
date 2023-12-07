@@ -33,23 +33,34 @@ const handleAlbumClosePopup = (index) => {
   setShowAlbumPopups(newShowAlbumPopups);
 
   setSelectedAlbumIndex(-1);
+  fetchData();
 };
 
 
   const[albumList, setAlbumList] = useState([]);
+  const [wholeAlbumList, setWholeAlbumList] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const albums = await AddedAlbumsApi(props.token, props.userId);
+      setWholeAlbumList(albums);
+      console.log("first -->  " , wholeAlbumList);
+
+      const albumResponse = [];
+
+      for (let i=0; i<albums.length; i++) {
+          albumResponse.push(albums[i].album);
+      }
+
+      setAlbumList(albumResponse);        
+      
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
+
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const albums = await AddedAlbumsApi(props.token, props.userId);
-        setAlbumList(albums);
-
-        //console.log("gelen album: ", albums)
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
-      }
-    };
-
     fetchData();
   }, [props.token, props.userId]);
 
@@ -90,7 +101,7 @@ function imgsrc(val) {
                   <td>{val.name}</td>
                   <td>{val.artistsName}</td>
                   <td>{val.numberOfTracks}</td>
-                  <td>{val.releaseDate === null ? "Unknown" : val.releaseDate.substring(0, 4)}</td>
+                  <td>{val.releaseDate === undefined ? "Unknown" : val.releaseDate.substring(0, 4)}</td>
                   
                 </tr>
               ))}
@@ -102,6 +113,10 @@ function imgsrc(val) {
               isOpen={true}
               onRequestClose={handleAlbumClosePopup}
               albumInfo={albumList[selectedAlbumIndex]}
+              liked = {wholeAlbumList[selectedAlbumIndex].liked}
+              rating = {wholeAlbumList[selectedAlbumIndex].rating}
+              token = {props.token}
+              userId = {props.userId}
             />
           )}
         </div>

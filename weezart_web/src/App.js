@@ -113,8 +113,8 @@ function App() {
               <Route path = 'likedSongs' element={<LikedSongsList token={token} userId={userId}/>}/>
               <Route path = 'likedArtists' element={<LikedArtistsList token={token} userId={userId}/>}/>
               <Route path = 'likedAlbums' element={<LikedAlbumsList token={token} userId={userId}/>}/>
-
-              <Route path='analyze' element={<Analyze/>} />
+              artistInfo
+              <Route path='analyze' element={<Analyze  token={token} userId={userId}/>} />
 
               <Route path='*' element={<Error />} />
             </Route>

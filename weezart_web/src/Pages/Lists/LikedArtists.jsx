@@ -33,28 +33,41 @@ function LikedArtistsList({...props}) {
     setShowArtistPopups(newShowArtistPopups);
 
     setSelectedArtistIndex(-1);
+    fetchData();
   };
 
 
-  
+
   const[artistList, setArtistList] = useState([]);
+  const [wholeArtistList, setWholeArtistList] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const artists = await AddedArtistsApi(props.token, props.userId);
+
+      console.log("gelen artists page içinde :  ", artists)
+      
+      setWholeArtistList(artists);
+
+      console.log("8888888888888   ", wholeArtistList)
+      
+
+      const artistResponse = [];
+
+      for (let i=0; i<artists.length; i++) {
+          artistResponse.push(artists[i].artist);
+      }
+
+      setArtistList(artistResponse);
+
+      console.log("artist list page : ", artistList);
+
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const artists = await AddedArtistsApi(props.token, props.userId);
-
-        console.log("gelen artists page içinde :  ", artists)
-        //setArtistList(artists);
-        setArtistList(artists);
-
-        console.log("artist list page : ", artistList);
-
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
-      }
-    };
-
     fetchData();
   }, [props.token, props.userId]);
 
@@ -111,6 +124,10 @@ function imgsrc(val) {
             isOpen={true}
             onRequestClose={handleArtistClosePopup}
             artistInfo={artistList[selectedArtistIndex]}
+            liked = {wholeArtistList[selectedArtistIndex].liked}
+            rating = {wholeArtistList[selectedArtistIndex].rating}
+            token = {props.token}
+            userId = {props.userId}
           />
         )}
       </div>

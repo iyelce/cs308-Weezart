@@ -31,15 +31,7 @@ async function AddedAlbumsApi (token, userId ) {
 
         const newResp = JSON.parse(data); 
 
-        const albumResponse = [];
-
-        for (let i=0; i<newResp.length; i++) {
-            albumResponse.push(newResp[i].album);
-        }
-
-        console.log("returned alnum api: " , albumResponse)
-
-        return albumResponse;
+        return newResp;
     }
     catch (error) {
         console.error('error in fetching data:', error);

@@ -1,11 +1,77 @@
-.container {
-    display: "flex";
-    justify-content: "center";
-    align-items: "center";
-    height: "100%";
-  }
+.container-add{
+    height: 100%;
+    width:100%;
+    background-image: url(../../WhatsApp\ Image\ 2023-12-06\ at\ 03.31.16.jpeg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+}
+
+
   form {
-    border: "1px solid #ddd";
-    padding: "20px";
-    border-radius: "4px";
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 40%;
+    margin: auto;
+    padding: 20px;
+    background-color: rgba(7, 0, 8, 0.6);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
+  /* Div that contains input boxes of username email password and repeat password*/
+form>.field{
+    height: 50px;
+    width: 40%;
+    margin-top: 20px;
+    position: relative;
+    display: flex;
+    border: 1px solid lightgrey;
+    border-radius: 25px;
+    background:white;
+}
+form>label{
+    color:white;
+}
+/*Input Boxes */
+form> .field > input.register-input-box{
+    width: 40%;
+    outline:none;
+    font-size: 17px;
+    border-color: transparent;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    position:relative;
+    padding-left: 1.5rem;
+}
+
+/*Texts inside of the input boxes */
+form> .field >label{
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    color: red;
+    background:transparent;
+    font-weight: 400;
+    font-size: 17px;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+}
+ form> .field input.register-input-box ~ label.moved-upside,
+form >.field input ~ label.moved-upside{
+  top: 0%;
+  padding-bottom:3px;
+  color: white;
+  background: transparent;
+  transform: translateY(-100%);
+}
+  

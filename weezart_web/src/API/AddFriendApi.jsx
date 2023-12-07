@@ -11,15 +11,14 @@ async function AddFriendApi (token, username, addingUsername ) {
     const auth = "Bearer " + token;
 
     try{        
-        console.log("url", url);
-        console.log("auth", auth);
+    
         const response = await fetch(url, {
             headers: {
                 accept: 'application/json',
                 'Authorization': auth,
                 'Content-Type': 'application/json'
             },
-            method: 'GET',
+            method: 'POST',
             mode: 'cors',
             credentials: 'include', 
         });
@@ -27,6 +26,11 @@ async function AddFriendApi (token, username, addingUsername ) {
         const data = await response.text();
     
         if(!response.ok) {
+            if(response.status===403){
+                return "USER_ALREADY_FRIEND";
+            }
+
+
             throw new Error('Network response is not ok');
         }
 

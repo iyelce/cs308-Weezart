@@ -9,7 +9,7 @@
 }
 
 
-  form {
+  /*form.add-form {
     position: relative;
     display: flex;
     justify-content: center;
@@ -28,7 +28,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   /* Div that contains input boxes of username email password and repeat password*/
-form>.field{
+  /*
+ form.add-form>.field{
     height: 50px;
     width: 40%;
     margin-top: 20px;
@@ -38,11 +39,11 @@ form>.field{
     border-radius: 25px;
     background:white;
 }
-form>label{
+form.add-form>label{
     color:white;
 }
-/*Input Boxes */
-form> .field > input.register-input-box{
+/*Input Boxes 
+form.add-form> .field > input.register-input-box{
     width: 40%;
     outline:none;
     font-size: 17px;
@@ -51,27 +52,28 @@ form> .field > input.register-input-box{
     transition: all 0.3s ease;
     position:relative;
     padding-left: 1.5rem;
-}
+}*/
 
-/*Texts inside of the input boxes */
-form> .field >label{
+/*Texts inside of the input boxes 
+form.add-form> .field >label{
     position: absolute;
     top: 50%;
     left: 20px;
-    color: red;
+    color: purple;
     background:transparent;
     font-weight: 400;
     font-size: 17px;
     pointer-events: none;
     transform: translateY(-50%);
     transition: all 0.3s ease;
-}
- form> .field input.register-input-box ~ label.moved-upside,
-form >.field input ~ label.moved-upside{
+}*/
+/*
+ form.add-form> .field input.register-input-box ~ label.moved-upside,
+form.add-form >.field input ~ label.moved-upside{
   top: 0%;
   padding-bottom:3px;
   color: white;
   background: transparent;
   transform: translateY(-100%);
 }
-  
+*/

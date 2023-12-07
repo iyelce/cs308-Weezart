@@ -27,58 +27,58 @@ import com.app.services.AnalysisService;
 public class AnalysisController {
 	@Autowired 
 	private AnalysisService analysisService;
-	@Autowired
-	private UserSongRepository userSongRepo;
-	
-	
-	@GetMapping("/song/releaseDate/{userId}")
-	public ResponseEntity<List<Song>> releaseDateAnalysisController(@RequestBody DateRange dateRange, @PathVariable String userId){
-		return ResponseEntity.ok(analysisService.analysisReleaseDateManual(userId, dateRange.getStartDate(), dateRange.getEndDate()));
+
+	// these are the table analysis for songs
+	@GetMapping("/song/last-5/{userId}")
+	public ResponseEntity<List<Song>> latest5AnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisLatest5Manual(userId));
 	}
 	
+	@GetMapping("/song/top-5/{userId}")
+	public ResponseEntity<List<Song>> top5AnalysisController(@PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisTop5Manual(userId));
+	}	
+
 	@GetMapping("/song/genre/{genre}/{userId}")
 	public ResponseEntity<List<Song>> genreAnalysisController(@PathVariable String genre, @PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisGenreManual(userId, genre));
 	}
 	
-	@GetMapping("/song/last5Liked/{userId}")
-	public ResponseEntity<List<Song>> latest5AnalysisController(@PathVariable String userId){
-		return ResponseEntity.ok(analysisService.analysisLatest5Manual(userId));
+	@GetMapping("/song/release-date/{userId}")
+	public ResponseEntity<List<Song>> releaseDateAnalysisController(@RequestBody DateRange dateRange, @PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisReleaseDateManual(userId, dateRange.getStartDate(), dateRange.getEndDate()));
 	}
 	
-	@GetMapping("/song/top5Liked/{userId}")
-	public ResponseEntity<List<Song>> top5AnalysisController(@PathVariable String userId){
-		return ResponseEntity.ok(analysisService.analysisTop5Manual(userId));
-	}	
-	
-	@GetMapping("/song/dailySongs/{userId}")
+	// these are the chart analysis for songs
+	@GetMapping("/song/daily-added/{userId}")
 	public ResponseEntity<Map<String, Long>> dailySongsAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisDailyAddedSongs(userId));
 	}
 	
-	@GetMapping("/song/dailyLikedSongs/{userId}")
+	@GetMapping("/song/daily-liked/{userId}")
 	public ResponseEntity<Map<String, Long>> dailyLikedSongsAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisDailyLikedSongs(userId));
 	}
 	
-	@GetMapping("/song/dailyAverageRating/{userId}")
+	@GetMapping("/song/daily-rating/{userId}")
 	public ResponseEntity<Map<String, Double>> dailyAverageRatingAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisDailyAverageRating(userId));
 	}
 	
-	@GetMapping("/song/songCounts/{userId}")
+	// these are the numerical analysis for songs, one for total one for date constrained
+	@GetMapping("/song/counts/{userId}")
 	public ResponseEntity<List<Integer>> songCountsAnalysisController(@PathVariable String userId){
 		return ResponseEntity.ok(analysisService.analysisSongCounts(userId));
 	}
 	
-	@GetMapping("/song/songConstrainedCounts/{userId}/{dateConstraint}")
+	@GetMapping("/song/constrained-counts/{userId}/{dateConstraint}")
 	public ResponseEntity<List<Integer>> songConstainedCountsAnalysisController(@PathVariable String userId, @PathVariable String dateConstraint){
 		return ResponseEntity.ok(analysisService.analysisConstrainedSongCounts(userId, dateConstraint));
 	}
 	
 	
 	
-	
+	//------------------------- ALBUM ANALYSIS -----------------------------------
 	
 	
 	
@@ -129,7 +129,7 @@ public class AnalysisController {
 	
 	
 	
-	
+	//------------------------- ARTIST ANALYSIS -----------------------------------
 	
 	
 	@GetMapping("/artist/last5Liked/{userId}")

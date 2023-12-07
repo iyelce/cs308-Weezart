@@ -3,7 +3,7 @@ import { getToken } from "../helpers/Utils";
 import { authUtils } from "../";
 // import { toast } from 'react-toastify';
 
-export const baseURL = "http://10.51.7.166:8080";
+export const baseURL = "http://localhost:8080";
 
 const instance = axios.create({
   baseURL: baseURL,

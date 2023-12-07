@@ -131,17 +131,35 @@ const ProfileScreen = ({ navigation }) => {
   const onRatingChange = (track, rating, i) => {
     const updatedAddedSongs = [...addedSongs];
     const indexOfItemToUpdate = i;
+    console.log("aayo?", track);
     updatedAddedSongs[indexOfItemToUpdate] = {
       song: track.song,
       userState: {
         ...track.userState,
         rating: [...track.userState.rating, rating],
-        ratingTime: [...track.userState.ratingTime, Date.now()],
+        ratingTime: track.userState.ratingTime
+          ? [...track.userState.ratingTime, Date.now()]
+          : [Date.now()],
       },
     };
     setAddedSongs(updatedAddedSongs);
 
     debouncedRatingChange(track, rating, i);
+  };
+
+  const onLikedChanged = (track, liked, i) => {
+    const updatedAddedSongs = [...addedSongs];
+    const indexOfItemToUpdate = i;
+    updatedAddedSongs[indexOfItemToUpdate] = {
+      song: track.song,
+      userState: {
+        ...track.userState,
+        liked: liked,
+      },
+    };
+    setAddedSongs(updatedAddedSongs);
+
+    debouncedLikedChanged(track, liked, i);
   };
 
   const debouncedRatingChange = _.debounce((track, rating, i) => {
@@ -169,6 +187,29 @@ const ProfileScreen = ({ navigation }) => {
     });
   }, 1000);
 
+  const debouncedLikedChanged = _.debounce((track, i) => {
+    getUserId().then((userId) => {
+      // const indexOfItemToUpdate = updatedAddedSongs.findIndex(
+      //   (item) => item.song.id === res.song.id
+      // );
+      axios.post("/like/song/" + userId, track.song).then((res) => {
+        const updatedAddedSongs = [...addedSongs];
+        const indexOfItemToUpdate = i;
+        updatedAddedSongs[indexOfItemToUpdate] = {
+          song: res.song,
+          userState: {
+            addTime: res.addTime,
+            liked: res.liked,
+            likeTime: res.likeTime,
+            rating: res.rating,
+            ratingTime: res.ratingTime,
+          },
+        };
+        setAddedSongs(updatedAddedSongs);
+      });
+    });
+  }, 1000);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView
@@ -177,7 +218,7 @@ const ProfileScreen = ({ navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {addedSongs && addedAlbums && addedArtists && userInfo && (
+        {userInfo && (
           <View style={{ flex: 1 }}>
             <View
               style={{
@@ -350,43 +391,48 @@ const ProfileScreen = ({ navigation }) => {
                 ]}
                 // onChange={(index: number) => console.log("Index: ", index)}
               />
-              <View style={{ marginTop: 20 }}>
-                {currentSegment == 0
-                  ? addedSongs.map((track, i) => {
-                      return (
-                        <TouchableOpacity
-                          style={{
-                            //   backgroundColor: "#f3f3f3",
-                            padding: 20,
-                            paddingBottom: 15,
-                            paddingTop: 15,
-                            borderRadius: 10,
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            // backgroundColor: "#f9f9f9",
-                          }}
-                          key={i}
-                          onPress={() =>
-                            navigation.navigate("Details", {
-                              data: track.song,
-                              source: "profile",
-                            })
-                          }
-                        >
-                          <Rating
-                            size={15}
-                            rating={track.userState.liked}
-                            maxRating={1}
-                            variant="hearts-outline"
-                            // fillColor="#fff"
-                            baseColor="#48484A"
-                            // onChange={handleLikedChange}
-                          />
-                          <View style={{ marginLeft: 20 }}>
-                            <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                              {track.song.name}
-                              {/* <Text
+              {addedSongs && addedAlbums && addedArtists && (
+                <View style={{ marginTop: 20 }}>
+                  {currentSegment == 0
+                    ? addedSongs.map((track, i) => {
+                        return (
+                          <TouchableOpacity
+                            style={{
+                              //   backgroundColor: "#f3f3f3",
+                              padding: 20,
+                              paddingBottom: 15,
+                              paddingTop: 15,
+                              borderRadius: 10,
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              // backgroundColor: "#f9f9f9",
+                            }}
+                            key={i}
+                            onPress={() =>
+                              navigation.navigate("Details", {
+                                data: track.song,
+                                source: "profile",
+                              })
+                            }
+                          >
+                            <Rating
+                              size={15}
+                              rating={track.userState.liked}
+                              maxRating={1}
+                              variant="hearts-outline"
+                              // fillColor="#fff"
+                              baseColor="#48484A"
+                              onChange={() =>
+                                onLikedChanged(track, !track.userState.liked, i)
+                              }
+                            />
+                            <View style={{ marginLeft: 20 }}>
+                              <Text
+                                style={{ fontWeight: "bold", fontSize: 15 }}
+                              >
+                                {track.song.name}
+                                {/* <Text
                                 style={{
                                   color: "#48484A",
                                   fontSize: 12,
@@ -395,160 +441,167 @@ const ProfileScreen = ({ navigation }) => {
                               >
                                 {track.song.artistsName[0]}
                               </Text> */}
-                            </Text>
+                              </Text>
 
-                            <Text
+                              <Text
+                                style={{
+                                  color: "#48484A",
+                                  fontSize: 12,
+                                  fontWeight: "normal",
+                                  marginTop: 5,
+                                }}
+                              >
+                                {track.song.artistsName[0]}
+                              </Text>
+                              <Rating
+                                size={15}
+                                rating={
+                                  track.userState.rating[
+                                    track.userState.rating.length - 1
+                                  ]
+                                }
+                                variant="stars-outline"
+                                fillColor="#c2a30a"
+                                baseColor="#48484A"
+                                touchColor="#c2a30a"
+                                style={{ marginTop: 5 }}
+                                onChange={(rating) =>
+                                  onRatingChange(track, rating, i)
+                                }
+                              />
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      })
+                    : currentSegment == 1
+                    ? addedAlbums.map((record, i) => {
+                        return (
+                          <TouchableOpacity
+                            key={record.album.name}
+                            style={{
+                              width: "100%",
+                              //   padding: 5,
+                              borderRadius: 5,
+                              overflow: "hidden",
+                              marginTop: 10,
+                            }}
+                            onPress={() =>
+                              navigation.navigate("Album", { data: record })
+                            }
+                          >
+                            <ImageBackground
+                              source={{ uri: record.album.imageUrl }}
+                              resizeMode="cover"
                               style={{
-                                color: "#48484A",
-                                fontSize: 12,
-                                fontWeight: "normal",
-                                marginTop: 5,
+                                height: "100%",
+                                width: "100%",
+                                position: "absolute",
+                              }}
+                            ></ImageBackground>
+                            <BlurView
+                              style={{
+                                height: "100%",
+                                width: "100%",
+                                position: "absolute",
+                              }}
+                              blurType="light"
+                              blurAmount={100}
+                              // reducedTransparencyFallbackColor="white"
+                              // overlayColor="rgba(255, 255, 255)"
+                            />
+                            <View
+                              style={{
+                                padding: 5,
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
                               }}
                             >
-                              {track.song.artistsName[0]}
-                            </Text>
-                            <Rating
-                              size={15}
-                              rating={
-                                track.userState.rating[
-                                  track.userState.rating.length - 1
-                                ]
-                              }
-                              variant="stars-outline"
-                              fillColor="#c2a30a"
-                              baseColor="#48484A"
-                              touchColor="#c2a30a"
-                              style={{ marginTop: 5 }}
-                              onChange={(rating) =>
-                                onRatingChange(track, rating, i)
-                              }
-                            />
-                          </View>
-                        </TouchableOpacity>
-                      );
-                    })
-                  : currentSegment == 1
-                  ? addedAlbums.map((record, i) => {
-                      return (
-                        <TouchableOpacity
-                          key={record.album.name}
-                          style={{
-                            width: "100%",
-                            //   padding: 5,
-                            borderRadius: 5,
-                            overflow: "hidden",
-                            marginTop: 10,
-                          }}
-                          onPress={() =>
-                            navigation.navigate("Album", { data: record })
-                          }
-                        >
-                          <ImageBackground
-                            source={{ uri: record.album.imageUrl }}
-                            resizeMode="cover"
-                            style={{
-                              height: "100%",
-                              width: "100%",
-                              position: "absolute",
-                            }}
-                          ></ImageBackground>
-                          <BlurView
-                            style={{
-                              height: "100%",
-                              width: "100%",
-                              position: "absolute",
-                            }}
-                            blurType="light"
-                            blurAmount={100}
-                            // reducedTransparencyFallbackColor="white"
-                            // overlayColor="rgba(255, 255, 255)"
-                          />
-                          <View
-                            style={{
-                              padding: 5,
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center",
-                            }}
-                          >
-                            <Image
-                              source={{ uri: record.album.imageUrl }}
-                              style={{ width: 80, height: 80, borderRadius: 5 }}
-                            />
-                            <View style={{ marginLeft: 15, gap: 5 }}>
-                              <Text
-                                style={{ fontWeight: "bold", fontSize: 15 }}
-                              >
-                                {record.album.name}
-                              </Text>
-                              <Text style={{ color: "#0007", fontWeight: 500 }}>
-                                {record.album.artistsName[0] + " • "}
-                                <Text style={{ fontWeight: "normal" }}>
-                                  {record.album.releaseDate}
+                              <Image
+                                source={{ uri: record.album.imageUrl }}
+                                style={{
+                                  width: 80,
+                                  height: 80,
+                                  borderRadius: 5,
+                                }}
+                              />
+                              <View style={{ marginLeft: 15, gap: 5 }}>
+                                <Text
+                                  style={{ fontWeight: "bold", fontSize: 15 }}
+                                >
+                                  {record.album.name}
                                 </Text>
-                              </Text>
-                            </View>
-                          </View>
-                        </TouchableOpacity>
-                      );
-                    })
-                  : currentSegment == 2 &&
-                    addedArtists.map((item, i) => {
-                      return (
-                        <TouchableOpacity
-                          key={item.artist.name}
-                          style={{
-                            width: "100%",
-                            //   padding: 5,
-                            borderRadius: 5,
-                            overflow: "hidden",
-                            marginTop: 10,
-                          }}
-                          onPress={() =>
-                            navigation.navigate("Artist", { data: item })
-                          }
-                        >
-                          <View
-                            style={{
-                              padding: 5,
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center",
-                            }}
-                          >
-                            <Image
-                              source={{ uri: item.artist.imageUrl }}
-                              style={{
-                                width: 80,
-                                height: 80,
-                                borderRadius: 40,
-                              }}
-                            />
-                            <View style={{ marginLeft: 15, gap: 5 }}>
-                              <Text
-                                style={{ fontWeight: "bold", fontSize: 15 }}
-                              >
-                                {item.artist.name}
-                              </Text>
-                              <Text style={{ color: "#0007" }}>
-                                <Text style={{ fontWeight: 500 }}>
-                                  {"artist"}
+                                <Text
+                                  style={{ color: "#0007", fontWeight: 500 }}
+                                >
+                                  {record.album.artistsName[0] + " • "}
+                                  <Text style={{ fontWeight: "normal" }}>
+                                    {record.album.releaseDate}
+                                  </Text>
                                 </Text>
-                              </Text>
+                              </View>
                             </View>
-                            <Image
+                          </TouchableOpacity>
+                        );
+                      })
+                    : currentSegment == 2 &&
+                      addedArtists.map((item, i) => {
+                        return (
+                          <TouchableOpacity
+                            key={item.artist.name}
+                            style={{
+                              width: "100%",
+                              //   padding: 5,
+                              borderRadius: 5,
+                              overflow: "hidden",
+                              marginTop: 10,
+                            }}
+                            onPress={() =>
+                              navigation.navigate("Artist", { data: item })
+                            }
+                          >
+                            <View
                               style={{
-                                width: 24,
-                                height: 24,
-                                marginLeft: "auto",
+                                padding: 5,
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
                               }}
-                              source={require("./../../../assets/icons/arrow.png")}
-                            />
-                          </View>
-                        </TouchableOpacity>
-                      );
-                    })}
-              </View>
+                            >
+                              <Image
+                                source={{ uri: item.artist.imageUrl }}
+                                style={{
+                                  width: 80,
+                                  height: 80,
+                                  borderRadius: 40,
+                                }}
+                              />
+                              <View style={{ marginLeft: 15, gap: 5 }}>
+                                <Text
+                                  style={{ fontWeight: "bold", fontSize: 15 }}
+                                >
+                                  {item.artist.name}
+                                </Text>
+                                <Text style={{ color: "#0007" }}>
+                                  <Text style={{ fontWeight: 500 }}>
+                                    {"artist"}
+                                  </Text>
+                                </Text>
+                              </View>
+                              <Image
+                                style={{
+                                  width: 24,
+                                  height: 24,
+                                  marginLeft: "auto",
+                                }}
+                                source={require("./../../../assets/icons/arrow.png")}
+                              />
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      })}
+                </View>
+              )}
             </View>
           </View>
         )}

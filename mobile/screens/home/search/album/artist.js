@@ -9,6 +9,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { getUserId } from "../../../../helpers/Utils";
+import axios from "./../../../../config/axios";
+import _ from "lodash";
 
 export default Artist = ({ route, navigation }) => {
   const { data } = route.params;
@@ -19,7 +22,80 @@ export default Artist = ({ route, navigation }) => {
     });
   }, [navigation]);
 
-  const [rating, setRating] = useState(0);
+  const [singer, setSinger] = useState(data);
+
+  const onRatingChange = (singer, rating) => {
+    let updatedSinger = singer;
+    updatedSinger = {
+      artist: singer.artist,
+      userState: {
+        ...singer.userState,
+        rating: singer.userState.rating
+          ? [...singer.userState.rating, rating]
+          : [rating],
+        ratingTime: singer.userState.ratingTime
+          ? [...singer.userState.ratingTime, Date.now()]
+          : [Date.now()],
+      },
+    };
+    setSinger(updatedSinger);
+
+    debouncedRatingChange(singer, rating);
+  };
+
+  const onLikedChanged = (singer, liked) => {
+    let updatedSinger = singer;
+    updatedSinger = {
+      artist: singer.artist,
+      userState: {
+        ...singer.userState,
+        liked: liked,
+      },
+    };
+    setSinger(updatedSinger);
+
+    debouncedLikedChanged(singer, liked);
+  };
+
+  const debouncedRatingChange = _.debounce((singer, rating) => {
+    getUserId().then((userId) => {
+      axios
+        .post("/rate/artist/" + userId + "/" + rating, singer.artist)
+        .then((res) => {
+          let updatedSinger = singer;
+          updatedSinger = {
+            artist: res.artist,
+            userState: {
+              addTime: res.addTime,
+              liked: res.liked,
+              likeTime: res.likeTime,
+              rating: res.rating,
+              ratingTime: res.ratingTime,
+            },
+          };
+          setSinger(updatedSinger);
+        });
+    });
+  }, 1000);
+
+  const debouncedLikedChanged = _.debounce((singer, i) => {
+    getUserId().then((userId) => {
+      axios.post("/like/artist/" + userId, singer.artist).then((res) => {
+        let updatedSinger = singer;
+        updatedSinger = {
+          artist: res.artist,
+          userState: {
+            addTime: res.addTime,
+            liked: res.liked,
+            likeTime: res.likeTime,
+            rating: res.rating,
+            ratingTime: res.ratingTime,
+          },
+        };
+        setSinger(updatedSinger);
+      });
+    });
+  }, 1000);
 
   return (
     <View>
@@ -37,7 +113,8 @@ export default Artist = ({ route, navigation }) => {
       >
         <TouchableOpacity>
           <BlurView
-            blurType="dark"
+            blurType="light"
+            blurAmount={100}
             style={{
               height: 35,
               width: 35,
@@ -46,24 +123,14 @@ export default Artist = ({ route, navigation }) => {
               alignItems: "center",
             }}
           >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "white" }}
-              source={require("./../../../../assets/icons/love.png")}
+            <Rating
+              size={15}
+              rating={singer.userState.liked}
+              maxRating={1}
+              variant="hearts-outline"
+              baseColor="#48484A"
+              onChange={() => onLikedChanged(singer, !singer.userState.liked)}
             />
-          </BlurView>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <BlurView
-            blurType="dark"
-            style={{
-              height: 35,
-              width: 35,
-              borderRadius: 18,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "white", fontWeight: "bold" }}>{"+"}</Text>
           </BlurView>
         </TouchableOpacity>
       </View>
@@ -109,10 +176,16 @@ export default Artist = ({ route, navigation }) => {
           >
             <Rating
               size={16}
-              rating={rating}
-              fillColor="#fff"
-              baseColor="#fff"
-              //  onChange={handleChange}
+              rating={
+                singer.userState.rating
+                  ? singer.userState.rating[singer.userState.rating.length - 1]
+                  : 0
+              }
+              variant="stars-outline"
+              fillColor="#c2a30a"
+              baseColor="#48484A"
+              touchColor="#c2a30a"
+              onChange={(rating) => onRatingChange(singer, rating)}
             />
           </BlurView>
         </View>

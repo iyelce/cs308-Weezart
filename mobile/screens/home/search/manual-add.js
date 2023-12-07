@@ -7,7 +7,9 @@ import {
   View,
   SafeAreaView,
   TextInput,
+  Switch,
 } from "react-native";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BlurView } from "@react-native-community/blur";
 // import { Rating } from "react-native-ratings";
@@ -34,6 +36,9 @@ export default ManualAdd = ({ route, navigation }) => {
   const [explicit, setExplicit] = useState(false);
   const [albumRelease, setAlbumRelease] = useState("");
 
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
       <View
@@ -46,9 +51,10 @@ export default ManualAdd = ({ route, navigation }) => {
         <View
           style={{
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             gap: 7,
             paddingBottom: 20,
+            flex: 1,
           }}
         >
           <View
@@ -62,41 +68,8 @@ export default ManualAdd = ({ route, navigation }) => {
               marginTop: 10,
               flexDirection: "row",
               alignItems: "center",
+              display: "flex",
               gap: 6,
-              flex: 1,
-            }}
-          >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
-            <TextInput
-              required
-              placeholder="Song ID"
-              placeholderTextColor={"#9ba3af"}
-              value={songId}
-              onChangeText={(text) => {
-                setSongId(text);
-              }}
-              style={{
-                width: "100%",
-                fontSize: 17,
-                fontWeight: "bold",
-              }}
-              returnKeyType="search"
-            />
-          </View>
-          <View
-            style={{
-              backgroundColor: "#f3f3f3",
-              borderRadius: 16,
-              padding: 16,
-              // width: "100%",
-              marginTop: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 6,
-              flex: 1,
             }}
           >
             <Image
@@ -108,281 +81,6 @@ export default ManualAdd = ({ route, navigation }) => {
               placeholder="Song Name"
               placeholderTextColor={"#9ba3af"}
               value={songName}
-              onChangeText={(text) => {
-                setSongName(text);
-              }}
-              style={{
-                width: "100%",
-                fontSize: 17,
-                fontWeight: "bold",
-              }}
-              returnKeyType="search"
-            />
-          </View>
-        </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 7,
-            paddingBottom: 20,
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "#f3f3f3",
-              borderRadius: 16,
-              padding: 16,
-              paddingLeft: 20,
-              paddingRight: 20,
-              // width: "100%",
-              marginTop: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 6,
-              flex: 1,
-            }}
-          >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
-            <TextInput
-              required
-              placeholder="Album Name"
-              placeholderTextColor={"#9ba3af"}
-              value={albumName}
-              onChangeText={(text) => {
-                setAlbumName(text);
-              }}
-              style={{
-                width: "100%",
-                fontSize: 17,
-                fontWeight: "bold",
-              }}
-              returnKeyType="search"
-            />
-          </View>
-          <View
-            style={{
-              backgroundColor: "#f3f3f3",
-              borderRadius: 16,
-              padding: 16,
-              // width: "100%",
-              marginTop: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 6,
-              flex: 1,
-            }}
-          >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
-            <TextInput
-              required
-              placeholder="Album ID"
-              placeholderTextColor={"#9ba3af"}
-              value={albumId}
-              onChangeText={(text) => {
-                setAlbumId(text);
-              }}
-              style={{
-                width: "100%",
-                fontSize: 17,
-                fontWeight: "bold",
-              }}
-              returnKeyType="search"
-            />
-          </View>
-        </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 7,
-            paddingBottom: 20,
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "#f3f3f3",
-              borderRadius: 16,
-              padding: 16,
-              paddingLeft: 20,
-              paddingRight: 20,
-              // width: "100%",
-              marginTop: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 6,
-              flex: 1,
-            }}
-          >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
-            <TextInput
-              required
-              placeholder="Artists Name"
-              placeholderTextColor={"#9ba3af"}
-              value={artistsName}
-              onChangeText={(text) => {
-                setArtistsName(text);
-              }}
-              style={{
-                width: "100%",
-                fontSize: 17,
-                fontWeight: "bold",
-              }}
-              returnKeyType="search"
-            />
-          </View>
-          <View
-            style={{
-              backgroundColor: "#f3f3f3",
-              borderRadius: 16,
-              padding: 16,
-              // width: "100%",
-              marginTop: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 6,
-              flex: 1,
-            }}
-          >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
-            <TextInput
-              required
-              placeholder="Artists ID"
-              placeholderTextColor={"#9ba3af"}
-              value={artistsId}
-              onChangeText={(text) => {
-                setArtistsId(text);
-              }}
-              style={{
-                width: "100%",
-                fontSize: 17,
-                fontWeight: "bold",
-              }}
-              returnKeyType="search"
-            />
-          </View>
-        </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 7,
-            paddingBottom: 20,
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "#f3f3f3",
-              borderRadius: 16,
-              padding: 16,
-              paddingLeft: 20,
-              paddingRight: 20,
-              // width: "100%",
-              marginTop: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 6,
-              flex: 1,
-            }}
-          >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
-            <TextInput
-              required
-              placeholder="Popularity"
-              placeholderTextColor={"#9ba3af"}
-              value={popularity}
-              onChangeText={(text) => {
-                setPopularity(text);
-              }}
-              style={{
-                width: "100%",
-                fontSize: 17,
-                fontWeight: "bold",
-              }}
-              returnKeyType="search"
-            />
-          </View>
-          <View
-            style={{
-              backgroundColor: "#f3f3f3",
-              borderRadius: 16,
-              padding: 16,
-              // width: "100%",
-              marginTop: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 6,
-              flex: 1,
-            }}
-          >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
-            <TextInput
-              required
-              placeholder="Duration"
-              placeholderTextColor={"#9ba3af"}
-              value={duration_ms}
-              onChangeText={(text) => {
-                setDurationMs(text);
-              }}
-              style={{
-                width: "100%",
-                fontSize: 17,
-                fontWeight: "bold",
-              }}
-              returnKeyType="search"
-            />
-          </View>
-        </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 7,
-            paddingBottom: 20,
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "#f3f3f3",
-              borderRadius: 16,
-              padding: 16,
-              paddingLeft: 20,
-              paddingRight: 20,
-              // width: "100%",
-              marginTop: 10,
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 6,
-              flex: 1,
-            }}
-          >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
-            <TextInput
-              required
-              placeholder="Explicit"
-              placeholderTextColor={"#9ba3af"}
-              value={explicit}
               onChangeText={(text) => {
                 setExplicit(text);
               }}
@@ -399,12 +97,134 @@ export default ManualAdd = ({ route, navigation }) => {
               backgroundColor: "#f3f3f3",
               borderRadius: 16,
               padding: 16,
+              paddingLeft: 20,
+              paddingRight: 20,
               // width: "100%",
               marginTop: 10,
               flexDirection: "row",
               alignItems: "center",
               gap: 6,
-              flex: 1,
+            }}
+          >
+            <Image
+              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
+              source={require("./../../../assets/icons/search.png")}
+            />
+            <TextInput
+              required
+              placeholder="Album Name"
+              placeholderTextColor={"#9ba3af"}
+              value={albumName}
+              onChangeText={(text) => {
+                setExplicit(text);
+              }}
+              style={{
+                width: "100%",
+                fontSize: 17,
+                fontWeight: "bold",
+              }}
+              returnKeyType="search"
+            />
+          </View>
+          <View
+            style={{
+              backgroundColor: "#f3f3f3",
+              borderRadius: 16,
+              padding: 16,
+              paddingLeft: 20,
+              paddingRight: 20,
+              // width: "100%",
+              marginTop: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            <Image
+              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
+              source={require("./../../../assets/icons/search.png")}
+            />
+            <TextInput
+              required
+              placeholder="Artists Name"
+              placeholderTextColor={"#9ba3af"}
+              value={artistsName}
+              onChangeText={(text) => {
+                setExplicit(text);
+              }}
+              style={{
+                width: "100%",
+                fontSize: 17,
+                fontWeight: "bold",
+              }}
+              returnKeyType="search"
+            />
+          </View>
+          <View
+            style={{
+              backgroundColor: "#f3f3f3",
+              borderRadius: 16,
+              padding: 16,
+              paddingLeft: 20,
+              paddingRight: 20,
+              // width: "100%",
+              marginTop: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            <Image
+              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
+              source={require("./../../../assets/icons/search.png")}
+            />
+            <TextInput
+              required
+              placeholder="Duration"
+              placeholderTextColor={"#9ba3af"}
+              value={duration_ms}
+              onChangeText={(text) => {
+                setExplicit(text);
+              }}
+              style={{
+                width: "100%",
+                fontSize: 17,
+                fontWeight: "bold",
+              }}
+              returnKeyType="search"
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ fontSize: 17, fontWeight: "bold", marginRight: 10 }}>
+              Explicit:
+              {isEnabled ? "True" : "False"}
+            </Text>
+            <Switch
+              style={{}}
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
+          <View
+            style={{
+              backgroundColor: "#f3f3f3",
+              borderRadius: 16,
+              padding: 16,
+              paddingLeft: 20,
+              paddingRight: 20,
+              // width: "100%",
+              marginTop: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 6,
             }}
           >
             <Image
@@ -417,7 +237,7 @@ export default ManualAdd = ({ route, navigation }) => {
               placeholderTextColor={"#9ba3af"}
               value={albumRelease}
               onChangeText={(text) => {
-                setAlbumRelease(text);
+                setExplicit(text);
               }}
               style={{
                 width: "100%",

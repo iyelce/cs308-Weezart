@@ -11,7 +11,7 @@ async function AddingUniqueSongApi ({...props} ) {
         artistsName : props.artistsName,
         artistsId : [],
         popularity : -1,
-        duration_ms :  (props.minutes * 60 + props.seconds) * 1000  ,
+        duration_ms :  (props.minutes * 60000) + (props.seconds * 1000)   ,
         explicit : props.explicit,
         albumRelease : props.albumRelease 
     }
@@ -19,6 +19,8 @@ async function AddingUniqueSongApi ({...props} ) {
     try{        
 
         console.log("uniwue eklerken yolladığım : ", newSong);
+
+        console.log (props.minutes ,"--",props.seconds)
 
 
         const response = await fetch(url, {

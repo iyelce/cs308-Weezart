@@ -6,6 +6,8 @@ import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckC
 import LikeSongApi from "../../API/LikeSongApi";
 import { useEffect } from "react";
 import RateSongApi from "../../API/RateSongApi";
+import { AiOutlineDelete } from "react-icons/ai";
+import { AiFillDelete } from "react-icons/ai";
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
@@ -29,7 +31,7 @@ function SongInfoPopup({...props}) {
 
     const [rating, setRating] = useState(props.rating);
     const stars = [1, 2, 3, 4, 5];
-    const [added, setAdded] = useState(false);
+    const [deleted, setDeleted] = useState(false);
 
     const handleStarClick = async (selectedRating) => {
         // if (selectedRating === rating) {
@@ -122,16 +124,16 @@ const handleLikeClick = async () => {
                     <p>{rating > 0 ? 'Rated' : 'Rate'}</p>
 
                     <div className="stars">
-      {stars.map((star) => (
-        <span
-          key={star}
-          className={`star ${star <= rating ? 'selected' : ''}`}
-          onClick={() => handleStarClick(star)}
-        >
-          {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
-        </span>
-      ))}
-    </div>
+                        {stars.map((star) => (
+                            <span
+                            key={star}
+                            className={`star ${star <= rating ? 'selected' : ''}`}
+                            onClick={() => handleStarClick(star)}
+                            >
+                            {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
+                            </span>
+                        ))}
+                    </div>
 
                     <hr/>
 
@@ -143,10 +145,10 @@ const handleLikeClick = async () => {
                                 <p>{liked ? 'Liked' : 'Like'}</p>
                             </div>
                             <div className="half-width">
-                                <div className={`add-icon ${added ? 'added' : ''}`} onClick={() => { setAdded(!added); }}>
-                                    {added ? <AiFillCheckCircle /> : <AiOutlineCheckCircle/>}
+                                <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={() => { setDeleted(!deleted); }}>
+                                    {deleted ? <AiFillDelete /> : <AiOutlineDelete/>}
                                     </div>
-                                <p>{added ? 'Added' : 'Add'}</p>
+                                <p>{deleted ? 'Deleted' : 'Delete'}</p>
                             </div>
                     </div>
 

@@ -226,7 +226,7 @@
     
 }
   
-.heart-icon, .add-icon {
+.heart-icon, .delete-icon {
     color: gray;
     cursor: pointer;
     font-size: 55px;
@@ -240,7 +240,7 @@
         background-position: -2800px 0;
 }
 
-.add-icon:hover, .add-icon.added {
+.delete-icon:hover, .delete-icon.added {
     color: #ab20fd;
 }
 

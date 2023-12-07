@@ -9,7 +9,6 @@ const LOGO = require('../../weezart-removebg-preview.png');
 const Login = ({...props}) => {
 
     const navigate = useNavigate();
-  
     //for css proporties
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);
     const [isFocusedUsername, setIsFocusedUsername] = useState(false);
@@ -77,6 +76,7 @@ const Login = ({...props}) => {
                     onChange={(e)=>setPassword(e.target.value)}
                     onBlur={()=>setIsFocusedPassword(false)}
                     onFocus={()=>setIsFocusedPassword(true)}
+                    onKeyDown={(e)=>{if(e.key==='Enter') handleRegisterClick()}}
                      ></input>
                     <label  className={'register-input-label '+(isFocusedPassword||(!isFocusedPassword&&password!=='')?'moved-upside':'')}>Password</label>
                     <span className="register-see-password" onClick={()=> setIsVisiblePassword(!isVisiblePassword)}>

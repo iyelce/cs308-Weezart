@@ -91,26 +91,11 @@
   }
   
 
-  .add-artist-button {
-    background-color: #9416ad; /* Purple color */
-    color: #fff; /* White text color */
-    border: none;
-    padding: 10px 20px; /* Adjust padding as needed */
-    border-radius: 25px; /* Adjust border-radius for rounded corners */
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Smooth color transition */
-    margin-left: 2rem;
-    font-family: Poppins;
   
-    /* Optional: Add hover effect */
-    &:hover {
-      background-color: #780d8e; 
-    }
-  }
 
 
   .submit-button{
-    background-color: #9416ad; /* Purple color */
+    background-color: #3B0944; /* Purple color */
     color: #fff; /* White text color */
     border: none;
     padding: 10px 20px; /* Adjust padding as needed */
@@ -125,7 +110,7 @@
   
     /* Optional: Add hover effect */
     &:hover {
-      background-color: #780d8e; 
+      background-color: #600b71; 
     }
   }
   

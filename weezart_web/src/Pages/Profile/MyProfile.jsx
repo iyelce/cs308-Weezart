@@ -114,11 +114,7 @@ const MyProfile = ({...props}) => {
 
       </div>
 
-      
-
-
-
-        </div>
+      </div>
      
     );
   };

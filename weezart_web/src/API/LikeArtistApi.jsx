@@ -14,7 +14,7 @@
 
 async function LikeArtistApi(token, userId, artistInfo) {
 
-    const url = `http://localhost:8080/like/album/${userId}`;  
+    const url = `http://localhost:8080/like/artist/${userId}`;  
     const auth = "Bearer " + token;
 
     let likedArtist = 

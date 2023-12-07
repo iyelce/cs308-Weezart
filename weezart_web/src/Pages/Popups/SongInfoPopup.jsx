@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { AiOutlineClose } from "react-icons/ai";
 // import './Popup.css';
-import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckCircle, AiFillCheckCircle, AiFillCrown } from 'react-icons/ai'; 
+import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiFillCrown, AiOutlineDelete, AiFillDelete } from 'react-icons/ai'; 
 import LikeSongApi from "../../API/LikeSongApi";
 import { useEffect } from "react";
 import RateSongApi from "../../API/RateSongApi";
-import { AiOutlineDelete } from "react-icons/ai";
-import { AiFillDelete } from "react-icons/ai";
+import SongRemoveApi from "../../API/SongRemoveApi";
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
@@ -76,12 +75,17 @@ const handleLikeClick = async () => {
     console.log("page içinde like: ",likeResp);
 
     setLiked(true);
-
-  }
-
-  // Toggle the local liked state
-  
+  }  
 };
+
+const handleDeleteClick = async () => {
+    setDeleted(!deleted);
+
+    const del = await SongRemoveApi(props.token, props.userId, props.songInfo);
+
+    props.onRequestClose();
+
+}
 
 
 
@@ -145,7 +149,7 @@ const handleLikeClick = async () => {
                                 <p>{liked ? 'Liked' : 'Like'}</p>
                             </div>
                             <div className="half-width">
-                                <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={() => { setDeleted(!deleted); }}>
+                                <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={ handleDeleteClick }>
                                     {deleted ? <AiFillDelete /> : <AiOutlineDelete/>}
                                     </div>
                                 <p>{deleted ? 'Deleted' : 'Delete'}</p>

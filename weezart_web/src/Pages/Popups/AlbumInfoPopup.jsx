@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import ReactModal from 'react-modal';
 import { AiOutlineClose } from "react-icons/ai";
-// import './Popup.css';
-import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineCheckCircle, AiFillCheckCircle, AiFillCrown } from 'react-icons/ai'; 
+import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineDelete, AiFillDelete } from 'react-icons/ai'; 
 import { useEffect } from "react";
 import LikeAlbumApi from "../../API/LikeAlbumApi";
+import AlbumRemoveaApi from "../../API/AlbumRemoveaApi";
 
 // Make sure to set appElement to avoid a11y violations
 ReactModal.setAppElement('#root'); // Replace '#root' with the ID of your app root element
@@ -27,7 +27,7 @@ function AlbumInfoPopup({...props}) {
     const [rating, setRating] = useState(0);
     const stars = [1, 2, 3, 4, 5];
     const [liked, setLiked] = useState(props.liked);
-    const [added, setAdded] = useState(false);
+    const [deleted, setDeleted] = useState(false);
 
     const handleStarClick = (selectedRating) => {
         if (selectedRating === rating) {
@@ -36,7 +36,6 @@ function AlbumInfoPopup({...props}) {
 
           } else {
             setRating(selectedRating);
-            setAdded(true); 
           }
     };
 
@@ -77,6 +76,14 @@ useEffect(() => {
   
     }    
   };
+
+  const handleDeleteClick = async () => {
+    setDeleted(!deleted);
+
+    const del = await AlbumRemoveaApi(props.token, props.userId, props.albumInfo);
+    props.onRequestClose();
+
+}
 
   return (
     <Modal
@@ -159,10 +166,10 @@ useEffect(() => {
                                 <p>{liked ? 'Liked' : 'Like'}</p>
                             </div>
                             <div className="half-width">
-                                <div className={`add-icon ${added ? 'added' : ''}`} onClick={() => { setAdded(!added); }}>
-                                    {added ? <AiFillCheckCircle /> : <AiOutlineCheckCircle/>}
+                                <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={ handleDeleteClick }>
+                                    {deleted ? <AiFillDelete /> : <AiOutlineDelete/>}
                                     </div>
-                                <p>{added ? 'Added' : 'Add'}</p>
+                                <p>{deleted ? 'Deleted' : 'Delete'}</p>
                             </div>
                     </div>
 

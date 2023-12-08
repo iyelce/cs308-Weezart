@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.models.Album;
 import com.app.models.Artist;
 import com.app.models.DateRange;
+import com.app.models.FriendNameAndSongs;
 import com.app.models.Song;
 import com.app.models.UserSong;
 import com.app.repo.UserSongRepository;
@@ -45,7 +46,10 @@ public class RecommendationController {
 		return ResponseEntity.ok(recommendationService.releaseDateRec(userId));
 	}
 	
-	
+	@GetMapping("/friend/{userId}")
+	public ResponseEntity<FriendNameAndSongs> friendRecommendationController(@PathVariable String userId){
+		return ResponseEntity.ok(recommendationService.friendRec(userId));
+	}
 	
 	@GetMapping("/genre-artist/{userId}")
 	public ResponseEntity<List<Artist>> artistGenreRecommendationController(@PathVariable String userId){

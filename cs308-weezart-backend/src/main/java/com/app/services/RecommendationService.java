@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.models.Album;
 import com.app.models.Artist;
+import com.app.models.FriendNameAndSongs;
 import com.app.models.Song;
 import com.app.models.UserSong;
 
@@ -14,7 +15,8 @@ import com.app.models.UserSong;
 public interface RecommendationService {
 	
 	List<Song> popularityRec();
-	List<Song> latestRec(String userId);	
+	List<Song> latestRec(String userId);
+	FriendNameAndSongs friendRec(String userId);
 	List<Album> releaseDateRec(String userId);
 	List<Artist> genreArtistRec(String userId);
 	

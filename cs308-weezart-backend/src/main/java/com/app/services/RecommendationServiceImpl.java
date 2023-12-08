@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.app.controllers.AuthenticationController;
 import com.app.models.Album;
 import com.app.models.Artist;
+import com.app.models.FriendNameAndSongs;
 import com.app.models.Song;
 import com.app.models.User;
 import com.app.models.UserSong;
@@ -93,6 +95,39 @@ public class RecommendationServiceImpl implements RecommendationService {
 	    return userSongs.stream()
 	        .map(UserSong::getSong)
 	        .collect(Collectors.toList());
+	}
+	
+	public FriendNameAndSongs friendRec(String userId){
+		User currentUser = userRepo.findByiduser(Long.parseLong(userId));
+		List<String> friendIds = currentUser.getFollowing();
+        if (friendIds != null && !friendIds.isEmpty()) {
+
+            Random random = new Random();
+            int randomIndex = random.nextInt(friendIds.size());
+            String randomFriendName = friendIds.get(randomIndex);
+
+            User currentFriend = userRepo.findByUsername(randomFriendName);
+
+            List<UserSong> friendSongs = userSongRepo.findAllByUser(currentFriend);
+
+            if(!friendSongs.isEmpty()) {
+
+            	Collections.shuffle(friendSongs);
+            	List<UserSong> randomFriendSongs = friendSongs.subList(0, Math.min(5, friendSongs.size()));
+            	List<Song> songsFromRandomFriendSongs = randomFriendSongs.stream()
+            	        .map(UserSong::getSong)
+            	        .collect(Collectors.toList());
+
+            	FriendNameAndSongs friendInfo = new FriendNameAndSongs(randomFriendName, songsFromRandomFriendSongs); 
+                return friendInfo;
+            }
+            else {
+            	return null;
+            }
+        }
+        else {
+        	return null;
+        }
 	}
 	
 	public List<Album> releaseDateRec(String userId){

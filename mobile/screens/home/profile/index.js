@@ -1,4 +1,4 @@
-import React, { Profiler, useEffect, useState } from "react";
+import React, { Profiler, useEffect, useRef, useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -15,6 +15,7 @@ import {
   ImageBlurShadow,
   RefreshControl,
   ImageBackground,
+  Animated,
 } from "react-native";
 import SegmentedControl from "react-native-segmented-control-2";
 import { Colors } from "react-native/Libraries/NewAppScreen";
@@ -27,6 +28,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { BlurView } from "@react-native-community/blur";
 import Album from "../search/album";
 import Artist from "../search/album/artist";
+import { Swipeable, RectButton } from "react-native-gesture-handler";
+import artist from "../search/album/artist";
 
 const Stack = createNativeStackNavigator();
 
@@ -210,6 +213,52 @@ const ProfileScreen = ({ navigation }) => {
     });
   }, 1000);
 
+  const songSwipeableRef = useRef(null);
+
+  const onSongRemove = (track, i) => {
+    getUserId().then((userId) => {
+      axios
+        .delete("/remove/song/" + userId, { data: track.song })
+        .then((res) => {
+          songSwipeableRef.current.close();
+          const updatedAddedSongs = addedSongs.filter(
+            (_, index) => index !== i
+          );
+          setAddedSongs(updatedAddedSongs);
+        });
+    });
+  };
+  const albumSwipeableRef = useRef(null);
+
+  const onAlbumRemove = (record, i) => {
+    getUserId().then((userId) => {
+      axios
+        .delete("/remove/album/" + userId, { data: record.album })
+        .then((res) => {
+          albumSwipeableRef.current.close();
+          const updatedAddedAlbums = addedAlbums.filter(
+            (_, index) => index !== i
+          );
+          setAddedAlbums(updatedAddedAlbums);
+        });
+    });
+  };
+  const artistSwipeableRef = useRef(null);
+
+  const onArtistRemove = (singer, i) => {
+    getUserId().then((userId) => {
+      axios
+        .delete("/remove/artist/" + userId, { data: singer.artist })
+        .then((res) => {
+          artistSwipeableRef.current.close();
+          const updatedAddedArtists = addedArtists.filter(
+            (_, index) => index !== i
+          );
+          setAddedArtists(updatedAddedArtists);
+        });
+    });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView
@@ -265,23 +314,39 @@ const ProfileScreen = ({ navigation }) => {
             >
               {userInfo.email + " | profile"}
             </Text>
-            <Text
+            <View
               style={{
                 marginLeft: "auto",
                 marginRight: "auto",
                 marginTop: 8,
-                fontWeight: "bold",
-                fontSize: 13,
-                color: "#7e7e7e",
+                flexDirection: "row",
               }}
             >
-              {userInfo.followers
-                ? userInfo.followers
-                : 0 +
-                  " followers • " +
-                  (userInfo.following ? userInfo.following : 0 + " following")}
-            </Text>
-
+              <TouchableOpacity>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 13,
+                    color: "#7e7e7e",
+                  }}
+                >
+                  {(userInfo.followers ? userInfo.followers.length : 0) +
+                    " followers • "}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 13,
+                    color: "#7e7e7e",
+                  }}
+                >
+                  {(userInfo.following ? userInfo.following.length : 0) +
+                    " following"}
+                </Text>
+              </TouchableOpacity>
+            </View>
             <View
               style={{
                 backgroundColor: "white",
@@ -396,43 +461,92 @@ const ProfileScreen = ({ navigation }) => {
                   {currentSegment == 0
                     ? addedSongs.map((track, i) => {
                         return (
-                          <TouchableOpacity
-                            style={{
-                              //   backgroundColor: "#f3f3f3",
-                              padding: 20,
-                              paddingBottom: 15,
-                              paddingTop: 15,
-                              borderRadius: 10,
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center",
-                              // backgroundColor: "#f9f9f9",
-                            }}
-                            key={i}
-                            onPress={() =>
-                              navigation.navigate("Details", {
-                                data: track.song,
-                                source: "profile",
-                              })
-                            }
-                          >
-                            <Rating
-                              size={15}
-                              rating={track.userState.liked}
-                              maxRating={1}
-                              variant="hearts-outline"
-                              // fillColor="#fff"
-                              baseColor="#48484A"
-                              onChange={() =>
-                                onLikedChanged(track, !track.userState.liked, i)
-                              }
-                            />
-                            <View style={{ marginLeft: 20 }}>
-                              <Text
-                                style={{ fontWeight: "bold", fontSize: 15 }}
+                          // <Swipeable
+                          //   key={i}
+                          //   renderRightActions={(progress, dragX) =>
+                          //     renderRightActions(progress, dragX, () => {
+                          //       // onRemove(i)
+                          //     })
+                          //   }
+                          // >
+                          <Swipeable
+                            ref={songSwipeableRef}
+                            key={track.song.id}
+                            renderRightActions={(progress, dragX, onClick) => (
+                              <TouchableOpacity
+                                style={{
+                                  margin: 0,
+                                  alignContent: "center",
+                                  justifyContent: "center",
+                                  width: 70,
+                                  marginRight: 20,
+                                }}
+                                onPress={() => onSongRemove(track, i)}
                               >
-                                {track.song.name}
-                                {/* <Text
+                                <Image
+                                  style={{
+                                    width: 24,
+                                    height: 24,
+                                    marginLeft: "auto",
+                                    tintColor: "red",
+                                  }}
+                                  source={require("../../../assets/icons/trash.png")}
+                                />
+                              </TouchableOpacity>
+                            )}
+                            onSwipeableOpen={() => {
+                              // console.log("closerow");
+                              // if (
+                              //   prevOpenedRow &&
+                              //   prevOpenedRow !== row[index]
+                              // ) {
+                              //   prevOpenedRow.close();
+                              // }
+                              // prevOpenedRow = row[index];
+                            }}
+                            rightOpenValue={-100}
+                          >
+                            <TouchableOpacity
+                              style={{
+                                //   backgroundColor: "#f3f3f3",
+                                padding: 20,
+                                paddingBottom: 15,
+                                paddingTop: 15,
+                                borderRadius: 10,
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                // backgroundColor: "#f9f9f9",
+                              }}
+                              key={i}
+                              onPress={() =>
+                                navigation.navigate("Details", {
+                                  data: track.song,
+                                  source: "profile",
+                                })
+                              }
+                            >
+                              <Rating
+                                size={15}
+                                rating={track.userState.liked}
+                                maxRating={1}
+                                variant="hearts-outline"
+                                // fillColor="#fff"
+                                baseColor="#48484A"
+                                onChange={() =>
+                                  onLikedChanged(
+                                    track,
+                                    !track.userState.liked,
+                                    i
+                                  )
+                                }
+                              />
+                              <View style={{ marginLeft: 20 }}>
+                                <Text
+                                  style={{ fontWeight: "bold", fontSize: 15 }}
+                                >
+                                  {track.song.name}
+                                  {/* <Text
                                 style={{
                                   color: "#48484A",
                                   fontSize: 12,
@@ -441,163 +555,222 @@ const ProfileScreen = ({ navigation }) => {
                               >
                                 {track.song.artistsName[0]}
                               </Text> */}
-                              </Text>
+                                </Text>
 
-                              <Text
-                                style={{
-                                  color: "#48484A",
-                                  fontSize: 12,
-                                  fontWeight: "normal",
-                                  marginTop: 5,
-                                }}
-                              >
-                                {track.song.artistsName[0]}
-                              </Text>
-                              <Rating
-                                size={15}
-                                rating={
-                                  track.userState.rating[
-                                    track.userState.rating.length - 1
-                                  ]
-                                }
-                                variant="stars-outline"
-                                fillColor="#c2a30a"
-                                baseColor="#48484A"
-                                touchColor="#c2a30a"
-                                style={{ marginTop: 5 }}
-                                onChange={(rating) =>
-                                  onRatingChange(track, rating, i)
-                                }
-                              />
-                            </View>
-                          </TouchableOpacity>
+                                <Text
+                                  style={{
+                                    color: "#48484A",
+                                    fontSize: 12,
+                                    fontWeight: "normal",
+                                    marginTop: 5,
+                                  }}
+                                >
+                                  {track.song.artistsName[0]}
+                                </Text>
+                                <Rating
+                                  size={15}
+                                  rating={
+                                    track.userState.rating[
+                                      track.userState.rating.length - 1
+                                    ]
+                                  }
+                                  variant="stars-outline"
+                                  fillColor="#c2a30a"
+                                  baseColor="#48484A"
+                                  touchColor="#c2a30a"
+                                  style={{ marginTop: 5 }}
+                                  onChange={(rating) =>
+                                    onRatingChange(track, rating, i)
+                                  }
+                                />
+                              </View>
+                            </TouchableOpacity>
+                          </Swipeable>
                         );
                       })
                     : currentSegment == 1
                     ? addedAlbums.map((record, i) => {
                         return (
-                          <TouchableOpacity
-                            key={record.album.name}
-                            style={{
-                              width: "100%",
-                              //   padding: 5,
-                              borderRadius: 5,
-                              overflow: "hidden",
-                              marginTop: 10,
-                            }}
-                            onPress={() =>
-                              navigation.navigate("Album", { data: record })
-                            }
-                          >
-                            <ImageBackground
-                              source={{ uri: record.album.imageUrl }}
-                              resizeMode="cover"
-                              style={{
-                                height: "100%",
-                                width: "100%",
-                                position: "absolute",
-                              }}
-                            ></ImageBackground>
-                            <BlurView
-                              style={{
-                                height: "100%",
-                                width: "100%",
-                                position: "absolute",
-                              }}
-                              blurType="light"
-                              blurAmount={100}
-                              // reducedTransparencyFallbackColor="white"
-                              // overlayColor="rgba(255, 255, 255)"
-                            />
-                            <View
-                              style={{
-                                padding: 5,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                              }}
-                            >
-                              <Image
-                                source={{ uri: record.album.imageUrl }}
+                          <Swipeable
+                            ref={albumSwipeableRef}
+                            key={record.album.id}
+                            renderRightActions={(progress, dragX, onClick) => (
+                              <TouchableOpacity
                                 style={{
-                                  width: 80,
-                                  height: 80,
-                                  borderRadius: 5,
+                                  margin: 0,
+                                  alignContent: "center",
+                                  justifyContent: "center",
+                                  width: 70,
+                                  marginRight: 20,
                                 }}
+                                onPress={() => onAlbumRemove(record, i)}
+                              >
+                                <Image
+                                  style={{
+                                    width: 24,
+                                    height: 24,
+                                    marginLeft: "auto",
+                                    tintColor: "red",
+                                  }}
+                                  source={require("../../../assets/icons/trash.png")}
+                                />
+                              </TouchableOpacity>
+                            )}
+                            onSwipeableOpen={() => {}}
+                            rightOpenValue={-100}
+                          >
+                            <TouchableOpacity
+                              key={record.album.name}
+                              style={{
+                                width: "100%",
+                                //   padding: 5,
+                                borderRadius: 5,
+                                overflow: "hidden",
+                                marginTop: 10,
+                              }}
+                              onPress={() =>
+                                navigation.navigate("Album", { data: record })
+                              }
+                            >
+                              <ImageBackground
+                                source={{ uri: record.album.imageUrl }}
+                                resizeMode="cover"
+                                style={{
+                                  height: "100%",
+                                  width: "100%",
+                                  position: "absolute",
+                                }}
+                              ></ImageBackground>
+                              <BlurView
+                                style={{
+                                  height: "100%",
+                                  width: "100%",
+                                  position: "absolute",
+                                }}
+                                blurType="light"
+                                blurAmount={100}
+                                // reducedTransparencyFallbackColor="white"
+                                // overlayColor="rgba(255, 255, 255)"
                               />
-                              <View style={{ marginLeft: 15, gap: 5 }}>
-                                <Text
-                                  style={{ fontWeight: "bold", fontSize: 15 }}
-                                >
-                                  {record.album.name}
-                                </Text>
-                                <Text
-                                  style={{ color: "#0007", fontWeight: 500 }}
-                                >
-                                  {record.album.artistsName[0] + " • "}
-                                  <Text style={{ fontWeight: "normal" }}>
-                                    {record.album.releaseDate}
+                              <View
+                                style={{
+                                  padding: 5,
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Image
+                                  source={{ uri: record.album.imageUrl }}
+                                  style={{
+                                    width: 80,
+                                    height: 80,
+                                    borderRadius: 5,
+                                  }}
+                                />
+                                <View style={{ marginLeft: 15, gap: 5 }}>
+                                  <Text
+                                    style={{ fontWeight: "bold", fontSize: 15 }}
+                                  >
+                                    {record.album.name}
                                   </Text>
-                                </Text>
+                                  <Text
+                                    style={{ color: "#0007", fontWeight: 500 }}
+                                  >
+                                    {record.album.artistsName[0] + " • "}
+                                    <Text style={{ fontWeight: "normal" }}>
+                                      {record.album.releaseDate}
+                                    </Text>
+                                  </Text>
+                                </View>
                               </View>
-                            </View>
-                          </TouchableOpacity>
+                            </TouchableOpacity>
+                          </Swipeable>
                         );
                       })
                     : currentSegment == 2 &&
                       addedArtists.map((item, i) => {
                         return (
-                          <TouchableOpacity
-                            key={item.artist.name}
-                            style={{
-                              width: "100%",
-                              //   padding: 5,
-                              borderRadius: 5,
-                              overflow: "hidden",
-                              marginTop: 10,
-                            }}
-                            onPress={() =>
-                              navigation.navigate("Artist", { data: item })
-                            }
+                          <Swipeable
+                            ref={artistSwipeableRef}
+                            key={item.artist.id}
+                            renderRightActions={(progress, dragX, onClick) => (
+                              <TouchableOpacity
+                                style={{
+                                  margin: 0,
+                                  alignContent: "center",
+                                  justifyContent: "center",
+                                  width: 70,
+                                  marginRight: 20,
+                                }}
+                                onPress={() => onArtistRemove(item, i)}
+                              >
+                                <Image
+                                  style={{
+                                    width: 24,
+                                    height: 24,
+                                    marginLeft: "auto",
+                                    tintColor: "red",
+                                  }}
+                                  source={require("../../../assets/icons/trash.png")}
+                                />
+                              </TouchableOpacity>
+                            )}
+                            onSwipeableOpen={() => {}}
+                            rightOpenValue={-100}
                           >
-                            <View
+                            <TouchableOpacity
+                              key={item.artist.name}
                               style={{
-                                padding: 5,
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
+                                width: "100%",
+                                //   padding: 5,
+                                borderRadius: 5,
+                                overflow: "hidden",
+                                marginTop: 10,
                               }}
+                              onPress={() =>
+                                navigation.navigate("Artist", { data: item })
+                              }
                             >
-                              <Image
-                                source={{ uri: item.artist.imageUrl }}
+                              <View
                                 style={{
-                                  width: 80,
-                                  height: 80,
-                                  borderRadius: 40,
+                                  padding: 5,
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  alignItems: "center",
                                 }}
-                              />
-                              <View style={{ marginLeft: 15, gap: 5 }}>
-                                <Text
-                                  style={{ fontWeight: "bold", fontSize: 15 }}
-                                >
-                                  {item.artist.name}
-                                </Text>
-                                <Text style={{ color: "#0007" }}>
-                                  <Text style={{ fontWeight: 500 }}>
-                                    {"artist"}
+                              >
+                                <Image
+                                  source={{ uri: item.artist.imageUrl }}
+                                  style={{
+                                    width: 80,
+                                    height: 80,
+                                    borderRadius: 40,
+                                  }}
+                                />
+                                <View style={{ marginLeft: 15, gap: 5 }}>
+                                  <Text
+                                    style={{ fontWeight: "bold", fontSize: 15 }}
+                                  >
+                                    {item.artist.name}
                                   </Text>
-                                </Text>
+                                  <Text style={{ color: "#0007" }}>
+                                    <Text style={{ fontWeight: 500 }}>
+                                      {"artist"}
+                                    </Text>
+                                  </Text>
+                                </View>
+                                <Image
+                                  style={{
+                                    width: 24,
+                                    height: 24,
+                                    marginLeft: "auto",
+                                  }}
+                                  source={require("./../../../assets/icons/arrow.png")}
+                                />
                               </View>
-                              <Image
-                                style={{
-                                  width: 24,
-                                  height: 24,
-                                  marginLeft: "auto",
-                                }}
-                                source={require("./../../../assets/icons/arrow.png")}
-                              />
-                            </View>
-                          </TouchableOpacity>
+                            </TouchableOpacity>
+                          </Swipeable>
                         );
                       })}
                 </View>

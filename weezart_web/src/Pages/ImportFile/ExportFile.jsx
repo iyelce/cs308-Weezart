@@ -21,17 +21,21 @@ const ExportPage = ({...props}) => {
         });
     
         if (response.ok) {
+        
+            console.log("response itself: ",response)
           const data = await response.text();
+
+          console.log("value -> text hali : ", data)
 
           let filename = "weezartSongs.json";
             let contentType = "application/json;charset=utf-8;";
             if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            var blob = new Blob([decodeURIComponent(encodeURI(JSON.stringify(data)))], { type: contentType });
+            var blob = new Blob([decodeURIComponent(encodeURI(data))], { type: contentType });
             navigator.msSaveOrOpenBlob(blob, filename);
             } else {
             var a = document.createElement('a');
             a.download = filename;
-            a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(data));
+            a.href = 'data:' + contentType + ',' + encodeURIComponent(data);
             a.target = '_blank';
             document.body.appendChild(a);
             a.click();

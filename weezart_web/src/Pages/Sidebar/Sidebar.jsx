@@ -184,6 +184,17 @@ const SideBar = ({...props}) => {
                   <Typography>{"Import Song File"}</Typography>
                 </MenuItem>
 
+                <MenuItem
+                  active={true}
+                  style={{
+                    color: colors.grey[100],
+                    backgroundColor:"#3B0944"
+                  }}
+                  onClick={() => {navigate("cloudImport")}}
+                >
+                  <Typography>{"Import From Cloud"}</Typography>
+                </MenuItem>
+
               </SubMenu>
 
               <MenuItem
@@ -198,8 +209,6 @@ const SideBar = ({...props}) => {
 
               </MenuItem>
 
-              
-
               <MenuItem
                 active={true}
                 style={{
@@ -208,7 +217,7 @@ const SideBar = ({...props}) => {
                 onClick={() => {navigate("newexport")}}
                 icon={<FileDownloadIcon />}
               >
-                <Typography>{"Export Try"}</Typography>
+                <Typography>{"Import Try"}</Typography>
 
               </MenuItem>
 

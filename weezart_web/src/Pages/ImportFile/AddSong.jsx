@@ -39,6 +39,7 @@ function AddSong({...props}) {
     }
     else {
         setShowLabel(false);
+        setAddedLabelShow(false);
         console.log(props.token);
         const response = await AddingSongManuallyApi(spotifySongName, spotifyArtistName, props.token, props.userId );
         

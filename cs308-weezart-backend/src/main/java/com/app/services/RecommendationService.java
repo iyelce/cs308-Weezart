@@ -15,6 +15,7 @@ public interface RecommendationService {
 	
 	List<Song> popularityRec();
 	List<Song> latestRec(String userId);	
+	List<Album> releaseDateRec(String userId);
 	List<Artist> genreArtistRec(String userId);
 	
 }

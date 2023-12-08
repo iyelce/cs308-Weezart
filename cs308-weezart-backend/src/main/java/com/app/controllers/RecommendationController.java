@@ -40,6 +40,10 @@ public class RecommendationController {
 		return ResponseEntity.ok(recommendationService.latestRec(userId));
 	}
 	
+	@GetMapping("/release-date/{userId}")
+	public ResponseEntity<List<Album>> releaseDateRecommendationController(@PathVariable String userId){
+		return ResponseEntity.ok(recommendationService.releaseDateRec(userId));
+	}
 	
 	
 	

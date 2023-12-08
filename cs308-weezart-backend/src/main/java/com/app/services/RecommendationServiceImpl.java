@@ -63,7 +63,21 @@ public class RecommendationServiceImpl implements RecommendationService {
 	private SongRepository songRepo;
 	
 	@Autowired
+	private AlbumRepository albumRepo;
+	
+	@Autowired
 	private AnalysisServiceImpl analysisService;
+	
+	private boolean isYearInRange(String albumYear, String topYear) {
+	    int albumYearInt = Integer.parseInt(albumYear);
+	    int topYearInt = Integer.parseInt(topYear);
+	    
+	    // Calculate the start year of the decade
+	    int startYearOfDecade = (topYearInt / 10) * 10;
+	    
+	    // Check if the album year is within the decade range
+	    return albumYearInt >= startYearOfDecade && albumYearInt < (startYearOfDecade + 10);
+	}
 	
 	public List<Song> popularityRec(){
 		return songRepo.findTop10ByPopularityIsNotOrderByPopularityDesc(-1);
@@ -79,6 +93,42 @@ public class RecommendationServiceImpl implements RecommendationService {
 	    return userSongs.stream()
 	        .map(UserSong::getSong)
 	        .collect(Collectors.toList());
+	}
+	
+	public List<Album> releaseDateRec(String userId){
+		List<Album> topRatedAlbums = analysisService.analysisTop5Album(userId);
+		if(topRatedAlbums!=null) {
+			Set<String> topRatedDates = new HashSet<>();
+			for (Album album: topRatedAlbums) {
+				if (album.getImageUrl()!=null) {
+					String albumDate = album.getReleaseDate();
+					topRatedDates.add(albumDate.substring(0,4));
+				}
+			}
+			
+			List<Album> allAlbums = albumRepo.findAll();
+			List<UserAlbum> albumsAddedByUser = userAlbumRepo.findAllByUser(userRepo.findByiduser(Long.parseLong(userId)));
+	        List<Album> filteredAlbums = allAlbums.stream()
+	                .filter(album -> {
+	                    // Check if the album is not in the list of albums added by the user
+	                    return albumsAddedByUser.stream().noneMatch(userAlbum -> userAlbum.getAlbum().getId().equals(album.getId()));
+	                })
+	                .filter(album -> {
+	                    String albumYear = album.getReleaseDate().substring(0, 4);
+	                    return topRatedDates.stream().anyMatch(topYear -> isYearInRange(albumYear, topYear));
+	                })
+	                .collect(Collectors.toList());
+
+	        Collections.shuffle(filteredAlbums);
+
+	        return filteredAlbums.stream().limit(5).collect(Collectors.toList());
+		}
+		else {
+			return null;
+		}
+		
+
+		
 	}
 	
 	

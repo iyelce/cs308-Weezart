@@ -1,5 +1,6 @@
 package com.app.repo;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,7 @@ public interface UserSongRepository extends JpaRepository<UserSong, Long>{
 	UserSong findBySongAndUser(Song song, User user);
 	List<UserSong> findAllByUser(User user);
 	void deleteBySongId(String songId);
+	List<UserSong> findTop10ByUserNotOrderByAddTimeDesc(User user);
 }
 
 

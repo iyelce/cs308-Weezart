@@ -1,5 +1,6 @@
 package com.app.services;
 
+import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -66,6 +68,19 @@ public class RecommendationServiceImpl implements RecommendationService {
 	public List<Song> popularityRec(){
 		return songRepo.findTop10ByPopularityIsNotOrderByPopularityDesc(-1);
 	}
+	
+	public List<Song> latestRec(String userId){
+	    User currentUser = userRepo.findByiduser(Long.parseLong(userId));
+
+	    // Fetch the last 10 songs added by other users (excluding the current user)
+	    List<UserSong> userSongs = userSongRepo.findTop10ByUserNotOrderByAddTimeDesc(currentUser);
+
+	    // Assuming you have a method to map UserSong to Song, adjust accordingly
+	    return userSongs.stream()
+	        .map(UserSong::getSong)
+	        .collect(Collectors.toList());
+	}
+	
 	
 	public List<Artist> genreArtistRec(String userId){
 		List<Song> topRatedSongs = analysisService.analysisTop5Manual(userId);

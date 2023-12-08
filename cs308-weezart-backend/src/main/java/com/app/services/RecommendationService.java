@@ -14,6 +14,7 @@ import com.app.models.UserSong;
 public interface RecommendationService {
 	
 	List<Song> popularityRec();
+	List<Song> latestRec(String userId);	
 	List<Artist> genreArtistRec(String userId);
-
+	
 }

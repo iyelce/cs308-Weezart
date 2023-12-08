@@ -18,6 +18,7 @@ import { BlurView } from "@react-native-community/blur";
 import axios from "./../../../config/axios";
 import { getToken, getUserId } from "../../../helpers/Utils";
 import manualAdd from "./manual-add";
+import Toast from "react-native-simple-toast";
 
 const Stack = createNativeStackNavigator();
 
@@ -66,6 +67,26 @@ const SearchScreen = ({ navigation }) => {
   const [songSearch, setSongSearch] = useState("");
   const [artistSearch, setArtistSearch] = useState("");
 
+  const [addType, setAddType] = useState(0);
+
+  const [friendUsername, setFriendUsername] = useState("");
+
+  const AddFriend = () => {
+    getUserId().then((id) => {
+      axios.get("/user/profile/" + id).then((myProfile) => {
+        axios
+          .post("/add/friend/" + myProfile.username + "/" + friendUsername)
+          .then((res) => {
+            if (res.iduser) {
+              Toast.show("Added :)");
+            } else {
+              Toast.show("Failed :(");
+            }
+          });
+      });
+    });
+  };
+
   const SearchClicked = () => {
     getUserId().then((id) => {
       axios
@@ -85,128 +106,211 @@ const SearchScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
-      <View
-        style={{
-          height: "100%",
-          paddingRight: 20,
-          paddingLeft: 20,
+      <SegmentedControl
+        values={["Add Songs", "Add Friends"]}
+        selectedIndex={searchType}
+        style={{ marginLeft: 20, marginRight: 20, marginTop: 5 }}
+        onChange={(event) => {
+          setAddType(event.nativeEvent.selectedSegmentIndex);
         }}
-      >
+      />
+      {addType == 0 ? (
         <View
           style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 7,
+            height: "100%",
+            paddingRight: 20,
+            paddingLeft: 20,
+            marginTop: 20,
           }}
         >
           <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 7,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: "#f3f3f3",
+                borderRadius: 16,
+                padding: 16,
+                paddingLeft: 20,
+                paddingRight: 20,
+                // width: "100%",
+                marginTop: 10,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 6,
+                flex: 1,
+              }}
+            >
+              <Image
+                style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
+                source={require("./../../../assets/icons/search.png")}
+              />
+              <TextInput
+                required
+                placeholder="Artist Name"
+                placeholderTextColor={"#9ba3af"}
+                value={artistSearch}
+                onChangeText={(text) => {
+                  setArtistSearch(text);
+                }}
+                style={{
+                  width: "100%",
+                  fontSize: 17,
+                  fontWeight: "bold",
+                }}
+                returnKeyType="search"
+              />
+            </View>
+            <View
+              style={{
+                backgroundColor: "#f3f3f3",
+                borderRadius: 16,
+                padding: 16,
+                // width: "100%",
+                marginTop: 10,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 6,
+                flex: 1,
+              }}
+            >
+              <Image
+                style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
+                source={require("./../../../assets/icons/search.png")}
+              />
+              <TextInput
+                required
+                placeholder="Song Name"
+                placeholderTextColor={"#9ba3af"}
+                value={songSearch}
+                onChangeText={(text) => {
+                  setSongSearch(text);
+                }}
+                style={{
+                  width: "100%",
+                  fontSize: 17,
+                  fontWeight: "bold",
+                }}
+                returnKeyType="search"
+              />
+            </View>
+          </View>
+          <TouchableOpacity
             style={{
               backgroundColor: "#f3f3f3",
               borderRadius: 16,
               padding: 16,
               paddingLeft: 20,
               paddingRight: 20,
-              // width: "100%",
-              marginTop: 10,
-              flexDirection: "row",
+              justifyContent: "center",
               alignItems: "center",
-              gap: 6,
-              flex: 1,
+              width: "100%",
+              marginTop: 10,
+              backgroundColor: "black",
             }}
+            onPress={SearchClicked}
           >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
-            <TextInput
-              required
-              placeholder="Artist Name"
-              placeholderTextColor={"#9ba3af"}
-              value={artistSearch}
-              onChangeText={(text) => {
-                setArtistSearch(text);
-              }}
-              style={{
-                width: "100%",
-                fontSize: 17,
-                fontWeight: "bold",
-              }}
-              returnKeyType="search"
-            />
-          </View>
-          <View
+            <Text style={{ fontWeight: "bold", color: "white", fontSize: 17 }}>
+              Assisted Search
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             style={{
               backgroundColor: "#f3f3f3",
               borderRadius: 16,
               padding: 16,
-              // width: "100%",
-              marginTop: 10,
-              flexDirection: "row",
+              paddingLeft: 20,
+              paddingRight: 20,
+              justifyContent: "center",
               alignItems: "center",
-              gap: 6,
-              flex: 1,
+              width: "100%",
+              marginTop: 10,
+              backgroundColor: "black",
+            }}
+            onPress={() => navigation.navigate("ManualAdd")}
+          >
+            <Text style={{ fontWeight: "bold", color: "white", fontSize: 17 }}>
+              Add Your Song Manually
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View
+          style={{
+            height: "100%",
+            paddingRight: 20,
+            paddingLeft: 20,
+            marginTop: 20,
+          }}
+        >
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 7,
             }}
           >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
-            <TextInput
-              required
-              placeholder="Song Name"
-              placeholderTextColor={"#9ba3af"}
-              value={songSearch}
-              onChangeText={(text) => {
-                setSongSearch(text);
-              }}
+            <View
               style={{
-                width: "100%",
-                fontSize: 17,
-                fontWeight: "bold",
+                backgroundColor: "#f3f3f3",
+                borderRadius: 16,
+                padding: 16,
+                paddingLeft: 20,
+                paddingRight: 20,
+                // width: "100%",
+                marginTop: 10,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 6,
+                flex: 1,
               }}
-              returnKeyType="search"
-            />
+            >
+              <Image
+                style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
+                source={require("./../../../assets/icons/search.png")}
+              />
+              <TextInput
+                required
+                placeholder="Friends Username"
+                placeholderTextColor={"#9ba3af"}
+                value={friendUsername}
+                onChangeText={(text) => {
+                  setFriendUsername(text);
+                }}
+                style={{
+                  width: "100%",
+                  fontSize: 17,
+                  fontWeight: "bold",
+                }}
+                returnKeyType="search"
+              />
+            </View>
           </View>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#f3f3f3",
+              borderRadius: 16,
+              padding: 16,
+              paddingLeft: 20,
+              paddingRight: 20,
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              marginTop: 10,
+              backgroundColor: "black",
+            }}
+            onPress={AddFriend}
+          >
+            <Text style={{ fontWeight: "bold", color: "white", fontSize: 17 }}>
+              Add Friend
+            </Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#f3f3f3",
-            borderRadius: 16,
-            padding: 16,
-            paddingLeft: 20,
-            paddingRight: 20,
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            marginTop: 10,
-            backgroundColor: "black",
-          }}
-          onPress={SearchClicked}
-        >
-          <Text style={{ fontWeight: "bold", color: "white", fontSize: 17 }}>
-            Assisted Search
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#f3f3f3",
-            borderRadius: 16,
-            padding: 16,
-            paddingLeft: 20,
-            paddingRight: 20,
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-            marginTop: 10,
-            backgroundColor: "black",
-          }}
-          onPress={() => navigation.navigate("ManualAdd")}
-        >
-          <Text style={{ fontWeight: "bold", color: "white", fontSize: 17 }}>
-            Add Your Song Manually
-          </Text>
-        </TouchableOpacity>
-      </View>
+      )}
     </SafeAreaView>
   );
 };

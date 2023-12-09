@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -20,12 +22,14 @@ public class ExternalDBServiceImpl implements ExternalDBService {
 	@Autowired
 	private AddService addService;
 
+	private static final Logger log = LoggerFactory.getLogger(FileService.class);
+
 	public ResponseEntity<?> relateSongsFromDB(ExternalDBPayload dbDetails, String userId) {
 		DataSource dataSource = configureExternalDataSource(dbDetails.getUrl(), dbDetails.getUsername(),
 				dbDetails.getPassword());
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-		for (External e : fetchAllFromExternalDatabase(jdbcTemplate)) {
+		for (External e : fetchAllFromExternalDatabase(jdbcTemplate, dbDetails.getTable())) {
 			SongPayload song = new SongPayload(e);
 			addService.addSong(song);
 			addService.relateUserSong(song, userId);
@@ -34,8 +38,8 @@ public class ExternalDBServiceImpl implements ExternalDBService {
 		return ResponseEntity.ok("added from db");
 	}
 
-	private List<External> fetchAllFromExternalDatabase(JdbcTemplate jdbcTemplate) {
-		String sql = "SELECT * FROM external";
+	private List<External> fetchAllFromExternalDatabase(JdbcTemplate jdbcTemplate, String table) {
+		String sql = "SELECT * FROM " + table;
 		return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(External.class));
 	}
 

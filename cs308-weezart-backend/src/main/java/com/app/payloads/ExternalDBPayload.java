@@ -4,16 +4,18 @@ public class ExternalDBPayload {
 	private String url;
 	private String username;
 	private String password;
+	private String table;
 
 	public ExternalDBPayload() {
 		super();
 	}
 
-	public ExternalDBPayload(String url, String username, String password) {
+	public ExternalDBPayload(String url, String username, String password, String table) {
 		super();
 		this.url = url;
 		this.username = username;
 		this.password = password;
+		this.table = table;
 	}
 
 	public String getUrl() {
@@ -38,5 +40,13 @@ public class ExternalDBPayload {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getTable() {
+		return table;
+	}
+
+	public void setTable(String table) {
+		this.table = table;
 	}
 }

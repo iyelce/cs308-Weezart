@@ -31,13 +31,6 @@
 .song-image , .three-column-container, .like-add, .songPopularity,.cover-img {
     display: flex;
     flex-direction: row;
-
-
-}
-
-
-.three-column-container{
-    height: 100%;
 }
 
 
@@ -271,8 +264,14 @@
     align-items: flex-end;
     overflow: hidden;
     padding: 1rem;
-    width: 100%;
-    height: 80%;
+
+
+    /* width: 100%;
+    height: 80%; */
+
+    max-height: 100%;
+    height: 100%;
+    
     border-radius: 5%;
     text-align: center;
     color: whitesmoke;
@@ -479,3 +478,37 @@ background-color: transparent;
     border-radius: 40px;
     background-color: rgba(88, 47, 138, 0.8); 
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------------------------------------*/
+
+
+.information-modal-try {
+
+  width:auto;
+  max-width: 70vh;
+  border-radius: 30px;
+  background-color:  rgba(17,0,32,.6);
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+
+  box-shadow: 0 7px 20px 5px #00000088;
+  border-radius: .7rem;
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}

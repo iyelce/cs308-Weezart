@@ -7,6 +7,7 @@ import LikeSongApi from "../../API/LikeSongApi";
 import { useEffect } from "react";
 import RateSongApi from "../../API/RateSongApi";
 import SongRemoveApi from "../../API/SongRemoveApi";
+import UnlikeSongApi from "../../API/UnlikeSongApi";
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
@@ -63,9 +64,9 @@ const [liked, setLiked] = useState(props.liked);
 const handleLikeClick = async () => {
   if (liked) {
     // Call unlike API if the heart is already filled
-    alert("unlike api");
-
+    const unlikeReps = await UnlikeSongApi(props.token, props.userId, props.songInfo);
     setLiked(false);
+    
   } else {
     
     const likeResp = await LikeSongApi(props.token, props.userId, props.songInfo);

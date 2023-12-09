@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import ReactModal from 'react-modal';
 import { AiOutlineClose } from "react-icons/ai";
 import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiOutlineDelete, AiFillDelete } from 'react-icons/ai'; 
 import { useEffect } from "react";
-import LikeAlbumApi from "../../API/LikeAlbumApi";
-import AlbumRemoveaApi from "../../API/AlbumRemoveaApi";
-import RateAlbumApi from "../../API/RateAlbumApi";
-import UnlikeAlbumApi from "../../API/UnlikeAlbumApi";
+import LikeArtistApi from "../../API/LikeArtistApi";
+import ArtistRemoveApi from "../../API/ArtistRemoveApi";
+import RateArtistApi from "../../API/RateArtistApi";
 
 // Make sure to set appElement to avoid a11y violations
-ReactModal.setAppElement('#root'); // Replace '#root' with the ID of your app root element
+Modal.setAppElement("#root");
 
 
 //if image is empty put a defoult image
@@ -23,8 +21,7 @@ function imgsrc(val) {
     }
 }
 
-function AlbumInfoPopup({...props}) {
-    
+function NewArtistPopupTry({...props}) {
 
     const [liked, setLiked] = useState(props.liked);
     const [rating, setRating] = useState(props.rating ? props.rating[props.rating.length - 1] : 0);
@@ -48,49 +45,44 @@ function AlbumInfoPopup({...props}) {
         //     onRatingChange(selectedRating);
         // }
 
-        const ratingResponse = await RateAlbumApi(props.token, props.userId, props.albumInfo, selectedRating);
+        const ratingResponse = await RateArtistApi(props.token, props.userId, props.artistInfo, selectedRating);
         setRating(selectedRating);
       };
 
-// artistsId:['3Uqu1mEdkUJxPe7s31n1M9']
-// artistsName:['Weyes Blood']
-// id:"0Cuqhgy8vm96JEkBY3polk"
-// imageUrl:"https://i.scdn.co/image/ab67616d0000b2730c64e752dec4c08362cc4a88"
-// name:"Titanic Rising"
-// songsId:(10) ['6Jy6p1xGv0n4c5hH0CH3VP', '7s9I4aCM8cfe2cSgPaPezg', '1ki6pB2iYh9nSmlG4WPdqf', '6f4itfvWzS59Qu7JWorhxn', '51EMSRpNm9Rg5rGViVCczv', '2ujzo6cl7jAcLCnyKyYWwM', '5qspeKX1xBacLJMm2t3Yc0', '30TCAxiC8zVb5NVdUoUuCS', '2VYqgye3Wf9ySE4qYM3iJn', '5V25JNAs17PQ3dJfmMIqSG']
+// followerCount :411109
+// genres :(5) ['art pop', 'chamber pop', 'experimental folk', 'experimental pop', 'indie pop']
+// id : "3Uqu1mEdkUJxPe7s31n1M9"
+// imageUrl : "https://i.scdn.co/image/ab6761610000e5eb92b2757e7003d4f77e5a5d05"
+// name : "Weyes Blood"
 
-
-// songsName:(10) ['Picture Me Better', 'Nearer to Thee', 'Titanic Rising', 'Movies', 'Andromeda', 'Mirror Forever', "A Lot's Gonna Change", 'Something to Believe', 'Everyday', 'Wild Time']
-
-// releaseDate:"2019-04-05"
-// numberOfTracks:10
 
 
   const handleLikeClick = async () => {
     if (liked) {
-        const likeResp = await UnlikeAlbumApi(props.token, props.userId, props.albumInfo);
+      // Call unlike API if the heart is already filled
+      alert("unlike api");
   
-        console.log("page içinde unlike: ", likeResp);
-    
-        setLiked(false);
+      setLiked(false);
     } else {
+
+        console.log("qqqq->  ", props.artistInfo)
       
-      const likeResp = await LikeAlbumApi(props.token, props.userId, props.albumInfo);
+      const likeResp = await LikeArtistApi(props.token, props.userId, props.artistInfo);
   
       console.log("page içinde like: ", likeResp);
   
       setLiked(true);
-  
     }    
   };
 
   const handleDeleteClick = async () => {
     setDeleted(!deleted);
 
-    const del = await AlbumRemoveaApi(props.token, props.userId, props.albumInfo);
-    props.onRequestClose();
+    const del = await ArtistRemoveApi(props.token, props.userId, props.artistInfo);
 
+    props.onRequestClose();
 }
+
 
   return (
     <Modal
@@ -98,7 +90,6 @@ function AlbumInfoPopup({...props}) {
       onRequestClose={props.onRequestClose}
       className="information-modal"
     >
-        {/* close button */}
         <div className="close-page"> 
 
             <button onClick={props.onRequestClose}>
@@ -108,48 +99,18 @@ function AlbumInfoPopup({...props}) {
         </div>
 
         <div className="three-column-container">
-            <div className="column column-try" style={{ backgroundImage: `url(${props.albumInfo.imageUrl !== "" ? props.albumInfo.imageUrl : 'yourCatPhotoUrl'})` }}>
+        <div 
+            className="column column-try" 
+            style={{
+                backgroundImage: `url(${props.artistInfo.imageUrl !== "" ? props.artistInfo.imageUrl : 'yourCatPhotoUrl'})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundColor: 'transparent',
+            }}
+        >
                 <div className="content">
-                    <h2 className="title">{props.albumInfo.name} <span>{props.albumInfo.year}</span></h2>
-
-                    <p className="copy">{props.albumInfo.artistsName.join(', ')}</p>
-                    {/* <p className="copy">Genre: {props.albumInfo.genre.join(', ')}</p> */}
-
-                    {/* <div className="stars">
-                        {stars.map((star) => (
-                        <span
-                            key={star}
-                            className={`star ${star <= rating ? 'selected' : ''}`}
-                            onClick={() => handleStarClick(star)}
-                        >
-                            {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
-                        </span>
-                        ))}
-                    </div> */}
-                </div>
-
-
-            </div>
-
-            <div className="column">
-                {/* informations  */}
-
-                <div className="top5songlist">
-                    <ul>
-                        {props.albumInfo.songsName.map((song, index) => (
-                        <li key={index} className="songs">{song}</li>
-                        ))}
-                    </ul>
-                </div>
-
-
-            </div>
-
-            <div className="column">
-                
-                <form className="rating">
-
-                    <p>{rating > 0 ? 'Rated' : 'Rate'}</p>
+                    <h2 className="title">{props.artistInfo.name}</h2>
 
                     <div className="stars">
                         {stars.map((star) => (
@@ -162,9 +123,12 @@ function AlbumInfoPopup({...props}) {
                         </span>
                         ))}
                     </div>
+                </div>
+            </div>
 
-                    <hr/>
-
+            <div className="column">
+                
+            <form className="rating-artist">
                     <div className="like-add">
                             <div className="half-width">
                             <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={handleLikeClick}>
@@ -172,6 +136,7 @@ function AlbumInfoPopup({...props}) {
                             </div>
                                 <p>{liked ? 'Liked' : 'Like'}</p>
                             </div>
+                           
                             <div className="half-width">
                                 <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={ handleDeleteClick }>
                                     {deleted ? <AiFillDelete /> : <AiOutlineDelete/>}
@@ -179,18 +144,17 @@ function AlbumInfoPopup({...props}) {
                                 <p>{deleted ? 'Deleted' : 'Delete'}</p>
                             </div>
                     </div>
-
-                    
                 </form>
+
+                <div className="attributes">
+                    <p className="artistsFollower"> Followers: {props.artistInfo.followerCount}</p>
+                    <p className="songGenre">Genre: {props.artistInfo.genres===null?"Unknown":props.artistInfo.genres.join(', ')}</p>
+                </div>
 
             </div>
 
        
       </div>
-
-        <div className="friend-for-this-song">
-            {/* maybe add later */}
-        </div>
 
         <br/>
         <br/>
@@ -204,4 +168,4 @@ function AlbumInfoPopup({...props}) {
   );
 }
 
-export default AlbumInfoPopup;
+export default NewArtistPopupTry;

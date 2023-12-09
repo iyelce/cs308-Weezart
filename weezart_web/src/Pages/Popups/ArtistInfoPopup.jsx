@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import LikeArtistApi from "../../API/LikeArtistApi";
 import ArtistRemoveApi from "../../API/ArtistRemoveApi";
 import RateArtistApi from "../../API/RateArtistApi";
+import UnlikeArtistApi from "../../API/UnlikeArtistApi";
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
@@ -59,18 +60,10 @@ function ArtistInfoPopup({...props}) {
 
   const handleLikeClick = async () => {
     if (liked) {
-      // Call unlike API if the heart is already filled
-      alert("unlike api");
-  
-      setLiked(false);
-    } else {
-
-        console.log("qqqq->  ", props.artistInfo)
-      
-      const likeResp = await LikeArtistApi(props.token, props.userId, props.artistInfo);
-  
-      console.log("page içinde like: ", likeResp);
-  
+        const likeResp = await UnlikeArtistApi(props.token, props.userId, props.artistInfo);  
+        setLiked(false);
+    } else {      
+      const likeResp = await LikeArtistApi(props.token, props.userId, props.artistInfo);  
       setLiked(true);
     }    
   };
@@ -102,8 +95,16 @@ function ArtistInfoPopup({...props}) {
         </div>
 
         <div className="three-column-container">
-            {/* <p>---- {props.artistInfo.id}</p> */}
-        <div className="column column-try" style={{ backgroundImage: `url(${props.artistInfo.imageUrl !== "" ? props.artistInfo.imageUrl : 'yourCatPhotoUrl'})` }}>
+        <div 
+            className="column column-try" 
+            style={{
+                backgroundImage: `url(${props.artistInfo.imageUrl !== "" ? props.artistInfo.imageUrl : 'yourCatPhotoUrl'})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundColor: 'transparent',
+            }}
+        >
                 <div className="content">
                     <h2 className="title">{props.artistInfo.name}</h2>
 
@@ -119,23 +120,6 @@ function ArtistInfoPopup({...props}) {
                         ))}
                     </div>
                 </div>
-            </div>
-
-            <div className="column">               
-
-
-
-            {/* <div className="top5songlist" >
-                <ul>
-                    {songs.map((song, index) => (
-                    <li key={index} className="songs">
-                        {`${song.songName} - ${song.duration}`}
-                    </li>
-                    ))}
-                </ul>
-            </div> */}
-
-
             </div>
 
             <div className="column">
@@ -167,10 +151,6 @@ function ArtistInfoPopup({...props}) {
 
        
       </div>
-
-        <div className="friend-for-this-song">
-            {/* maybe add later */}
-        </div>
 
         <br/>
         <br/>

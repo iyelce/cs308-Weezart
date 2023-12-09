@@ -5,6 +5,7 @@ import AddedArtistsApi from "../../API/AddedArtistsApi";
 import './List.css';
 import ArtistInfoPopup from "../Popups/ArtistInfoPopup";
 
+
 function LikedArtistsList({...props}) {
 
   //to check which itm is clicked in the tables

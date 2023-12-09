@@ -1,6 +1,6 @@
-async function AnalyzeApi (token, userId  ) {
+async function AnalyzeApi (token, userId ,filter,dateFilter ) {
 
-    const url = `http://localhost:8080/analysis/song/counts/${userId}`;  
+    const url =(dateFilter=='2023-01-01'?`http://localhost:8080/analysis/${filter}/counts/33`:`http://localhost:8080/analysis/${filter}/constrained-counts/33/${dateFilter}`) ;  
     const auth = "Bearer " + token;
 
 
@@ -28,13 +28,8 @@ async function AnalyzeApi (token, userId  ) {
 
         const newResp = JSON.parse(data); 
 
-        const artistResponse = [];
-
-        for (let i=0; i<newResp.length; i++) {
-            artistResponse.push(newResp[i].artist);
-        }
-        console.log(artistResponse);
-        return artistResponse;
+        
+        return newResp;
     }
     catch (error) {
         console.error('error in fetching data:', error);

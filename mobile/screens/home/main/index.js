@@ -1,5 +1,5 @@
-import React from "react";
-import { View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Dimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Image,
@@ -10,197 +10,321 @@ import {
   Rating,
   StyleSheet,
 } from "react-native";
+import axios from "./../../../config/axios";
+import { getUserId } from "../../../helpers/Utils";
+import { LineChart } from "react-native-chart-kit";
 
 export default Main = ({ route, navigation }) => {
   const { data } = route.params;
 
+  const [addedChartData, setAddedChartData] = useState({
+    labels: [],
+    datasets: [
+      {
+        data: [],
+      },
+    ],
+  });
+  const [likedChartData, setLikedChartData] = useState({
+    labels: [],
+    datasets: [
+      {
+        data: [],
+      },
+    ],
+  });
+  const [ratedChartData, setRatedChartData] = useState({
+    labels: [],
+    datasets: [
+      {
+        data: [],
+      },
+    ],
+  });
+
+  const [popular, setPopular] = useState([]);
+  const [friendRecom, setFriendRecom] = useState([]);
+
+  useEffect(() => {
+    getUserId().then((userId) => {
+      axios.get("/analysis/song/daily-added/" + userId).then((res) => {
+        const labels = Object.keys(res);
+        const datasetData = Object.values(res);
+
+        setAddedChartData({
+          labels: labels,
+          datasets: [
+            {
+              data: datasetData,
+            },
+          ],
+        });
+      });
+      axios.get("/analysis/song/daily-liked/" + userId).then((res) => {
+        const labels = Object.keys(res);
+        const datasetData = Object.values(res);
+
+        setLikedChartData({
+          labels: labels,
+          datasets: [
+            {
+              data: datasetData,
+            },
+          ],
+        });
+      });
+      axios.get("/analysis/song/daily-rating/" + userId).then((res) => {
+        const labels = Object.keys(res);
+        const datasetData = Object.values(res);
+
+        setRatedChartData({
+          labels: labels,
+          datasets: [
+            {
+              data: datasetData,
+            },
+          ],
+        });
+      });
+
+      axios.get("/recommendation/popular").then((res) => {
+        setPopular(res);
+      });
+      axios.get("/recommendation/friend/" + userId).then((res) => {
+        setFriendRecom(res);
+      });
+    });
+  }, []);
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <ScrollView
-        style={{
-          height: "100%",
-          // alignItems: "center",
-        }}
-        contentContainerStyle={{
-          paddingBottom: 60,
-        }}
-      >
-        <Text
-          style={{
-            fontWeight: "800",
-            fontSize: 20,
-            color: "black",
-            marginTop: 20,
-            marginBottom: 20,
-            marginLeft: 10,
-          }}
-        >
-          Welcome to the WeezartApp, Raman!
-        </Text>
-        <View>
-          <Text style={styles.itemText}>Recommendations</Text>
+    // <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ backgroundColor: "white" }}>
+      {addedChartData.labels.length != 0 &&
+        likedChartData.labels.length != 0 &&
+        ratedChartData.labels.length != 0 &&
+        friendRecom.friendName != null && (
           <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ marginTop: 10, paddingLeft: 10, paddingRight: 20 }}
+            style={{
+              height: "100%",
+              // alignItems: "center",
+              // padding: 20,
+              paddingTop: 20,
+            }}
+            contentContainerStyle={{
+              paddingBottom: 100,
+              justifyContent: "center",
+              display: "flex",
+            }}
           >
-            <View style={{ width: 150 }}>
-              <View
+            <View style={{ marginLeft: "auto", marginRight: "auto" }}>
+              <ScrollView
+                snapToInterval={360}
+                decelerationRate={"fast"}
+                horizontal
+                showsHorizontalScrollIndicator={false}
                 style={{
-                  width: 150,
-                  height: 150,
-                  backgroundColor: "#102331",
-                  borderRadius: 5,
+                  marginTop: 10,
+                  paddingLeft: 20,
+                  paddingRight: 20,
                 }}
-              ></View>
-              <Text style={{ marginTop: 8 }}>
-                {"And in the Darkness, Hearts Aglow"}
-              </Text>
-            </View>
-            <View style={{ width: 150, marginLeft: 15 }}>
-              <View
-                style={{
-                  width: 150,
-                  height: 150,
-                  backgroundColor: "#27422e",
-                  borderRadius: 5,
+                contentContainerStyle={{
+                  gap: 10,
+                  paddingRight: 30,
                 }}
-              ></View>
-              <Text style={{ marginTop: 8 }}>{"Titanic Rising"}</Text>
+              >
+                <View>
+                  <Text style={{ fontWeight: "bold", fontSize: 25 }}>
+                    Your Daily Added Songs
+                  </Text>
+                  <LineChart
+                    data={addedChartData}
+                    width={Dimensions.get("window").width * (9 / 10)} // from react-native
+                    height={220}
+                    // yAxisLabel="$"
+                    // yAxisSuffix="k"
+                    yAxisInterval={1} // optional, defaults to 1
+                    chartConfig={{
+                      backgroundColor: "#e26a00",
+                      backgroundGradientFrom: "#fb8c00",
+                      backgroundGradientTo: "#ffa726",
+                      decimalPlaces: 2, // optional, defaults to 2dp
+                      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                      labelColor: (opacity = 1) =>
+                        `rgba(255, 255, 255, ${opacity})`,
+                      style: {
+                        borderRadius: 16,
+                      },
+                      propsForDots: {
+                        r: "6",
+                        strokeWidth: "2",
+                        stroke: "#ffa726",
+                      },
+                    }}
+                    bezier
+                    style={{
+                      marginVertical: 8,
+                      borderRadius: 16,
+                      marginTop: 15,
+                    }}
+                  />
+                </View>
+                <View>
+                  <Text style={{ fontWeight: "bold", fontSize: 25 }}>
+                    Your Daily Liked Songs
+                  </Text>
+                  <LineChart
+                    data={likedChartData}
+                    width={Dimensions.get("window").width * (9 / 10)} // from react-native
+                    height={220}
+                    // yAxisLabel="$"
+                    // yAxisSuffix="k"
+                    yAxisInterval={1} // optional, defaults to 1
+                    chartConfig={{
+                      backgroundColor: "#e26a00",
+                      backgroundGradientFrom: "#fb8c00",
+                      backgroundGradientTo: "#a7a726",
+                      decimalPlaces: 2, // optional, defaults to 2dp
+                      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                      labelColor: (opacity = 1) =>
+                        `rgba(255, 255, 255, ${opacity})`,
+                      style: {
+                        borderRadius: 16,
+                      },
+                      propsForDots: {
+                        r: "6",
+                        strokeWidth: "2",
+                        stroke: "#ffa726",
+                      },
+                    }}
+                    bezier
+                    style={{
+                      marginVertical: 8,
+                      borderRadius: 16,
+                      marginTop: 15,
+                    }}
+                  />
+                </View>
+                <View>
+                  <Text style={{ fontWeight: "bold", fontSize: 25 }}>
+                    Your Daily Rated Songs
+                  </Text>
+                  <LineChart
+                    data={ratedChartData}
+                    width={Dimensions.get("window").width * (9 / 10)} // from react-native
+                    height={220}
+                    // yAxisLabel="$"
+                    // yAxisSuffix="k"
+                    yAxisInterval={1} // optional, defaults to 1
+                    chartConfig={{
+                      backgroundColor: "#e26a00",
+                      backgroundGradientFrom: "#a7a700",
+                      backgroundGradientTo: "#ffa726",
+                      decimalPlaces: 2, // optional, defaults to 2dp
+                      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                      labelColor: (opacity = 1) =>
+                        `rgba(255, 255, 255, ${opacity})`,
+                      style: {
+                        borderRadius: 16,
+                      },
+                      propsForDots: {
+                        r: "6",
+                        strokeWidth: "2",
+                        stroke: "#ffa726",
+                      },
+                    }}
+                    bezier
+                    style={{
+                      marginVertical: 8,
+                      borderRadius: 16,
+                      marginTop: 15,
+                    }}
+                  />
+                </View>
+              </ScrollView>
             </View>
-            <View style={{ width: 150, marginLeft: 15 }}>
-              <View
-                style={{
-                  width: 150,
-                  height: 150,
-                  backgroundColor: "#414227",
-                  borderRadius: 5,
-                }}
-              ></View>
-              <Text style={{ marginTop: 8 }}>{"Front Row Seat to Earth"}</Text>
-            </View>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 25,
+                marginLeft: 20,
+                marginTop: 20,
+              }}
+            >
+              Most Popular Songs
+            </Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{
+                marginTop: 10,
+                paddingLeft: 20,
+                paddingRight: 20,
+              }}
+              contentContainerStyle={{
+                gap: 10,
+                paddingRight: 30,
+              }}
+            >
+              {popular.map((song, i) => {
+                return (
+                  <View style={{ width: 150 }} key={song.id}>
+                    <Image
+                      style={{ width: 150, height: 150, borderRadius: 5 }}
+                      source={{ uri: song.albumImageURL }}
+                    />
+                    <Text style={{ marginTop: 8, fontWeight: "bold" }}>
+                      {song.name}
+                    </Text>
+                    <Text style={{ marginTop: 2, fontSize: 12 }}>
+                      {song.artistsName[0]}
+                    </Text>
+                  </View>
+                );
+              })}
+            </ScrollView>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 25,
+                marginLeft: 20,
+                marginTop: 20,
+              }}
+            >
+              {"What " + friendRecom.friendName + " recommends"}
+            </Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{
+                marginTop: 10,
+                paddingLeft: 20,
+                paddingRight: 20,
+              }}
+              contentContainerStyle={{
+                gap: 10,
+                paddingRight: 30,
+              }}
+            >
+              {friendRecom.friendSongs.map((song, i) => {
+                return (
+                  <View style={{ width: 150 }} key={song.id}>
+                    <Image
+                      style={{ width: 150, height: 150, borderRadius: 5 }}
+                      source={{ uri: song.albumImageURL }}
+                    />
+                    <Text style={{ marginTop: 8, fontWeight: "bold" }}>
+                      {song.name}
+                    </Text>
+                    <Text style={{ marginTop: 2, fontSize: 12 }}>
+                      {song.artistsName[0]}
+                    </Text>
+                  </View>
+                );
+              })}
+            </ScrollView>
           </ScrollView>
-        </View>
-        <View>
-          <Text style={styles.itemText}>Your Friends' Favorites</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ marginTop: 10, paddingLeft: 10, paddingRight: 20 }}
-          >
-            <View style={{ width: 150 }}>
-              <View
-                style={{
-                  width: 150,
-                  height: 150,
-                  backgroundColor: "#102331",
-                  borderRadius: 5,
-                }}
-              ></View>
-              <Text style={{ marginTop: 8 }}>
-                {"And in the Darkness, Hearts Aglow"}
-              </Text>
-            </View>
-            <View style={{ width: 150, marginLeft: 15 }}>
-              <View
-                style={{
-                  width: 150,
-                  height: 150,
-                  backgroundColor: "#27422e",
-                  borderRadius: 5,
-                }}
-              ></View>
-              <Text style={{ marginTop: 8 }}>{"Titanic Rising"}</Text>
-            </View>
-            <View style={{ width: 150, marginLeft: 15 }}>
-              <View
-                style={{
-                  width: 150,
-                  height: 150,
-                  backgroundColor: "#414227",
-                  borderRadius: 5,
-                }}
-              ></View>
-              <Text style={{ marginTop: 8 }}>{"Front Row Seat to Earth"}</Text>
-            </View>
-          </ScrollView>
-        </View>
-        <View>
-          <Text style={styles.itemText}>Songs You Might Like</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ marginTop: 10, paddingLeft: 10, paddingRight: 20 }}
-          >
-            <View style={{ width: 150 }}>
-              <View
-                style={{
-                  width: 150,
-                  height: 150,
-                  backgroundColor: "#102331",
-                  borderRadius: 5,
-                }}
-              ></View>
-              <Text style={{ marginTop: 8 }}>
-                {"And in the Darkness, Hearts Aglow"}
-              </Text>
-            </View>
-            <View style={{ width: 150, marginLeft: 15 }}>
-              <View
-                style={{
-                  width: 150,
-                  height: 150,
-                  backgroundColor: "#27422e",
-                  borderRadius: 5,
-                }}
-              ></View>
-              <Text style={{ marginTop: 8 }}>{"Titanic Rising"}</Text>
-            </View>
-            <View style={{ width: 150, marginLeft: 15 }}>
-              <View
-                style={{
-                  width: 150,
-                  height: 150,
-                  backgroundColor: "#414227",
-                  borderRadius: 5,
-                }}
-              ></View>
-              <Text style={{ marginTop: 8 }}>{"Front Row Seat to Earth"}</Text>
-            </View>
-          </ScrollView>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        )}
+    </View>
+    // </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#121212",
-  },
-  sectionHeader: {
-    fontWeight: "800",
-    fontSize: 20,
-    color: "black",
-    marginTop: 20,
-    marginBottom: 5,
-    marginLeft: 20,
-  },
-  item: {
-    margin: 10,
-  },
-  itemPhoto: {
-    width: 200,
-    height: 200,
-    borderRadius: 30,
-    marginVertical: 20,
-  },
-  itemText: {
-    color: "black",
-    marginTop: 5,
-    marginLeft: 10,
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-});

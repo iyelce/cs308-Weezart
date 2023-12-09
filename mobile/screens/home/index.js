@@ -31,6 +31,7 @@ export default Home = () => {
       <Tab.Screen
         name="Main"
         component={Main}
+        // options={{ headerShown: false }}
         initialParams={{
           icon: require("./../../assets/icons/home.png"),
         }}

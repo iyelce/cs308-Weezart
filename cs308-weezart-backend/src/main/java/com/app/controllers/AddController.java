@@ -77,41 +77,43 @@ public class AddController {
 
 		try {
 			Song didYouMeanSong = new Song(songPayload);
-			
+
 			log.info("song id:_____" + didYouMeanSong.getId());
-			
+
 			log.info(songPayload.toString());
-	
+
 			if (songRepo.findByid(didYouMeanSong.getId()) == null) {
 				songRepo.save(didYouMeanSong);
 			}
 			UserSong userSong = addService.relateUserSong(songPayload, userId);
-	
+
 			for (String artistName : didYouMeanSong.getArtistsName()) {
 				log.info("artist kaydedecem-----" + artistName);
-	
+
 				Artist artist = spotifyService.artistSearch(artistName, spotifyAuth.authenticateWithSpotify()).get(0);
-	
+
 				log.info("artist kaydediyooommmmmm");
 				log.info(artist.getName());
 				artistRepo.save(artist);
 				log.info("artist kayedttiimm");
 				ArtistPayload artistPayload = new ArtistPayload(artist);
-	
+
 				addService.relateUserArtist(artistPayload, userId);
-	
+
 			}
-	
+
 			log.info("album kaydedecem-------" + didYouMeanSong.getAlbumName());
-			Album album = spotifyService.albumSearch(didYouMeanSong.getAlbumName() + " " + didYouMeanSong.getArtistsName().get(0),
-					spotifyAuth.authenticateWithSpotify()).get(0);
+			Album album = spotifyService
+					.albumSearch(didYouMeanSong.getAlbumName() + " " + didYouMeanSong.getArtistsName().get(0),
+							spotifyAuth.authenticateWithSpotify())
+					.get(0);
 			albumRepo.save(album);
 			log.info("albumun insoun=hun alayyimrim" + album.getArtistsName().get(0));
 			AlbumPayload albumPayload = new AlbumPayload(album);
 			addService.relateUserAlbum(albumPayload, userId);
 			return ResponseEntity.ok("SONG_SAVED");
 
-		} catch(CustomException e) {
+		} catch (CustomException e) {
 			String errorMessage = "SONG_ALREADY_EXISTS";
 			log.info(errorMessage);
 			return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
@@ -202,10 +204,10 @@ public class AddController {
 
 		songPayload.setPopularity(-1);
 
-		Song givenSong = new Song(songPayload.getId(), songPayload.getAlbumImageURL(), songPayload.getName(), songPayload.getAlbumName(),
-				songPayload.getAlbumId(), songPayload.getArtistsName(), songPayload.getArtistsId(),
-				songPayload.getPopularity(), songPayload.getDuration_ms(), songPayload.isExplicit(),
-				songPayload.getAlbumRelease());
+		Song givenSong = new Song(songPayload.getId(), songPayload.getAlbumImageURL(), songPayload.getName(),
+				songPayload.getAlbumName(), songPayload.getAlbumId(), songPayload.getArtistsName(),
+				songPayload.getArtistsId(), songPayload.getPopularity(), songPayload.getDuration_ms(),
+				songPayload.isExplicit(), songPayload.getAlbumRelease());
 
 		songRepo.save(givenSong);
 
@@ -270,5 +272,17 @@ public class AddController {
 		User user = addService.followUser(currentUsername, targetUsername);
 
 		return ResponseEntity.ok(user);
+	}
+
+	@GetMapping("/get-added-info/{songId}/{userId}")
+	public ResponseEntity<Boolean> getLikeStatus(@PathVariable String songId, @PathVariable String userId) {
+		Song givenSong = songRepo.findByid(songId);
+		User givenUser = new User(Long.parseLong(userId));
+
+		UserSong givenRelation = userSongRepo.findBySongAndUser(givenSong, givenUser);
+
+		boolean addedStatus = (givenRelation != null);
+
+		return ResponseEntity.ok(addedStatus);
 	}
 }

@@ -21,7 +21,6 @@ import AddFriend from './Pages/AddFriend/AddFriend.jsx';
 import ExportPage from './Pages/ImportFile/ExportFile.jsx';
 import CloudImport from './Pages/ImportFile/CloudImport.jsx';
 
-import NewImportFileTry from './Pages/ImportFile/NewImportFileTry.jsx';
 
 
 function App() {
@@ -112,12 +111,6 @@ function App() {
               <Route path = 'songFileUpload' element={<SongFileUpload token={token} userId={userId}/>}/>
               <Route path = 'exportFile' element={<ExportPage token={token} userId={userId}/>}/>
               <Route path = 'cloudImport' element={<CloudImport token={token} userId={userId}/>}/>
-
-              
-              <Route path = 'newexport' element={<NewImportFileTry token={token} userId={userId}/>}/>
-
-
-
 
               <Route path = 'myProfile' element={<MyProfile token={token} userId={userId}/>}/>
               <Route path = 'followers' element={<FollowersList token={token} userId={userId} username={username}/>}/>

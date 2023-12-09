@@ -209,18 +209,6 @@ const SideBar = ({...props}) => {
 
               </MenuItem>
 
-              <MenuItem
-                active={true}
-                style={{
-                  color: colors.grey[100],
-                }}
-                onClick={() => {navigate("newexport")}}
-                icon={<FileDownloadIcon />}
-              >
-                <Typography>{"Import Try"}</Typography>
-
-              </MenuItem>
-
 
               <MenuItem
                 active={true}

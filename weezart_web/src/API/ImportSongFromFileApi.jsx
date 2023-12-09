@@ -7,22 +7,59 @@
 //but does not add duplicates to the database.
 
 
-
-async function ImportSongFromFileApi(token, userId, file) {
+async function ImportSongFromFileApi(token, userId, selectedFile ) {
 
     const url = `http://localhost:8080/file/import/${userId}`;  
     const auth = "Bearer " + token;
 
-    try{        
+    //---------------------
+
+    var formdata = new FormData();
+    //formdata.append("file", selectedFile.files[0], completeFilePath );
+    //formdata.append("file", selectedFile.files[0] );
+    formdata.append("file", selectedFile );
+
+    try{      
+
+                  
+
+
+
+        // const response = await fetch(url, {
+        //     headers: {
+        //         accept: 'application/json',
+        //         'Authorization': auth,
+        //         //'Content-Type': 'application/json'
+        //         'Content-Type':'multipart/form-data'
+        //     },
+        //     body: JSON.stringify(file),
+        //     method: 'POST',
+        //     mode: 'cors',
+        //     credentials: 'include', 
+        // });
+        
+        // const data = await response.text();
+    
+        // if(!response.ok) {
+        //     throw new Error('Network response is not ok');
+        // }
+
+        // const newResp = JSON.parse(data); 
+
+        // console.log("like api dönen : ", newResp);
+
+        // return newResp;
+
+        //----------------------------
+        
 
         const response = await fetch(url, {
             headers: {
                 accept: 'application/json',
                 'Authorization': auth,
-                //'Content-Type': 'application/json'
-                'Content-Type':'multipart/form-data'
+                //'Content-Type':'multipart/form-data'
             },
-            body: JSON.stringify(file),
+            body: formdata,
             method: 'POST',
             mode: 'cors',
             credentials: 'include', 
@@ -34,11 +71,9 @@ async function ImportSongFromFileApi(token, userId, file) {
             throw new Error('Network response is not ok');
         }
 
-        const newResp = JSON.parse(data); 
+        console.log("like api dönen : ", data);
 
-        console.log("like api dönen : ", newResp);
-
-        return newResp;
+        return data;
 
     }
     catch (error) {

@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -98,39 +100,56 @@ public class FileServiceImpl implements FileService {
 	        UserSong userSong = new UserSong();
 	        userSong.setUser(user);
 	        userSong.setSong(song);
-
-	        if (jsonNode.get("addTime") != null)
-	            userSong.setAddTime(jsonNode.get("addTime").asText());
-	        if (jsonNode.get("liked") != null)
-	            userSong.setLiked(jsonNode.get("liked").asBoolean());
-	        if (jsonNode.get("likeTime") != null)
-	            userSong.setLikeTime(jsonNode.get("likeTime").asText());
-
-	        List<Integer> ratings = new ArrayList<>();
-	        List<String> ratingDates = new ArrayList<>();
-
-	        if (jsonNode.get("rating") != null) {
-	            JsonNode ratingNode = jsonNode.get("rating");
-	            for (JsonNode rating : ratingNode) {
-	                ratings.add(rating.asInt());
-	            }
-	        }
-
-	        if (jsonNode.get("ratingTime") != null) {
-	            JsonNode ratingDateNode = jsonNode.get("ratingTime");
-	            for (JsonNode ratingDate : ratingDateNode) {
-	                ratingDates.add(ratingDate.asText());
-	            }
-	        }
-
-	        userSong.setRating(ratings);
-	        userSong.setRatingTime(ratingDates);
+	        
+	        List<Integer> rating = new ArrayList<>();
+			rating.add(0);
+	        
+	        userSong.setAddTime(getCurrentTime());
+	        userSong.setLiked(false);
+	        userSong.setRating(rating);
+	        
+//
+//	        if (jsonNode.get("addTime") != null)
+//	            userSong.setAddTime(jsonNode.get("addTime").asText());
+//	        if (jsonNode.get("liked") != null)
+//	            userSong.setLiked(jsonNode.get("liked").asBoolean());
+//	        if (jsonNode.get("likeTime") != null)
+//	            userSong.setLikeTime(jsonNode.get("likeTime").asText());
+//
+//	        List<Integer> ratings = new ArrayList<>();
+//	        List<String> ratingDates = new ArrayList<>();
+//
+//	        if (jsonNode.get("rating") != null) {
+//	            JsonNode ratingNode = jsonNode.get("rating");
+//	            for (JsonNode rating : ratingNode) {
+//	                ratings.add(rating.asInt());
+//	            }
+//	        }
+//
+//	        if (jsonNode.get("ratingTime") != null) {
+//	            JsonNode ratingDateNode = jsonNode.get("ratingTime");
+//	            for (JsonNode ratingDate : ratingDateNode) {
+//	                ratingDates.add(ratingDate.asText());
+//	            }
+//	        }
+//
+//	        userSong.setRating(ratings);
+//	        userSong.setRatingTime(ratingDates);
 
 	        if (userSongRepo.findBySongAndUser(song, user) != null)
 	            continue;
 
 	        userSongRepo.save(userSong);
 	    }
+	}
+	
+	private String getCurrentTime() {
+	    // Use your preferred method to get the current time as a string
+	    // For example, you can use SimpleDateFormat or Java 8's LocalDateTime
+	    // Here's an example using LocalDateTime:
+	    LocalDateTime currentTime = LocalDateTime.now();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	    return currentTime.format(formatter);
 	}
 
 	

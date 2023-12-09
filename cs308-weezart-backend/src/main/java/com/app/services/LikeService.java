@@ -16,4 +16,11 @@ public interface LikeService {
 	public UserArtist relateLikeArtist(ArtistPayload artist, String userId);
 
 	public UserAlbum relateLikeAlbum(AlbumPayload album, String userId);
+
+	
+	public UserSong relateUnlikeSong(SongPayload song, String userID);
+
+	public UserArtist relateUnlikeArtist(ArtistPayload artist, String userId);
+
+	public UserAlbum relateUnlikeAlbum(AlbumPayload album, String userId);
 }

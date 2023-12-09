@@ -16,6 +16,8 @@ import {
   RefreshControl,
   ImageBackground,
   Animated,
+  Modal,
+  Linking,
 } from "react-native";
 import SegmentedControl from "react-native-segmented-control-2";
 import { Colors } from "react-native/Libraries/NewAppScreen";
@@ -30,6 +32,10 @@ import Album from "../search/album";
 import Artist from "../search/album/artist";
 import { Swipeable, RectButton } from "react-native-gesture-handler";
 import artist from "../search/album/artist";
+import DocumentPicker from "react-native-document-picker";
+import Dialog from "react-native-dialog";
+import RNFS from "react-native-fs";
+import Share from "react-native-share";
 
 const Stack = createNativeStackNavigator();
 
@@ -259,8 +265,102 @@ const ProfileScreen = ({ navigation }) => {
     });
   };
 
+  const importFile = () => {
+    getUserId().then((userId) => {
+      try {
+        DocumentPicker.pick({
+          type: [DocumentPicker.types.allFiles],
+        }).then((file) => {
+          console.log("ayo", file);
+          const formData = new FormData();
+          // formData.append("file", {
+          //   uri: file.uri,
+          //   type: file.type,
+          //   name: file.name,
+          // });
+          formData.append("file", file);
+
+          axios
+            .post(`/file/import/${userId}`, formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((response) => {
+              console.log("Import successful:", response.data);
+              // Handle success
+            });
+        });
+      } catch (err) {
+        if (DocumentPicker.isCancel(err)) {
+          // User cancelled the picker
+        } else {
+          console.error("Error picking document:", err);
+        }
+      }
+    });
+  };
+
+  const [dbModalVisible, setDbModalVisible] = useState(false);
+  const [dbData, setDbData] = useState({ url: "", username: "", password: "" });
+
+  const handleOpenDbModal = () => setDbModalVisible(true);
+  const handleCloseDbModal = () => setDbModalVisible(false);
+
+  const handleDbModalSubmit = () => {
+    getUserId().then((userId) => {
+      axios.post("/add-from-db/db/" + userId, dbData).then((res) => {
+        Toast.show("Successful :)");
+      });
+    });
+  };
+  const handleExport = () => {
+    getUserId().then((userId) => {
+      try {
+        axios
+          .post(`/file/export/${userId}`, {
+            responseType: "blob",
+          })
+          .then(async (res) => {
+            const jsonData = JSON.stringify(res);
+
+            const fileName = `exported_weezart_${new Date().getTime()}.json`;
+            const filePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+            await RNFS.writeFile(filePath, jsonData, "utf8");
+            Share.open({
+              url: `file://${filePath}`,
+              type: "application/json",
+              failOnCancel: false,
+            });
+          });
+      } catch (error) {
+        console.error("Error downloading file:", error);
+      }
+    });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <Dialog.Container visible={dbModalVisible}>
+        <Dialog.Title>Import from DB</Dialog.Title>
+        <Dialog.Description>
+          Import your song data by connecting to your database server
+        </Dialog.Description>
+        <Dialog.Input
+          onChange={(text) => setDbData({ ...dbData, url: text })}
+          label="URL"
+        />
+        <Dialog.Input
+          onChange={(text) => setDbData({ ...dbData, username: text })}
+          label="Username"
+        />
+        <Dialog.Input
+          onChange={(text) => setDbData({ ...dbData, password: text })}
+          label="Password"
+        />
+        <Dialog.Button label="Cancel" onPress={handleCloseDbModal} />
+        <Dialog.Button label="Connect" onPress={handleDbModalSubmit} />
+      </Dialog.Container>
       <ScrollView
         style={{ flex: 1 }}
         refreshControl={
@@ -326,7 +426,7 @@ const ProfileScreen = ({ navigation }) => {
                 <Text
                   style={{
                     fontWeight: "bold",
-                    fontSize: 13,
+                    fontSize: 14,
                     color: "#7e7e7e",
                   }}
                 >
@@ -338,12 +438,82 @@ const ProfileScreen = ({ navigation }) => {
                 <Text
                   style={{
                     fontWeight: "bold",
-                    fontSize: 13,
+                    fontSize: 14,
                     color: "#7e7e7e",
                   }}
                 >
                   {(userInfo.following ? userInfo.following.length : 0) +
                     " following"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{ flexDirection: "row", justifyContent: "center", gap: 3 }}
+            >
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderRadius: 16,
+                  borderTopLeftRadius: 999,
+                  borderBottomLeftRadius: 999,
+                  padding: 9,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 10,
+                  backgroundColor: "#e8e8e8",
+                }}
+                onPress={importFile}
+              >
+                <Text
+                  style={{ fontWeight: "bold", color: "#7e7e7e", fontSize: 11 }}
+                >
+                  Import from file
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  // borderRadius: 16,
+                  // borderTopRightRadius: 999,
+                  // borderBottomRightRadius: 999,
+                  padding: 9,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 10,
+                  backgroundColor: "#e8e8e8",
+                }}
+                onPress={handleExport}
+              >
+                <Text
+                  style={{ fontWeight: "bold", color: "#7e7e7e", fontSize: 11 }}
+                >
+                  Export
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderRadius: 16,
+                  borderTopRightRadius: 999,
+                  borderBottomRightRadius: 999,
+                  padding: 9,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 10,
+                  backgroundColor: "#e8e8e8",
+                }}
+                onPress={handleOpenDbModal}
+              >
+                <Text
+                  style={{ fontWeight: "bold", color: "#7e7e7e", fontSize: 11 }}
+                >
+                  Import from DB
                 </Text>
               </TouchableOpacity>
             </View>
@@ -782,33 +952,3 @@ const ProfileScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#121212",
-  },
-  sectionHeader: {
-    fontWeight: "800",
-    fontSize: 20,
-    color: "black",
-    marginTop: 20,
-    marginBottom: 5,
-    marginLeft: 20,
-  },
-  item: {
-    margin: 10,
-  },
-  itemPhoto: {
-    width: 200,
-    height: 200,
-    borderRadius: 30,
-    marginVertical: 20,
-  },
-  itemText: {
-    color: "black",
-    marginTop: 5,
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-});

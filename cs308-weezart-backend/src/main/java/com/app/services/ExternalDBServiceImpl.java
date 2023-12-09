@@ -25,17 +25,17 @@ public class ExternalDBServiceImpl implements ExternalDBService {
 				dbDetails.getPassword());
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-		for (External e : fetchAllFromExternalDatabase(jdbcTemplate, dbDetails.getTable())) {
+		for (External e : fetchAllFromExternalDatabase(jdbcTemplate)) {
 			SongPayload song = new SongPayload(e);
-			addService.relateUserSong(song, userId);
 			addService.addSong(song);
+			addService.relateUserSong(song, userId);
 		}
 
 		return ResponseEntity.ok("added from db");
 	}
 
-	private List<External> fetchAllFromExternalDatabase(JdbcTemplate jdbcTemplate, String table) {
-		String sql = "SELECT * FROM " + table;
+	private List<External> fetchAllFromExternalDatabase(JdbcTemplate jdbcTemplate) {
+		String sql = "SELECT * FROM external";
 		return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(External.class));
 	}
 

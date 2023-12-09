@@ -43,6 +43,7 @@ public class UserSong {
 		rating = new ArrayList<>();
 		rating.add(0);
 	}
+	
 
 	public Long getId() {
 		return id;

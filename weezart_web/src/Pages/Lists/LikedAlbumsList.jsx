@@ -4,6 +4,7 @@ import { useState } from "react";
 import AddedAlbumsApi from "../../API/AddedAlbumsApi";
 import { IoIosAlbums } from "react-icons/io";
 import AlbumInfoPopup from '../Popups/AlbumInfoPopup';
+import albumImage from "../../songImage.jpg"
 
 function LikedAlbumsList({...props}) {
 
@@ -66,7 +67,7 @@ const handleAlbumClosePopup = (index) => {
 
 function imgsrc(val) {
   if(val === null || val==="") {
-      return "https://placekitten.com/100/100";
+      return  albumImage;
   }
   else {
       return val;

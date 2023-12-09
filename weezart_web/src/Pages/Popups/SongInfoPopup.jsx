@@ -8,14 +8,15 @@ import { useEffect } from "react";
 import RateSongApi from "../../API/RateSongApi";
 import SongRemoveApi from "../../API/SongRemoveApi";
 import UnlikeSongApi from "../../API/UnlikeSongApi";
+import songImage from "../../songImage.jpg"
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
 
 
 function imgsrc(val) {
-    if(val === undefined || val==="") {
-        return "https://i.pinimg.com/564x/47/99/fd/4799fdb80098968bf6ff4c311eed1110.jpg";
+    if(val === null || val==="") {
+        return songImage;
     }
     else {
         return val;
@@ -105,7 +106,9 @@ const formatDuration = (durationInMilliseconds) => {
         <div className="close-page">
             <div className="songPopularity">
                 <AiFillCrown className="crown-icon" />
-                <p className="songPopularity-label">Popularity: {props.songInfo.popularity} / 100 </p>
+                <p className="songPopularity-label">
+                    Popularity: {props.songInfo.popularity !== -1 ? props.songInfo.popularity + " / 100" : "unknown"}
+                </p>
             </div>
             
             <button onClick={props.onRequestClose}>
@@ -134,7 +137,7 @@ const formatDuration = (durationInMilliseconds) => {
                 
                 <form className="rating">
 
-                    <p>{rating > 0 ? 'Rated' : 'Rate'}</p>
+                    <p className="songAlbum" >{rating > 0 ? 'Rated' : 'Rate'}</p>
 
                     <div className="stars">
                         {stars.map((star) => (
@@ -155,13 +158,13 @@ const formatDuration = (durationInMilliseconds) => {
                             <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={handleLikeClick}>
                                 {liked ? <AiFillHeart /> : <AiOutlineHeart />}
                             </div>
-                                <p>{liked ? 'Liked' : 'Like'}</p>
+                                <p className="songAlbum" >{liked ? 'Liked' : 'Like'}</p>
                             </div>
                             <div className="half-width">
                                 <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={ handleDeleteClick }>
                                     {deleted ? <AiFillDelete /> : <AiOutlineDelete/>}
                                     </div>
-                                <p>{deleted ? 'Deleted' : 'Delete'}</p>
+                                <p className="songAlbum" >{deleted ? 'Deleted' : 'Delete'}</p>
                             </div>
                     </div>
 

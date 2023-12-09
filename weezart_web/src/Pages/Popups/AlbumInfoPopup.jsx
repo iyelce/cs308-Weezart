@@ -8,6 +8,7 @@ import LikeAlbumApi from "../../API/LikeAlbumApi";
 import AlbumRemoveaApi from "../../API/AlbumRemoveaApi";
 import RateAlbumApi from "../../API/RateAlbumApi";
 import UnlikeAlbumApi from "../../API/UnlikeAlbumApi";
+import albumImage from "../../songImage.jpg"
 
 // Make sure to set appElement to avoid a11y violations
 ReactModal.setAppElement('#root'); // Replace '#root' with the ID of your app root element
@@ -15,8 +16,8 @@ ReactModal.setAppElement('#root'); // Replace '#root' with the ID of your app ro
 
 //if image is empty put a defoult image
 function imgsrc(val) {
-    if(val === undefined || val==="") {
-        return "https://i.pinimg.com/564x/e3/c9/a9/e3c9a9e5934d65cff25d83a2ac655230.jpg";
+    if(val === null || val==="" || val === undefined) {
+        return albumImage;
     }
     else {
         return val;
@@ -108,14 +109,23 @@ function AlbumInfoPopup({...props}) {
         </div>
 
         <div className="three-column-container">
-            <div className="column column-try" style={{ backgroundImage: `url(${props.albumInfo.imageUrl !== "" ? props.albumInfo.imageUrl : 'yourCatPhotoUrl'})` }}>
-                <div className="content">
+            
+        <div 
+            className="column column-try" 
+            style={{
+                backgroundImage: `url(${imgsrc(props.albumInfo.imageUrl)})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundColor: 'transparent',
+            }}
+        >
+              <div className="content">
                     <h2 className="title">{props.albumInfo.name} <span>{props.albumInfo.year}</span></h2>
 
                     <p className="copy">{props.albumInfo.artistsName.join(', ')}</p>
-                    {/* <p className="copy">Genre: {props.albumInfo.genre.join(', ')}</p> */}
 
-                    {/* <div className="stars">
+                    <div className="stars">
                         {stars.map((star) => (
                         <span
                             key={star}
@@ -125,7 +135,7 @@ function AlbumInfoPopup({...props}) {
                             {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
                         </span>
                         ))}
-                    </div> */}
+                    </div>
                 </div>
 
 
@@ -179,7 +189,6 @@ function AlbumInfoPopup({...props}) {
                                 <p>{deleted ? 'Deleted' : 'Delete'}</p>
                             </div>
                     </div>
-
                     
                 </form>
 

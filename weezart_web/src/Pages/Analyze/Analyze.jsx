@@ -89,12 +89,12 @@ function isDateBeforeToday(date) {
     }),
   };
   return (
-    <div >
+    <div  >
     <Box display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows="repeat(24, 1fr)"
         gap="10px"
-        height="100vh">
+        height="120vh">
         <Box
         gridColumn="span 12"
         gridRow="span 1"
@@ -331,6 +331,15 @@ function isDateBeforeToday(date) {
                              }}}
                              />
         </Box>
+
+        <Box
+          gridColumn="span 12"
+          gridRow="span 6"
+          backgroundColor="red"
+>
+
+  <p>hello</p>
+</Box>
         
 
 

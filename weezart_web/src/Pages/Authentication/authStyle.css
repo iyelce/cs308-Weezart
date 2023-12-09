@@ -81,6 +81,7 @@ div.main .register-form{
     height:100%;
     position:relative;
     margin-left: 3%;
+    margin-top:100px;
 } 
 
 
@@ -163,7 +164,7 @@ div.register-button {
 	position: relative;
     margin-top:1.7rem;
 	top: 50%;
-    left:10%;
+    left:25%;
 	width: 250px;
 	height: 50px;	
     transition:0.5s;
@@ -295,6 +296,7 @@ div.register-button:nth-child(1)::after {
 
 /* Login or Sign Up with Google Button */
 .social-registers button.register-with-google-btn {
+    visibility: hidden;
 	padding: 12px 16px 12px 42px;
 	margin-top:20px;
 	border: none;
@@ -379,3 +381,10 @@ div.register-logo img{
     text-shadow: 2px 2px 4px rgb(191, 186, 186);
 }
   
+#root > div > div:nth-child(2) > div > div > div.register-content > div.register-form > div:nth-child(3){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}

@@ -34,7 +34,7 @@ const SideBar = ({...props}) => {
         className="sideBar"
        
        >
-        <Sidebar collapsed={isCollapsed} backgroundColor={"#3B0944"} height='100%' tabIndex="-1">
+        <Sidebar collapsed={isCollapsed} backgroundColor={"#3B0944"} tabIndex="-1">
         
           <Menu iconShape="square">
             {/* LOGO AND MENU ICON */}

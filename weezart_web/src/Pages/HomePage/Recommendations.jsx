@@ -6,6 +6,7 @@ import { useState } from "react";
 import RecommendationPopularApi from "../../API/RecommendationPopularApi";
 import RecommendationHotApi from "../../API/RecommendationHotApi";
 import RecommendationFriendApi from "../../API/RecommendationFriend";
+import SongInfoPopup from "../Popups/SongInfoPopup";
 
 
 
@@ -15,7 +16,33 @@ const Recommendations = ({...props}) => {
     const [recommendationsPopular, setRecommendationsPopular] = useState([]);
     const [recommendationsHot, setRecommendationsHot] = useState([]);
     const [recommendationsFriend, setRecommendationsFriend] = useState([]);
-    const [recommendationsFriendName, setRecommendationsFriendName] = useState("");
+    const [recommendationsFriendName, setRecommendationsFriendName] = useState(""); 
+    const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
+    const [showSongPopups, setShowSongPopups] = useState(new Map());
+  
+    //if sth is clicked from tables sets index and calls open popup functions
+    const handleSongClickTable = (index) => {
+      handleSongButtonClick(index);
+      setSelectedSongIndex(index);
+    };
+  
+    //to opens popup and maps the information
+    const handleSongButtonClick = (index) => {
+      const newShowSongPopups = new Map(showSongPopups);
+      newShowSongPopups.set(index, true);
+      setShowSongPopups(newShowSongPopups);
+    };
+  
+    //to close popups and set selected index to -1
+    const handleSongClosePopup = (index) => {
+      const newShowSongPopups = new Map(showSongPopups);
+      newShowSongPopups.set(index, false);
+      setShowSongPopups(newShowSongPopups);
+  
+      setSelectedSongIndex(-1);
+  
+    };
+  
     
 
     const fetchRecommendations = async () => {
@@ -39,12 +66,14 @@ const Recommendations = ({...props}) => {
       fetchRecommendations();
       }, [props.userId, props.token]);
     
+
+
     function recommendationRender  (arr)  {
         let recommendationsPopularRender = [];
         if(arr!==undefined){
         for(let i=0; i<arr.length; i++) {
             recommendationsPopularRender.push(
-            <div class="item" onClick={()=> {alert("clicked div")}}>
+            <div class="item" >
             <img src={arr[i].albumImageURL===null?"https://i.pinimg.com/564x/47/99/fd/4799fdb80098968bf6ff4c311eed1110.jpg":arr[i].albumImageURL} />
             <div class="play">
             </div>
@@ -106,7 +135,7 @@ const Recommendations = ({...props}) => {
 
 
 
-
+  
 
 
 

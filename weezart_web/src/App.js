@@ -91,7 +91,7 @@ function App() {
   return (
     <BrowserRouter>
 
-      <div style={{ display: isLoggedin ? 'flex' : 'block' }}  >
+      <div style={{ display: isLoggedin ? 'flex' : 'block', height:"100%",display:"sticky" }}  >
         <Sidebar username={username} isLoggedin={isLoggedin} userId={userId} logoutFunc={logoutFunc} />
 
         <div style={{ flex: 1,  boxSizing: 'border-box' }}>

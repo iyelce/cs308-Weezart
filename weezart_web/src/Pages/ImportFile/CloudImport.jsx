@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import CloudApi from '../../API/CloudApi';
+
 
 const CloudImport = ({ ...props }) => {
   const [url, setUrl] = useState('');
@@ -22,9 +24,14 @@ const CloudImport = ({ ...props }) => {
     setTable(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert({ url, username, password, table });
+    //alert({ url, username, password, table });
+
+    const response = await CloudApi(props.token, props.userId, url, username, password, table);
+
+    console.log("sayfa içinde response cloud: ", response);
+
   };
 
   return (

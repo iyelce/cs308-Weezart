@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
-import {useState} from "react";
+import dayjs, { Dayjs } from 'dayjs';
+import {useState,useEffect} from "react";
 import {Box,Typography} from '@mui/material';
 import StatBox from './Statbox';
 import { useTheme } from '@mui/material/styles';
@@ -11,6 +12,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import AnalyzeApi from '../../API/AnalyzeApi';
+import AnalyzeChartApi from '../../API/AnalyzeChartApi';
 
 
 
@@ -18,21 +20,41 @@ function isDateBeforeToday(date) {
   return date >= new Date();
 }
 
-async function getAnalyze(token,userId) {
-  console.log("token123123123213 : ", token);
-  console.log("userId12321312231 : ", userId);
-  const response = await AnalyzeApi(token,userId);
-  return response;
 
-}
 
-export default function Analyze({...props}) {
+ function Analyze({...props}) {
+  const [data, setData] = useState([]);
+  const [chartData, setChartData] = useState({});
+  const [analyzeType,setType]=useState("song");
+  const [dateFilter,setDate]=useState('2023-01-01');
+
+  //const response=AnalyzeApi(props.token,props.userId).then((response)=>{setData(response)}).catch((error)=>{console.log(error)});
+
+  const fetchDataMetrics = async () => {
+    try {
+      const response = await AnalyzeApi(props.token,props.userId,analyzeType,dateFilter);
+      console.log("+++ response return in page: ", response)
+      setData(response);
+      const responseChart = await AnalyzeChartApi(props.token,props.userId,analyzeType);
+      console.log("+++ response return in page CHARTSS: ", responseChart)
+      setChartData(responseChart);
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
+
   
-  let response= getAnalyze(props.token,props.userId);
+  useEffect(() => {
+    fetchDataMetrics();
+  }, [props.token,props.userId,analyzeType,dateFilter]);
+
+  
+
+
   const options=[
-    {value:"Song",label:"Song"},
-    {value:"Album",label:"Album"},
-    {value:"Artist",label:"Artist"}
+    {value:"song",label:"Song"},
+    {value:"album",label:"Album"},
+    {value:"artist",label:"Artist"}
   ];
 
   const styles = {
@@ -77,7 +99,7 @@ export default function Analyze({...props}) {
           gridColumn="span 2"
           height="100%"
           padding="0">
-          <Select options={options} defaultValue={{label:"Song",value:"Song"}} styles={styles} />
+          <Select options={options} defaultValue={{label:"Song",value:"song"}} styles={styles} onChange={(e)=>{setType(e.value)}}/>
 
    
           </Box>
@@ -90,7 +112,7 @@ export default function Analyze({...props}) {
     padding:"0"}}>
       <DemoContainer components={['DatePicker']} sx={{height:"100%",
     padding:"0"}}>
-        <DatePicker label="From" shouldDisableDate={isDateBeforeToday} sx={{
+        <DatePicker label="From" shouldDisableDate={isDateBeforeToday} defaultValue={dayjs('2023-01-01')} onChange={(e)=>setDate(e.toISOString().split('T')[0])} sx={{
           backgroundColor:"white",
           paddingTop:"0",
           marginTop:"0",
@@ -112,7 +134,7 @@ export default function Analyze({...props}) {
         </Box>
         {/* ROW 1 */}
         <Box
-          gridColumn="span 3"
+          gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={"#"}
           display="flex"
@@ -123,15 +145,15 @@ export default function Analyze({...props}) {
 
         >
           <StatBox
-            title="12,361"
-            subtitle="Emails Sent"
+            title={data===undefined?"0":data[0]}
+            subtitle="Added"
             progress="0.75"
             increase="+14%"
           />
         </Box>
 
         <Box
-          gridColumn="span 3"
+          gridColumn="span 4"
           backgroundColor={"#"}
           display="flex"
           alignItems="center"
@@ -140,8 +162,8 @@ export default function Analyze({...props}) {
       
         >
           <StatBox
-            title="431,225"
-            subtitle="Sales Obtained"
+            title={data===undefined?"0":data[1]}
+            subtitle="Liked"
             progress="0.50"
             increase="-21%"
             
@@ -149,7 +171,7 @@ export default function Analyze({...props}) {
             
         </Box>
         <Box
-          gridColumn="span 3"
+          gridColumn="span 4"
           backgroundColor={"#120719"}
           display="flex"
           alignItems="center"
@@ -158,32 +180,15 @@ export default function Analyze({...props}) {
       
         >
           <StatBox
-            title="32,441"
-            subtitle="New Clients"
+            title={data===undefined?"0":data[2]}
+            subtitle="Rated"
             progress="0.30"
             increase="+5%"
               />
             
         
         </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={"#120719"}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          marginTop="10px"
         
-        >
-          <StatBox
-            title="1,325,134"
-            subtitle="Traffic Received"
-            progress="0.80"
-            increase="+43%"
-            
-              />
-            
-        </Box>
         <Box
           gridColumn="span 12"
           gridRow="span 6"
@@ -321,3 +326,5 @@ export default function Analyze({...props}) {
   </div>
   );
 }
+
+export default Analyze;

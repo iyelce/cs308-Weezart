@@ -102,6 +102,30 @@ public class AddServiceImpl implements AddService {
 
 	}
 
+	public void relateUserSongDB(SongPayload song, String userID) {
+
+		UserSong userSong = new UserSong();
+
+		Song givenSong = new Song(song.getId(), song.getAlbumImageURL(), song.getName(), song.getAlbumName(),
+				song.getAlbumId(), song.getArtistsName(), song.getArtistsId(), song.getPopularity(),
+				song.getDuration_ms(), song.isExplicit(), song.getAlbumRelease());
+
+		userSong.setSong(givenSong);
+
+		User givenUser = new User(Long.parseLong(userID));
+
+		userSong.setUser(givenUser);
+
+		userSong.setAddTime(getCurrentDateTimeAsString());
+
+		if (userSongRepo.findBySongAndUser(givenSong, givenUser) == null) {
+			userSongRepo.save(userSong);
+		}
+
+
+	}
+
+	
 	public Artist addArtist(ArtistPayload artist) {
 
 		Artist givenArtist = new Artist(artist.getName(), artist.getGenres(), artist.getImageUrl(),

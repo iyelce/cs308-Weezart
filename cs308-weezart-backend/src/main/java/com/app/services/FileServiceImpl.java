@@ -100,6 +100,7 @@ public class FileServiceImpl implements FileService {
 	        UserSong userSong = new UserSong();
 	        userSong.setUser(user);
 	        userSong.setSong(song);
+	        log.info("song artistleri: " + song.getArtistsName().get(0));
 	        
 	        List<Integer> rating = new ArrayList<>();
 			rating.add(0);

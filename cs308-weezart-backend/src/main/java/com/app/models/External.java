@@ -21,13 +21,17 @@ public class External {
 	int popularity;
 	int duration_ms;
 	boolean explicit;
+	String albumImageURL;
 
 	public External() {
 		super();
 	}
 
+	
+
 	public External(String id, String name, String albumName, String albumId, String albumRelease,
-			List<String> artistsName, List<String> artistsId, int popularity, int duration_ms, boolean explicit) {
+			List<String> artistsName, List<String> artistsId, int popularity, int duration_ms, boolean explicit,
+			String albumImageURL) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -39,7 +43,32 @@ public class External {
 		this.popularity = popularity;
 		this.duration_ms = duration_ms;
 		this.explicit = explicit;
+		this.albumImageURL = albumImageURL;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "External [id=" + id + ", name=" + name + ", albumName=" + albumName + ", albumId=" + albumId
+				+ ", albumRelease=" + albumRelease + ", artistsName=" + artistsName + ", artistsId=" + artistsId
+				+ ", popularity=" + popularity + ", duration_ms=" + duration_ms + ", explicit=" + explicit
+				+ ", albumImageURL=" + albumImageURL + "]";
+	}
+
+
+
+	public String getAlbumImageURL() {
+		return albumImageURL;
+	}
+
+
+
+	public void setAlbumImageURL(String albumImageURL) {
+		this.albumImageURL = albumImageURL;
+	}
+
+
 
 	public String getId() {
 		return id;

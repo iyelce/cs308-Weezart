@@ -49,6 +49,7 @@ public class SongPayload {
 		this.duration_ms = e.getDuration_ms();
 		this.explicit = e.isExplicit();
 		this.albumRelease = e.getAlbumRelease();
+		this.albumImageURL = e.getAlbumImageURL();
 	}
 
 

@@ -30,9 +30,10 @@ public class ExternalDBServiceImpl implements ExternalDBService {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		for (External e : fetchAllFromExternalDatabase(jdbcTemplate, dbDetails.getTable())) {
+			log.info("gelen e:" + e.toString());
 			SongPayload song = new SongPayload(e);
 			addService.addSong(song);
-			addService.relateUserSong(song, userId);
+			addService.relateUserSongDB(song, userId);
 		}
 
 		return ResponseEntity.ok("added from db");

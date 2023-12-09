@@ -27,4 +27,6 @@ public interface AddService {
 	public List<UserSong> addedSongs(String userId);
 	public List<UserAlbum> addedAlbums(String userId);
 	public List<UserArtist> addedArtists(String userId);
+	public void relateUserSongDB(SongPayload song, String userID);
+
 }

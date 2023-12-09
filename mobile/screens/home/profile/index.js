@@ -36,6 +36,7 @@ import DocumentPicker from "react-native-document-picker";
 import Dialog from "react-native-dialog";
 import RNFS from "react-native-fs";
 import Share from "react-native-share";
+import Toast from "react-native-simple-toast";
 
 const Stack = createNativeStackNavigator();
 
@@ -219,14 +220,11 @@ const ProfileScreen = ({ navigation }) => {
     });
   }, 1000);
 
-  const songSwipeableRef = useRef(null);
-
   const onSongRemove = (track, i) => {
     getUserId().then((userId) => {
       axios
         .delete("/remove/song/" + userId, { data: track.song })
         .then((res) => {
-          songSwipeableRef.current.close();
           const updatedAddedSongs = addedSongs.filter(
             (_, index) => index !== i
           );
@@ -234,14 +232,12 @@ const ProfileScreen = ({ navigation }) => {
         });
     });
   };
-  const albumSwipeableRef = useRef(null);
 
   const onAlbumRemove = (record, i) => {
     getUserId().then((userId) => {
       axios
         .delete("/remove/album/" + userId, { data: record.album })
         .then((res) => {
-          albumSwipeableRef.current.close();
           const updatedAddedAlbums = addedAlbums.filter(
             (_, index) => index !== i
           );
@@ -249,14 +245,12 @@ const ProfileScreen = ({ navigation }) => {
         });
     });
   };
-  const artistSwipeableRef = useRef(null);
 
   const onArtistRemove = (singer, i) => {
     getUserId().then((userId) => {
       axios
         .delete("/remove/artist/" + userId, { data: singer.artist })
         .then((res) => {
-          artistSwipeableRef.current.close();
           const updatedAddedArtists = addedArtists.filter(
             (_, index) => index !== i
           );
@@ -271,14 +265,8 @@ const ProfileScreen = ({ navigation }) => {
         DocumentPicker.pick({
           type: [DocumentPicker.types.allFiles],
         }).then((file) => {
-          console.log("ayo", file);
           const formData = new FormData();
-          // formData.append("file", {
-          //   uri: file.uri,
-          //   type: file.type,
-          //   name: file.name,
-          // });
-          formData.append("file", file);
+          formData.append("file", file[0]);
 
           axios
             .post(`/file/import/${userId}`, formData, {
@@ -287,13 +275,12 @@ const ProfileScreen = ({ navigation }) => {
               },
             })
             .then((response) => {
-              console.log("Import successful:", response.data);
-              // Handle success
+              Toast.show("Success :)");
+              fetchStuff();
             });
         });
       } catch (err) {
         if (DocumentPicker.isCancel(err)) {
-          // User cancelled the picker
         } else {
           console.error("Error picking document:", err);
         }
@@ -363,6 +350,7 @@ const ProfileScreen = ({ navigation }) => {
       </Dialog.Container>
       <ScrollView
         style={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: 60 }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -640,7 +628,6 @@ const ProfileScreen = ({ navigation }) => {
                           //   }
                           // >
                           <Swipeable
-                            ref={songSwipeableRef}
                             key={track.song.id}
                             renderRightActions={(progress, dragX, onClick) => (
                               <TouchableOpacity
@@ -762,7 +749,6 @@ const ProfileScreen = ({ navigation }) => {
                     ? addedAlbums.map((record, i) => {
                         return (
                           <Swipeable
-                            ref={albumSwipeableRef}
                             key={record.album.id}
                             renderRightActions={(progress, dragX, onClick) => (
                               <TouchableOpacity
@@ -862,7 +848,6 @@ const ProfileScreen = ({ navigation }) => {
                       addedArtists.map((item, i) => {
                         return (
                           <Swipeable
-                            ref={artistSwipeableRef}
                             key={item.artist.id}
                             renderRightActions={(progress, dragX, onClick) => (
                               <TouchableOpacity

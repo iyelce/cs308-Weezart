@@ -1,10 +1,11 @@
 
 //jdbc:mysql://hostname:port/database_name
 
-//jdbc:mysql://CANSIN:3306/weezart_songs
+//jdbc:mysql://localhost:3306/weezart_songs
 
 //login name: root
-//password: 
+//password: Cnsn161N306
+//table: songs
 
 
 // public ExternalDBPayload(String url, String username, String password, String table) {
@@ -31,6 +32,9 @@ async function CloudApi (token, userId, url, username, password, table) {
     }
 
     try{        
+        console.log("password: ",password );
+        console.log("username : ", username);
+        console.log("table: ", table);
 
         const response = await fetch(apiURL, {
             headers: {

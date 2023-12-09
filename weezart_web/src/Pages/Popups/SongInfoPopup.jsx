@@ -69,9 +69,6 @@ const handleLikeClick = async () => {
   } else {
     
     const likeResp = await LikeSongApi(props.token, props.userId, props.songInfo);
-
-    console.log("page içinde like: ",likeResp);
-
     setLiked(true);
   }  
 };
@@ -85,6 +82,17 @@ const handleDeleteClick = async () => {
 
 }
 
+const formatDuration = (durationInMilliseconds) => {
+    // Convert milliseconds to seconds
+    let seconds = Math.floor(durationInMilliseconds / 1000);
+
+    // Calculate minutes and remaining seconds
+    let minutes = Math.floor(seconds / 60);
+    seconds %= 60;
+
+    // Format the result as mm:ss
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
 
 
   return (
@@ -107,7 +115,10 @@ const handleDeleteClick = async () => {
         <div className="three-column-container">
             <div className="column">
                 <img className="cover-img" src= {imgsrc(props.songInfo.albumImageURL)} alt="cover"/>
-                <p className="duration"> {props.songInfo.duration_ms}</p>
+                {/* <p className="duration"> {props.songInfo.duration_ms}</p> */}
+                <p className="duration">
+                    {formatDuration(props.songInfo.duration_ms)}
+                </p>
             </div>
 
             <div className="column">

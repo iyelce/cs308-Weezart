@@ -99,7 +99,7 @@ function App() {
             <Route path='/'>
               <Route index element={<Login changeUserInfo={changeUserInfo} storeToken={storeToken} />} />
 
-              <Route path='home' element={<HomePage />} />
+              <Route path='home' element={<HomePage token={token} userId={userId}/>} />
               <Route path='signup' element={<SignUp />} />
               <Route path='addFriend' element={<AddFriend token={token} userId={userId} username={username}/>} />
 

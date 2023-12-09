@@ -12,6 +12,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router-dom";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PersonIcon from '@mui/icons-material/Person';
 
 const LOGO = require('../../weezart-removebg-preview.png');
 
@@ -67,7 +68,7 @@ const SideBar = ({...props}) => {
 
             {!isCollapsed && (
               <Box  mb="25px">
-                <Box  textAlign="center" style={{ cursor: 'pointer' }} onClick={()=>{navigate("myProfile")}}>
+                <Box  textAlign="center" style={{ cursor: 'pointer' }} >
                   <Typography
                   
                    
@@ -86,6 +87,21 @@ const SideBar = ({...props}) => {
             )}
 
             <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+              
+
+            <MenuItem
+                active={true}
+                style={{
+                  color: colors.grey[100],
+                }}
+                onClick={() => {
+                  navigate("myProfile")
+                }}
+                icon={<PersonIcon />}
+              >
+                <Typography>{"Profile"}</Typography>
+
+              </MenuItem>
 
               <MenuItem
                 active={true}

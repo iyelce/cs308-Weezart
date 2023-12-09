@@ -1,94 +1,100 @@
 
+import { useEffect } from "react";
+import { useState } from "react";
 
-const Recommendations = () => {
+
+import RecommendationPopularApi from "../../API/RecommendationPopularApi";
+import RecommendationHotApi from "../../API/RecommendationHotApi";
+import RecommendationFriendApi from "../../API/RecommendationFriend";
+
+
+
+const Recommendations = ({...props}) => {
+
+
+    const [recommendationsPopular, setRecommendationsPopular] = useState([]);
+    const [recommendationsHot, setRecommendationsHot] = useState([]);
+    const [recommendationsFriend, setRecommendationsFriend] = useState([]);
+    const [recommendationsFriendName, setRecommendationsFriendName] = useState("");
+    
+
+    const fetchRecommendations = async () => {
+      const response = await RecommendationPopularApi(props.token );
+      console.log("response", response);
+      setRecommendationsPopular(response);
+      const responseHot = await RecommendationHotApi(props.token,props.userId );
+        console.log("responseHot", responseHot);
+        setRecommendationsHot(responseHot);
+        const responseFriend = await RecommendationFriendApi(props.token,props.userId );
+        console.log("responseFriend", responseFriend);
+        setRecommendationsFriend(responseFriend);
+        setRecommendationsFriendName(responseFriend?.friendName);
+
+
+
+
+    }
+  
+  useEffect(() => {
+      fetchRecommendations();
+      }, [props.userId, props.token]);
+    
+    function recommendationRender  (arr)  {
+        let recommendationsPopularRender = [];
+        if(arr!==undefined){
+        for(let i=0; i<arr.length; i++) {
+            recommendationsPopularRender.push(
+            <div class="item" onClick={()=> {alert("clicked div")}}>
+            <img src={arr[i].albumImageURL===null?"https://i.pinimg.com/564x/47/99/fd/4799fdb80098968bf6ff4c311eed1110.jpg":arr[i].albumImageURL} />
+            <div class="play">
+            </div>
+            <h4>{arr[i].name}</h4>
+            <p>{arr[i].artistsName}</p>
+            </div>);
+        }
+    }
+        return recommendationsPopularRender;
+    }
+
   return (
     
  
     <div className="recommendations-body">
             
 
-    <div className="hompage-recom-content">
+    <div className="homepage-recom-content">
 
-        <p> Recom 1</p>
+        <p> Most Populars</p>
 
         <div className="row">
 
             <div className="list">
-                <div class="item" onClick={()=> {alert("clicked div")}}>
-                <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
-                <div class="play">
-                </div>
-                <h4>Today's Top Hits</h4>
-                <p>Rema & Selena Gomez are on top of the...</p>
-                </div>
-
-                <div class="item">
-                <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
-                <div class="play">
-
-                </div>
-                <h4>Today's Top Hits</h4>
-                <p>Rema & Selena Gomez are on top of the...</p>
-                </div>
+              
+                {recommendationRender(recommendationsPopular)}
             </div>
         </div>
 
-        <p> Recom 2</p>
+        <p>More of what you like</p>
 
      <div className="row">
 
             <div className="list">
-                <div class="item" onClick={()=> {alert("clicked div")}}>
-                <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
-                <div className="play">
-                    
-                </div>
-                <h4>Today's Top Hits</h4>
-                <p>Rema & Selena Gomez are on top of the...</p>
-            </div>
+                
+            {recommendationRender(recommendationsHot)}
+           
+            
+        </div>
+        
+    </div>
 
-            <div class="item">
-                <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
-                <div className="play">
-                    
-                </div>
-                <h4>Today's Top Hits</h4>
-                <p>Rema & Selena Gomez are on top of the...</p>
-            </div>
+<p>According to friend {recommendationsFriendName}</p>
+    <div className="row">
 
-            <div class="item">
-                <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
-                <div className="play">
-                    
-                </div>
-                <h4>Today's Top Hits</h4>
-                <p>Rema & Selena Gomez are on top of the...</p>
-            </div>
-
-            <div class="item">
-                <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
-                <div className="play">
-                    
-                </div>
-                <h4>Today's Top Hits</h4>
-                <p>Rema & Selena Gomez are on top of the...</p>
-            </div>
-
-            <div class="item">
-                <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
-                <div className="play">
-                    
-                </div>
-                <h4>Today's Top Hits</h4>
-                <p>Rema & Selena Gomez are on top of the...</p>
-            </div>
-            <div className="item">
-                <img src="https://i.scdn.co/image/ab67616d0000b2733b5e11ca1b063583df9492db" />
-                <div className="play">
-                </div>
-                <h4>Today's Top Hits</h4>
-                <p>Rema & Selena Gomez are on top of the...</p>
-            </div>
+            <div className="list">
+                
+            {recommendationRender(recommendationsFriend?.friendSongs)}
+           
+            
         </div>
         
     </div>

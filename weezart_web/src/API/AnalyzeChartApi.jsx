@@ -1,7 +1,7 @@
 async function AnalyzeChartApi (token, userId ,filter ) {
 
-    const result={};
-    const urls=[`http://localhost:8080/analysis/${filter}/daily-added/33`,`http://localhost:8080/analysis/${filter}/daily-liked/33`,`http://localhost:8080/analysis/${filter}/daily-rating/33`];
+    const result=[];
+    const urls=[`http://localhost:8080/analysis/${filter}/daily-added/29`,`http://localhost:8080/analysis/${filter}/daily-liked/29`,`http://localhost:8080/analysis/${filter}/daily-rating/29`];
     const auth = "Bearer " + token;
 
 

@@ -24,7 +24,12 @@ function isDateBeforeToday(date) {
 
  function Analyze({...props}) {
   const [data, setData] = useState([]);
-  const [chartData, setChartData] = useState({});
+  const [chartData, setChartData] = useState(undefined);
+  const [chartDataBool, setChartDataBool] = useState(false);
+  const [chart1xAxis, setChart1xAxis] = useState([]);
+  const [chart2xAxis, setChart2xAxis] = useState([]);
+  const [chart3xAxis, setChart3xAxis] = useState([]);
+
   const [analyzeType,setType]=useState("song");
   const [dateFilter,setDate]=useState('2023-01-01');
 
@@ -36,8 +41,15 @@ function isDateBeforeToday(date) {
       console.log("+++ response return in page: ", response)
       setData(response);
       const responseChart = await AnalyzeChartApi(props.token,props.userId,analyzeType);
-      console.log("+++ response return in page CHARTSS: ", responseChart)
+      console.log("+++ response return in page CHARTSS: ", Object.keys(responseChart[0]))
       setChartData(responseChart);
+      if(responseChart.length>0){
+      setChartDataBool(true);
+      setChart1xAxis(Object.keys(responseChart[0]).map((item)=>{const date=item.split('-');return new Date(date[0],date[1],date[2])}));
+      setChart2xAxis(Object.keys(responseChart[1]).map((item)=>{const date=item.split('-');return new Date(date[0],date[1],date[2])}));
+      setChart3xAxis(Object.keys(responseChart[2]).map((item)=>{const date=item.split('-');return new Date(date[0],date[1],date[2])}));
+      
+    }
     } catch (error) {
       console.error("Error fetching user profile:", error);
     }
@@ -104,7 +116,7 @@ function isDateBeforeToday(date) {
    
           </Box>
           <Box
-          gridColumn="span 3:5"
+          gridColumn="10/span 3"
           marginLeft="100px"
           height="100%"
           padding="0">
@@ -198,10 +210,10 @@ function isDateBeforeToday(date) {
         >
             <Typography fontSize={"20px"} >Adds</Typography>
             <LineChart
-                xAxis={[{ data: [1, 2, 3, 5, 8, 10]  }]}
+                xAxis={[{ scaleType:'time',data: (chartDataBool?chart1xAxis:[1,2,3])  }]}
                 series={[
                         {
-                            data: [2, 5.5, 2, 8.5, 1.5, 5],
+                            data: (chartDataBool?Object.values(chartData[0]):[1,2,3]),
                             color:"#39FF14"
                         },
                         ]}
@@ -239,10 +251,10 @@ function isDateBeforeToday(date) {
             <Typography fontSize={"20px"} color={"red"}>Likes</Typography>
 
             <LineChart
-                xAxis={[{ data: [1, 2, 3, 5, 8, 10]  }]}
+                xAxis={[{scaleType:'time', data: (chartDataBool?chart2xAxis:[1,2,3])   }]}
                 series={[
                         {
-                            data: [2, 5.5, 2, 8.5, 1.5, 5],
+                            data: (chartDataBool?Object.values(chartData[1]):[1,2,3]),
                             color:"#FF3131"
                         },
                         ]}
@@ -281,10 +293,10 @@ function isDateBeforeToday(date) {
             <Typography fontSize={"20px"} color={"red"}>Rates</Typography>
             <LineChart
                 margin={{ bottom: 40}}
-                xAxis={[{ data: [1, 2, 3, 5, 8, 10]  }]}
+                xAxis={[{ scaleType:'time',data: (chartDataBool?chart3xAxis:[1,2,3])  }]}
                 series={[
                         {
-                            data: [2, 5.5, 2, 8.5, 1.5, 5],
+                            data: (chartDataBool?Object.values(chartData[2]):[1,2,3]),
                             color:"#FFF01F"
 
                         },

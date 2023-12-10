@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import Recommendations from './Recommendations';
 
 
 
 
-const HomePage = () => {
+
+const HomePage = ({...props}) => {
+ 
+
   return (
     
     <div className="homepage">
@@ -14,21 +17,11 @@ const HomePage = () => {
        
 
         <div className='homepage-recommendations'> 
-          <p >
-            Recently added
-          </p>
-
-          <div className="homepage-recently-added">
-            Added item list
-          </div>
-
-          <p >
-            Recommendations for YOU
-          </p>
-
+          
+          
           <div className="recommendations-body">
             
-            <Recommendations/>
+            <Recommendations token={props.token} userId={props.userId} />
 
           </div>
 

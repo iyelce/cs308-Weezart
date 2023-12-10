@@ -15,6 +15,10 @@ import AnalyzeApi from '../../API/AnalyzeApi';
 import AnalyzeChartApi from '../../API/AnalyzeChartApi';
 
 
+import { ColorRing , Oval} from 'react-loader-spinner';
+
+
+
 
 function isDateBeforeToday(date) {
   return date >= new Date();
@@ -90,6 +94,21 @@ function isDateBeforeToday(date) {
   };
   return (
     <div >
+
+
+<Oval
+  height={80}
+  width={80}
+  color="#451952"
+  visible={true}
+  ariaLabel='oval-loading'
+  secondaryColor="#FACBEA"
+  strokeWidth={4} // Adjust the strokeWidth to make it thicker
+  timeout={10000} // Adjust the timeout to control the animation speed (in milliseconds)
+/>
+
+
+
     <Box display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows="repeat(24, 1fr)"

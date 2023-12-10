@@ -9,6 +9,10 @@ async function addFriend(username, token,addingUsername) {
 
 
 const AddFriend = ({...props}) => {
+
+    const [responseShow, setResponseShow] = useState(false);
+    const [responseLabel, setResponseLabel] = useState("");
+
     const [username, setUsername] = useState("");
     const [isFocusedUsername, setIsFocusedUsername] = useState(false);
     
@@ -33,7 +37,7 @@ const AddFriend = ({...props}) => {
 
   return (
     <div className="container-add">
-      <form onSubmit={handleSubmit}>
+      <form className = "friend-add" onSubmit={handleSubmit}>
         <div className={'field '+(isFocusedUsername?'moved':'')} >
                     <input type="text" 
                     className="register-input-box"
@@ -43,7 +47,12 @@ const AddFriend = ({...props}) => {
                     ></input>
                     <label for="" className={'register-input-label '+(isFocusedUsername||(!isFocusedUsername&&username!=='')?'moved-upside':'')}>Username</label>
                 </div>
-        <button type="submit">Add</button>
+
+                <p style={{ display: responseShow ? 'block' : 'none' }} className="single-song-add-unique-label">
+                  {responseLabel}
+                </p>
+
+        <button className="add-friend-button" type="submit">Follow</button>
       </form>
     </div>
   );

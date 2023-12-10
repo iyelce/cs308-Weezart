@@ -29,17 +29,12 @@ async function AddFriendApi (token, username, addingUsername ) {
             if(response.status===403){
                 return "USER_ALREADY_FRIEND";
             }
-
-
             throw new Error('Network response is not ok');
         }
 
-        const newResp = JSON.parse(data); 
-
-        console.log("song orj response: ", newResp);
+        console.log("add friend response: ", data);
         
-
-        return newResp;
+        return data;
 
     }
     catch (error) {

@@ -111,7 +111,7 @@ function LikedSongsList({ ...props }) {
                 />
               </td>
               <td>{val.name}</td>
-              <td>{val.artistsName}</td>
+              <td>{val.artistsName.join(', ')}</td>
               <td>{val.albumName}</td>
               <td>{val.popularity === -1 ? "NaN" : val.popularity}</td>
               <td>{formatDuration(val.duration_ms)}</td>

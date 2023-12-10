@@ -9,93 +9,133 @@ import RateSongApi from "../../API/RateSongApi";
 import SongRemoveApi from "../../API/SongRemoveApi";
 import UnlikeSongApi from "../../API/UnlikeSongApi";
 import songImage from "../../songImage.jpg"
+import { IoIosAddCircle,  IoIosAddCircleOutline } from "react-icons/io";
+import AddedCheckApi from "../../API/AddedCheckApi";
+import AddingAcceptedSong from "../../API/AddingAcceptedSong";
+import IsLikedApi from "../../API/IsLikedApi";
+import RateCheckApi from "../../API/RateCheckApi";
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
 
 
+
 function imgsrc(val) {
-    if(val === null || val==="") {
+    if (val === null || val === "" || val === undefined)  {
         return songImage;
+    } else {
+      return val;
     }
-    else {
-        return val;
-    }
-}
-
-function SongInfoPopup({...props}) {
-    console.log(props.songInfo);
-    useEffect(() => {
-        setLiked(props.liked);
-        setRating(props.rating[props.rating.length -1 ]);
-      }, [props.liked, props.rating]);
-
-    const [rating, setRating] = useState(props.rating[props.rating.length -1 ]);
+  }
+  
+  function SongInfoPopup({ ...props }) {
+    const [rating, setRating] = useState(props.rating[props.rating.length - 1]);
     const stars = [1, 2, 3, 4, 5];
     const [deleted, setDeleted] = useState(false);
+    const [liked, setLiked] = useState(props.liked);
+    const [isAdded, setIsAdded] = useState(false); //to check from api
+    const [added, setAdded] =useState(false);
+    const [addFirstErrorLabel, setAddFirstErrorLabel] = useState(false);
+  
+    const IsAddedCheck = async () => {
+            try {
+              const response = await AddedCheckApi(props.token, props.userId, props.songInfo.id);
+              console.log("is added :" , response, "  -  ", typeof(isAdded))
+              setIsAdded(response);
+            } catch (error) {
+            }
+    }
+
+    const IsLikeCheck = async () =>{
+        if (props.liked === "check with api") {
+            //come from recom
+            const likeResponse = await IsLikedApi(props.token, props.userId ,props.songInfo.id );
+            setLiked(likeResponse);
+        }
+        else {
+            setLiked(props.liked);
+        }
+    }
+
+    const RatingCheck = async () => {
+        if (props.rating === "check with api") {
+            //comming from recom
+            
+            const rateResponse = await RateCheckApi(props.token, props.userId, props.songInfo.id);
+            setRating(rateResponse);
+        }
+        else{
+            setRating(props.rating[props.rating.length - 1]);
+        }
+    }
+
+
+    useEffect(() => {
+        IsAddedCheck();
+      }, []); // Run once when component mounts to check isAdded
+    
+      useEffect(() => {
+        // This effect will run whenever isAdded changes
+        if (isAdded === "true") {
+          RatingCheck();
+          IsLikeCheck();
+        }
+        else{
+            setRating(0);
+            setLiked(false);
+        }
+      }, [isAdded]);
+  
 
     const handleStarClick = async (selectedRating) => {
-        // if (selectedRating === rating) {
-        //   // If the clicked star is the same as the current rating, remove the rating (set it to 0)
-        //   setRating(0);
-        // } else {
-        //     setRating(selectedRating);
-        //     setAdded(true);
-        //     // Call your rating API with the selected rating
-        //     onRatingChange(selectedRating);
-        // }
+        if(isAdded ===  "true") {
+            const ratingResponse = await RateSongApi(props.token, props.userId, props.songInfo, selectedRating);
+            setRating(selectedRating);
+        }
+        else {
+            setAddFirstErrorLabel(true);
+        }
 
-        const ratingResponse = await RateSongApi(props.token, props.userId, props.songInfo, selectedRating);
-        setRating(selectedRating);
-      };
+    };
+  
+    const handleLikeClick = async () => {
+        
+        if(isAdded === "true") {
+            if (liked) {
+                const unlikeReps = await UnlikeSongApi(props.token, props.userId, props.songInfo);
+                setLiked(false);
+              } else {
+                const likeResp = await LikeSongApi(props.token, props.userId, props.songInfo);
+                setLiked(true);
+              }
+        }
+        else {
+            setAddFirstErrorLabel(true);
+        }
 
-// albumId : "4Qy0SOU9Jg7Td10K68SanP"
-// albumImageURL :"https://i.scdn.co/image/ab67616d0000b27358816b5b546bdc2c0e7f6416"
-// albumName:"Buddy Holly"
-// albumRelease:"1958"
-// artistsId:(2) ['3wYyutjgII8LJVVOLrGI0D', '4r7JUeiYy24L7BuzCq9EjR']
-// artistsName:(2) ['Buddy Holly', 'The Crickets']
-// duration_ms:129120
-// id:"39lnzOIUCSNaQmgBHoz7rt"
-// name:"Everyday"
-// popularity:68
-// explicit:false
+    };
+  
+    const handleDeleteClick = async () => {
+      setDeleted(!deleted);
+      const del = await SongRemoveApi(props.token, props.userId, props.songInfo);
+      props.onRequestClose();
+    };
 
-const [liked, setLiked] = useState(props.liked);
-
-const handleLikeClick = async () => {
-  if (liked) {
-    // Call unlike API if the heart is already filled
-    const unlikeReps = await UnlikeSongApi(props.token, props.userId, props.songInfo);
-    setLiked(false);
-    
-  } else {
-    
-    const likeResp = await LikeSongApi(props.token, props.userId, props.songInfo);
-    setLiked(true);
-  }  
-};
-
-const handleDeleteClick = async () => {
-    setDeleted(!deleted);
-
-    const del = await SongRemoveApi(props.token, props.userId, props.songInfo);
-
-    props.onRequestClose();
-
-}
-
-const formatDuration = (durationInMilliseconds) => {
-    // Convert milliseconds to seconds
-    let seconds = Math.floor(durationInMilliseconds / 1000);
-
-    // Calculate minutes and remaining seconds
-    let minutes = Math.floor(seconds / 60);
-    seconds %= 60;
-
-    // Format the result as mm:ss
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-};
+    const handleAddClick = async () => {
+        setAddFirstErrorLabel(false);
+        setAdded(true);
+        const addResponse = await AddingAcceptedSong(props.songInfo, props.token, props.userId );
+        console.log("adding song from popup: ", addResponse);
+        //if sucessfull
+        IsAddedCheck();
+    }
+  
+    const formatDuration = (durationInMilliseconds) => {
+      let seconds = Math.floor(durationInMilliseconds / 1000);
+      let minutes = Math.floor(seconds / 60);
+      seconds %= 60;
+      return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    };
 
 
   return (
@@ -108,7 +148,7 @@ const formatDuration = (durationInMilliseconds) => {
             <div className="songPopularity">
                 <AiFillCrown className="crown-icon" />
                 <p className="songPopularity-label">
-                    Popularity: {props.songInfo.popularity !== -1 ? props.songInfo.popularity + " / 100" : "unknown"}
+                    Popularity: {props.songInfo?.popularity !== -1 ? props.songInfo?.popularity + " / 100" : "unknown"}
                 </p>
             </div>
             
@@ -121,7 +161,7 @@ const formatDuration = (durationInMilliseconds) => {
         <div 
             className="column column-try" 
             style={{
-                backgroundImage: `url(${props.songInfo.albumImageURL !== "" ? props.songInfo.albumImageURL : 'yourCatPhotoUrl'})`,
+                backgroundImage: `url(${imgsrc(props.songInfo.albumImageURL)})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -148,20 +188,15 @@ const formatDuration = (durationInMilliseconds) => {
 
             <div className="column">
                 <div className="attributes">
-                    <p className="songName">{props.songInfo.name}</p>
-                    <p className="songArtists">{props.songInfo.artistsName.join(', ')}</p>
-                    <p className="songAlbum">{props.songInfo.albumName}</p>
+                    <p className="songName">{props.songInfo?.name}</p>
+                    <p className="songArtists">{props.songInfo?.artistsName.join(', ')}</p>
+                    <p className="songAlbum">{props.songInfo?.albumName}</p>
                 </div>
             </div>
 
             <div className="column">
                 
                 <form className="rating">
-
-
-                
-
-
 
                     <div className="like-add">
                             <div className="half-width">
@@ -170,13 +205,27 @@ const formatDuration = (durationInMilliseconds) => {
                             </div>
                                 <p className="songAlbum" >{liked ? 'Liked' : 'Like'}</p>
                             </div>
-                            <div className="half-width">
-                                <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={ handleDeleteClick }>
-                                    {deleted ? <AiFillDelete /> : <AiOutlineDelete/>}
+                            
+                            {isAdded === "true" ? (
+                                <div className="half-width">
+                                    <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={handleDeleteClick}>
+                                    {deleted ? <AiFillDelete /> : <AiOutlineDelete />}
                                     </div>
-                                <p className="songAlbum" >{deleted ? 'Deleted' : 'Delete'}</p>
-                            </div>
+                                    <p className="songAlbum">{deleted ? 'Deleting...' : 'Delete'}</p>
+                                </div>
+                                ): (
+                                <div className="half-width">
+                                    <div className={`delete-icon ${added ? 'added' : ''}`} onClick={handleAddClick}>
+                                    {added ? <IoIosAddCircle /> : < IoIosAddCircleOutline />}
+                                    </div>
+                                    <p className="songAlbum">{added ? 'Adding...' : 'Add'}</p>
+                                </div>
+                            )}                       
                     </div>
+
+                    <p style={{ display: addFirstErrorLabel ? 'block' : 'none' }} className="single-song-add-unique-label">
+                    {'First Add the Song :)'}
+                    </p>
 
                     
                 </form>

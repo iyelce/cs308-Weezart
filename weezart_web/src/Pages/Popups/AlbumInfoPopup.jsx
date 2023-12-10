@@ -16,13 +16,12 @@ ReactModal.setAppElement('#root'); // Replace '#root' with the ID of your app ro
 
 //if image is empty put a defoult image
 function imgsrc(val) {
-    if(val === null || val==="" || val === undefined) {
+    if (val === null || val === "" || val === undefined)  {
         return albumImage;
+    } else {
+      return val;
     }
-    else {
-        return val;
-    }
-}
+  }
 
 function AlbumInfoPopup({...props}) {
     

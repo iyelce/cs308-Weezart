@@ -20,6 +20,9 @@ function AddSong({...props}) {
     const [showUniqueLabel, setShowUniqueLabel] = useState(false);
     const [showAddButton, setShowAddButton] = useState(false);
 
+
+    const [showPopup, setShowPopup] = useState(false)
+
     //0 for not searched yet
     //1 found a song
     //-1 couldnt find a song (return 403 from backend)
@@ -85,12 +88,13 @@ function AddSong({...props}) {
     }
 
     else {
+
         setAddedLabelInfo("Song Added");
         setAddedLabelShow(true);
+
+        setShowPopup(true);
     }
-
   }
-
 
 
 //   -----------------------------
@@ -99,6 +103,9 @@ function AddSong({...props}) {
     alert("show song popup");
   };
 
+  const handleSongClosePopup = () => {
+    setShowPopup(false);
+  }
 
 
     return (
@@ -183,7 +190,7 @@ function AddSong({...props}) {
                                 />
                                 </td>
                                 <td>{val.name}</td>
-                                <td>{val.artistsName}</td>
+                                <td>{val.artistsName.join(', ')}</td>
                                 <td>{val.albumName}</td>
                                 <td>{val.duration}</td>
                             </tr>

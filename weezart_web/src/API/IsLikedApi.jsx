@@ -1,6 +1,6 @@
-async function RecommendationFriendApi (token, userId ) {
-  
-    const url =`http://localhost:8080/recommendation/friend/${userId}`
+async function IsLikedApi (token, userId ,songId ) {
+
+    const url = `http://localhost:8080/like/song/get-like-info/${songId}/${userId}`;  
     const auth = "Bearer " + token;
 
     try{        
@@ -17,25 +17,27 @@ async function RecommendationFriendApi (token, userId ) {
         });
         
         const data = await response.text();
-        console.log("friend api içinde --> ", data, " - ", typeof(data));
     
         if(!response.ok) {
             throw new Error('Network response is not ok');
         }
-
-        if (data === "") {
-            return "no-song";
+        
+        if(data === "false") {
+            return false;
         }
 
-    
-        const newResp = JSON.parse(data); 
+        if(data === "true") {
+            return true;
+        }
 
-        
-        return newResp;
+        return data;
+
     }
     catch (error) {
         console.error('error in fetching data:', error);
     }
+
+
 }
 
-export default RecommendationFriendApi;
+export default IsLikedApi;

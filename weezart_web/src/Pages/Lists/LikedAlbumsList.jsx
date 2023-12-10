@@ -99,7 +99,7 @@ function imgsrc(val) {
                   />
                   </td>
                   <td>{val.name}</td>
-                  <td>{val.artistsName}</td>
+                  <td>{val.artistsName.join(', ')}</td>
                   <td>{val.numberOfTracks}</td>
                   <td>{val.releaseDate === undefined ? "Unknown" : val.releaseDate.substring(0, 4)}</td>
                   

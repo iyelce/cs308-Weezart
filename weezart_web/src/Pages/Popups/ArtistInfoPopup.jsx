@@ -7,6 +7,7 @@ import LikeArtistApi from "../../API/LikeArtistApi";
 import ArtistRemoveApi from "../../API/ArtistRemoveApi";
 import RateArtistApi from "../../API/RateArtistApi";
 import UnlikeArtistApi from "../../API/UnlikeArtistApi";
+import songImage from "../../songImage.jpg"
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
@@ -14,13 +15,12 @@ Modal.setAppElement("#root");
 
 //if image is empty put a defoult image
 function imgsrc(val) {
-    if(val === undefined || val==="") {
-        return "https://i.pinimg.com/564x/e3/c9/a9/e3c9a9e5934d65cff25d83a2ac655230.jpg";
+    if (val === null || val === "" || val === undefined)  {
+        return songImage;
+    } else {
+      return val;
     }
-    else {
-        return val;
-    }
-}
+  }
 
 function ArtistInfoPopup({...props}) {
 
@@ -98,7 +98,7 @@ function ArtistInfoPopup({...props}) {
         <div 
             className="column column-try" 
             style={{
-                backgroundImage: `url(${props.artistInfo.imageUrl !== "" ? props.artistInfo.imageUrl : 'yourCatPhotoUrl'})`,
+                backgroundImage: `url(${imgsrc(props.artistInfo.imageUrl)})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -126,7 +126,9 @@ function ArtistInfoPopup({...props}) {
                 
             <form className="rating-artist">
                 <div className="attributes">
-                    <p className="artistsFollower"> Followers: {props.artistInfo.followerCount}</p>
+                <p className="artistsFollower">
+                Followers: {props.artistInfo.followerCount !== -1 ? props.artistInfo.followerCount : '0'}
+                </p>
                     <p className="songGenre">Genre: {props.artistInfo.genres===null?"Unknown":props.artistInfo.genres.join(', ')}</p>
                 </div>
                     <div className="like-add">

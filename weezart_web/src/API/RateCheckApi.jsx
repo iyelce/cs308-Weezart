@@ -1,10 +1,10 @@
-async function RecommendationFriendApi (token, userId ) {
-  
-    const url =`http://localhost:8080/recommendation/friend/${userId}`
+async function RateCheckApi (token, userId, songId) {
+
+    const url = `http://localhost:8080/rate/song/get-rate-info/${songId}/${userId}`;  
     const auth = "Bearer " + token;
 
     try{        
-
+        
         const response = await fetch(url, {
             headers: {
                 accept: 'application/json',
@@ -16,26 +16,20 @@ async function RecommendationFriendApi (token, userId ) {
             credentials: 'include', 
         });
         
-        const data = await response.text();
-        console.log("friend api içinde --> ", data, " - ", typeof(data));
-    
+        const data = await response.json();
+
         if(!response.ok) {
             throw new Error('Network response is not ok');
         }
 
-        if (data === "") {
-            return "no-song";
-        }
+        return data;
 
-    
-        const newResp = JSON.parse(data); 
-
-        
-        return newResp;
     }
     catch (error) {
         console.error('error in fetching data:', error);
     }
 }
 
-export default RecommendationFriendApi;
+export default RateCheckApi;
+
+

@@ -13,7 +13,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import AnalyzeApi from '../../API/AnalyzeApi';
 import AnalyzeChartApi from '../../API/AnalyzeChartApi';
-
+import AnalyzeTableApi from '../../API/AnalyzeTableApi';
 
 
 function isDateBeforeToday(date) {
@@ -25,6 +25,9 @@ function isDateBeforeToday(date) {
  function Analyze({...props}) {
   const [data, setData] = useState([]);
   const [chartData, setChartData] = useState(undefined);
+  const [tableData, setTableData] = useState(undefined);
+  const [tableData1, setTableData1] = useState(undefined);
+  const [tableData2, setTableData2] = useState(undefined);
   const [chartDataBool, setChartDataBool] = useState(false);
   const [chart1xAxis, setChart1xAxis] = useState([]);
   const [chart2xAxis, setChart2xAxis] = useState([]);
@@ -33,7 +36,24 @@ function isDateBeforeToday(date) {
   const [analyzeType,setType]=useState("song");
   const [dateFilter,setDate]=useState('2023-01-01');
 
-  //const response=AnalyzeApi(props.token,props.userId).then((response)=>{setData(response)}).catch((error)=>{console.log(error)});
+  function tableRender(arr){
+    let table = [];
+    if(arr!==undefined){
+    for(let i=0; i<arr.length; i++) {
+        table.push(
+        <div class="item" onMouseEnter={(e)=>{e.target.backgroundColor="red"}} >
+        <img src={arr[i].albumImageURL===null?"https://i.pinimg.com/564x/47/99/fd/4799fdb80098968bf6ff4c311eed1110.jpg":arr[i].albumImageURL} />
+        <div class="play">
+        </div>
+        <h4>{arr[i].name}</h4>
+        <p>{arr[i].artistsName}</p>
+        </div>);
+    }
+}
+    return table;
+}
+
+
 
   const fetchDataMetrics = async () => {
     try {
@@ -48,8 +68,18 @@ function isDateBeforeToday(date) {
       setChart1xAxis(Object.keys(responseChart[0]).map((item)=>{const date=item.split('-');return new Date(date[0],date[1],date[2])}));
       setChart2xAxis(Object.keys(responseChart[1]).map((item)=>{const date=item.split('-');return new Date(date[0],date[1],date[2])}));
       setChart3xAxis(Object.keys(responseChart[2]).map((item)=>{const date=item.split('-');return new Date(date[0],date[1],date[2])}));
-      
+      const responseTable = await AnalyzeTableApi(props.token,props.userId,analyzeType);
+      console.log("+++ response return in page TABLES: ", responseTable);
+      setTableData(responseTable);
+      if(responseTable.length>0){
+      setTableData1(responseTable[0]);
+      setTableData2(responseTable[1]);
+      }
+
+
+
     }
+
     } catch (error) {
       console.error("Error fetching user profile:", error);
     }
@@ -89,7 +119,7 @@ function isDateBeforeToday(date) {
     }),
   };
   return (
-    <div  >
+    <div >
     <Box display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows="repeat(24, 1fr)"
@@ -335,12 +365,15 @@ function isDateBeforeToday(date) {
         <Box
           gridColumn="span 12"
           gridRow="span 6"
-          backgroundColor="red"
+          className="table-analyse"
+          marginTop={"20px"}
 >
+<Typography fontSize={"20px"} color={"red"}>Top 5</Typography>
+      <div className="list">
 
-  <p>hello</p>
+        {tableRender(tableData1)}
+      </div>
 </Box>
-        
 
 
         </Box>

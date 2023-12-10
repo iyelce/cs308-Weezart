@@ -1,7 +1,7 @@
 async function AnalyzeTableApi (token, userId ,filter ) {
 
     const result=[];
-    const urls=[`http://localhost:8080/analysis/${filter}/daily-added/29`,`http://localhost:8080/analysis/${filter}/daily-liked/29`,`http://localhost:8080/analysis/${filter}/daily-rating/29`];
+    const urls=[`http://localhost:8080/analysis/${filter}/top-5/29`,`http://localhost:8080/analysis/${filter}/last-5/29`];
     const auth = "Bearer " + token;
 
 
@@ -10,7 +10,7 @@ async function AnalyzeTableApi (token, userId ,filter ) {
 
     try{        
         let cnt=0;
-        while(cnt<3){
+        while(cnt<2){
             const response = await fetch(urls[cnt], {
                 headers: {
                     accept: 'application/json',

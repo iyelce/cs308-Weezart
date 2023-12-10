@@ -47,6 +47,8 @@ function SongInfoPopup({...props}) {
 
         const ratingResponse = await RateSongApi(props.token, props.userId, props.songInfo, selectedRating);
         setRating(selectedRating);
+
+        console.log("aksndas")
       };
 
 // albumId : "4Qy0SOU9Jg7Td10K68SanP"

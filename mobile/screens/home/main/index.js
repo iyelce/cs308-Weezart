@@ -267,7 +267,7 @@ export default Main = ({ route, navigation }) => {
                 marginTop: 20,
               }}
             >
-              Current Popular Songs
+              Weezart Popular Songs
             </Text>
             <ScrollView
               horizontal

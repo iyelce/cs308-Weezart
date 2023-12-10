@@ -77,11 +77,8 @@ const handleLikeClick = async () => {
 
 const handleDeleteClick = async () => {
     setDeleted(!deleted);
-
     const del = await SongRemoveApi(props.token, props.userId, props.songInfo);
-
     props.onRequestClose();
-
 }
 
 const formatDuration = (durationInMilliseconds) => {
@@ -107,7 +104,7 @@ const formatDuration = (durationInMilliseconds) => {
             <div className="songPopularity">
                 <AiFillCrown className="crown-icon" />
                 <p className="songPopularity-label">
-                    Popularity: {props.songInfo.popularity !== -1 ? props.songInfo.popularity + " / 100" : "unknown"}
+                    Popularity: {props.songInfo?.popularity !== -1 ? props.songInfo?.popularity + " / 100" : "unknown"}
                 </p>
             </div>
             
@@ -118,18 +115,18 @@ const formatDuration = (durationInMilliseconds) => {
 
         <div className="three-column-container">
             <div className="column">
-                <img className="cover-img" src= {imgsrc(props.songInfo.albumImageURL)} alt="cover"/>
+                <img className="cover-img" src= {imgsrc(props.songInfo?.albumImageURL)} alt="cover"/>
                 {/* <p className="duration"> {props.songInfo.duration_ms}</p> */}
                 <p className="duration">
-                    {formatDuration(props.songInfo.duration_ms)}
+                    {formatDuration(props.songInfo?.duration_ms)}
                 </p>
             </div>
 
             <div className="column">
                 <div className="attributes">
-                    <p className="songName">{props.songInfo.name}</p>
-                    <p className="songArtists">{props.songInfo.artistsName.join(', ')}</p>
-                    <p className="songAlbum">{props.songInfo.albumName}</p>
+                    <p className="songName">{props.songInfo?.name}</p>
+                    <p className="songArtists">{props.songInfo?.artistsName.join(', ')}</p>
+                    <p className="songAlbum">{props.songInfo?.albumName}</p>
                 </div>
             </div>
 
@@ -160,12 +157,24 @@ const formatDuration = (durationInMilliseconds) => {
                             </div>
                                 <p className="songAlbum" >{liked ? 'Liked' : 'Like'}</p>
                             </div>
-                            <div className="half-width">
-                                <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={ handleDeleteClick }>
-                                    {deleted ? <AiFillDelete /> : <AiOutlineDelete/>}
+                            
+                            {props.isAdded && (
+                                <div className="half-width">
+                                    <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={handleDeleteClick}>
+                                    {deleted ? <AiFillDelete /> : <AiOutlineDelete />}
                                     </div>
-                                <p className="songAlbum" >{deleted ? 'Deleted' : 'Delete'}</p>
-                            </div>
+                                    <p className="songAlbum">{deleted ? 'Deleted' : 'Delete'}</p>
+                                </div>
+                                )}
+
+                            {!props.isAdded && (
+                                <div className="half-width">
+                                    <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={handleDeleteClick}>
+                                    {deleted ? <AiFillDelete /> : <AiOutlineDelete />}
+                                    </div>
+                                    <p className="songAlbum">{deleted ? 'Added' : 'Add'}</p>
+                                </div>
+                                )}                            
                     </div>
 
                     

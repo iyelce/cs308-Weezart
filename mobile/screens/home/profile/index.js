@@ -135,7 +135,9 @@ const ProfileScreen = ({ navigation }) => {
   }, []);
 
   const onRefresh = () => {
+    setRefreshing(true);
     fetchStuff();
+    setRefreshing(false);
   };
 
   const onRatingChange = (track, rating, i) => {

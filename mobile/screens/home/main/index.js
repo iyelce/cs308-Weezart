@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions, RefreshControl, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   Image,
@@ -46,55 +46,69 @@ export default Main = ({ route, navigation }) => {
   const [friendRecom, setFriendRecom] = useState([]);
 
   useEffect(() => {
-    getUserId().then((userId) => {
-      axios.get("/analysis/song/daily-added/" + userId).then((res) => {
-        const labels = Object.keys(res);
-        const datasetData = Object.values(res);
-
-        setAddedChartData({
-          labels: labels,
-          datasets: [
-            {
-              data: datasetData,
-            },
-          ],
-        });
-      });
-      axios.get("/analysis/song/daily-liked/" + userId).then((res) => {
-        const labels = Object.keys(res);
-        const datasetData = Object.values(res);
-
-        setLikedChartData({
-          labels: labels,
-          datasets: [
-            {
-              data: datasetData,
-            },
-          ],
-        });
-      });
-      axios.get("/analysis/song/daily-rating/" + userId).then((res) => {
-        const labels = Object.keys(res);
-        const datasetData = Object.values(res);
-
-        setRatedChartData({
-          labels: labels,
-          datasets: [
-            {
-              data: datasetData,
-            },
-          ],
-        });
-      });
-
-      axios.get("/recommendation/popular").then((res) => {
-        setPopular(res);
-      });
-      axios.get("/recommendation/friend/" + userId).then((res) => {
-        setFriendRecom(res);
-      });
-    });
+    fetchStuff();
   }, []);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchStuff().then(() => {
+      setRefreshing(false);
+    });
+  };
+
+  const fetchStuff = () => {
+    return getUserId().then((userId) => {
+      return Promise.all(
+        axios.get("/analysis/song/daily-added/" + userId).then((res) => {
+          const labels = Object.keys(res);
+          const datasetData = Object.values(res);
+
+          setAddedChartData({
+            labels: labels,
+            datasets: [
+              {
+                data: datasetData,
+              },
+            ],
+          });
+        }),
+        axios.get("/analysis/song/daily-liked/" + userId).then((res) => {
+          const labels = Object.keys(res);
+          const datasetData = Object.values(res);
+
+          setLikedChartData({
+            labels: labels,
+            datasets: [
+              {
+                data: datasetData,
+              },
+            ],
+          });
+        }),
+        axios.get("/analysis/song/daily-rating/" + userId).then((res) => {
+          const labels = Object.keys(res);
+          const datasetData = Object.values(res);
+
+          setRatedChartData({
+            labels: labels,
+            datasets: [
+              {
+                data: datasetData,
+              },
+            ],
+          });
+        }),
+
+        axios.get("/recommendation/popular").then((res) => {
+          setPopular(res);
+        }),
+        axios.get("/recommendation/friend/" + userId).then((res) => {
+          setFriendRecom(res);
+        })
+      );
+    });
+  };
 
   return (
     // <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -115,6 +129,9 @@ export default Main = ({ route, navigation }) => {
               justifyContent: "center",
               display: "flex",
             }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
             <View style={{ marginLeft: "auto", marginRight: "auto" }}>
               <ScrollView

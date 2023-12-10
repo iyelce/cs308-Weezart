@@ -68,8 +68,8 @@ border-color:#150426;
 }
 #root > div > div:nth-child(2){
     width: 100%;
-  overflow: auto;
     background-color: #120719;
+    overflow-y: auto;
    
 }
 
@@ -91,18 +91,4 @@ border-color:#150426;
 body > div.ReactModalPortal > div{
   z-index: 100;
   background-color: rgba(0,0,0,0.0) !important;
-}
-
- /* Customize the scrollbar */
- #root > div > div:nth-child(2)::-webkit-scrollbar {
-  width: 12px;
-}
-
-#root > div > div:nth-child(2)::-webkit-scrollbar-track {
-  background-color: #352F44; /* Background color of the scrollbar track */
-}
-
-#root > div > div:nth-child(2)::-webkit-scrollbar-thumb {
-  background-color: #1a1721; /* Color of the scrollbar thumb */
-  border-radius: 6px; /* Border radius of the scrollbar thumb */
 }

@@ -14,6 +14,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import AnalyzeApi from '../../API/AnalyzeApi';
 import AnalyzeChartApi from '../../API/AnalyzeChartApi';
 import AnalyzeTableApi from '../../API/AnalyzeTableApi';
+import './Analyze.css';
 
 
 function isDateBeforeToday(date) {
@@ -33,6 +34,8 @@ function isDateBeforeToday(date) {
   const [chart2xAxis, setChart2xAxis] = useState([]);
   const [chart3xAxis, setChart3xAxis] = useState([]);
 
+  const [bgColor, setBgColor] = useState("#120719");
+
   const [analyzeType,setType]=useState("song");
   const [dateFilter,setDate]=useState('2023-01-01');
 
@@ -41,8 +44,8 @@ function isDateBeforeToday(date) {
     if(arr!==undefined){
     for(let i=0; i<arr.length; i++) {
         table.push(
-        <div class="item" onMouseEnter={(e)=>{e.target.backgroundColor="red"}} >
-        <img src={arr[i].albumImageURL===null?"https://i.pinimg.com/564x/47/99/fd/4799fdb80098968bf6ff4c311eed1110.jpg":arr[i].albumImageURL} />
+        <div class="item"  >
+        <img src={arr[i].albumImageURL===null?"":arr[i].albumImageURL} />
         <div class="play">
         </div>
         <h4>{arr[i].name}</h4>
@@ -53,6 +56,37 @@ function isDateBeforeToday(date) {
     return table;
 }
 
+const fetchChartMetrics = async () => {
+  try {
+    const response = await AnalyzeChartApi(props.token,props.userId,analyzeType);
+    setChartData(response);
+    if(response.length>0){
+    setChartDataBool(true);
+    setChart1xAxis(Object.keys(response[0]).map((key) => new Date(key)));
+    setChart2xAxis(Object.keys(response[1]));
+    setChart3xAxis(Object.keys(response[2]));
+    }
+}
+   catch (error) {
+    console.error("Error fetching user profile:", error);
+  }
+};
+
+const fetchTableMetrics = async () => {
+  try {
+    const response = await AnalyzeTableApi(props.token,props.userId,analyzeType);
+    console.log("+++ response return in page TABLES: ", response)
+    setTableData(response);
+    if(response.length>0){
+    setTableData1(response[0]);
+    setTableData2(response[1]);
+    }
+
+  }
+  catch(e){
+    console.log(e);
+  }
+};
 
 
   const fetchDataMetrics = async () => {
@@ -60,27 +94,9 @@ function isDateBeforeToday(date) {
       const response = await AnalyzeApi(props.token,props.userId,analyzeType,dateFilter);
       console.log("+++ response return in page: ", response)
       setData(response);
-      const responseChart = await AnalyzeChartApi(props.token,props.userId,analyzeType);
-      console.log("+++ response return in page CHARTSS: ", Object.keys(responseChart[0]))
-      setChartData(responseChart);
-      if(responseChart.length>0){
-      setChartDataBool(true);
-      setChart1xAxis(Object.keys(responseChart[0]).map((item)=>{const date=item.split('-');return new Date(date[0],date[1],date[2])}));
-      setChart2xAxis(Object.keys(responseChart[1]).map((item)=>{const date=item.split('-');return new Date(date[0],date[1],date[2])}));
-      setChart3xAxis(Object.keys(responseChart[2]).map((item)=>{const date=item.split('-');return new Date(date[0],date[1],date[2])}));
-      const responseTable = await AnalyzeTableApi(props.token,props.userId,analyzeType);
-      console.log("+++ response return in page TABLES: ", responseTable);
-      setTableData(responseTable);
-      if(responseTable.length>0){
-      setTableData1(responseTable[0]);
-      setTableData2(responseTable[1]);
-      }
-
-
-
     }
 
-    } catch (error) {
+     catch (error) {
       console.error("Error fetching user profile:", error);
     }
   };
@@ -88,7 +104,9 @@ function isDateBeforeToday(date) {
   
   useEffect(() => {
     fetchDataMetrics();
-  }, [props.token,props.userId,analyzeType,dateFilter]);
+    fetchChartMetrics();
+    fetchTableMetrics();
+  }, [props.token,props.userId]);
 
   
 
@@ -110,7 +128,8 @@ function isDateBeforeToday(date) {
       ...provided,
       backgroundColor: "#ffffff",
       boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
-      height:"100%"
+      height:"100%",
+      overflow:"auto"
     }),
     option: (provided, state) => ({
       ...provided,
@@ -141,24 +160,26 @@ function isDateBeforeToday(date) {
           gridColumn="span 2"
           height="100%"
           padding="0">
-          <Select options={options} defaultValue={{label:"Song",value:"song"}} styles={styles} onChange={(e)=>{setType(e.value)}}/>
+          <Select options={options} defaultValue={{label:"Song",value:"song"}}  onChange={(e)=>{setType(e.value);fetchDataMetrics()}}/>
 
    
           </Box>
           <Box
           gridColumn="10/span 3"
-          marginLeft="100px"
+
           height="100%"
-          padding="0">
+          padding="0"
+          display="flex"
+>
+             <Typography color={"white"} display="flex"justifyContent="center" alignItems="center" marginRight="20px">FROM</Typography>
       <LocalizationProvider dateAdapter={AdapterDayjs} sx={{height:"100%",
     padding:"0"}}>
       <DemoContainer components={['DatePicker']} sx={{height:"100%",
     padding:"0"}}>
-        <DatePicker label="From" shouldDisableDate={isDateBeforeToday} defaultValue={dayjs('2023-01-01')} onChange={(e)=>setDate(e.toISOString().split('T')[0])} sx={{
+        <DatePicker  shouldDisableDate={isDateBeforeToday} defaultValue={dayjs('2023-01-01')} onChange={(e)=>{setDate(e.toISOString().split('T')[0]);fetchDataMetrics()}} sx={{
           backgroundColor:"white",
           paddingTop:"0",
           marginTop:"0",
-          marginRight:"100px",
           borderRadius:"4px",
           height:"50px",
           "& .Mui-focused": {
@@ -170,6 +191,7 @@ function isDateBeforeToday(date) {
         }}/>
       </DemoContainer>
     </LocalizationProvider>
+       
     
 
             </Box>
@@ -238,9 +260,9 @@ function isDateBeforeToday(date) {
           
          
         >
-            <Typography fontSize={"20px"} >Adds</Typography>
+            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"} >Adds</Typography>
             <LineChart
-                xAxis={[{ scaleType:'time',data: (chartDataBool?chart1xAxis:[1,2,3])  }]}
+                xAxis={[{ scaleType:'band',data: (chartDataBool?chart1xAxis:[1,2,3])  }]}
                 series={[
                         {
                             data: (chartDataBool?Object.values(chartData[0]):[1,2,3]),
@@ -278,10 +300,10 @@ function isDateBeforeToday(date) {
           gridRow="span 6"
           backgroundColor={"#"}
         >
-            <Typography fontSize={"20px"} color={"red"}>Likes</Typography>
+            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Likes</Typography>
 
             <LineChart
-                xAxis={[{scaleType:'time', data: (chartDataBool?chart2xAxis:[1,2,3])   }]}
+                xAxis={[{scaleType:'band', data: (chartDataBool?chart2xAxis:[1,2,3])   }]}
                 series={[
                         {
                             data: (chartDataBool?Object.values(chartData[1]):[1,2,3]),
@@ -320,10 +342,10 @@ function isDateBeforeToday(date) {
           backgroundColor={"#"}
        
         >
-            <Typography fontSize={"20px"} color={"red"}>Rates</Typography>
+            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Rates</Typography>
             <LineChart
                 margin={{ bottom: 40}}
-                xAxis={[{ scaleType:'time',data: (chartDataBool?chart3xAxis:[1,2,3])  }]}
+                xAxis={[{ scaleType:'band',data: (chartDataBool?chart3xAxis:[1,2,3])  }]}
                 series={[
                         {
                             data: (chartDataBool?Object.values(chartData[2]):[1,2,3]),
@@ -368,10 +390,15 @@ function isDateBeforeToday(date) {
           className="table-analyse"
           marginTop={"20px"}
 >
-<Typography fontSize={"20px"} color={"red"}>Top 5</Typography>
+<Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Top Rated {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
       <div className="list">
 
         {tableRender(tableData1)}
+      </div>
+<Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Last Added  {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
+      <div className="list">
+
+        {tableRender(tableData2)}
       </div>
 </Box>
 

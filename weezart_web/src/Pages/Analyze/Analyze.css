@@ -1,8 +1,8 @@
 .MuiBox-root .list {
     display: flex;
     gap: 20px;
-    overflow: hidden;
-    background:red;
+
+
   }
  .MuiBox-root .table-analyse .list .item {
     min-width: 140px;
@@ -14,7 +14,7 @@
     transition: all ease 0.4s;
   }
   .MuiBox-root .table-analyse .list .item:hover {
-    background-color: rgb(88, 44, 136);
+    background-color: rgb(33, 2, 67);
   }
   .MuiBox-root .table-analyse .list .item img {
     width: 100%;

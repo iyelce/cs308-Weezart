@@ -1,7 +1,7 @@
 async function AnalyzeTableApi (token, userId ,filter ) {
 
     const result=[];
-    const urls=[`http://localhost:8080/analysis/${filter}/top-5/29`,`http://localhost:8080/analysis/${filter}/last-5/29`];
+    const urls=[`http://localhost:8080/analysis/${filter}/top-5/${userId}`,`http://localhost:8080/analysis/${filter}/last-5/${userId}`];
     const auth = "Bearer " + token;
 
 

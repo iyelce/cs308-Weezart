@@ -29,6 +29,7 @@ async function AnalyzeTableApi (token, userId ,filter ) {
             }
     
             const newResp = JSON.parse(data); 
+            console.log("asdkfasdjkjaskdbajkd filter ",filter);
     
             result[cnt]=newResp;
             cnt++;

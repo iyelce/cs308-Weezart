@@ -38,8 +38,6 @@ function isDateBeforeToday(date) {
   const [chart2xAxis, setChart2xAxis] = useState([]);
   const [chart3xAxis, setChart3xAxis] = useState([]);
 
-  const [bgColor, setBgColor] = useState("#120719");
-
   const [analyzeType,setType]=useState("song");
   const [dateFilter,setDate]=useState('2023-01-01');
 
@@ -49,7 +47,7 @@ function isDateBeforeToday(date) {
     for(let i=0; i<arr.length; i++) {
         table.push(
         <div class="item"  >
-        <img src={arr[i].albumImageURL===null?"":arr[i].albumImageURL} />
+        <img src={analyzeType=="song"?(arr[i].albumImageURL===undefined?"":arr[i].albumImageURL):(arr[i].imageURL)} />
         <div class="play">
         </div>
         <h4>{arr[i].name}</h4>
@@ -62,13 +60,15 @@ function isDateBeforeToday(date) {
 
 const fetchChartMetrics = async () => {
   try {
+    setChartDataBool(false);
     const response = await AnalyzeChartApi(props.token,props.userId,analyzeType);
     setChartData(response);
     if(response.length>0){
     setChartDataBool(true);
-    setChart1xAxis(Object.keys(response[0]).map((key) => new Date(key)));
-    setChart2xAxis(Object.keys(response[1]));
-    setChart3xAxis(Object.keys(response[2]));
+    console.log("DEBUG!!!!!!",Object.keys(response[1]).length==0);
+    setChart1xAxis(Object.keys(response[0]).length>0?Object.keys(response[0]):[1,2,3]);
+    setChart2xAxis(Object.keys(response[1]).length>0?Object.keys(response[1]):[1,2,3]);
+    setChart3xAxis(Object.keys(response[2]).length>0?Object.keys(response[2]):[1,2,3]);
     }
 }
    catch (error) {
@@ -83,6 +83,7 @@ const fetchTableMetrics = async () => {
     setTableData(response);
     if(response.length>0){
     setTableData1(response[0]);
+    console.log("TABLE CHECK!!!!");
     setTableData2(response[1]);
     }
 
@@ -110,7 +111,7 @@ const fetchTableMetrics = async () => {
     fetchDataMetrics();
     fetchChartMetrics();
     fetchTableMetrics();
-  }, [props.token,props.userId]);
+  }, [props.token,props.userId,analyzeType,dateFilter]);
 
   
 
@@ -179,7 +180,7 @@ const fetchTableMetrics = async () => {
           gridColumn="span 2"
           height="100%"
           padding="0">
-          <Select options={options} defaultValue={{label:"Song",value:"song"}}  onChange={(e)=>{setType(e.value);fetchDataMetrics()}}/>
+          <Select options={options} defaultValue={{label:"Song",value:"song"}}  onChange={(e)=>{setType(e.value)}}/>
 
    
           </Box>
@@ -195,7 +196,7 @@ const fetchTableMetrics = async () => {
     padding:"0"}}>
       <DemoContainer components={['DatePicker']} sx={{height:"100%",
     padding:"0"}}>
-        <DatePicker  shouldDisableDate={isDateBeforeToday} defaultValue={dayjs('2023-01-01')} onChange={(e)=>{setDate(e.toISOString().split('T')[0]);fetchDataMetrics()}} sx={{
+        <DatePicker  shouldDisableDate={isDateBeforeToday} defaultValue={dayjs('2023-01-01')} onChange={(e)=>{setDate(e.toISOString().split('T')[0]);}} sx={{
           backgroundColor:"white",
           paddingTop:"0",
           marginTop:"0",
@@ -281,10 +282,10 @@ const fetchTableMetrics = async () => {
         >
             <Typography marginLeft="20px" fontSize={"20px"} color={"orange"} >Adds</Typography>
             <LineChart
-                xAxis={[{ scaleType:'band',data: (chartDataBool?chart1xAxis:[1,2,3])  }]}
+                xAxis={[{ scaleType:'utc',data: (chartDataBool?chart1xAxis:[0,1,2])  }]}
                 series={[
                         {
-                            data: (chartDataBool?Object.values(chartData[0]):[1,2,3]),
+                            data: (chartDataBool&&Object.values(chartData[0]).length>0?Object.values(chartData[0]):[1,2,3]),
                             color:"#39FF14"
                         },
                         ]}
@@ -322,10 +323,10 @@ const fetchTableMetrics = async () => {
             <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Likes</Typography>
 
             <LineChart
-                xAxis={[{scaleType:'band', data: (chartDataBool?chart2xAxis:[1,2,3])   }]}
+                xAxis={[{scaleType:'band', data: (chartDataBool?chart2xAxis:[0,1,2])   }]}
                 series={[
                         {
-                            data: (chartDataBool?Object.values(chartData[1]):[1,2,3]),
+                            data: (chartDataBool&&Object.values(chartData[1]).length>0?Object.values(chartData[1]):[1,2,3]),
                             color:"#FF3131"
                         },
                         ]}
@@ -364,10 +365,10 @@ const fetchTableMetrics = async () => {
             <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Rates</Typography>
             <LineChart
                 margin={{ bottom: 40}}
-                xAxis={[{ scaleType:'band',data: (chartDataBool?chart3xAxis:[1,2,3])  }]}
+                xAxis={[{ scaleType:'band',data: (chartDataBool?chart3xAxis:[0,1,2])  }]}
                 series={[
                         {
-                            data: (chartDataBool?Object.values(chartData[2]):[1,2,3]),
+                            data: (chartDataBool&&Object.values(chartData[2]).length>0?Object.values(chartData[2]):[1,2,3]),
                             color:"#FFF01F"
 
                         },

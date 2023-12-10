@@ -1,6 +1,6 @@
 async function RecomReleaseDateApi (token, userId ) {
   
-    const url =`http://localhost:8080/recommendation/genre-artist/${userId}`
+    const url =`http://localhost:8080/recommendation/release-date/${userId}`
     const auth = "Bearer " + token;
 
     try{        
@@ -22,14 +22,12 @@ async function RecomReleaseDateApi (token, userId ) {
             throw new Error('Network response is not ok');
         }
 
-        console.log("data genre artist api : ", data);
-
-        if (data === "") {
+        const newResp = JSON.parse(data); 
+        
+        
+        if (newResp.length === 0) {
             return "no-song";
         }
-
-    
-        const newResp = JSON.parse(data); 
 
         
         return newResp;

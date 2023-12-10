@@ -22,14 +22,12 @@ async function RecommendationGenreArtistApi (token, userId ) {
             throw new Error('Network response is not ok');
         }
 
-        console.log("data genre artist api : ", data);
-
-        if (data === "") {
+        const newResp = JSON.parse(data); 
+        
+        
+        if (newResp.length === 0) {
             return "no-song";
         }
-
-    
-        const newResp = JSON.parse(data); 
 
         
         return newResp;

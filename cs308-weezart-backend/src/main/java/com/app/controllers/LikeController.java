@@ -71,7 +71,9 @@ public class LikeController {
 		UserSong givenRelation = userSongRepo.findBySongAndUser(givenSong, givenUser);
 
 		boolean likeStatus = givenRelation.isLiked();
+		if(likeStatus) log.info("liked");
 
+		else log.info("not liked");
 		return ResponseEntity.ok(likeStatus);
 	}
 }

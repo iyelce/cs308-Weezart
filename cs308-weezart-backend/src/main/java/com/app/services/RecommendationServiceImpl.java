@@ -96,18 +96,31 @@ public class RecommendationServiceImpl implements RecommendationService {
 
 			List<UserSong> friendSongs = userSongRepo.findAllByUser(currentFriend);
 
-			if (!friendSongs.isEmpty()) {
+			Integer counter = 0;
+			while(friendSongs.isEmpty()) {
+				if(counter == 10) {
+					break;
+				}
+				random = new Random();
+				randomIndex = random.nextInt(friendIds.size());
+				randomFriendName = friendIds.get(randomIndex);
 
+				currentFriend = userRepo.findByUsername(randomFriendName);
+
+				friendSongs = userSongRepo.findAllByUser(currentFriend);
+				counter++;
+
+			}
+			if (!friendSongs.isEmpty()) {
 				Collections.shuffle(friendSongs, random);
 				List<UserSong> randomFriendSongs = friendSongs.subList(0, Math.min(5, friendSongs.size()));
 				List<Song> songsFromRandomFriendSongs = randomFriendSongs.stream().map(UserSong::getSong)
 						.collect(Collectors.toList());
-
+	
 				FriendNameAndSongs friendInfo = new FriendNameAndSongs(randomFriendName, songsFromRandomFriendSongs);
 				return friendInfo;
-			} else {
-				return null;
-			}
+			} else return null;
+			
 		} else {
 			return null;
 		}

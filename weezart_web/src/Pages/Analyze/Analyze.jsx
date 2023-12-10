@@ -38,8 +38,6 @@ function isDateBeforeToday(date) {
   const [chart2xAxis, setChart2xAxis] = useState([]);
   const [chart3xAxis, setChart3xAxis] = useState([]);
 
-  const [bgColor, setBgColor] = useState("#120719");
-
   const [analyzeType,setType]=useState("song");
   const [dateFilter,setDate]=useState('2023-01-01');
 
@@ -49,11 +47,11 @@ function isDateBeforeToday(date) {
     for(let i=0; i<arr.length; i++) {
         table.push(
         <div class="item"  >
-        <img src={arr[i].albumImageURL===null?"":arr[i].albumImageURL} />
+        <img src={analyzeType=="song"?(arr[i].albumImageURL===undefined?"":arr[i].albumImageURL):(arr[i].imageURL)} />
         <div class="play">
         </div>
-        <h4>{arr[i].name}</h4>
-        <p>{arr[i].artistsName}</p>
+        <h4>{arr[i].name===undefined?'ok':'nope'}</h4>
+        <p>{arr[i].artistsName===undefined?'ok':'nope'}</p>
         </div>);
     }
 }
@@ -66,7 +64,7 @@ const fetchChartMetrics = async () => {
     setChartData(response);
     if(response.length>0){
     setChartDataBool(true);
-    setChart1xAxis(Object.keys(response[0]).map((key) => new Date(key)));
+    setChart1xAxis(Object.keys(response[0])?.map((key) => new Date(key)));
     setChart2xAxis(Object.keys(response[1]));
     setChart3xAxis(Object.keys(response[2]));
     }
@@ -83,6 +81,7 @@ const fetchTableMetrics = async () => {
     setTableData(response);
     if(response.length>0){
     setTableData1(response[0]);
+    console.log("TABLE CHECK!!!!");
     setTableData2(response[1]);
     }
 
@@ -108,9 +107,9 @@ const fetchTableMetrics = async () => {
   
   useEffect(() => {
     fetchDataMetrics();
-    fetchChartMetrics();
+    //fetchChartMetrics();
     fetchTableMetrics();
-  }, [props.token,props.userId]);
+  }, [props.token,props.userId,analyzeType,dateFilter]);
 
   
 
@@ -179,7 +178,7 @@ const fetchTableMetrics = async () => {
           gridColumn="span 2"
           height="100%"
           padding="0">
-          <Select options={options} defaultValue={{label:"Song",value:"song"}}  onChange={(e)=>{setType(e.value);fetchDataMetrics()}}/>
+          <Select options={options} defaultValue={{label:"Song",value:"song"}}  onChange={(e)=>{setType(e.value)}}/>
 
    
           </Box>
@@ -195,7 +194,7 @@ const fetchTableMetrics = async () => {
     padding:"0"}}>
       <DemoContainer components={['DatePicker']} sx={{height:"100%",
     padding:"0"}}>
-        <DatePicker  shouldDisableDate={isDateBeforeToday} defaultValue={dayjs('2023-01-01')} onChange={(e)=>{setDate(e.toISOString().split('T')[0]);fetchDataMetrics()}} sx={{
+        <DatePicker  shouldDisableDate={isDateBeforeToday} defaultValue={dayjs('2023-01-01')} onChange={(e)=>{setDate(e.toISOString().split('T')[0]);}} sx={{
           backgroundColor:"white",
           paddingTop:"0",
           marginTop:"0",

@@ -78,22 +78,39 @@ export default Artist = ({ route, navigation }) => {
     });
   }, 1000);
 
-  const debouncedLikedChanged = _.debounce((singer, i) => {
+  const debouncedLikedChanged = _.debounce((singer, liked) => {
     getUserId().then((userId) => {
-      axios.post("/like/artist/" + userId, singer.artist).then((res) => {
-        let updatedSinger = singer;
-        updatedSinger = {
-          artist: res.artist,
-          userState: {
-            addTime: res.addTime,
-            liked: res.liked,
-            likeTime: res.likeTime,
-            rating: res.rating,
-            ratingTime: res.ratingTime,
-          },
-        };
-        setSinger(updatedSinger);
-      });
+      if (liked == false) {
+        axios.post("/unlike/artist/" + userId, singer.artist).then((res) => {
+          let updatedSinger = singer;
+          updatedSinger = {
+            artist: res.artist,
+            userState: {
+              addTime: res.addTime,
+              liked: res.liked,
+              likeTime: res.likeTime,
+              rating: res.rating,
+              ratingTime: res.ratingTime,
+            },
+          };
+          setSinger(updatedSinger);
+        });
+      } else {
+        axios.post("/like/artist/" + userId, singer.artist).then((res) => {
+          let updatedSinger = singer;
+          updatedSinger = {
+            artist: res.artist,
+            userState: {
+              addTime: res.addTime,
+              liked: res.liked,
+              likeTime: res.likeTime,
+              rating: res.rating,
+              ratingTime: res.ratingTime,
+            },
+          };
+          setSinger(updatedSinger);
+        });
+      }
     });
   }, 1000);
 

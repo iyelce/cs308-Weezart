@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   Image,
   ImageBackground,
+  Keyboard,
   SafeAreaView,
   ScrollView,
   Text,
@@ -72,6 +73,8 @@ const SearchScreen = ({ navigation }) => {
   const [friendUsername, setFriendUsername] = useState("");
 
   const AddFriend = () => {
+    Keyboard.dismiss();
+
     getUserId().then((id) => {
       axios.get("/user/profile/" + id).then((myProfile) => {
         axios
@@ -100,6 +103,7 @@ const SearchScreen = ({ navigation }) => {
         )
         .then((res) => {
           navigation.navigate("Details", { data: res });
+          Keyboard.dismiss();
         });
     });
   };
@@ -109,7 +113,13 @@ const SearchScreen = ({ navigation }) => {
       <SegmentedControl
         values={["Add Songs", "Add Friends"]}
         selectedIndex={searchType}
-        style={{ marginLeft: 20, marginRight: 20, marginTop: 5, marginTop: 20 }}
+        style={{
+          marginLeft: 20,
+          marginRight: 20,
+          marginTop: 5,
+          marginTop: 20,
+        }}
+        tintColor="black"
         onChange={(event) => {
           setAddType(event.nativeEvent.selectedSegmentIndex);
         }}

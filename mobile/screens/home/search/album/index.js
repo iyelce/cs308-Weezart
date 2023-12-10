@@ -79,22 +79,39 @@ export default Album = ({ route, navigation }) => {
     });
   }, 1000);
 
-  const debouncedLikedChanged = _.debounce((record, i) => {
+  const debouncedLikedChanged = _.debounce((record, liked) => {
     getUserId().then((userId) => {
-      axios.post("/like/album/" + userId, record.album).then((res) => {
-        let updatedRecord = record;
-        updatedRecord = {
-          album: res.album,
-          userState: {
-            addTime: res.addTime,
-            liked: res.liked,
-            likeTime: res.likeTime,
-            rating: res.rating,
-            ratingTime: res.ratingTime,
-          },
-        };
-        setRecord(updatedRecord);
-      });
+      if (liked == false) {
+        axios.post("/unlike/album/" + userId, record.album).then((res) => {
+          let updatedRecord = record;
+          updatedRecord = {
+            album: res.album,
+            userState: {
+              addTime: res.addTime,
+              liked: res.liked,
+              likeTime: res.likeTime,
+              rating: res.rating,
+              ratingTime: res.ratingTime,
+            },
+          };
+          setRecord(updatedRecord);
+        });
+      } else {
+        axios.post("/like/album/" + userId, record.album).then((res) => {
+          let updatedRecord = record;
+          updatedRecord = {
+            album: res.album,
+            userState: {
+              addTime: res.addTime,
+              liked: res.liked,
+              likeTime: res.likeTime,
+              rating: res.rating,
+              ratingTime: res.ratingTime,
+            },
+          };
+          setRecord(updatedRecord);
+        });
+      }
     });
   }, 1000);
 

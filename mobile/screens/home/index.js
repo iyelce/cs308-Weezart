@@ -24,7 +24,7 @@ export default Home = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Search"
+      initialRouteName="Add"
       backBehavior="none"
       tabBar={(props) => <MyTabBar {...props} />}
     >

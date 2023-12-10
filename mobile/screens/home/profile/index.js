@@ -199,26 +199,44 @@ const ProfileScreen = ({ navigation }) => {
     });
   }, 1000);
 
-  const debouncedLikedChanged = _.debounce((track, i) => {
+  const debouncedLikedChanged = _.debounce((track, liked, i) => {
     getUserId().then((userId) => {
       // const indexOfItemToUpdate = updatedAddedSongs.findIndex(
       //   (item) => item.song.id === res.song.id
       // );
-      axios.post("/like/song/" + userId, track.song).then((res) => {
-        const updatedAddedSongs = [...addedSongs];
-        const indexOfItemToUpdate = i;
-        updatedAddedSongs[indexOfItemToUpdate] = {
-          song: res.song,
-          userState: {
-            addTime: res.addTime,
-            liked: res.liked,
-            likeTime: res.likeTime,
-            rating: res.rating,
-            ratingTime: res.ratingTime,
-          },
-        };
-        setAddedSongs(updatedAddedSongs);
-      });
+      if (liked == false) {
+        axios.post("/unlike/song/" + userId, track.song).then((res) => {
+          const updatedAddedSongs = [...addedSongs];
+          const indexOfItemToUpdate = i;
+          updatedAddedSongs[indexOfItemToUpdate] = {
+            song: res.song,
+            userState: {
+              addTime: res.addTime,
+              liked: res.liked,
+              likeTime: res.likeTime,
+              rating: res.rating,
+              ratingTime: res.ratingTime,
+            },
+          };
+          setAddedSongs(updatedAddedSongs);
+        });
+      } else {
+        axios.post("/like/song/" + userId, track.song).then((res) => {
+          const updatedAddedSongs = [...addedSongs];
+          const indexOfItemToUpdate = i;
+          updatedAddedSongs[indexOfItemToUpdate] = {
+            song: res.song,
+            userState: {
+              addTime: res.addTime,
+              liked: res.liked,
+              likeTime: res.likeTime,
+              rating: res.rating,
+              ratingTime: res.ratingTime,
+            },
+          };
+          setAddedSongs(updatedAddedSongs);
+        });
+      }
     });
   }, 1000);
 

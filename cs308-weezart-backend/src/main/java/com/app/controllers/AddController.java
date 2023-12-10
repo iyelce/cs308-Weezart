@@ -267,11 +267,12 @@ public class AddController {
 	}
 
 	@PostMapping("/friend/{currentUsername}/{targetUsername}")
-	public ResponseEntity<User> followUser(@PathVariable String currentUsername, @PathVariable String targetUsername) {
+	public ResponseEntity<String> followUser(@PathVariable String currentUsername,
+			@PathVariable String targetUsername) {
 
-		User user = addService.followUser(currentUsername, targetUsername);
+		String response = addService.followUser(currentUsername, targetUsername);
 
-		return ResponseEntity.ok(user);
+		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/get-added-info/{songId}/{userId}")

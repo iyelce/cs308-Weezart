@@ -109,7 +109,7 @@ const SearchScreen = ({ navigation }) => {
       <SegmentedControl
         values={["Add Songs", "Add Friends"]}
         selectedIndex={searchType}
-        style={{ marginLeft: 20, marginRight: 20, marginTop: 5 }}
+        style={{ marginLeft: 20, marginRight: 20, marginTop: 5, marginTop: 20 }}
         onChange={(event) => {
           setAddType(event.nativeEvent.selectedSegmentIndex);
         }}
@@ -229,7 +229,7 @@ const SearchScreen = ({ navigation }) => {
               alignItems: "center",
               width: "100%",
               marginTop: 10,
-              backgroundColor: "black",
+              backgroundColor: "#4d4d4d",
             }}
             onPress={() => navigation.navigate("ManualAdd")}
           >

@@ -37,9 +37,9 @@ export default Home = () => {
         }}
       />
       <Tab.Screen
-        name="Search"
+        name="Add"
         component={Search}
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
         initialParams={{
           icon: require("./../../assets/icons/search.png"),
         }}

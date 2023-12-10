@@ -221,6 +221,9 @@ public class AddServiceImpl implements AddService {
 		User currentUser = userRepo.findByUsername(username);
 		User targetUser = userRepo.findByUsername(targetUsername);
 
+		if (targetUser == null)
+			return "USER_NOT_FOUND_ERROR";
+
 		if (username == targetUsername)
 			return "ADD_YOURSELF_ERROR";
 

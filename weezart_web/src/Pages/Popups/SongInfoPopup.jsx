@@ -9,92 +9,104 @@ import RateSongApi from "../../API/RateSongApi";
 import SongRemoveApi from "../../API/SongRemoveApi";
 import UnlikeSongApi from "../../API/UnlikeSongApi";
 import songImage from "../../songImage.jpg"
+import { IoIosAddCircle,  IoIosAddCircleOutline } from "react-icons/io";
+import AddedCheckApi from "../../API/AddedCheckApi";
+import AddingAcceptedSong from "../../API/AddingAcceptedSong";
+import IsLikedApi from "../../API/IsLikedApi";
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
 
 
+
 function imgsrc(val) {
-    if(val === null || val==="") {
-        return songImage;
+    if (val === null || val === "") {
+      return songImage;
+    } else {
+      return val;
     }
-    else {
-        return val;
-    }
-}
-
-function SongInfoPopup({...props}) {
-    console.log(props.songInfo);
-    useEffect(() => {
-        setLiked(props.liked);
-        setRating(props.rating[props.rating.length -1 ]);
-      }, [props.liked, props.rating]);
-
-    const [rating, setRating] = useState(props.rating[props.rating.length -1 ]);
+  }
+  
+  function SongInfoPopup({ ...props }) {
+    const [rating, setRating] = useState(props.rating[props.rating.length - 1]);
     const stars = [1, 2, 3, 4, 5];
     const [deleted, setDeleted] = useState(false);
+    const [liked, setLiked] = useState(props.liked);
+    const [isAdded, setIsAdded] = useState(false); //to check from api
+    const [added, setAdded] =useState(false);
+    const [addFirstErrorLabel, setAddFirstErrorLabel] = useState(false);
+  
+    const IsAddedCheck = async () => {
+            try {
+              const response = await AddedCheckApi(props.token, props.userId, props.songInfo.id);
+              setIsAdded(response);
+            } catch (error) {
+            }
+    }
 
+    const IsLikeCheck = async () =>{
+        if (props.liked === "check with api") {
+            //come from recom
+            const likeResponse = await IsLikedApi(props.token, props.userId ,props.songInfo.id );
+            console.log( "page içinde like response: ", likeResponse);
+        }
+        else {
+            setLiked(props.liked);
+        }
+    }
+
+
+    useEffect(() => {
+        setRating(props.rating[props.rating.length - 1]);
+        IsAddedCheck();
+        IsLikeCheck();
+      }, []); // Empty dependency array for rendering only once
+  
     const handleStarClick = async (selectedRating) => {
-        // if (selectedRating === rating) {
-        //   // If the clicked star is the same as the current rating, remove the rating (set it to 0)
-        //   setRating(0);
-        // } else {
-        //     setRating(selectedRating);
-        //     setAdded(true);
-        //     // Call your rating API with the selected rating
-        //     onRatingChange(selectedRating);
-        // }
 
-        const ratingResponse = await RateSongApi(props.token, props.userId, props.songInfo, selectedRating);
-        setRating(selectedRating);
 
-        console.log("aksndas")
-      };
+      const ratingResponse = await RateSongApi(props.token, props.userId, props.songInfo, selectedRating);
+      setRating(selectedRating);
+    };
+  
+    const handleLikeClick = async () => {
+        
+        if(isAdded === "true") {
+            if (liked) {
+                const unlikeReps = await UnlikeSongApi(props.token, props.userId, props.songInfo);
+                setLiked(false);
+              } else {
+                const likeResp = await LikeSongApi(props.token, props.userId, props.songInfo);
+                setLiked(true);
+              }
+        }
+        else {
+            setAddFirstErrorLabel(true);
+        }
 
-// albumId : "4Qy0SOU9Jg7Td10K68SanP"
-// albumImageURL :"https://i.scdn.co/image/ab67616d0000b27358816b5b546bdc2c0e7f6416"
-// albumName:"Buddy Holly"
-// albumRelease:"1958"
-// artistsId:(2) ['3wYyutjgII8LJVVOLrGI0D', '4r7JUeiYy24L7BuzCq9EjR']
-// artistsName:(2) ['Buddy Holly', 'The Crickets']
-// duration_ms:129120
-// id:"39lnzOIUCSNaQmgBHoz7rt"
-// name:"Everyday"
-// popularity:68
-// explicit:false
+    };
+  
+    const handleDeleteClick = async () => {
+      setDeleted(!deleted);
+      const del = await SongRemoveApi(props.token, props.userId, props.songInfo);
+      props.onRequestClose();
+    };
 
-const [liked, setLiked] = useState(props.liked);
-
-const handleLikeClick = async () => {
-  if (liked) {
-    // Call unlike API if the heart is already filled
-    const unlikeReps = await UnlikeSongApi(props.token, props.userId, props.songInfo);
-    setLiked(false);
-    
-  } else {
-    
-    const likeResp = await LikeSongApi(props.token, props.userId, props.songInfo);
-    setLiked(true);
-  }  
-};
-
-const handleDeleteClick = async () => {
-    setDeleted(!deleted);
-    const del = await SongRemoveApi(props.token, props.userId, props.songInfo);
-    props.onRequestClose();
-}
-
-const formatDuration = (durationInMilliseconds) => {
-    // Convert milliseconds to seconds
-    let seconds = Math.floor(durationInMilliseconds / 1000);
-
-    // Calculate minutes and remaining seconds
-    let minutes = Math.floor(seconds / 60);
-    seconds %= 60;
-
-    // Format the result as mm:ss
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-};
+    const handleAddClick = async () => {
+        setAddFirstErrorLabel(false);
+        setAdded(true);
+        const addResponse = await AddingAcceptedSong(props.songInfo, props.token, props.userId );
+        console.log("adding song from popup: ", addResponse);
+        //if sucessfull
+        IsAddedCheck();
+    }
+  
+    const formatDuration = (durationInMilliseconds) => {
+      let seconds = Math.floor(durationInMilliseconds / 1000);
+      let minutes = Math.floor(seconds / 60);
+      seconds %= 60;
+      return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    };
 
 
   return (
@@ -157,11 +169,6 @@ const formatDuration = (durationInMilliseconds) => {
                 
                 <form className="rating">
 
-
-                
-
-
-
                     <div className="like-add">
                             <div className="half-width">
                             <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={handleLikeClick}>
@@ -170,24 +177,26 @@ const formatDuration = (durationInMilliseconds) => {
                                 <p className="songAlbum" >{liked ? 'Liked' : 'Like'}</p>
                             </div>
                             
-                            {props.isAdded && (
+                            {isAdded == "true" ? (
                                 <div className="half-width">
                                     <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={handleDeleteClick}>
                                     {deleted ? <AiFillDelete /> : <AiOutlineDelete />}
                                     </div>
                                     <p className="songAlbum">{deleted ? 'Deleted' : 'Delete'}</p>
                                 </div>
-                                )}
-
-                            {!props.isAdded && (
+                                ): (
                                 <div className="half-width">
-                                    <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={handleDeleteClick}>
-                                    {deleted ? <AiFillDelete /> : <AiOutlineDelete />}
+                                    <div className={`delete-icon ${added ? 'added' : ''}`} onClick={handleAddClick}>
+                                    {added ? <IoIosAddCircle /> : < IoIosAddCircleOutline />}
                                     </div>
-                                    <p className="songAlbum">{deleted ? 'Added' : 'Add'}</p>
+                                    <p className="songAlbum">{added ? 'Added' : 'Add'}</p>
                                 </div>
-                                )}                            
+                            )}                       
                     </div>
+
+                    <p style={{ display: addFirstErrorLabel ? 'block' : 'none' }} className="single-song-add-unique-label">
+                        Add Song to Like or Rate
+                    </p>
 
                     
                 </form>

@@ -192,11 +192,10 @@ const Recommendations = ({ ...props }) => {
           isOpen={true}
           onRequestClose={() => setSelectedSongInfo(null)}
           songInfo={selectedSongInfo}
-          liked={true}
+          liked={"check with api"}
           rating={5}
           token={props.token}
           userId={props.userId}
-          isAdded={true}
         />
       )}
     </div>

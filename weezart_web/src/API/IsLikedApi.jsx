@@ -5,8 +5,8 @@ async function IsLikedApi (token, userId ,songId ) {
 
     try{        
 
-        console.log("song Id in api -> ", songId);
-        console.log("user Id in api -> ", userId);
+        console.log("------------song id: ", songId);
+        console.log("------------user id: ", userId);
 
         const response = await fetch(url, {
             headers: {
@@ -20,12 +20,20 @@ async function IsLikedApi (token, userId ,songId ) {
         });
         
         const data = await response.text();
+        console.log("like api: ", data, " - ", typeof(data))
+    
     
         if(!response.ok) {
             throw new Error('Network response is not ok');
         }
 
-        console.log("is added api içinde return: ", data);
+        if (data === "true") {
+            return true;
+        }
+
+        else if(data ==="false") {
+            return false;
+        }
 
         return data;
 

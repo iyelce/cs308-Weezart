@@ -1,9 +1,11 @@
-async function AddedCheckApi (token, userId ) {
+async function AddedCheckApi (token, userId, songId ) {
 
-    const url = `http://localhost:8080/add/get-added-info/${userId}`;  
+    const url = `http://localhost:8080/add/get-added-info/${songId}/${userId}`;  
     const auth = "Bearer " + token;
 
     try{        
+        console.log("api içinde songId: ", songId);
+        console.log ("api içinde user ID: ", userId);
 
         const response = await fetch(url, {
             headers: {

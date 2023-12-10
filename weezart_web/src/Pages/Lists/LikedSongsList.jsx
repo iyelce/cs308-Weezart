@@ -135,8 +135,6 @@ function LikedSongsList({ ...props }) {
               rating = {wholeSongResp[selectedSongIndex].rating}
               token = {props.token}
               userId = {props.userId}
-
-              isAdded = {true} 
             />
       )}
     </div>

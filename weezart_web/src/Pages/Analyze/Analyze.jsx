@@ -34,12 +34,35 @@ function isDateBeforeToday(date) {
   const [tableData1, setTableData1] = useState(undefined);
   const [tableData2, setTableData2] = useState(undefined);
   const [chartDataBool, setChartDataBool] = useState(false);
-  const [chart1xAxis, setChart1xAxis] = useState([]);
-  const [chart2xAxis, setChart2xAxis] = useState([]);
-  const [chart3xAxis, setChart3xAxis] = useState([]);
+  const [chart1xAxis, setChart1xAxis] = useState([0]);
+  const [chart2xAxis, setChart2xAxis] = useState([0]);
+  const [chart3xAxis, setChart3xAxis] = useState([0]);
 
   const [analyzeType,setType]=useState("song");
   const [dateFilter,setDate]=useState('2023-01-01');
+
+  function sortArraysTogether(arrA, arrB) {
+    const combinedArray = arrA.map((date, index) => ({ date, value: arrB[index] }));
+
+    // Custom comparator function for sorting based on dates
+    const compareDates = (a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateA - dateB;
+    };
+    
+    // Sort the combined array based on dates
+    combinedArray.sort(compareDates);
+    
+    // Extract the sorted values array
+    const sortedValuesArray = combinedArray.map(item => item.value);
+    
+    console.log("Sorted Dates Array:", combinedArray.map(item => item.date));
+    console.log("Sorted Values Array:", sortedValuesArray);
+    return [combinedArray.map(item => item.date),sortedValuesArray];
+  }
+
+    
 
   function tableRender(arr){
     let table = [];
@@ -66,9 +89,20 @@ const fetchChartMetrics = async () => {
     if(response.length>0){
     setChartDataBool(true);
     console.log("DEBUG!!!!!!",Object.keys(response[1]).length==0);
-    setChart1xAxis(Object.keys(response[0]).length>0?Object.keys(response[0]):[1,2,3]);
-    setChart2xAxis(Object.keys(response[1]).length>0?Object.keys(response[1]):[1,2,3]);
-    setChart3xAxis(Object.keys(response[2]).length>0?Object.keys(response[2]):[1,2,3]);
+    if(Object.keys(response[0]).length>0){
+      let temp=sortArraysTogether(Object.keys(response[0]),Object.values(response[0]));
+      console.log("SORTING!!!! ",temp[0]);
+    setChart1xAxis(temp[0]);
+    }
+    if(Object.keys(response[1]).length>0){
+    let temp1=sortArraysTogether(Object.keys(response[1]),Object.values(response[1]));
+    setChart2xAxis(temp1[0]);
+    }
+    if(Object.keys(response[2]).length>0){
+    let temp2=sortArraysTogether(Object.keys(response[2]),Object.values(response[2]));
+    setChart3xAxis(temp2[0]);
+    }
+    
     }
 }
    catch (error) {
@@ -282,10 +316,10 @@ const fetchTableMetrics = async () => {
         >
             <Typography marginLeft="20px" fontSize={"20px"} color={"orange"} >Adds</Typography>
             <LineChart
-                xAxis={[{ scaleType:'utc',data: (chartDataBool?chart1xAxis:[0,1,2])  }]}
+                xAxis={[{ scaleType:'band',data: (chartDataBool?chart1xAxis:[0])  }]}
                 series={[
                         {
-                            data: (chartDataBool&&Object.values(chartData[0]).length>0?Object.values(chartData[0]):[1,2,3]),
+                            data: (chartDataBool&&Object.values(chartData[0]).length>0?Object.values(chartData[0]):[0]),
                             color:"#39FF14"
                         },
                         ]}
@@ -323,10 +357,10 @@ const fetchTableMetrics = async () => {
             <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Likes</Typography>
 
             <LineChart
-                xAxis={[{scaleType:'band', data: (chartDataBool?chart2xAxis:[0,1,2])   }]}
+                xAxis={[{scaleType:'band', data: (chartDataBool?chart2xAxis:[0])   }]}
                 series={[
                         {
-                            data: (chartDataBool&&Object.values(chartData[1]).length>0?Object.values(chartData[1]):[1,2,3]),
+                            data: (chartDataBool&&Object.values(chartData[1]).length>0?Object.values(chartData[1]):[0]),
                             color:"#FF3131"
                         },
                         ]}
@@ -365,10 +399,10 @@ const fetchTableMetrics = async () => {
             <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Rates</Typography>
             <LineChart
                 margin={{ bottom: 40}}
-                xAxis={[{ scaleType:'band',data: (chartDataBool?chart3xAxis:[0,1,2])  }]}
+                xAxis={[{ scaleType:'band',data: (chartDataBool?chart3xAxis:[0])  }]}
                 series={[
                         {
-                            data: (chartDataBool&&Object.values(chartData[2]).length>0?Object.values(chartData[2]):[1,2,3]),
+                            data: (chartDataBool&&Object.values(chartData[2]).length>0?Object.values(chartData[2]):[0]),
                             color:"#FFF01F"
 
                         },

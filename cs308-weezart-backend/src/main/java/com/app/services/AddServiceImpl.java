@@ -122,10 +122,8 @@ public class AddServiceImpl implements AddService {
 			userSongRepo.save(userSong);
 		}
 
-
 	}
 
-	
 	public Artist addArtist(ArtistPayload artist) {
 
 		Artist givenArtist = new Artist(artist.getName(), artist.getGenres(), artist.getImageUrl(),
@@ -218,19 +216,21 @@ public class AddServiceImpl implements AddService {
 
 	// follow another user by their unique username
 	@Transactional
-	public User followUser(String username, String targetUsername) {
+	public String followUser(String username, String targetUsername) {
 
 		User currentUser = userRepo.findByUsername(username);
 		User targetUser = userRepo.findByUsername(targetUsername);
 
 		if (username == targetUsername)
-			return currentUser;
+			return "ADD_YOURSELF_ERROR";
 
 		List<String> currentFollowing = currentUser.getFollowing();
 		if (currentFollowing == null)
 			currentFollowing = new ArrayList<>();
 		if (!currentFollowing.contains(targetUser.getUsername()))
 			currentFollowing.add(targetUser.getUsername());
+		else
+			return "ALREADY_FRIEND_ERROR";
 
 		currentUser.setFollowing(currentFollowing);
 
@@ -243,7 +243,9 @@ public class AddServiceImpl implements AddService {
 		targetUser.setFollowers(targetFollowers);
 
 		userRepo.save(currentUser);
-		return userRepo.save(targetUser);
+		userRepo.save(targetUser);
+
+		return "ADD_FRIEND_SUCCESS";
 	}
 
 	// return the added songs by the user

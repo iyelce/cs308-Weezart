@@ -1,16 +1,21 @@
 async function AnalyzeTableApi (token, userId ,filter ) {
 
     const result=[];
-    const urls=[`http://localhost:8080/analysis/${filter}/top-5/${userId}`,`http://localhost:8080/analysis/${filter}/last-5/${userId}`];
+    const urls=[`http://localhost:8080/analysis/${filter}/top-5/${userId}`,`http://localhost:8080/analysis/${filter}/last-5/${userId}`,`http://localhost:8080/analysis/${filter}/genre/pop/${userId}`,`http://localhost:8080/analysis/${filter}/release-date/${userId}`];
     const auth = "Bearer " + token;
 
 
-
+    const body={
+        "startDate":1990,
+        "endDate":2000
+    }
   
 
     try{        
         let cnt=0;
-        while(cnt<2){
+        while(cnt<3){
+            
+
             const response = await fetch(urls[cnt], {
                 headers: {
                     accept: 'application/json',
@@ -19,7 +24,7 @@ async function AnalyzeTableApi (token, userId ,filter ) {
                 },
                 method: 'GET',
                 mode: 'cors',
-                credentials: 'include', 
+                credentials: 'include'
             });
             
             const data = await response.text();
@@ -34,6 +39,27 @@ async function AnalyzeTableApi (token, userId ,filter ) {
             result[cnt]=newResp;
             cnt++;
         }
+
+        const response = await fetch(urls[3], {
+            headers: {
+                accept: 'application/json',
+                'Authorization': auth,
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            mode: 'cors',
+            credentials: 'include',
+            body: JSON.stringify(body)
+        });
+        const data = await response.text();
+        
+            if(!response.ok) {
+                throw new Error('Network response is not ok');
+            }
+    
+            const newResp = JSON.parse(data); 
+            result[3]=newResp;
+
     }
     catch (error) {
         console.error('error in fetching data:', error);

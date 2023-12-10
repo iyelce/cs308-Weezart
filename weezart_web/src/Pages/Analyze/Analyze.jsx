@@ -33,6 +33,8 @@ function isDateBeforeToday(date) {
   const [tableData, setTableData] = useState(undefined);
   const [tableData1, setTableData1] = useState(undefined);
   const [tableData2, setTableData2] = useState(undefined);
+  const [tableData3, setTableData3] = useState(undefined);
+  const [tableData4, setTableData4] = useState(undefined);
   const [chartDataBool, setChartDataBool] = useState(false);
   const [chart1xAxis, setChart1xAxis] = useState([0]);
   const [chart2xAxis, setChart2xAxis] = useState([0]);
@@ -70,7 +72,7 @@ function isDateBeforeToday(date) {
     for(let i=0; i<arr.length; i++) {
         table.push(
         <div class="item"  >
-        <img src={analyzeType=="song"?(arr[i].albumImageURL===undefined?"":arr[i].albumImageURL):(arr[i].imageURL)} />
+        <img src={analyzeType=="song"?(arr[i].albumImageURL===undefined?"":arr[i].albumImageURL):(arr[i].imageUrl)} />
         <div class="play">
         </div>
         <h4>{arr[i].name}</h4>
@@ -119,6 +121,8 @@ const fetchTableMetrics = async () => {
     setTableData1(response[0]);
     console.log("TABLE CHECK!!!!");
     setTableData2(response[1]);
+    setTableData3(response[2]);
+    setTableData4(response[3]);
     }
 
   }
@@ -143,11 +147,15 @@ const fetchTableMetrics = async () => {
   
   useEffect(() => {
     fetchDataMetrics();
-    fetchChartMetrics();
-    fetchTableMetrics();
   }, [props.token,props.userId,analyzeType,dateFilter]);
 
-  
+  useEffect(() => {
+    fetchChartMetrics();
+  }, [props.token,props.userId,analyzeType]);
+
+  useEffect(() => {
+    fetchTableMetrics();
+  }, [props.token,props.userId,analyzeType]);
 
 
   const options=[
@@ -197,7 +205,7 @@ const fetchTableMetrics = async () => {
         gridTemplateColumns="repeat(12, 1fr)"
         gridTemplateRows="repeat(24, 1fr)"
         gap="10px"
-        height="120vh">
+        height="140vh">
         <Box
         gridColumn="span 12"
         gridRow="span 1"
@@ -314,7 +322,7 @@ const fetchTableMetrics = async () => {
           
          
         >
-            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"} >Adds</Typography>
+            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"} >Daily Adds</Typography>
             <LineChart
                 xAxis={[{ scaleType:'band',data: (chartDataBool?chart1xAxis:[0])  }]}
                 series={[
@@ -354,7 +362,7 @@ const fetchTableMetrics = async () => {
           gridRow="span 6"
           backgroundColor={"#"}
         >
-            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Likes</Typography>
+            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Daily Likes</Typography>
 
             <LineChart
                 xAxis={[{scaleType:'band', data: (chartDataBool?chart2xAxis:[0])   }]}
@@ -396,7 +404,7 @@ const fetchTableMetrics = async () => {
           backgroundColor={"#"}
        
         >
-            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Rates</Typography>
+            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Daily Average Rating</Typography>
             <LineChart
                 margin={{ bottom: 40}}
                 xAxis={[{ scaleType:'band',data: (chartDataBool?chart3xAxis:[0])  }]}
@@ -444,15 +452,25 @@ const fetchTableMetrics = async () => {
           className="table-analyse"
           marginTop={"20px"}
 >
-<Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Top Rated {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
+<Typography marginLeft="20px" marginBottom={"20px"} fontSize={"20px"} color={"orange"}>Top Rated {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
       <div className="list">
 
         {tableRender(tableData1)}
       </div>
-<Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Last Added  {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
+<Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"}>Last Added  {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
       <div className="list">
 
         {tableRender(tableData2)}
+      </div>
+<Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"}>Top Rated Songs From Pop Genre  {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
+      <div className="list">
+          
+          {tableRender(tableData3)}
+      </div>
+      <Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"}>Top Rated Songs Your Favorite Time {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
+      <div className="list">
+          
+          {tableRender(tableData4)}
       </div>
 </Box>
 

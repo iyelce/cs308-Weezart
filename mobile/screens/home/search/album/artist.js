@@ -197,9 +197,10 @@ export default Artist = ({ route, navigation }) => {
             margin: 20,
           }}
         >
-          {data.artist.genres.map((genre) => {
+          {data.artist.genres.map((genre, i) => {
             return (
               <View
+                key={i}
                 style={{
                   padding: 15,
                   paddingRight: 20,

@@ -267,7 +267,7 @@ export default Main = ({ route, navigation }) => {
                 marginTop: 20,
               }}
             >
-              Most Popular Songs
+              Current Popular Songs
             </Text>
             <ScrollView
               horizontal

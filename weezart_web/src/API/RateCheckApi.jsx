@@ -1,10 +1,10 @@
-async function IsLikedApi (token, userId ,songId ) {
+async function RateCheckApi (token, userId, songId) {
 
-    const url = `http://localhost:8080/like/song/get-like-info/${songId}/${userId}`;  
+    const url = `http://localhost:8080/rate/song/get-rate-info/${songId}/${userId}`;  
     const auth = "Bearer " + token;
 
     try{        
-
+        
         const response = await fetch(url, {
             headers: {
                 accept: 'application/json',
@@ -16,18 +16,10 @@ async function IsLikedApi (token, userId ,songId ) {
             credentials: 'include', 
         });
         
-        const data = await response.text();
-    
+        const data = await response.json();
+
         if(!response.ok) {
             throw new Error('Network response is not ok');
-        }
-        
-        if(data === "false") {
-            return false;
-        }
-
-        if(data === "true") {
-            return true;
         }
 
         return data;
@@ -36,8 +28,8 @@ async function IsLikedApi (token, userId ,songId ) {
     catch (error) {
         console.error('error in fetching data:', error);
     }
-
-
 }
 
-export default IsLikedApi;
+export default RateCheckApi;
+
+

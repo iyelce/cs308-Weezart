@@ -13,6 +13,7 @@ import { IoIosAddCircle,  IoIosAddCircleOutline } from "react-icons/io";
 import AddedCheckApi from "../../API/AddedCheckApi";
 import AddingAcceptedSong from "../../API/AddingAcceptedSong";
 import IsLikedApi from "../../API/IsLikedApi";
+import RateCheckApi from "../../API/RateCheckApi";
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
@@ -39,6 +40,7 @@ function imgsrc(val) {
     const IsAddedCheck = async () => {
             try {
               const response = await AddedCheckApi(props.token, props.userId, props.songInfo.id);
+              console.log("is added :" , response, "  -  ", typeof(isAdded))
               setIsAdded(response);
             } catch (error) {
             }
@@ -48,25 +50,52 @@ function imgsrc(val) {
         if (props.liked === "check with api") {
             //come from recom
             const likeResponse = await IsLikedApi(props.token, props.userId ,props.songInfo.id );
-            console.log( "page içinde like response: ", likeResponse);
+            setLiked(likeResponse);
         }
         else {
             setLiked(props.liked);
         }
     }
 
+    const RatingCheck = async () => {
+        if (props.rating === "check with api") {
+            //comming from recom
+            
+            const rateResponse = await RateCheckApi(props.token, props.userId, props.songInfo.id);
+            setRating(rateResponse);
+        }
+        else{
+            setRating(props.rating[props.rating.length - 1]);
+        }
+    }
+
 
     useEffect(() => {
-        setRating(props.rating[props.rating.length - 1]);
         IsAddedCheck();
-        IsLikeCheck();
-      }, []); // Empty dependency array for rendering only once
+      }, []); // Run once when component mounts to check isAdded
+    
+      useEffect(() => {
+        // This effect will run whenever isAdded changes
+        if (isAdded === "true") {
+          RatingCheck();
+          IsLikeCheck();
+        }
+        else{
+            setRating(0);
+            setLiked(false);
+        }
+      }, [isAdded]);
   
+
     const handleStarClick = async (selectedRating) => {
+        if(isAdded ===  "true") {
+            const ratingResponse = await RateSongApi(props.token, props.userId, props.songInfo, selectedRating);
+            setRating(selectedRating);
+        }
+        else {
+            setAddFirstErrorLabel(true);
+        }
 
-
-      const ratingResponse = await RateSongApi(props.token, props.userId, props.songInfo, selectedRating);
-      setRating(selectedRating);
     };
   
     const handleLikeClick = async () => {
@@ -195,7 +224,7 @@ function imgsrc(val) {
                     </div>
 
                     <p style={{ display: addFirstErrorLabel ? 'block' : 'none' }} className="single-song-add-unique-label">
-                        Add Song to Like or Rate
+                    {'First Add the Song :)'}
                     </p>
 
                     

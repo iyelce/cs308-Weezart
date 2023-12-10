@@ -65,6 +65,7 @@ const Recommendations = ({...props}) => {
       setRecommendationsPopular(response);
     }
   
+    
   useEffect(() => {
     fetchRecommendations();
     fetchHotRecommendations();

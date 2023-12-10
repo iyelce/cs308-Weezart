@@ -2,18 +2,41 @@ import React, { useState } from "react";
 import './AddFriend.css';
 import AddFriendApi from "../../API/AddFriendApi";
 
-async function addFriend(username, token,addingUsername) {
-    const response = await AddFriendApi(token, username,addingUsername);
-    return response;
-}
+
 
 
 const AddFriend = ({...props}) => {
+
+  async function addFriend(username, token,addingUsername) {
+    const response = await AddFriendApi(token, username,addingUsername);
+
+    if (response==="ALREADY_FRIEND_ERROR") {
+      setResponseLabel("Already Following")
+      setResponseShow(true);
+    }
+    else if(response==="USER_NOT_FOUND_ERROR"){
+      setResponseLabel("User Not Found")
+      setResponseShow(true);
+    }
+    else if (response==="ADD_FRIEND_SUCCESS"){
+      setResponseLabel("Followed")
+      setResponseShow(true);
+    }
+
+    return response;
+}
+
+    const [responseShow, setResponseShow] = useState(false);
+    const [responseLabel, setResponseLabel] = useState("");
+
     const [username, setUsername] = useState("");
     const [isFocusedUsername, setIsFocusedUsername] = useState(false);
     
     const handleChange = (event) => {
         setUsername(event.target.value);
+
+        setResponseShow(false);
+        setResponseLabel("");
     };
     
     
@@ -24,16 +47,11 @@ const AddFriend = ({...props}) => {
         
 
     let response=addFriend(props.username,props.token,username);
-    if (response==="USER_ALREADY_FRIEND") {
-      console.log("couldnt add friend");
-    }
-
-
   };
 
   return (
     <div className="container-add">
-      <form onSubmit={handleSubmit}>
+      <form className = "friend-add" onSubmit={handleSubmit}>
         <div className={'field '+(isFocusedUsername?'moved':'')} >
                     <input type="text" 
                     className="register-input-box"
@@ -43,7 +61,12 @@ const AddFriend = ({...props}) => {
                     ></input>
                     <label for="" className={'register-input-label '+(isFocusedUsername||(!isFocusedUsername&&username!=='')?'moved-upside':'')}>Username</label>
                 </div>
-        <button type="submit">Add</button>
+
+                <p style={{ display: responseShow ? 'block' : 'none' }} className="single-song-add-unique-label">
+                  {responseLabel}
+                </p>
+
+        <button className="add-friend-button" type="submit">Follow</button>
       </form>
     </div>
   );

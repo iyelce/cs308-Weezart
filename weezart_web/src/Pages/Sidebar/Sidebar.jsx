@@ -127,7 +127,7 @@ const SideBar = ({...props}) => {
                 }}
                 icon={<PersonAddIcon />}
               >
-                <Typography>{"Add Friend"}</Typography>
+                <Typography>{"Follow Friend"}</Typography>
 
               </MenuItem>
 

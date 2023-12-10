@@ -10,12 +10,13 @@ import {
   Switch,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-
+import moment from "moment";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BlurView } from "@react-native-community/blur";
 // import { Rating } from "react-native-ratings";
 import { Rating } from "@kolking/react-native-rating";
-import { getUserId } from "../../../../helpers/Utils";
+import { getUserId } from "./../../../helpers/Utils";
+import axios from "./../../../config/axios";
 
 export default ManualAdd = ({ route, navigation }) => {
   React.useLayoutEffect(() => {
@@ -30,17 +31,16 @@ export default ManualAdd = ({ route, navigation }) => {
   const [songName, setSongName] = useState("");
   const [albumName, setAlbumName] = useState("");
   const [albumId, setAlbumId] = useState("");
-  const [artistsName, setArtistsName] = useState([]);
+  const [artistsName, setArtistsName] = useState("");
   const [artistsId, setArtistsId] = useState([]);
-  const [popularity, setPopularity] = useState("");
+  const [popularity, setPopularity] = useState([]);
   const [duration_ms, setDurationMs] = useState(0);
   const [explicit, setExplicit] = useState(false);
 
   const [albumRelease, setAlbumRelease] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const toggleSwitch = () => setExplicit((previousState) => !previousState);
 
   const handleConfirm = (selectedDate) => {
     setDatePickerVisibility(false);
@@ -55,6 +55,31 @@ export default ManualAdd = ({ route, navigation }) => {
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
+  };
+
+  const addSong = () => {
+    getUserId().then((userId) => {
+      // console.log("ARRAY?: ", artistsName.split(","));
+
+      const songPayload = {
+        id: "",
+        name: songName,
+        albumName,
+        albumId: "",
+        artistsName: artistsName.split(","),
+        artistsId: [],
+        popularity: -1,
+        duration_ms: parseInt(duration_ms),
+        explicit: explicit,
+        albumRelease: moment(albumRelease).format("YYYY-MM-DD"),
+      };
+
+      axios
+        .post(`/add/manual-song-unique/${userId}`, songPayload)
+        .then((response) => {
+          navigation.goBack();
+        });
+    });
   };
 
   return (
@@ -90,17 +115,13 @@ export default ManualAdd = ({ route, navigation }) => {
               gap: 6,
             }}
           >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
             <TextInput
               required
               placeholder="Song Name"
               placeholderTextColor={"#9ba3af"}
               value={songName}
               onChangeText={(text) => {
-                setExplicit(text);
+                setSongName(text);
               }}
               style={{
                 width: "100%",
@@ -124,17 +145,13 @@ export default ManualAdd = ({ route, navigation }) => {
               gap: 6,
             }}
           >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
             <TextInput
               required
               placeholder="Album Name"
               placeholderTextColor={"#9ba3af"}
               value={albumName}
               onChangeText={(text) => {
-                setExplicit(text);
+                setAlbumName(text);
               }}
               style={{
                 width: "100%",
@@ -158,17 +175,13 @@ export default ManualAdd = ({ route, navigation }) => {
               gap: 6,
             }}
           >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
             <TextInput
               required
               placeholder="Artists Name"
               placeholderTextColor={"#9ba3af"}
               value={artistsName}
               onChangeText={(text) => {
-                setExplicit(text);
+                setArtistsName(text);
               }}
               style={{
                 width: "100%",
@@ -192,17 +205,13 @@ export default ManualAdd = ({ route, navigation }) => {
               gap: 6,
             }}
           >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
             <TextInput
               required
               placeholder="Duration"
               placeholderTextColor={"#9ba3af"}
               value={duration_ms}
               onChangeText={(text) => {
-                setExplicit(text);
+                setDurationMs(text);
               }}
               style={{
                 width: "100%",
@@ -227,10 +236,6 @@ export default ManualAdd = ({ route, navigation }) => {
               gap: 6,
             }}
           >
-            <Image
-              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-              source={require("./../../../assets/icons/search.png")}
-            />
             <View
               style={{
                 backgroundColor: "#f3f3f3",
@@ -251,7 +256,7 @@ export default ManualAdd = ({ route, navigation }) => {
               </Text>
               <TouchableOpacity onPress={showDatePicker}>
                 <Text style={{ fontSize: 17, fontWeight: "bold" }}>
-                  {albumRelease.toISOString().split("T")[0]}
+                  {moment(albumRelease).format("YYYY-MM-DD")}
                 </Text>
               </TouchableOpacity>
               <DateTimePickerModal
@@ -270,15 +275,15 @@ export default ManualAdd = ({ route, navigation }) => {
           >
             <Text style={{ fontSize: 17, fontWeight: "bold", marginRight: 10 }}>
               Explicit:
-              {isEnabled ? "True" : "False"}
+              {explicit ? "True" : "False"}
             </Text>
             <Switch
               style={{}}
               trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+              thumbColor={explicit ? "#f5dd4b" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitch}
-              value={isEnabled}
+              value={explicit}
             />
           </View>
         </View>
@@ -295,7 +300,7 @@ export default ManualAdd = ({ route, navigation }) => {
             marginTop: 10,
             backgroundColor: "black",
           }}
-          onPress={() => navigation.navigate("ManualAdd")}
+          onPress={addSong}
         >
           <Text style={{ fontWeight: "bold", color: "white", fontSize: 17 }}>
             Add Your Song

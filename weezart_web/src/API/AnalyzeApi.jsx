@@ -1,6 +1,6 @@
 async function AnalyzeApi (token, userId ,filter,dateFilter ) {
 
-    const url =(dateFilter=='2023-01-01'?`http://localhost:8080/analysis/${filter}/counts/${userId}`:`http://localhost:8080/analysis/${filter}/constrained-counts/33/${dateFilter}`) ;  
+    const url =(dateFilter=='2023-01-01'?`http://localhost:8080/analysis/${filter}/counts/${userId}`:`http://localhost:8080/analysis/${filter}/constrained-counts/${userId}/${dateFilter}`) ;  
     const auth = "Bearer " + token;
 
 

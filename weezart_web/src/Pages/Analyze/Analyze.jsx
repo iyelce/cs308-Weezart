@@ -66,9 +66,9 @@ const fetchChartMetrics = async () => {
     if(response.length>0){
     setChartDataBool(true);
     console.log("DEBUG!!!!!!",Object.keys(response[1]).length==0);
-    setChart1xAxis(Object.keys(response[0]).length>0?Object.keys(response[0]).map((key)=>new Date(key)):[1,2,3]);
-    setChart2xAxis(Object.keys(response[1]).length>0?Object.keys(response[1]).map((key)=>new Date(key)):[1,2,3]);
-    setChart3xAxis(Object.keys(response[2]).length>0?Object.keys(response[2]).map((key)=>new Date(key)):[1,2,3]);
+    setChart1xAxis(Object.keys(response[0]).length>0?Object.keys(response[0]):[1,2,3]);
+    setChart2xAxis(Object.keys(response[1]).length>0?Object.keys(response[1]):[1,2,3]);
+    setChart3xAxis(Object.keys(response[2]).length>0?Object.keys(response[2]):[1,2,3]);
     }
 }
    catch (error) {
@@ -282,7 +282,7 @@ const fetchTableMetrics = async () => {
         >
             <Typography marginLeft="20px" fontSize={"20px"} color={"orange"} >Adds</Typography>
             <LineChart
-                xAxis={[{ scaleType:'band',data: (chartDataBool?chart1xAxis:[0,1,2])  }]}
+                xAxis={[{ scaleType:'utc',data: (chartDataBool?chart1xAxis:[0,1,2])  }]}
                 series={[
                         {
                             data: (chartDataBool&&Object.values(chartData[0]).length>0?Object.values(chartData[0]):[1,2,3]),

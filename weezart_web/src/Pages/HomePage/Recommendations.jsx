@@ -56,12 +56,9 @@ const Recommendations = ({...props}) => {
         console.log("responseFriend", responseFriend);
         setRecommendationsFriend(responseFriend);
         setRecommendationsFriendName(responseFriend?.friendName);
-
-
-
-
     }
   
+    
   useEffect(() => {
       fetchRecommendations();
       }, [props.userId, props.token]);

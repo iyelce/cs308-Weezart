@@ -9,6 +9,7 @@ import {
   TextInput,
   Switch,
 } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BlurView } from "@react-native-community/blur";
@@ -34,10 +35,27 @@ export default ManualAdd = ({ route, navigation }) => {
   const [popularity, setPopularity] = useState("");
   const [duration_ms, setDurationMs] = useState(0);
   const [explicit, setExplicit] = useState(false);
-  const [albumRelease, setAlbumRelease] = useState("");
+
+  const [albumRelease, setAlbumRelease] = useState(new Date());
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+
+  const handleConfirm = (selectedDate) => {
+    setDatePickerVisibility(false);
+    if (selectedDate) {
+      setAlbumRelease(selectedDate);
+    }
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
 
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
@@ -194,25 +212,7 @@ export default ManualAdd = ({ route, navigation }) => {
               returnKeyType="search"
             />
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ fontSize: 17, fontWeight: "bold", marginRight: 10 }}>
-              Explicit:
-              {isEnabled ? "True" : "False"}
-            </Text>
-            <Switch
-              style={{}}
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
-              value={isEnabled}
-            />
-          </View>
+
           <View
             style={{
               backgroundColor: "#f3f3f3",
@@ -231,20 +231,54 @@ export default ManualAdd = ({ route, navigation }) => {
               style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
               source={require("./../../../assets/icons/search.png")}
             />
-            <TextInput
-              required
-              placeholder="Release Date"
-              placeholderTextColor={"#9ba3af"}
-              value={albumRelease}
-              onChangeText={(text) => {
-                setExplicit(text);
-              }}
+            <View
               style={{
-                width: "100%",
-                fontSize: 17,
-                fontWeight: "bold",
+                backgroundColor: "#f3f3f3",
+                borderRadius: 16,
+                padding: 16,
+                paddingLeft: 20,
+                paddingRight: 20,
+                marginTop: 10,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 6,
               }}
-              returnKeyType="search"
+            >
+              <Text
+                style={{ marginRight: 10, fontSize: 17, fontWeight: "bold" }}
+              >
+                Release Date:
+              </Text>
+              <TouchableOpacity onPress={showDatePicker}>
+                <Text style={{ fontSize: 17, fontWeight: "bold" }}>
+                  {albumRelease.toISOString().split("T")[0]}
+                </Text>
+              </TouchableOpacity>
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+              />
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ fontSize: 17, fontWeight: "bold", marginRight: 10 }}>
+              Explicit:
+              {isEnabled ? "True" : "False"}
+            </Text>
+            <Switch
+              style={{}}
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
             />
           </View>
         </View>

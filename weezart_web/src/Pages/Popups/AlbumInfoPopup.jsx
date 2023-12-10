@@ -114,7 +114,7 @@ function AlbumInfoPopup({...props}) {
             className="column column-try" 
             style={{
                 backgroundImage: `url(${imgsrc(props.albumInfo.imageUrl)})`,
-                backgroundSize: 'contain',
+                backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundColor: 'transparent',
@@ -159,21 +159,12 @@ function AlbumInfoPopup({...props}) {
                 
                 <form className="rating">
 
-                    <p>{rating > 0 ? 'Rated' : 'Rate'}</p>
+                
 
-                    <div className="stars">
-                        {stars.map((star) => (
-                        <span
-                            key={star}
-                            className={`star ${star <= rating ? 'selected' : ''}`}
-                            onClick={() => handleStarClick(star)}
-                        >
-                            {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
-                        </span>
-                        ))}
-                    </div>
+                  
 
-                    <hr/>
+
+
 
                     <div className="like-add">
                             <div className="half-width">

@@ -99,7 +99,7 @@ function ArtistInfoPopup({...props}) {
             className="column column-try" 
             style={{
                 backgroundImage: `url(${props.artistInfo.imageUrl !== "" ? props.artistInfo.imageUrl : 'yourCatPhotoUrl'})`,
-                backgroundSize: 'contain',
+                backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundColor: 'transparent',
@@ -125,6 +125,10 @@ function ArtistInfoPopup({...props}) {
             <div className="column">
                 
             <form className="rating-artist">
+                <div className="attributes">
+                    <p className="artistsFollower"> Followers: {props.artistInfo.followerCount}</p>
+                    <p className="songGenre">Genre: {props.artistInfo.genres===null?"Unknown":props.artistInfo.genres.join(', ')}</p>
+                </div>
                     <div className="like-add">
                             <div className="half-width">
                             <div className={`heart-icon ${liked ? 'liked' : ''}`} onClick={handleLikeClick}>
@@ -142,10 +146,7 @@ function ArtistInfoPopup({...props}) {
                     </div>
                 </form>
 
-                <div className="attributes">
-                    <p className="artistsFollower"> Followers: {props.artistInfo.followerCount}</p>
-                    <p className="songGenre">Genre: {props.artistInfo.genres===null?"Unknown":props.artistInfo.genres.join(', ')}</p>
-                </div>
+                
 
             </div>
 

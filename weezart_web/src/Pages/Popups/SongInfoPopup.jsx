@@ -24,6 +24,7 @@ function imgsrc(val) {
 }
 
 function SongInfoPopup({...props}) {
+    console.log(props.songInfo);
     useEffect(() => {
         setLiked(props.liked);
         setRating(props.rating[props.rating.length -1 ]);
@@ -114,13 +115,33 @@ const formatDuration = (durationInMilliseconds) => {
         </div>
 
         <div className="three-column-container">
-            <div className="column">
-                <img className="cover-img" src= {imgsrc(props.songInfo?.albumImageURL)} alt="cover"/>
-                {/* <p className="duration"> {props.songInfo.duration_ms}</p> */}
-                <p className="duration">
-                    {formatDuration(props.songInfo?.duration_ms)}
-                </p>
+        <div 
+            className="column column-try" 
+            style={{
+                backgroundImage: `url(${props.songInfo.albumImageURL !== "" ? props.songInfo.albumImageURL : 'yourCatPhotoUrl'})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundColor: 'transparent',
+            }}
+        >
+                <div className="content">
+                    <h2 className="title">{props.songInfo.name}</h2>
+
+                    <div className="stars">
+                        {stars.map((star) => (
+                        <span
+                            key={star}
+                            className={`star ${star <= rating ? 'selected' : ''}`}
+                            onClick={() => handleStarClick(star)}
+                        >
+                            {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
+                        </span>
+                        ))}
+                    </div>
+                </div>
             </div>
+            
 
             <div className="column">
                 <div className="attributes">
@@ -134,21 +155,10 @@ const formatDuration = (durationInMilliseconds) => {
                 
                 <form className="rating">
 
-                    <p className="songAlbum" >{rating > 0 ? 'Rated' : 'Rate'}</p>
 
-                    <div className="stars">
-                        {stars.map((star) => (
-                            <span
-                            key={star}
-                            className={`star ${star <= rating ? 'selected' : ''}`}
-                            onClick={() => handleStarClick(star)}
-                            >
-                            {star <= rating ? <AiFillStar className="star-icon" /> : <AiOutlineStar className="star-icon" />}
-                            </span>
-                        ))}
-                    </div>
+                
 
-                    <hr/>
+
 
                     <div className="like-add">
                             <div className="half-width">

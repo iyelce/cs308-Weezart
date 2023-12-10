@@ -43,24 +43,33 @@ const Recommendations = ({...props}) => {
   
     };
   
+
+    const fetchHotRecommendations = async () => {
+        const response = await RecommendationHotApi(props.token,props.userId );
+        console.log("response HOT", response);
+        setRecommendationsHot(response);
+    }
+
+    const fetchFriendRecommendations = async () => {
+        const response = await RecommendationFriendApi(props.token,props.userId );
+        console.log("response FRIEND", response);
+        setRecommendationsFriend(response);
+        setRecommendationsFriendName(response?.friendName);
+    };
+
     
 
     const fetchRecommendations = async () => {
       const response = await RecommendationPopularApi(props.token );
-      console.log("response", response);
+      console.log("response POPULAR", response);
       setRecommendationsPopular(response);
-      const responseHot = await RecommendationHotApi(props.token,props.userId );
-        console.log("responseHot", responseHot);
-        setRecommendationsHot(responseHot);
-        const responseFriend = await RecommendationFriendApi(props.token,props.userId );
-        console.log("responseFriend", responseFriend);
-        setRecommendationsFriend(responseFriend);
-        setRecommendationsFriendName(responseFriend?.friendName);
     }
   
     
   useEffect(() => {
-      fetchRecommendations();
+    fetchRecommendations();
+    fetchHotRecommendations();
+    fetchFriendRecommendations();
       }, [props.userId, props.token]);
     
 

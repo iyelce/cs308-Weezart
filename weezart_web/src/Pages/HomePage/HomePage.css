@@ -23,7 +23,7 @@
   padding: 20px;
   flex-wrap: wrap;
 
-  overflow-y: auto;
+  overflow-x: auto;
   max-height: 100%;
 }
 
@@ -64,10 +64,6 @@
 
 }
 
-
-div > div > div > div > div > div > div>div{
-overflow-x: auto;
-}
 
 
 

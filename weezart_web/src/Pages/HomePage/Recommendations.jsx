@@ -19,23 +19,44 @@ const Recommendations = ({ ...props }) => {
   const [albumRecom, setAlbumRecom] = useState("no-song");
 
 
-  const fetchRecommendations = async () => {
+
+  const popularFetch = async () => {
     const response = await RecommendationPopularApi(props.token);
     setRecommendationsPopular(response);
-    // const responseHot = await RecommendationHotApi(props.token, props.userId);
-    // setRecommendationsHot(responseHot);
+  }
+
+  const friendFetch = async () => {
     const responseFriend = await RecommendationFriendApi(props.token, props.userId);
     setRecommendationsFriend(responseFriend);
     setRecommendationsFriendName(responseFriend?.friendName);
+  }
+
+  const artistFetch = async () => {
     const responseArtist = await RecommendationGenreArtistApi(props.token, props.userId);
     setArtistRecom(responseArtist);
+  }
+
+  const albumFetch = async () => {
     const responseAlbum = await RecomReleaseDateApi(props.token, props.userId);
     setAlbumRecom(responseAlbum);
-    console.log("---------->", responseAlbum);
-  };
+  }
+
+
 
   useEffect(() => {
-    fetchRecommendations();
+    popularFetch();
+  }, [props.userId, props.token]);
+
+  useEffect(() => {
+    friendFetch();
+  }, [props.userId, props.token]);
+
+  useEffect(() => {
+    artistFetch();
+  }, [props.userId, props.token]);
+
+  useEffect(() => {
+    albumFetch();
   }, [props.userId, props.token]);
 
   const openSongInfoPopup = (songInfo) => {

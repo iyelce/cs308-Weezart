@@ -214,7 +214,15 @@ export default Album = ({ route, navigation }) => {
             />
           </View>
           {/* </View> */}
-          <View style={{ display: "flex", gap: 5, width: "100%", padding: 10 }}>
+          <View
+            style={{
+              display: "flex",
+              gap: 15,
+              width: "100%",
+              padding: 10,
+              marginTop: 10,
+            }}
+          >
             {record.album.songsName.map((track, i) => {
               return (
                 <TouchableOpacity
@@ -242,9 +250,9 @@ export default Album = ({ route, navigation }) => {
                     <Text style={{ fontWeight: "bold", fontSize: 15 }}>
                       {track}
                     </Text>
-                    <Text style={{ color: "#7e7e7e", marginTop: 5 }}>
-                      {/* {track.duration} */}
-                    </Text>
+                    {/* <Text style={{ color: "#7e7e7e", marginTop: 5 }}> */}
+                    {/* {track.duration} */}
+                    {/* </Text> */}
                   </View>
                 </TouchableOpacity>
               );

@@ -21,8 +21,8 @@ Modal.setAppElement("#root");
 
 
 function imgsrc(val) {
-    if (val === null || val === "") {
-      return songImage;
+    if (val === null || val === "" || val === undefined)  {
+        return songImage;
     } else {
       return val;
     }
@@ -161,7 +161,7 @@ function imgsrc(val) {
         <div 
             className="column column-try" 
             style={{
-                backgroundImage: `url(${props.songInfo.albumImageURL !== "" ? props.songInfo.albumImageURL : 'yourCatPhotoUrl'})`,
+                backgroundImage: `url(${imgsrc(props.songInfo.albumImageURL)})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -206,19 +206,19 @@ function imgsrc(val) {
                                 <p className="songAlbum" >{liked ? 'Liked' : 'Like'}</p>
                             </div>
                             
-                            {isAdded == "true" ? (
+                            {isAdded === "true" ? (
                                 <div className="half-width">
                                     <div className={`delete-icon ${deleted ? 'deleted' : ''}`} onClick={handleDeleteClick}>
                                     {deleted ? <AiFillDelete /> : <AiOutlineDelete />}
                                     </div>
-                                    <p className="songAlbum">{deleted ? 'Deleted' : 'Delete'}</p>
+                                    <p className="songAlbum">{deleted ? 'Deleting...' : 'Delete'}</p>
                                 </div>
                                 ): (
                                 <div className="half-width">
                                     <div className={`delete-icon ${added ? 'added' : ''}`} onClick={handleAddClick}>
                                     {added ? <IoIosAddCircle /> : < IoIosAddCircleOutline />}
                                     </div>
-                                    <p className="songAlbum">{added ? 'Added' : 'Add'}</p>
+                                    <p className="songAlbum">{added ? 'Adding...' : 'Add'}</p>
                                 </div>
                             )}                       
                     </div>

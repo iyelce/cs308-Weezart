@@ -190,7 +190,7 @@ function AddSong({...props}) {
                                 />
                                 </td>
                                 <td>{val.name}</td>
-                                <td>{val.artistsName}</td>
+                                <td>{val.artistsName.join(', ')}</td>
                                 <td>{val.albumName}</td>
                                 <td>{val.duration}</td>
                             </tr>

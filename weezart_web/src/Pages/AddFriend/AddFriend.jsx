@@ -42,6 +42,7 @@ const AddFriend = ({...props}) => {
     
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log("a")
         // Your logic for adding the friend with username goes here
         // For example, you can send a request to your backend API
         

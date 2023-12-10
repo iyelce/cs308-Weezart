@@ -41,8 +41,6 @@ const Recommendations = ({ ...props }) => {
     setAlbumRecom(responseAlbum);
   }
 
-
-
   useEffect(() => {
     popularFetch();
   }, [props.userId, props.token]);

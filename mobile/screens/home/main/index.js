@@ -44,6 +44,8 @@ export default Main = ({ route, navigation }) => {
 
   const [popular, setPopular] = useState([]);
   const [friendRecom, setFriendRecom] = useState([]);
+  const [artistsRecom, setArtistsRecom] = useState([]);
+  const [albumRecom, setAlbumRecom] = useState([]);
 
   useEffect(() => {
     fetchStuff();
@@ -105,6 +107,12 @@ export default Main = ({ route, navigation }) => {
         }),
         axios.get("/recommendation/friend/" + userId).then((res) => {
           setFriendRecom(res);
+        }),
+        axios.get("/recommendation/genre-artist/" + userId).then((res) => {
+          setArtistsRecom(res);
+        }),
+        axios.get("/recommendation/release-date/" + userId).then((res) => {
+          setAlbumRecom(res);
         })
       );
     });
@@ -339,6 +347,93 @@ export default Main = ({ route, navigation }) => {
                 );
               })}
             </ScrollView>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 25,
+                marginLeft: 20,
+                marginTop: 40,
+              }}
+            >
+              {"Artists to check out"}
+            </Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{
+                marginTop: 10,
+                paddingLeft: 20,
+                paddingRight: 20,
+              }}
+              contentContainerStyle={{
+                gap: 30,
+                paddingRight: 30,
+              }}
+            >
+              {artistsRecom.length != 0 &&
+                artistsRecom.map((artist, i) => {
+                  return (
+                    <View
+                      style={{
+                        width: 110,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      key={artist.id}
+                    >
+                      <Image
+                        style={{ width: 110, height: 110, borderRadius: 150 }}
+                        source={{ uri: artist.imageUrl }}
+                      />
+                      <Text style={{ marginTop: 8, fontWeight: "bold" }}>
+                        {artist.name}
+                      </Text>
+                    </View>
+                  );
+                })}
+            </ScrollView>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 25,
+                marginLeft: 20,
+                marginTop: 40,
+              }}
+            >
+              {"Albums to check out"}
+            </Text>
+            {albumRecom.length != 0 && (
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={{
+                  marginTop: 10,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                }}
+                contentContainerStyle={{
+                  gap: 10,
+                  paddingRight: 30,
+                }}
+              >
+                {albumRecom.map((album, i) => {
+                  return (
+                    <View style={{ width: 150 }} key={album.id}>
+                      <Image
+                        style={{ width: 150, height: 150, borderRadius: 5 }}
+                        source={{ uri: album.imageUrl }}
+                      />
+                      <Text style={{ marginTop: 8, fontWeight: "bold" }}>
+                        {album.name}
+                      </Text>
+                      <Text style={{ marginTop: 2, fontSize: 12 }}>
+                        {album.artistsName[0]}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </ScrollView>
+            )}
           </ScrollView>
         )}
     </View>

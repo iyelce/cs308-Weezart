@@ -225,7 +225,7 @@ const fetchTableMetrics = async () => {
     }),
   };
   return (
-    <div  id="analysis-to-capture"  >
+    <div  id="analysis-to-capture"   >
 
     <Box display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
@@ -495,7 +495,7 @@ const fetchTableMetrics = async () => {
 
         {tableRender(tableData1)}
       </div>
-<Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"} visibility={tableData2===undefined?"hidden":""}>Last Added  {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
+<Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"} visibility={tableData2===undefined?"hidden":""}>Last Liked   {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
       <div className="list">
 
         {tableRender(tableData2)}
@@ -505,7 +505,7 @@ const fetchTableMetrics = async () => {
           
           {tableRender(tableData3)}
       </div>
-      <Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"} display={tableData4===undefined?"none":""}>Top Rated Songs Your Favorite Time {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
+      <Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"} display={tableData4===undefined?"none":""}>Top Rated Songs From 2010's {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
       <div className="list">
           
           {tableRender(tableData4)}

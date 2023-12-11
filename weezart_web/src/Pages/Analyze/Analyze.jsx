@@ -17,7 +17,7 @@ import AnalyzeTableApi from '../../API/AnalyzeTableApi';
 import './Analyze.css';
 import ShareIcon from '@mui/icons-material/Share';
 
-import { ColorRing , Oval} from 'react-loader-spinner';
+import html2canvas from 'html2canvas';
 
 
 
@@ -29,6 +29,8 @@ function isDateBeforeToday(date) {
 
 
  function Analyze({...props}) {
+
+
   const [data, setData] = useState([]);
   const [chartData, setChartData] = useState(undefined);
   const [tableData, setTableData] = useState(undefined);
@@ -43,6 +45,47 @@ function isDateBeforeToday(date) {
 
   const [analyzeType,setType]=useState("song");
   const [dateFilter,setDate]=useState('2023-01-01');
+
+  //--------------------------------------
+
+  const handleShareClick = () => {
+    const elementToCapture = document.getElementById('analysis-to-capture');
+
+    if (elementToCapture) {
+      html2canvas(elementToCapture).then((canvas) => {
+        // Convert canvas to PNG image data
+        const imageData = canvas.toDataURL('image/png');
+
+        // Now you can save or share the image data as needed
+        shareImage(imageData);
+      });
+    }
+  };
+
+
+  const shareImage = (imageData) => {
+    // Create a link element
+    const downloadLink = document.createElement('a');
+  
+    // Set the href attribute to the image data
+    downloadLink.href = imageData;
+  
+    // Set the download attribute to specify the filename
+    downloadLink.download = 'myWeezartAnalysis.png';
+  
+    // Append the link to the document body
+    document.body.appendChild(downloadLink);
+  
+    // Trigger a click on the link to initiate the download
+    downloadLink.click();
+  
+    // Remove the link from the document
+    document.body.removeChild(downloadLink);
+  };
+  
+
+
+  //-----------------------------------------
 
   function sortArraysTogether(arrA, arrB) {
     const combinedArray = arrA.map((date, index) => ({ date, value: arrB[index] }));
@@ -182,12 +225,7 @@ const fetchTableMetrics = async () => {
     }),
   };
   return (
-    <div >
-
-
-
-
-
+    <div  id="analysis-to-capture"  >
 
     <Box display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
@@ -202,9 +240,6 @@ const fetchTableMetrics = async () => {
         gridTemplateRows="repeat(1, 1fr)"
         paddingTop="10px"
         paddingLeft="10px"
-
-        
-
         >
           
         <Box
@@ -222,6 +257,7 @@ const fetchTableMetrics = async () => {
             justifyContent={"end"}
             marginRight={"20px"}
             height={"30px"}
+            onClick={handleShareClick}
             >
 
             <ShareIcon sx={{color:"white",marginTop:"10px",marginLeft:"10px",height:"30px", top:"0"}}/>

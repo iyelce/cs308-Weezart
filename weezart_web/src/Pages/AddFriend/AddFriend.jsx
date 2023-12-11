@@ -47,7 +47,7 @@ const AddFriend = ({...props}) => {
         // For example, you can send a request to your backend API
         
 
-    let response=addFriend(props.username,props.token,username);
+    let response=addFriend(props.username, props.token,username);
   };
 
   return (

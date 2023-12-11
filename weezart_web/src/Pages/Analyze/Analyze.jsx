@@ -15,6 +15,7 @@ import AnalyzeApi from '../../API/AnalyzeApi';
 import AnalyzeChartApi from '../../API/AnalyzeChartApi';
 import AnalyzeTableApi from '../../API/AnalyzeTableApi';
 import './Analyze.css';
+import ShareIcon from '@mui/icons-material/Share';
 
 import { ColorRing , Oval} from 'react-loader-spinner';
 
@@ -167,37 +168,24 @@ const fetchTableMetrics = async () => {
   const styles = {
     control: (provided) => ({
       ...provided,
-      backgroundColor: "white",
-      borderRadius: "4px",
+ 
       height:"50px"
     }),
     menu: (provided) => ({
       ...provided,
-      backgroundColor: "#ffffff",
-      boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
-      height:"100%",
-      overflow:"auto"
+      backgroundColor: "#ffffff"
     }),
     option: (provided, state) => ({
       ...provided,
       backgroundColor: state.isSelected ? "#3B0944" : "#ffffff",
-      color: state.isSelected ? "white" : "#999999",
+      color: state.isSelected ? "white" : "black",
     }),
   };
   return (
     <div >
 
 
-<Oval
-  height={80}
-  width={80}
-  color="#451952"
-  visible={true}
-  ariaLabel='oval-loading'
-  secondaryColor="#FACBEA"
-  strokeWidth={4} // Adjust the strokeWidth to make it thicker
-  timeout={10000} // Adjust the timeout to control the animation speed (in milliseconds)
-/>
+
 
 
 
@@ -211,6 +199,7 @@ const fetchTableMetrics = async () => {
         gridRow="span 1"
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
+        gridTemplateRows="repeat(1, 1fr)"
         paddingTop="10px"
         paddingLeft="10px"
 
@@ -220,14 +209,26 @@ const fetchTableMetrics = async () => {
           
         <Box
           gridColumn="span 2"
+          gridRow="span 1"
           height="100%"
           padding="0">
-          <Select options={options} defaultValue={{label:"Song",value:"song"}}  onChange={(e)=>{setType(e.value)}}/>
+          <Select options={options} styles={styles} defaultValue={{label:"Song",value:"song"}}  onChange={(e)=>{setType(e.value)}}/>
 
    
           </Box>
           <Box
+            gridColumn={"9/span 1"}
+            display={"flex"}
+            justifyContent={"end"}
+            marginRight={"20px"}
+            height={"30px"}
+            >
+
+            <ShareIcon sx={{color:"white",marginTop:"10px",marginLeft:"10px",height:"30px", top:"0"}}/>
+            </Box>
+          <Box
           gridColumn="10/span 3"
+          gridRow="span 1"
 
           height="100%"
           padding="0"
@@ -257,6 +258,7 @@ const fetchTableMetrics = async () => {
     
 
             </Box>
+            
         </Box>
         {/* ROW 1 */}
         <Box

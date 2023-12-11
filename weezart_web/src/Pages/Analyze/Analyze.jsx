@@ -120,7 +120,7 @@ function isDateBeforeToday(date) {
         <div class="play">
         </div>
         <h4>{arr[i].name}</h4>
-        <p>{arr[i].artistsName}</p>
+        <p>{arr[i].artistsName.join(', ')}</p>
         </div>);
     }
 }
@@ -500,7 +500,7 @@ const fetchTableMetrics = async () => {
 
         {tableRender(tableData2)}
       </div>
-<Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"} opacity={tableData3===undefined?0:1}>Top Rated {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'} From Pop Genre  </Typography>
+<Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"} display={tableData3===undefined?"none":""}>Top Rated {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'} From Pop Genre  </Typography>
       <div className="list">
           
           {tableRender(tableData3)}

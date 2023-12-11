@@ -3,10 +3,39 @@ import './ProfilePage.css';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UserProfileApi from "../../API/UserProfileApi";
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import UserPublicDataApi from "../../API/UserPublicDataApi";
+
 
 
 
 const MyProfile = ({...props}) => {
+  const [publicData, setPublicData] = useState();
+  function handleChange(event) {
+    setPublicData(!publicData);
+    publicDatas();
+   
+    
+  }
+
+async function publicDatas() {
+    try {
+      if(publicData===false){
+        const response= await UserPublicDataApi(props.token,props.userId,"allow-recommendation");
+
+        console.log("ALLOWED")
+      }
+      else{
+        const response=await UserPublicDataApi(props.token,props.userId,"restrict-recommendation");
+        console.log("RESTRICTED");
+      }
+        
+    }
+    catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +49,14 @@ const MyProfile = ({...props}) => {
 
         setFollowerCount(user.followers === null ? 0 : user.followers.length);
         setFollowers(user.followers === null ? [] : user.followers);
+        setAuthority(user.authority[0].authority);
+        const authority1=user.authority[0].authority;
+        console.log(authority1,"BBBBB");
+        if(authority1==="ROLE_PRIVATE"){
+          setPublicData(false);}
+        else{
+          setPublicData(true);
+        }
 
         setFollowing(user.following === null ? 0 : user.following.length);
       } catch (error) {
@@ -30,7 +67,6 @@ const MyProfile = ({...props}) => {
     fetchData();
   }, [props.token, props.userId]);
     
-
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
@@ -38,6 +74,9 @@ const MyProfile = ({...props}) => {
     const [followerCount, setFollowerCount] = useState(0);
     const [following, setFollowing] = useState(0);
     const [username, setUsername] = useState('');
+    const[authority,setAuthority]=useState('');
+  
+
 
     const handleEditProfile = () => {
       // Add logic to handle edit profile
@@ -71,6 +110,7 @@ const MyProfile = ({...props}) => {
                 | 
                 <span className="profile_following" onClick={()=>{navigate("/following")}}>Following: {following} </span>
             </p>
+          <FormControlLabel control={<Checkbox checked={publicData===undefined?false:publicData} color="secondary" onChange={handleChange} />} label="Public" />
           </div>
   
           {/* Edit Profile Button */}

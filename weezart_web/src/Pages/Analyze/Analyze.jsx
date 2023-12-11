@@ -274,7 +274,7 @@ const fetchTableMetrics = async () => {
             title={data===undefined?"0":data[0]}
             subtitle="Added"
             progress="0.75"
-            increase="+14%"
+            increase=""
           />
         </Box>
 
@@ -291,7 +291,7 @@ const fetchTableMetrics = async () => {
             title={data===undefined?"0":data[1]}
             subtitle="Liked"
             progress="0.50"
-            increase="-21%"
+            increase=""
             
               />
             
@@ -309,7 +309,7 @@ const fetchTableMetrics = async () => {
             title={data===undefined?"0":data[2]}
             subtitle="Rated"
             progress="0.30"
-            increase="+5%"
+            increase=""
               />
             
         
@@ -328,7 +328,7 @@ const fetchTableMetrics = async () => {
                 series={[
                         {
                             data: (chartDataBool&&Object.values(chartData[0]).length>0?Object.values(chartData[0]):[0]),
-                            color:"#39FF14"
+                            color:"purple"
                         },
                         ]}
                         sx={{"& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
@@ -452,22 +452,22 @@ const fetchTableMetrics = async () => {
           className="table-analyse"
           marginTop={"20px"}
 >
-<Typography marginLeft="20px" marginBottom={"20px"} fontSize={"20px"} color={"orange"}>Top Rated {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
+<Typography marginLeft="20px" marginBottom={"20px"} fontSize={"20px"} color={"orange"} display={tableData1===undefined?"none":"flex"}>Top Rated {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
       <div className="list">
 
         {tableRender(tableData1)}
       </div>
-<Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"}>Last Added  {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
+<Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"} visibility={tableData2===undefined?"hidden":""}>Last Added  {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
       <div className="list">
 
         {tableRender(tableData2)}
       </div>
-<Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"}>Top Rated Songs From Pop Genre  {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
+<Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"} opacity={tableData3===undefined?0:1}>Top Rated Songs From Pop Genre  {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
       <div className="list">
           
           {tableRender(tableData3)}
       </div>
-      <Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"}>Top Rated Songs Your Favorite Time {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
+      <Typography marginLeft="20px" marginBottom={"20px"} marginTop={"20px"} fontSize={"20px"} color={"orange"} display={tableData4===undefined?"none":""}>Top Rated Songs Your Favorite Time {analyzeType[0].toUpperCase()+analyzeType.substring(1)+'s'}</Typography>
       <div className="list">
           
           {tableRender(tableData4)}

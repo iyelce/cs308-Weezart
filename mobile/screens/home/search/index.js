@@ -119,7 +119,7 @@ const SearchScreen = ({ navigation }) => {
           marginTop: 5,
           marginTop: 20,
         }}
-        tintColor="black"
+        // tintColor="black"
         onChange={(event) => {
           setAddType(event.nativeEvent.selectedSegmentIndex);
         }}

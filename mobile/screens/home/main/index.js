@@ -63,40 +63,40 @@ export default Main = ({ route, navigation }) => {
     return getUserId().then((userId) => {
       return Promise.all(
         axios.get("/analysis/song/daily-added/" + userId).then((res) => {
-          const labels = Object.keys(res);
-          const datasetData = Object.values(res);
-
+          const dates = Object.keys(res);
+          const sortedDates = dates.sort((a, b) => new Date(a) - new Date(b));
+          const sortedData = sortedDates.map((date) => res[date]);
           setAddedChartData({
-            labels: labels,
+            labels: sortedDates,
             datasets: [
               {
-                data: datasetData,
+                data: sortedData,
               },
             ],
           });
         }),
         axios.get("/analysis/song/daily-liked/" + userId).then((res) => {
-          const labels = Object.keys(res);
-          const datasetData = Object.values(res);
-
+          const dates = Object.keys(res);
+          const sortedDates = dates.sort((a, b) => new Date(a) - new Date(b));
+          const sortedData = sortedDates.map((date) => res[date]);
           setLikedChartData({
-            labels: labels,
+            labels: sortedDates,
             datasets: [
               {
-                data: datasetData,
+                data: sortedData,
               },
             ],
           });
         }),
         axios.get("/analysis/song/daily-rating/" + userId).then((res) => {
-          const labels = Object.keys(res);
-          const datasetData = Object.values(res);
-
+          const dates = Object.keys(res);
+          const sortedDates = dates.sort((a, b) => new Date(a) - new Date(b));
+          const sortedData = sortedDates.map((date) => res[date]);
           setRatedChartData({
-            labels: labels,
+            labels: sortedDates,
             datasets: [
               {
-                data: datasetData,
+                data: sortedData,
               },
             ],
           });

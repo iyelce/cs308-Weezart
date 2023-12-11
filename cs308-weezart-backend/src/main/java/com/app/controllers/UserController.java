@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -95,6 +96,20 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 		
+	}
+	
+	@PostMapping("/restrict-recommendation/{userId}")
+	public ResponseEntity<?> restrictRecommendation(@PathVariable String userId){
+		User user = userService.getProfileById(userId);
+		user.setAuthority("ROLE_PRIVATE");
+		return ResponseEntity.ok(userRepo.save(user));
+	}
+	
+	@PostMapping("/allow-recommendation/{userId}")
+	public ResponseEntity<?> allowRecommendation(@PathVariable String userId){
+		User user = userService.getProfileById(userId);
+		user.setAuthority("ROLE_USER");
+		return ResponseEntity.ok(userRepo.save(user));
 	}
 	
 	

@@ -93,11 +93,13 @@ public class RecommendationServiceImpl implements RecommendationService {
 			String randomFriendName = friendIds.get(randomIndex);
 
 			User currentFriend = userRepo.findByUsername(randomFriendName);
+			
+			log.info("user role: "+ currentFriend.getAuthority().toString());
 
 			List<UserSong> friendSongs = userSongRepo.findAllByUser(currentFriend);
 
 			Integer counter = 0;
-			while(friendSongs.isEmpty()) {
+			while(friendSongs.isEmpty() || currentFriend.hasRole("ROLE_PRIVATE")) {
 				if(counter == 10) {
 					break;
 				}

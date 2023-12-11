@@ -44,9 +44,9 @@ public class AnalysisController {
 		return ResponseEntity.ok(analysisService.analysisGenreManual(userId, genre));
 	}
 	
-	@GetMapping("/song/release-date/{userId}")
-	public ResponseEntity<List<Song>> releaseDateAnalysisController(@RequestBody DateRange dateRange, @PathVariable String userId){
-		return ResponseEntity.ok(analysisService.analysisReleaseDateManual(userId, dateRange.getStartDate(), dateRange.getEndDate()));
+	@GetMapping("/song/release-date/{startDate}/{endDate}/{userId}")
+	public ResponseEntity<List<Song>> releaseDateAnalysisController(@PathVariable Integer startDate, @PathVariable Integer endDate, @PathVariable String userId){
+		return ResponseEntity.ok(analysisService.analysisReleaseDateManual(userId, startDate, endDate));
 	}
 	
 	// these are the chart analysis for songs

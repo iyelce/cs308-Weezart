@@ -84,5 +84,8 @@ public class User {
 		this.following = following;
 	}
 	
+	public boolean hasRole(String role) {
+        return authority.getAuthority().equals(role);
+    }
 	
 }

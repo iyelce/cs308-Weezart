@@ -104,7 +104,7 @@ function App() {
               <Route path='addFriend' element={<AddFriend token={token} userId={userId} username={username}/>} />
 
 
-              <Route path='search' element={<Search />} />
+              <Route path='search' element={<Search token={token} userId={userId} username={username}/>} />
 
               <Route path='import' element={<AddSong token={token} userId = {userId} />} />
               <Route path = 'importUniqueSong' element={<AddUniqueSong token={token} userId={userId}/>}/>

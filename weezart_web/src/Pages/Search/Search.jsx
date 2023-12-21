@@ -7,91 +7,49 @@ import { LuClock3 } from "react-icons/lu";
 import { FaMusic, FaHatWizard } from "react-icons/fa";
 import { IoIosAlbums } from "react-icons/io";
 import { FaUser } from "react-icons/fa6";
+import SearchSongApi from "../../API/SearchSongApi";
+import SearchAlbumApi from "../../API/SearchAlbumApi";
+import SearchArtistApi from "../../API/SearchArtistApi";
 
 
-function Search() {
-  const songInfos = [
-    {
-      songName: "name1",
-      artists: ["artist1.1"],
-      genre: ["genre1.1", "genre1.2"],
-      album: "album1",
-      duration: "2.20",
-      popularity: 20,
-      image: "https://www.normanrecords.com/artwork/medium/213/175963-aurora-a-different-kind-of-human.jpg",
-    },
-    {
-      songName: "name2",
-      artists: ["artist2.1", "artist2.2", "artist2.3"],
-      genre: ["genre2.1", "genre2.2", "genre2.3"],
-      album: "album2",
-      duration: "3.20",
-      popularity: 1500,
-      image: "https://www.normanrecords.com/artwork/medium/213/175963-aurora-a-different-kind-of-human.jpg",
-    },
-    {
-      songName: "name3",
-      artists: ["artist2.1", "artist2.2", "artist2.3"],
-      album: "album3",
-      genre: ["genre2.1", "genre2.2", "genre2.3"],
-      duration: "4.20",
-      popularity: 506,
-      image: "https://www.normanrecords.com/artwork/medium/213/175963-aurora-a-different-kind-of-human.jpg",
+function Search({...props}) {
+  const [songInfos, setSongInfos] = useState([]);
+  const [artistInfos, setArtistInfos] = useState([]);
+  const [albumInfos, setAlbumInfos] = useState([]);
+  const [profiles, setProfiles] = useState([]);
+  const [showTable, setShowTable] = useState(false);
+
+  const [searchValue,setSearchValue] = useState("");
+
+  const handleSearch = async() => {
+
+    if(activeCategory === null) {
+      alert("select sth")
     }
-  ];
-
-
-  const artistInfos = [
-    {
-        artistName: "artist1",
-        artistsFollower: 25350,
-        genre: ["genre2.1", "genre2.2", "genre2.3"],
-        image: "",
-      },
-
-      {
-        artistName: "AURORA",
-        artistsFollower: "12.482.490",
-        genre: ["Art pop", "Nordic folk", "synth-pop", "electropop"], 
-        image: "https://www.normanrecords.com/artwork/medium/213/175963-aurora-a-different-kind-of-human.jpg",
-      },
-  ];
-
-  const albumInfos = [ 
-    {
-      albumName: "album1",
-      artists: ["artist1.1"],
-      genre: ["genre1.1", "genre1.2"],
-      image: "https://images.theconversation.com/files/512871/original/file-20230301-26-ryosag.jpg?ixlib=rb-1.1.0&rect=97%2C79%2C5799%2C5817&q=45&auto=format&w=926&fit=clip",
-      year:2022,
-      songs: ["song1.1", "song1.2", "song1.3"]
-
+    else if (activeCategory === 'songs') {
+      console.log("song: ", searchValue);
+      const response = await SearchSongApi(props.token,searchValue );
+      console.log("in page songs: ", response);
+      setSongInfos(response);
+      setShowTable(true);
     }
+    else if (activeCategory === 'albums') {
+      console.log("album: ", searchValue);
+      const response = await SearchAlbumApi(props.token,searchValue );
+      console.log("in page album: ", response);
+      setAlbumInfos(response);
+      setShowTable(true);
+    }
+    else if (activeCategory === 'artists') {
+      console.log("artist: ", searchValue);
+      const response = await SearchArtistApi(props.token,searchValue );
+      console.log("in page artist: ", response);
+      setArtistInfos(response);
+      setShowTable(true);
+    }
+    
+  }
 
-  ];
-
-  const profiles = [ 
-    {
-      profileName: "person1",
-      image: "https://images.theconversation.com/files/512871/original/file-20230301-26-ryosag.jpg?ixlib=rb-1.1.0&rect=97%2C79%2C5799%2C5817&q=45&auto=format&w=926&fit=clip",
-    },
-    {
-      profileName: "person1",
-      image: "https://images.theconversation.com/files/512871/original/file-20230301-26-ryosag.jpg?ixlib=rb-1.1.0&rect=97%2C79%2C5799%2C5817&q=45&auto=format&w=926&fit=clip",
-    },
-    {
-      profileName: "person1",
-      image: "https://images.theconversation.com/files/512871/original/file-20230301-26-ryosag.jpg?ixlib=rb-1.1.0&rect=97%2C79%2C5799%2C5817&q=45&auto=format&w=926&fit=clip",
-    },
-    {
-      profileName: "person1",
-      image: "https://images.theconversation.com/files/512871/original/file-20230301-26-ryosag.jpg?ixlib=rb-1.1.0&rect=97%2C79%2C5799%2C5817&q=45&auto=format&w=926&fit=clip",
-    },
-    {
-      profileName: "person1",
-      image: "https://images.theconversation.com/files/512871/original/file-20230301-26-ryosag.jpg?ixlib=rb-1.1.0&rect=97%2C79%2C5799%2C5817&q=45&auto=format&w=926&fit=clip",
-    },
-  ];
 
 
 
@@ -180,8 +138,8 @@ function Search() {
 
       case 'songs':
         return (
-          <div className="list_box">
-          <table className="custom-table">
+          <div className="table-container">
+          <table className="list_song_table">
             <thead>
               <tr>
                 <th scope="col"><FaMusic /></th>
@@ -198,15 +156,15 @@ function Search() {
                   <th scope="row">{index + 1}</th>
                   <td>
                     <img
-                      src={val.image}
+                      src={val.albumImageURL}
                       alt={`Album cover for ${val.songName}`}
                       style={{ width: '64px', height: '64px' }}
                     />
                   </td>
-                  <td>{val.songName}</td>
-                  <td>{val.artists}</td>
-                  <td>{val.album}</td>
-                  <td>{val.duration}</td>
+                  <td>{val.name}</td>
+                  <td>{val.artistsName.join(", ")}</td>
+                  <td>{val.albumName}</td>
+                  <td>{val.duration_ms}</td>
                 </tr>
               ))}
             </tbody>
@@ -224,8 +182,8 @@ function Search() {
 
       case 'artists':
       return (
-        <div className="list_box">
-        <table className="custom-table">
+        <div className="table-container">
+          <table className="list_song_table">
           <thead>
             <tr>
               <th scope="col"><FaUser /></th>
@@ -240,13 +198,13 @@ function Search() {
                 <th scope="row">{index + 1}</th>
                 <td>
                   <img
-                    src={val.image}
-                    alt={`Artist cover for ${val.artistName}`}
+                    src={val.imageUrl}
+                    alt={`Artist cover for ${val.name}`}
                     style={{ width: '64px', height: '64px' }}
                   />
                 </td>
-                <td>{val.artistName}</td>
-                <td>{val.artistsFollower}</td>
+                <td>{val.name}</td>
+                <td>{val.followerCount}</td>
               </tr>
             ))}
           </tbody>
@@ -264,8 +222,8 @@ function Search() {
       
       case 'albums':
         return (
-          <div className="list_box">
-          <table className="custom-table">
+          <div className="table-container">
+          <table className="list_song_table">
             <thead>
               <tr>
                 <th scope="col"><IoIosAlbums /></th>
@@ -282,15 +240,15 @@ function Search() {
                   <th scope="row">{index + 1}</th>
                   <td>
                     <img
-                      src={val.image}
+                      src={val.imageUrl}
                       alt={`Album cover for ${val.albumName}`}
                       style={{ width: '64px', height: '64px' }}
                     />
                   </td>
-                  <td>{val.albumName}</td>
-                  <td>{val.artists}</td>                  
-                  <td>{val.year}</td>
-                  <td>{val.songs.length}</td>
+                  <td>{val.name}</td>
+                  <td>{val.artistsName.join(", ")}</td>                  
+                  <td>{val.releaseDate}</td>
+                  <td>{val.songsName.length}</td>
                 </tr>
               ))}
             </tbody>
@@ -348,7 +306,16 @@ function Search() {
 
       {/* searchbar */}
       <div class="navigation-search">
-        <input type="search" placeholder="search" class="navigation-search__input" />
+        <input
+          type="search"
+          placeholder="search"
+          className="navigation-search__input"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {handleSearch()};
+          }}
+        />
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="navigation-search__icon">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -363,6 +330,12 @@ function Search() {
           onClick={() => {
             setActiveCategory('songs');
             setActiveButton('songs');
+
+
+            //--------------------
+            if(searchValue !== "") {
+              alert("api yollıcak cevap gelince table göster");
+            }
           }}
         >
           <span>Songs</span>
@@ -404,7 +377,11 @@ function Search() {
 
     {/* opens the table in function */}
       <div className="search-items-container">
-        {renderSearchItems()}
+        {showTable && (
+          <div className="search-items-container">
+            {renderSearchItems()}
+          </div>
+        )}
       </div>
 
     </div> 

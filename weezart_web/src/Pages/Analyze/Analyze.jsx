@@ -120,7 +120,7 @@ function isDateBeforeToday(date) {
         <div class="play">
         </div>
         <h4>{arr[i].name}</h4>
-        <p>{arr[i].artistsName.join(', ')}</p>
+        <p>{analyzeType=="artist"?arr[i].name:arr[i].artistsName.join(', ')}</p>
         </div>);
     }
 }

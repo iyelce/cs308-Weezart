@@ -1,6 +1,7 @@
 package com.app.services;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,26 +80,56 @@ public class AnalysisServiceImpl implements AnalysisService{
     
     // returns the top 5 rated songs for user
     public List<Song> analysisTop5Manual(String userId) {
+    	LocalDateTime currentTime = LocalDateTime.now();
+    	System.out.println("1 start: " + currentTime);
+    	
+    	
         User user = userRepo.findByiduser(Long.parseLong(userId));
+        
+        currentTime = LocalDateTime.now();
+    	System.out.println("2: " + currentTime);
+    	
         List<UserSong> userSongs = userSongRepo.findAllByUser(user);
-        List<Song> filteredSongs = new ArrayList<>();
+        
+        currentTime = LocalDateTime.now();
+    	System.out.println("3: " + currentTime);
+    	
+    	
+        List<UserSong> filteredSongs = new ArrayList<>();
+        
 
-        for (UserSong userSong : userSongs) {
-            Song song = userSong.getSong();
-            filteredSongs.add(song);
-        }
+//        for (UserSong userSong : userSongs) {
+//            Song song = userSong.getSong();
+//            filteredSongs.add(song);
+//        }
+        
+        currentTime = LocalDateTime.now();
+    	System.out.println("4: " + currentTime);
 
         filteredSongs.sort((song1, song2) -> {
-            List<Integer> ratings1 = userSongRepo.findBySongAndUser(song1, user).getRating();
-            List<Integer> ratings2 = userSongRepo.findBySongAndUser(song2, user).getRating();
+            List<Integer> ratings1 = song1.getRating();
+            List<Integer> ratings2 = song2.getRating();
 
             int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
             int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
 
             return Integer.compare(lastRating2, lastRating1);
         });
+        currentTime = LocalDateTime.now();
+    	System.out.println("5: " + currentTime);
 
-        List<Song> top5Songs = filteredSongs.size() > 5 ? filteredSongs.subList(0, 5) : filteredSongs;
+    	List<Song> resultSong = new ArrayList<Song>();
+      for (UserSong songs : userSongs) {
+	      Song song = songs.getSong();
+	      resultSong.add(song);
+      }
+    	
+        List<Song> top5Songs = filteredSongs.size() > 5 ? resultSong.subList(0, 5) : resultSong;
+        
+        
+        
+        currentTime = LocalDateTime.now();
+    	System.out.println("6 Final: " + currentTime);
         return top5Songs;
     }
     
@@ -106,7 +137,8 @@ public class AnalysisServiceImpl implements AnalysisService{
     public List<Song> analysisGenreManual(String userId, String genre){
     	User user = userRepo.findByiduser(Long.parseLong(userId));
     	List<UserSong> userSongs = userSongRepo.findAllByUser(user);
-    	List<Song> filteredSongs = new ArrayList<>();
+    	List<UserSong> filteredSongs = new ArrayList<>();
+    	
     	for (UserSong userSong : userSongs) {
     		if(userSong.getSong().getPopularity()!=-1) {
 	    		boolean genreFound = false;
@@ -123,14 +155,14 @@ public class AnalysisServiceImpl implements AnalysisService{
 	    		}
 	    		
 	    		if (genreFound == true) {
-	    			filteredSongs.add(song);
+	    			filteredSongs.add(userSong);
 	    		}
     		}
     	}
     	
     	filteredSongs.sort((song1, song2) -> {
-    	    List<Integer> ratings1 = userSongRepo.findBySongAndUser(song1, user).getRating();
-    	    List<Integer> ratings2 = userSongRepo.findBySongAndUser(song2, user).getRating();
+    	    List<Integer> ratings1 = song1.getRating();
+    	    List<Integer> ratings2 = song2.getRating();
 
     	    int lastRating1 = ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
     	    int lastRating2 = ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
@@ -138,37 +170,50 @@ public class AnalysisServiceImpl implements AnalysisService{
     	    return Integer.compare(lastRating2, lastRating1);
     	});
 
-        List<Song> top5Songs = filteredSongs.size() > 5 ? filteredSongs.subList(0, 5) : filteredSongs;
-    	return top5Songs;
+        List<UserSong> top5Songs = filteredSongs.size() > 5 ? filteredSongs.subList(0, 5) : filteredSongs;
+        List<Song> topFiveSongs = new ArrayList<Song>();
+        for (UserSong songs : top5Songs) {
+  	      Song song = songs.getSong();
+  	    topFiveSongs.add(song);
+        }
+        
+    	return topFiveSongs;
     }
     
     // returns top rated 5 songs for a given range - range determined by frontend in request body
     public List<Song> analysisReleaseDateManual(String userId, int StartYear, int FinishYear) {
     	User user = userRepo.findByiduser(Long.parseLong(userId));
     	List<UserSong> userSongs = userSongRepo.findAllByUser(user);
-    	List<Song> filteredSongs = new ArrayList<>();
+    	List<UserSong> filteredSongs = new ArrayList<>();
     	
     	for (UserSong userSong : userSongs) {
     		Song song = userSong.getSong();
     		String albumReleaseYear = song.getAlbumRelease();
     		int year = Integer.parseInt(albumReleaseYear.substring(0,4));
     		if (year >= StartYear && year <= FinishYear) {
-    			filteredSongs.add(song);
+    			filteredSongs.add(userSong);
     		}
     	}
     	
     	filteredSongs.sort((song1, song2) -> {
-    	    List<Integer> ratings1 = userSongRepo.findBySongAndUser(song1, user).getRating();
-    	    List<Integer> ratings2 = userSongRepo.findBySongAndUser(song2, user).getRating();
+    	    List<Integer> ratings1 = song1.getRating();
+    	    List<Integer> ratings2 = song2.getRating();
 
     	    int lastRating1 = ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
     	    int lastRating2 = ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
 
     	    return Integer.compare(lastRating2, lastRating1);
     	});
-
-        List<Song> top5Songs = filteredSongs.size() > 2 ? filteredSongs.subList(0, 2) : filteredSongs;
-    	return top5Songs;
+    	
+    	
+        List<UserSong> top5Songs = filteredSongs.size() > 5 ? filteredSongs.subList(0, 5) : filteredSongs;
+        List<Song> topFiveSongs = new ArrayList<Song>();
+        for (UserSong songs : top5Songs) {
+  	      Song song = songs.getSong();
+  	    topFiveSongs.add(song);
+        }
+        
+    	return topFiveSongs;
     }
     
     // these are the chart analysis for songs
@@ -291,16 +336,16 @@ public class AnalysisServiceImpl implements AnalysisService{
     public List<Album> analysisTop5Album(String userId) {
         User user = userRepo.findByiduser(Long.parseLong(userId));
         List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
-        List<Album> filteredAlbums = new ArrayList<>();
+        List<UserAlbum> filteredAlbums = new ArrayList<>();
 
         for (UserAlbum userAlbum : userAlbums) {
             Album album = userAlbum.getAlbum();
-            filteredAlbums.add(album);
+            filteredAlbums.add(userAlbum);
         }
 
         filteredAlbums.sort((album1, album2) -> {
-            List<Integer> ratings1 = userAlbumRepo.findByAlbumAndUser(album1, user).getRating();
-            List<Integer> ratings2 = userAlbumRepo.findByAlbumAndUser(album2, user).getRating();
+            List<Integer> ratings1 = album1.getRating();
+            List<Integer> ratings2 = album2.getRating();
 
             int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
             int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
@@ -308,14 +353,20 @@ public class AnalysisServiceImpl implements AnalysisService{
             return Integer.compare(lastRating2, lastRating1);
         });
 
-        List<Album> top5Albums = filteredAlbums.size() > 5 ? filteredAlbums.subList(0, 5) : filteredAlbums;
-        return top5Albums;
+        List<UserAlbum> top5Albums = filteredAlbums.size() > 5 ? filteredAlbums.subList(0, 5) : filteredAlbums;
+        List<Album> topFiveAlbum = new ArrayList<Album>();
+        for (UserAlbum userAlbum : top5Albums) {
+            Album album = userAlbum.getAlbum();
+            topFiveAlbum.add(album);
+        }
+        
+        return topFiveAlbum;
     }
     
     public List<Album> analysisGenreAlbum(String userId, String genre){
     	User user = userRepo.findByiduser(Long.parseLong(userId));
     	List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
-    	List<Album> filteredAlbums = new ArrayList<>();
+    	List<UserAlbum> filteredAlbums = new ArrayList<>();
     	for (UserAlbum userAlbum : userAlbums) {
     		if(userAlbum.getAlbum().getImageUrl() != null) {
 	    		boolean genreFound = false;
@@ -334,14 +385,14 @@ public class AnalysisServiceImpl implements AnalysisService{
 	    		}
 	    		
 	    		if (genreFound == true) {
-	    			filteredAlbums.add(album);
+	    			filteredAlbums.add(userAlbum);
 	    		}
     		}
     	}
 
     	filteredAlbums.sort((album1, album2) -> {
-    	    List<Integer> ratings1 = userAlbumRepo.findByAlbumAndUser(album1, user).getRating();
-    	    List<Integer> ratings2 = userAlbumRepo.findByAlbumAndUser(album2, user).getRating();
+    	    List<Integer> ratings1 = album1.getRating();
+    	    List<Integer> ratings2 = album2.getRating();
 
             int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
             int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
@@ -349,15 +400,22 @@ public class AnalysisServiceImpl implements AnalysisService{
     	    return Integer.compare(lastRating2, lastRating1);
     	});
 
-        List<Album> top5Albums = filteredAlbums.size() > 5 ? filteredAlbums.subList(0, 5) : filteredAlbums;
-    	return top5Albums;
+        List<UserAlbum> top5Albums = filteredAlbums.size() > 5 ? filteredAlbums.subList(0, 5) : filteredAlbums;
+        List<Album> topFiveAlbum = new ArrayList<Album>();
+        for (UserAlbum userAlbum : top5Albums) {
+            Album album = userAlbum.getAlbum();
+            topFiveAlbum.add(album);
+        }
+        
+        return topFiveAlbum;
+        
     }
     
    
     public List<Album> analysisReleaseDateAlbum(String userId, int StartYear, int FinishYear){
     	User user = userRepo.findByiduser(Long.parseLong(userId));
     	List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
-    	List<Album> filteredAlbums = new ArrayList<>();    	
+    	List<UserAlbum> filteredAlbums = new ArrayList<>();    	
     
     
 		for (UserAlbum userAlbum : userAlbums) {
@@ -365,13 +423,13 @@ public class AnalysisServiceImpl implements AnalysisService{
 			String albumReleaseYear = album.getReleaseDate();
 			int year = Integer.parseInt(albumReleaseYear.substring(0,4));
 			if (year >= StartYear && year <= FinishYear) {
-				filteredAlbums.add(album);
+				filteredAlbums.add(userAlbum);
 			}
 		}
 		
     	filteredAlbums.sort((album1, album2) -> {
-    	    List<Integer> ratings1 = userAlbumRepo.findByAlbumAndUser(album1, user).getRating();
-    	    List<Integer> ratings2 = userAlbumRepo.findByAlbumAndUser(album2, user).getRating();
+    	    List<Integer> ratings1 = album1.getRating();
+    	    List<Integer> ratings2 = album2.getRating();
 
             int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
             int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
@@ -379,8 +437,14 @@ public class AnalysisServiceImpl implements AnalysisService{
     	    return Integer.compare(lastRating2, lastRating1);
     	});
 
-        List<Album> top5Albums = filteredAlbums.size() > 2 ? filteredAlbums.subList(0, 2) : filteredAlbums;
-    	return top5Albums;
+        List<UserAlbum> top5Albums = filteredAlbums.size() > 2 ? filteredAlbums.subList(0, 2) : filteredAlbums;
+        List<Album> topFiveAlbum = new ArrayList<Album>();
+        for (UserAlbum userAlbum : top5Albums) {
+            Album album = userAlbum.getAlbum();
+            topFiveAlbum.add(album);
+        }
+        
+        return topFiveAlbum;
     }
     
     
@@ -499,16 +563,16 @@ public class AnalysisServiceImpl implements AnalysisService{
     public List<Artist> analysisTop5Artist(String userId) {
         User user = userRepo.findByiduser(Long.parseLong(userId));
         List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
-        List<Artist> filteredArtists = new ArrayList<>();
+        List<UserArtist> filteredArtists = new ArrayList<>();
 
         for (UserArtist userArtist : userArtists) {
         	Artist artist = userArtist.getArtist();
-            filteredArtists.add(artist);
+            filteredArtists.add(userArtist);
         }
 
         filteredArtists.sort((artist1, artist2) -> {
-            List<Integer> ratings1 = userArtistRepo.findByArtistAndUser(artist1, user).getRating();
-            List<Integer> ratings2 = userArtistRepo.findByArtistAndUser(artist2, user).getRating();
+            List<Integer> ratings1 = artist1.getRating();
+            List<Integer> ratings2 = artist2.getRating();
 
             int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
             int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
@@ -518,14 +582,19 @@ public class AnalysisServiceImpl implements AnalysisService{
             return Integer.compare(lastRating2, lastRating1);
         });
 
-        List<Artist> top5Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
-        return top5Artists;
+        List<UserArtist> top5Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
+        List<Artist> topFiveArtists = new ArrayList<Artist>();
+        for (UserArtist userArtist : top5Artists) {
+        	Artist artist = userArtist.getArtist();
+        	topFiveArtists.add(artist);
+        }
+        return topFiveArtists;
     }
     
     public List<Artist> analysisGenreArtist(String userId, String genre){
     	User user = userRepo.findByiduser(Long.parseLong(userId));
     	List<UserArtist> userArtists = userArtistRepo.findAllByUser(user);
-    	List<Artist> filteredArtists = new ArrayList<>();
+    	List<UserArtist> filteredArtists = new ArrayList<>();
     	for (UserArtist userArtist : userArtists) {
     		if(userArtist.getArtist().getFollowerCount()!=-1) {
 	    		boolean genreFound = false;
@@ -535,15 +604,15 @@ public class AnalysisServiceImpl implements AnalysisService{
     				genreFound = true;
     			}	    		
 	    		if (genreFound == true) {
-	    			filteredArtists.add(givenArtist);
+	    			filteredArtists.add(userArtist);
 	    		}
     		}
     	}
     	
     	
     	filteredArtists.sort((artist1, artist2) -> {
-    	    List<Integer> ratings1 = userArtistRepo.findByArtistAndUser(artist1, user).getRating();
-    	    List<Integer> ratings2 = userArtistRepo.findByArtistAndUser(artist2, user).getRating();
+    	    List<Integer> ratings1 = artist1.getRating();
+    	    List<Integer> ratings2 = artist2.getRating();
 
             int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
             int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
@@ -552,15 +621,21 @@ public class AnalysisServiceImpl implements AnalysisService{
     	});
 
 
-        List<Artist> top5Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
-      	return top5Artists;
+        List<UserArtist> top5Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
+        List<Artist> topFiveArtists = new ArrayList<Artist>();
+        for (UserArtist userArtist : top5Artists) {
+        	Artist artist = userArtist.getArtist();
+        	topFiveArtists.add(artist);
+        }
+        return topFiveArtists;
+
     }
        
     public List<Artist> analysisReleaseDateArtist(String userId, int StartYear, int FinishYear){
     	User user = userRepo.findByiduser(Long.parseLong(userId));
     	List<UserAlbum> userAlbums = userAlbumRepo.findAllByUser(user);
     	Set<String> filteredArtistsId = new HashSet<>(); 
-    	List<Artist> filteredArtists = new ArrayList<>();    	
+    	List<UserArtist> filteredArtists = new ArrayList<>();    	
     
 		for (UserAlbum userAlbum : userAlbums) {
 			Album album = userAlbum.getAlbum();
@@ -572,16 +647,18 @@ public class AnalysisServiceImpl implements AnalysisService{
 		}
 		
 		for (String artistId : filteredArtistsId) {
-		    Artist artist = artistRepo.findByid(artistId);
+			Artist artist = artistRepo.findByid(artistId);
+			
+		    UserArtist userArtist = userArtistRepo.findByArtistAndUser(artist, user);
 
 		    if (artist != null) {
-		        filteredArtists.add(artist);
+		        filteredArtists.add(userArtist);
 		    }
 		}
 		
     	filteredArtists.sort((artist1, artist2) -> {
-    	    List<Integer> ratings1 = userArtistRepo.findByArtistAndUser(artist1, user).getRating();
-    	    List<Integer> ratings2 = userArtistRepo.findByArtistAndUser(artist2, user).getRating();
+    	    List<Integer> ratings1 = artist1.getRating();
+    	    List<Integer> ratings2 = artist2.getRating();
 
             int lastRating1 = ratings1 == null || ratings1.isEmpty() ? 0 : ratings1.get(ratings1.size() - 1);
             int lastRating2 = ratings2 == null || ratings2.isEmpty() ? 0 : ratings2.get(ratings2.size() - 1);
@@ -590,8 +667,13 @@ public class AnalysisServiceImpl implements AnalysisService{
     	});
 
 
-        List<Artist> top5Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
-    	return top5Artists;
+        List<UserArtist> top5Artists = filteredArtists.size() > 5 ? filteredArtists.subList(0, 5) : filteredArtists;
+        List<Artist> topFiveArtists = new ArrayList<Artist>();
+        for (UserArtist userArtist : top5Artists) {
+        	Artist artist = userArtist.getArtist();
+        	topFiveArtists.add(artist);
+        }
+        return topFiveArtists;
 	
     }
     

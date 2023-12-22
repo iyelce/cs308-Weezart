@@ -18,7 +18,8 @@ public class Artist {
 	int followerCount;
 	
 	
-
+	
+	
 	public Artist(String name, List<String> genres, String imageUrl, int followerCount, String id) {
 		super();
 		this.name = name;

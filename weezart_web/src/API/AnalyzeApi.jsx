@@ -4,8 +4,6 @@ async function AnalyzeApi (token, userId ,filter,dateFilter ) {
     const auth = "Bearer " + token;
 
 
-  
-
     try{        
         console.log("url", url);
         console.log("auth", auth);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SongInfoPopup from "../Popups/SongInfoPopup";
 import ArtistInfoPopup from "../Popups/ArtistInfoPopup";
 import AlbumInfoPopup from "../Popups/AlbumInfoPopup";
@@ -19,12 +19,27 @@ function Search({...props}) {
   const [profiles, setProfiles] = useState([]);
   const [showTable, setShowTable] = useState(false);
 
+    //sets active buttons (css color) and category to load correct tables
+    const [activeButton, setActiveButton] = useState(null);
+    const [activeCategory, setActiveCategory] = useState(null);
+
+  //to check which itm is clicked in the tables
+  const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
+  const [selectedArtistIndex, setSelectedArtistIndex] = useState(-1);
+  const [selectedAlbumIndex, setSelectedAlbumIndex] = useState(-1);
+
+//to open and close popups
+  const [showSongPopups, setShowSongPopups] = useState(new Map());
+  const [showArtistPopups, setShowArtistPopups] = useState(new Map());
+  const [showAlbumPopups, setShowAlbumPopups] = useState(new Map());
+
+
   const [searchValue,setSearchValue] = useState("");
 
   const handleSearch = async() => {
-
+    
     if(activeCategory === null) {
-      alert("select sth")
+      //alert("select sth")
     }
     else if (activeCategory === 'songs') {
       console.log("song: ", searchValue);
@@ -50,23 +65,6 @@ function Search({...props}) {
     
   }
 
-
-
-
-
-//to check which itm is clicked in the tables
-  const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
-  const [selectedArtistIndex, setSelectedArtistIndex] = useState(-1);
-  const [selectedAlbumIndex, setSelectedAlbumIndex] = useState(-1);
-
-//to open and close popups
-  const [showSongPopups, setShowSongPopups] = useState(new Map());
-  const [showArtistPopups, setShowArtistPopups] = useState(new Map());
-  const [showAlbumPopups, setShowAlbumPopups] = useState(new Map());
-
-  //sets active buttons (css color) and category to load correct tables
-  const [activeButton, setActiveButton] = useState(null);
-  const [activeCategory, setActiveCategory] = useState(null);
 
 //if sth is clicked from tables sets index and calls open popup functions
   const handleSongClickTable = (index) => {
@@ -172,10 +170,14 @@ function Search({...props}) {
           
           {selectedSongIndex !== -1 && (
             <SongInfoPopup
-              isOpen={true}
-              onRequestClose={handleSongClosePopup}
-              songInfo={songInfos[selectedSongIndex]}
-            />
+            isOpen={true}
+            onRequestClose={handleSongClosePopup}
+            songInfo={songInfos[selectedSongIndex]}
+            liked={"check with api"}
+            rating={"check with api"}
+            token={props.token}
+            userId={props.userId}
+          />
       )}
         </div>
         );
@@ -334,7 +336,7 @@ function Search({...props}) {
 
             //--------------------
             if(searchValue !== "") {
-              alert("api yollıcak cevap gelince table göster");
+              handleSearch();
             }
           }}
         >
@@ -346,6 +348,12 @@ function Search({...props}) {
           onClick={() => {
             setActiveCategory('albums');
             setActiveButton('albums');
+
+            //--------------------
+            if(searchValue !== "") {
+              console.log("search value in albums: ", searchValue)
+              handleSearch();
+            }
           }}
         
         >
@@ -357,6 +365,11 @@ function Search({...props}) {
           onClick={() => {
             setActiveCategory('artists');
             setActiveButton('artists');
+
+            //--------------------
+            if(searchValue !== "") {
+              handleSearch();
+            }
         }}
         >
           <span>Artists</span>

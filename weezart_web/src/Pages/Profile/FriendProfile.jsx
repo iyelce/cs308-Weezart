@@ -6,17 +6,21 @@ import UserProfileApi from "../../API/UserProfileApi";
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import UserPublicDataApi from "../../API/UserPublicDataApi";
+import { useParams } from "react-router-dom";
 
 
 
+const FriendProfile = ({...props}) => {
 
-const MyProfile = ({...props}) => {
+    const { friendId } = useParams();
+
+
+
   const [publicData, setPublicData] = useState();
+
   function handleChange(event) {
     setPublicData(!publicData);
     publicDatas();
-   
-    
   }
 
 async function publicDatas() {
@@ -108,9 +112,7 @@ async function publicDatas() {
             <p >
                 {/* <span className="profile_followers" onClick={()=>{navigate(`/followers/${followers}`)}}>Followers: {followerCount} </span> */}
 
-                <span className="profile_followers" onClick={()=>{
-                    navigate('/followers', { state: { followers } })
-                  }}>Followers: {followerCount} </span>
+                <span className="profile_followers" onClick={()=>{navigate("/followers")}}>Followers: {followerCount} </span>
                 | 
                 <span className="profile_following" onClick={()=>{
                     navigate('/following', { state: { followingInfo } })
@@ -168,4 +170,4 @@ async function publicDatas() {
     );
   };
 
-export default MyProfile;
+export default FriendProfile;

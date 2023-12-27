@@ -1,14 +1,17 @@
 async function AnalyzeTableApi (token, userId ,filter ) {
 
     const result=[];
-    const urls=[`http://localhost:8080/analysis/${filter}/top-5/${userId}`,`http://localhost:8080/analysis/${filter}/last-5/${userId}`,`http://localhost:8080/analysis/${filter}/genre/pop/${userId}`,`http://localhost:8080/analysis/${filter}/release-date/2010/2020/${userId}`];
+    const urls=[`http://localhost:8080/analysis/${filter}/top-5/${userId}`,
+                `http://localhost:8080/analysis/${filter}/last-5/${userId}`,
+                `http://localhost:8080/analysis/${filter}/genre/pop/${userId}`,
+                `http://localhost:8080/analysis/${filter}/release-date/2010/2020/${userId}`];
     const auth = "Bearer " + token;
 
     try{        
+        
         let cnt=0;
         while(cnt<3){
             
-
             const response = await fetch(urls[cnt], {
                 headers: {
                     accept: 'application/json',
@@ -57,11 +60,6 @@ async function AnalyzeTableApi (token, userId ,filter ) {
     catch (error) {
         console.error('error in fetching data:', error);
     }
-
-   
-    
-
-
 
     return result;
 }

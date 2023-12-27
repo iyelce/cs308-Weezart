@@ -12,8 +12,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import AnalyzeApi from '../../API/AnalyzeApi';
-import AnalyzeChartApi from '../../API/AnalyzeChartApi';
-import AnalyzeTableApi from '../../API/AnalyzeTableApi';
+import AnalyzeChartAddApi from '../../API/AnalyzeChartAddApi';
+import AnalyzeChartRateApi from '../../API/AnalyzeChartRateApi';
+import AnalyzeChartLikeApi from '../../API/AnalyzeChartLikeApi';
+import AnalyzeTableTop5Api from '../../API/AnalyzeTableTop5Api';
+import AnalyzeTableReleaseApi from '../../API/AnalyzeTableReleaseApi';
+import AnalyzeTableGenreApi from '../../API/AnalyzeTableGenreApi';
+import AnalyzeTableLast5Api from '../../API/AnalyzeTableLast5Api';
 import './Analyze.css';
 import ShareIcon from '@mui/icons-material/Share';
 
@@ -32,13 +37,17 @@ function isDateBeforeToday(date) {
 
 
   const [data, setData] = useState([]);
-  const [chartData, setChartData] = useState(undefined);
+  const [chartData1, setChartData1] = useState(undefined);
+  const [chartData2, setChartData2] = useState(undefined);
+  const [chartData3, setChartData3] = useState(undefined);
   const [tableData, setTableData] = useState(undefined);
   const [tableData1, setTableData1] = useState(undefined);
   const [tableData2, setTableData2] = useState(undefined);
   const [tableData3, setTableData3] = useState(undefined);
   const [tableData4, setTableData4] = useState(undefined);
-  const [chartDataBool, setChartDataBool] = useState(false);
+  const [chartDataBool1, setChartDataBool1] = useState(false);
+  const [chartDataBool2, setChartDataBool2] = useState(false);
+  const [chartDataBool3, setChartDataBool3] = useState(false);
   const [chart1xAxis, setChart1xAxis] = useState([0]);
   const [chart2xAxis, setChart2xAxis] = useState([0]);
   const [chart3xAxis, setChart3xAxis] = useState([0]);
@@ -112,6 +121,7 @@ function isDateBeforeToday(date) {
 
   function tableRender(arr){
     let table = [];
+
     if(arr!==undefined){
     for(let i=0; i<arr.length; i++) {
         table.push(
@@ -120,60 +130,12 @@ function isDateBeforeToday(date) {
         <div class="play">
         </div>
         <h4>{arr[i].name}</h4>
-        <p>{analyzeType=="artist"?arr[i].name:arr[i].artistsName.join(', ')}</p>
+        <p>{analyzeType!="artist"?arr[i].artistsName?.join(', '):arr[i].name}</p>
         </div>);
     }
 }
     return table;
 }
-
-const fetchChartMetrics = async () => {
-  try {
-    setChartDataBool(false);
-    const response = await AnalyzeChartApi(props.token,props.userId,analyzeType);
-    setChartData(response);
-    if(response.length>0){
-    setChartDataBool(true);
-    console.log("DEBUG!!!!!!",Object.keys(response[1]).length==0);
-    if(Object.keys(response[0]).length>0){
-      let temp=sortArraysTogether(Object.keys(response[0]),Object.values(response[0]));
-      console.log("SORTING!!!! ",temp[0]);
-    setChart1xAxis(temp[0]);
-    }
-    if(Object.keys(response[1]).length>0){
-    let temp1=sortArraysTogether(Object.keys(response[1]),Object.values(response[1]));
-    setChart2xAxis(temp1[0]);
-    }
-    if(Object.keys(response[2]).length>0){
-    let temp2=sortArraysTogether(Object.keys(response[2]),Object.values(response[2]));
-    setChart3xAxis(temp2[0]);
-    }
-    
-    }
-}
-   catch (error) {
-    console.error("Error fetching user profile:", error);
-  }
-};
-
-const fetchTableMetrics = async () => {
-  try {
-    const response = await AnalyzeTableApi(props.token,props.userId,analyzeType);
-    console.log("+++ response return in page TABLES: ", response)
-    setTableData(response);
-    if(response.length>0){
-    setTableData1(response[0]);
-    console.log("TABLE CHECK!!!!");
-    setTableData2(response[1]);
-    setTableData3(response[2]);
-    setTableData4(response[3]);
-    }
-
-  }
-  catch(e){
-    console.log(e);
-  }
-};
 
 
   const fetchDataMetrics = async () => {
@@ -193,13 +155,110 @@ const fetchTableMetrics = async () => {
     fetchDataMetrics();
   }, [props.token,props.userId,analyzeType,dateFilter]);
 
+ 
+
   useEffect(() => {
+    const fetchChartMetrics = async () => {
+    try{
+      setChartDataBool1(false);
+      const response= await AnalyzeChartAddApi(props.token,props.userId,analyzeType);
+      let temp=sortArraysTogether(Object.keys(response),Object.values(response));
+      setChart1xAxis(temp[0]);
+      setChartData1(temp[1]);
+    }
+    catch(e){
+      console.log(e);
+    }};
     fetchChartMetrics();
   }, [props.token,props.userId,analyzeType]);
 
   useEffect(() => {
+    const fetchChartMetrics = async () => {
+    try{
+      setChartDataBool2(false);
+      const response= await AnalyzeChartLikeApi(props.token,props.userId,analyzeType);
+     
+      let temp=sortArraysTogether(Object.keys(response),Object.values(response));
+      setChart2xAxis(temp[0]);
+      setChartData2(temp[1]);
+    }
+    catch(e){
+      console.log(e);
+    }};
+    fetchChartMetrics();
+  }, [props.token,props.userId,analyzeType]);
+
+  useEffect(() => {
+    const fetchChartMetrics = async () => {
+    try{
+      setChartDataBool3(false);
+      const response= await AnalyzeChartRateApi(props.token,props.userId,analyzeType);
+        let temp=sortArraysTogether(Object.keys(response),Object.values(response));
+        setChart3xAxis(temp[0]);
+        setChartData3(temp[1]);
+
+      
+    }
+    catch(e){
+      console.log(e);
+    }};
+    fetchChartMetrics();
+  }, [props.token,props.userId,analyzeType]);
+
+
+
+
+  useEffect(() => {
+    const fetchTableMetrics = async () => { 
+    try{
+      const response= await AnalyzeTableTop5Api(props.token,props.userId,analyzeType);
+      setTableData1(response);
+    }
+    catch(e){
+      console.log(e);
+    }};
+    fetchTableMetrics();
+
+  }, [props.token,props.userId,analyzeType]);
+  useEffect(() => {
+    const fetchTableMetrics = async () => { 
+    try{
+      const response=await AnalyzeTableLast5Api(props.token,props.userId,analyzeType);
+      setTableData2(response);
+    }
+    catch(e){
+      console.log(e);
+    }};
     fetchTableMetrics();
   }, [props.token,props.userId,analyzeType]);
+
+  useEffect(() => {
+    const fetchTableMetrics = async () => {
+    try{
+      const response= await AnalyzeTableGenreApi(props.token,props.userId,analyzeType);
+      setTableData3(response);
+    }
+    catch(e){
+      console.log(e);
+    }
+  };
+  fetchTableMetrics();
+  }, [props.token,props.userId,analyzeType]);
+
+  useEffect(() => {
+    const fetchTableMetrics = async () => {
+    try{
+      const response=await AnalyzeTableReleaseApi(props.token,props.userId,analyzeType);
+      setTableData4(response);
+    }
+    catch(e){
+      console.log(e);
+    }
+  };
+  fetchTableMetrics();
+  }, [props.token,props.userId,analyzeType]);
+
+
 
 
   const options=[
@@ -362,10 +421,10 @@ const fetchTableMetrics = async () => {
         >
             <Typography marginLeft="20px" fontSize={"20px"} color={"orange"} >Daily Adds</Typography>
             <LineChart
-                xAxis={[{ scaleType:'band',data: (chartDataBool?chart1xAxis:[0])  }]}
+                xAxis={[{ scaleType:'band',data: (chart1xAxis?chart1xAxis:[0])  }]}
                 series={[
                         {
-                            data: (chartDataBool&&Object.values(chartData[0]).length>0?Object.values(chartData[0]):[0]),
+                            data: (chartData1===undefined?[0]:Object.values(chartData1)),
                             color:"purple"
                         },
                         ]}
@@ -403,10 +462,10 @@ const fetchTableMetrics = async () => {
             <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Daily Likes</Typography>
 
             <LineChart
-                xAxis={[{scaleType:'band', data: (chartDataBool?chart2xAxis:[0])   }]}
+                xAxis={[{scaleType:'band', data: (chart2xAxis?chart2xAxis:[0])   }]}
                 series={[
                         {
-                            data: (chartDataBool&&Object.values(chartData[1]).length>0?Object.values(chartData[1]):[0]),
+                            data: (chartData2===undefined?[0]:Object.values(chartData2)),
                             color:"#FF3131"
                         },
                         ]}
@@ -445,10 +504,10 @@ const fetchTableMetrics = async () => {
             <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Daily Average Rating</Typography>
             <LineChart
                 margin={{ bottom: 40}}
-                xAxis={[{ scaleType:'band',data: (chartDataBool?chart3xAxis:[0])  }]}
+                xAxis={[{ scaleType:'band',data: (chart3xAxis?chart3xAxis:[0])  }]}
                 series={[
                         {
-                            data: (chartDataBool&&Object.values(chartData[2]).length>0?Object.values(chartData[2]):[0]),
+                            data: (chartData3===undefined?[0]:Object.values(chartData3)),
                             color:"#FFF01F"
 
                         },

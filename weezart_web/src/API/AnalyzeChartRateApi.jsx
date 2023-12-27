@@ -1,7 +1,6 @@
-async function AnalyzeChartApi (token, userId ,filter ) {
+async function AnalyzeChartRateApi (token, userId ,filter ) {
 
-    const result=[];
-    const urls=[`http://localhost:8080/analysis/${filter}/daily-added/${userId}`,`http://localhost:8080/analysis/${filter}/daily-liked/${userId}`,`http://localhost:8080/analysis/${filter}/daily-rating/${userId}`];
+    const url=`http://localhost:8080/analysis/${filter}/daily-rating/${userId}`;
     const auth = "Bearer " + token;
 
 
@@ -9,9 +8,7 @@ async function AnalyzeChartApi (token, userId ,filter ) {
   
 
     try{        
-        let cnt=0;
-        while(cnt<3){
-            const response = await fetch(urls[cnt], {
+            const response = await fetch(url, {
                 headers: {
                     accept: 'application/json',
                     'Authorization': auth,
@@ -30,9 +27,8 @@ async function AnalyzeChartApi (token, userId ,filter ) {
     
             const newResp = JSON.parse(data); 
     
-            result[cnt]=newResp;
-            cnt++;
-        }
+            return newResp;
+
     }
     catch (error) {
         console.error('error in fetching data:', error);
@@ -43,7 +39,6 @@ async function AnalyzeChartApi (token, userId ,filter ) {
 
 
 
-    return result;
 }
 
-export default AnalyzeChartApi;
+export default AnalyzeChartRateApi;

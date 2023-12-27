@@ -66,3 +66,4 @@ async function AnalyzeTableApi (token, userId ,filter ) {
 
 
 export default AnalyzeTableApi;
+

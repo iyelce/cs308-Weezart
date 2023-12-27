@@ -121,6 +121,7 @@ function isDateBeforeToday(date) {
 
   function tableRender(arr){
     let table = [];
+
     if(arr!==undefined){
     for(let i=0; i<arr.length; i++) {
         table.push(
@@ -129,7 +130,7 @@ function isDateBeforeToday(date) {
         <div class="play">
         </div>
         <h4>{arr[i].name}</h4>
-        <p>{analyzeType=="artist"?arr[i].name:arr[i].artistsName.join(', ')}</p>
+        <p>{analyzeType!="artist"?arr[i].artistsName?.join(', '):arr[i].name}</p>
         </div>);
     }
 }

@@ -216,6 +216,92 @@ public class SpotifyController {
 		return resultList;
 	}
 
+	@GetMapping("/top-track-based-recommendations")
+	public List<Song> getTrackRecommendation(@RequestParam("token") String accessToken)
+			throws JsonMappingException, JsonProcessingException {
+		List<Song> songList = getTopTracks(accessToken);
+		List<Artist> artistList = getTopArtists(accessToken);
+
+		String songIds = "";
+		String artistIds = "";
+
+		for (int i = 0; i < 3; i++) {
+			songIds += songList.get(i).getId() + ",";
+		}
+		songIds = songIds.substring(0, songIds.length() - 1);
+
+		for (int i = 0; i < 2; i++) {
+			artistIds += artistList.get(i).getId() + ",";
+		}
+		artistIds = artistIds.substring(0, artistIds.length() - 1);
+
+		String recommendationURL = "https://api.spotify.com/v1/recommendations?limit=5&seed_artists=" + artistIds
+				+ "&seed_tracks=" + songIds;
+
+		log.info(recommendationURL);
+
+		HttpHeaders headers = new HttpHeaders();
+
+		headers.set("Authorization", "Bearer " + spotifyAuthenticator.authenticateWithSpotify());
+
+		HttpEntity<String> entity = new HttpEntity<>(headers);
+
+		ResponseEntity<String> response = restTemplate.exchange(recommendationURL, HttpMethod.GET, entity,
+				String.class);
+
+		List<Song> reccSongs = new ArrayList<>();
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		JsonNode rootNode = objectMapper.readTree(response.getBody());
+
+		JsonNode songNode = rootNode.get("tracks");
+
+		for (JsonNode item : songNode) {
+
+			String id = "", name = "", albumName = "", albumId = "", albumRelease = "", albumImage = "";
+			int popularity = 0, duration_ms = 0;
+			boolean explicit = false;
+
+			List<String> artistsName = new ArrayList<>();
+			List<String> artistsId = new ArrayList<>();
+
+			id = item.get("id").asText();
+
+			name = item.get("name").asText();
+
+			popularity = item.get("popularity").asInt();
+
+			duration_ms = item.get("duration_ms").asInt();
+
+			explicit = item.get("explicit").asBoolean();
+
+			JsonNode albumNode = item.get("album");
+
+			albumId = albumNode.get("id").asText();
+
+			albumName = albumNode.get("name").asText();
+
+			JsonNode imageNode = albumNode.get("images");
+			albumImage = imageNode.get(0).get("url").asText();
+
+			albumRelease = albumNode.get("release_date").asText();
+
+			JsonNode artistNode = item.get("artists");
+
+			for (JsonNode artists : artistNode) {
+				artistsName.add(artists.get("name").asText());
+				artistsId.add(artists.get("id").asText());
+			}
+
+			Song song = new Song(id, albumImage, name, albumName, albumId, artistsName, artistsId, popularity,
+					duration_ms, explicit, albumRelease);
+			reccSongs.add(song);
+		}
+
+		return reccSongs;
+	}
+
 	@GetMapping("/get-users-top-artists")
 	public List<Artist> getTopArtists(@RequestParam("token") String accessToken)
 			throws JsonMappingException, JsonProcessingException {

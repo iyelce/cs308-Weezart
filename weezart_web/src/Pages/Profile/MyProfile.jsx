@@ -133,33 +133,49 @@ async function publicDatas() {
         
   
         {/* Clickable Items */}
+        <div className="list-container">
+          <div className="list-rectangle" onClick={() => navigate('/likedSongs')} >
+            <img
+              className="rectangle-image"
+              src="https://i1.sndcdn.com/artworks-y6qitUuZoS6y8LQo-5s2pPA-t500x500.jpg" // Replace with the actual image URL
+              alt="Added Songs"
+            />
+            <p className="rectangle-label">Added Songs</p>
+          </div>
 
-        <div className="list-rectangle" onClick={() => navigate('/likedSongs')} >
-          <img
-            className="rectangle-image"
-            src="https://i1.sndcdn.com/artworks-y6qitUuZoS6y8LQo-5s2pPA-t500x500.jpg" // Replace with the actual image URL
-            alt="Added Songs"
-          />
-          <p className="rectangle-label">Added Songs</p>
+          <div className="list-rectangle" onClick={() => navigate('/likedArtists')} >
+            <img
+              className="rectangle-image"
+              src="https://placekitten.com/100/100" // Replace with the actual image URL
+              alt="Added Artists"
+            />
+            <p className="rectangle-label">Added Artists</p>
+          </div>
+
+          <div className="list-rectangle" onClick={() => navigate('/likedAlbums')} >
+            <img
+              className="rectangle-image"
+              src="https://i.pinimg.com/564x/f0/4b/80/f04b805f0edeadc935fac72d22ce76eb.jpg" // Replace with the actual image URL
+              alt="Added Albums"
+            />
+            <p className="rectangle-label">Added Albums</p>
+          </div>
         </div>
 
-        <div className="list-rectangle" onClick={() => navigate('/likedArtists')} >
-          <img
-            className="rectangle-image"
-            src="https://placekitten.com/100/100" // Replace with the actual image URL
-            alt="Added Artists"
-          />
-          <p className="rectangle-label">Added Artists</p>
+        <div className="list-container">
+          <div className="list-rectangle" onClick={() => navigate('/myBlends')} >
+            <img
+              className="rectangle-image"
+              src="https://i1.sndcdn.com/artworks-y6qitUuZoS6y8LQo-5s2pPA-t500x500.jpg" // Replace with the actual image URL
+              alt="Added Songs"
+            />
+            <p className="rectangle-label">Blend Songs</p>
+          </div>
+
+          
         </div>
 
-        <div className="list-rectangle" onClick={() => navigate('/likedAlbums')} >
-          <img
-            className="rectangle-image"
-            src="https://i.pinimg.com/564x/f0/4b/80/f04b805f0edeadc935fac72d22ce76eb.jpg" // Replace with the actual image URL
-            alt="Added Albums"
-          />
-          <p className="rectangle-label">Added Albums</p>
-        </div>
+        
 
       </div>
 

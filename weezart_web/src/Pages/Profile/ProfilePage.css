@@ -11,6 +11,8 @@
 }
 
 .profile-container {
+    display: flex;
+    flex-direction: row;
     background-color: rgba(26, 23, 33, 0.5);
     color: #ffffff;
     padding: 25px;
@@ -27,6 +29,10 @@
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+  }
+
+  .list-container{
+    margin-left: 2rem;
   }
   
   .profile-image {

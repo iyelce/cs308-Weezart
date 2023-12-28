@@ -14,8 +14,6 @@ const FriendProfile = ({...props}) => {
 
     const { friendId } = useParams();
 
-
-
   const [publicData, setPublicData] = useState();
 
   function handleChange(event) {

@@ -37,6 +37,8 @@ import Dialog from "react-native-dialog";
 import RNFS from "react-native-fs";
 import Share from "react-native-share";
 import Toast from "react-native-simple-toast";
+import LinearGradient from "react-native-linear-gradient";
+import Friendgroups from "./friendgroups";
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +64,11 @@ export default Profile = () => {
         <Stack.Screen name="Album" component={Album} />
         <Stack.Screen name="Artist" component={Artist} />
       </Stack.Group>
+      <Stack.Screen
+        name="FriendGroups"
+        component={Friendgroups}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
@@ -378,6 +385,76 @@ const ProfileScreen = ({ navigation }) => {
         {userInfo && (
           <View style={{ flex: 1 }}>
             <View
+              style={{ flexDirection: "row", justifyContent: "center", gap: 3 }}
+            >
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderRadius: 16,
+                  borderTopLeftRadius: 999,
+                  borderBottomLeftRadius: 999,
+                  padding: 9,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 10,
+                  backgroundColor: "#e8e8e8",
+                }}
+                onPress={importFile}
+              >
+                <Text
+                  style={{ fontWeight: "bold", color: "#7e7e7e", fontSize: 11 }}
+                >
+                  Import from file
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  // borderRadius: 16,
+                  // borderTopRightRadius: 999,
+                  // borderBottomRightRadius: 999,
+                  padding: 9,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 10,
+                  backgroundColor: "#e8e8e8",
+                }}
+                onPress={handleExport}
+              >
+                <Text
+                  style={{ fontWeight: "bold", color: "#7e7e7e", fontSize: 11 }}
+                >
+                  Export
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderRadius: 16,
+                  borderTopRightRadius: 999,
+                  borderBottomRightRadius: 999,
+                  padding: 9,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 10,
+                  backgroundColor: "#e8e8e8",
+                }}
+                onPress={handleOpenDbModal}
+              >
+                <Text
+                  style={{ fontWeight: "bold", color: "#7e7e7e", fontSize: 11 }}
+                >
+                  Import from DB
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View
               style={{
                 backgroundColor: "#c0c3c0",
                 display: "flex",
@@ -455,74 +532,40 @@ const ProfileScreen = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <View
-              style={{ flexDirection: "row", justifyContent: "center", gap: 3 }}
-            >
+            <View style={{ display: "flex" }}>
               <TouchableOpacity
                 style={{
-                  backgroundColor: "#f3f3f3",
-                  borderRadius: 16,
-                  borderTopLeftRadius: 999,
-                  borderBottomLeftRadius: 999,
-                  padding: 9,
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 10,
-                  backgroundColor: "#e8e8e8",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  alignSelf: "flex-start",
                 }}
-                onPress={importFile}
+                onPress={() => navigation.navigate("FriendGroups")}
               >
-                <Text
-                  style={{ fontWeight: "bold", color: "#7e7e7e", fontSize: 11 }}
+                <LinearGradient
+                  colors={["#4a5568", "#2d3748"]}
+                  start={{ x: 0, y: 1 }}
+                  end={{ x: 0, y: 0 }}
+                  style={{
+                    borderRadius: 8,
+                    paddingVertical: 10,
+                    paddingHorizontal: 25,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderWidth: 1,
+                    borderColor: "#2d3748",
+                    marginTop: 10,
+                  }}
                 >
-                  Import from file
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "#f3f3f3",
-                  // borderRadius: 16,
-                  // borderTopRightRadius: 999,
-                  // borderBottomRightRadius: 999,
-                  padding: 9,
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 10,
-                  backgroundColor: "#e8e8e8",
-                }}
-                onPress={handleExport}
-              >
-                <Text
-                  style={{ fontWeight: "bold", color: "#7e7e7e", fontSize: 11 }}
-                >
-                  Export
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "#f3f3f3",
-                  borderRadius: 16,
-                  borderTopRightRadius: 999,
-                  borderBottomRightRadius: 999,
-                  padding: 9,
-                  paddingLeft: 20,
-                  paddingRight: 20,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 10,
-                  backgroundColor: "#e8e8e8",
-                }}
-                onPress={handleOpenDbModal}
-              >
-                <Text
-                  style={{ fontWeight: "bold", color: "#7e7e7e", fontSize: 11 }}
-                >
-                  Import from DB
-                </Text>
+                  <Text
+                    style={{
+                      color: "rgba(255, 255, 255, 0.75)",
+                      fontSize: 14,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Friend Groups
+                  </Text>
+                </LinearGradient>
               </TouchableOpacity>
             </View>
             <View
@@ -530,7 +573,7 @@ const ProfileScreen = ({ navigation }) => {
                 backgroundColor: "white",
                 borderTopRightRadius: 10,
                 borderTopLeftRadius: 10,
-                marginTop: 20,
+                marginTop: 10,
                 height: "100%",
                 padding: 10,
               }}

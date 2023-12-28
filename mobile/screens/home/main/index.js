@@ -370,7 +370,8 @@ export default Main = ({ route, navigation }) => {
                 paddingRight: 30,
               }}
             >
-              {artistsRecom.length != 0 &&
+              {artistsRecom &&
+                artistsRecom.length != 0 &&
                 artistsRecom.map((artist, i) => {
                   return (
                     <View

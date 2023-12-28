@@ -2,9 +2,8 @@ import React from "react";
 import './ProfilePage.css'; 
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import Typography from '@mui/material/Typography';
 
 
 
@@ -30,7 +29,12 @@ const MyBlends = ({...props}) => {
   
           {/* User Details */}
           <div className="user-details">
-           asdasd
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <AddCircleIcon className="addBlendIcon" />
+                <Typography variant="body1" style={{ marginLeft: '5px' }}>
+                    Create a new blend
+                </Typography>
+            </div>
               
             </div>
 

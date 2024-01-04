@@ -4,12 +4,43 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Typography from '@mui/material/Typography';
+import CreateBlendPopup from "../Popups/CreateBlendPopup";
+import GetAllGroupPlaylists from "../../API/GetAllGroupPlaylists";
 
 
 
 const MyBlends = ({...props}) => {
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const blends = await GetAllGroupPlaylists(props.token, props.userId);
+
+        console.log("blend info in page is : ", blends);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    fetchData();
+  }, [props.token, props.userId]);
+
+
+
+    let mockFriendList = [ "cans", "sczxc", "aaa"]
     
     const navigate = useNavigate();  
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      const closeModal = () => {
+        setIsModalOpen(false);
+      };
 
  
     return (
@@ -29,12 +60,23 @@ const MyBlends = ({...props}) => {
   
           {/* User Details */}
           <div className="user-details">
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+
+          <div className="icon-container" 
+                onClick={() => {
+                    console.log('Icon clicked!');
+                    openModal();
+                }}>
                 <AddCircleIcon className="addBlendIcon" />
                 <Typography variant="body1" style={{ marginLeft: '5px' }}>
-                    Create a new blend
+                Create a new blend
                 </Typography>
             </div>
+
+            <CreateBlendPopup
+              isOpen={isModalOpen}
+              onRequestClose={closeModal}
+              allFriends = {mockFriendList}
+            />
               
             </div>
 

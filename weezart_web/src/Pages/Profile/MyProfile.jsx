@@ -40,7 +40,7 @@ async function publicDatas() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const user = await UserProfileApi(props.token, props.userId);
+        const user = await UserProfileApi(props.token, props.username);
 
         console.log("user info in page is : ", user);
 
@@ -163,13 +163,13 @@ async function publicDatas() {
         </div>
 
         <div className="list-container">
-          <div className="list-rectangle" onClick={() => navigate('/myBlends')} >
+          <div className="list-rectangle" onClick={() => navigate('myBlends')} >
             <img
               className="rectangle-image"
               src="https://i1.sndcdn.com/artworks-y6qitUuZoS6y8LQo-5s2pPA-t500x500.jpg" // Replace with the actual image URL
               alt="Added Songs"
             />
-            <p className="rectangle-label">Blend Songs</p>
+            <p className="rectangle-label"> Blend Songs</p>
           </div>
 
           

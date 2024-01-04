@@ -6,9 +6,9 @@
 // Response: User object
 
 
-async function UserProfileApi (token, userId ) {
+async function UserProfileApi (token, username ) {
 
-    const url = `http://localhost:8080/user/profile/${userId}`;  
+    const url = `http://localhost:8080/user/profile/${username}`;  
     const auth = "Bearer " + token;
 
     try{        

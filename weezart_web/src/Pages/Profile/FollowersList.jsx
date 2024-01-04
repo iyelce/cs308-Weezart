@@ -2,9 +2,10 @@ import React from "react";
 import './ProfilePage.css'; 
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const FollowersList = ({...props}) => {
-
+    const navigate = useNavigate();
     const location = useLocation();
     const { followers } = location.state;
   
@@ -22,8 +23,10 @@ const FollowersList = ({...props}) => {
             
             {followers.map((item, index) => (
                 <span key={index} className="profile_following">
-                <Link to={{ pathname: "/following", state: { followingItem: item } }}>
+                
+                <Link to={{ pathname: "/friendProfile/"+item, state: { followingItem: item } }}>
                     Following: {item}
+                    
                 </Link>
                 <br />
                 </span>

@@ -76,6 +76,7 @@ const Groups = ({ navigation }) => {
 const AddGroups = () => {
   const [groupName, setGroupName] = useState("");
   const [followingUsers, setFollowingUsers] = useState([]);
+  const [selectedFollowings, setSelectedFollowings] = useState([]);
 
   useEffect(() => {
     getUserId().then((userId) => {

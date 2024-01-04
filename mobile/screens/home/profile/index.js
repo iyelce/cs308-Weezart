@@ -39,6 +39,7 @@ import Share from "react-native-share";
 import Toast from "react-native-simple-toast";
 import LinearGradient from "react-native-linear-gradient";
 import Friendgroups from "./friendgroups";
+import UserProfile from "./userprofile";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +54,11 @@ export default Profile = () => {
       <Stack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="UserProfile"
+        component={UserProfile}
         options={{ headerShown: false }}
       />
       <Stack.Group>
@@ -318,6 +324,8 @@ const ProfileScreen = ({ navigation }) => {
   const [dbModalVisible, setDbModalVisible] = useState(false);
   const [dbData, setDbData] = useState({ url: "", username: "", password: "" });
 
+  const [followingModal, setFollowingModal] = useState(false);
+
   const handleOpenDbModal = () => setDbModalVisible(true);
   const handleCloseDbModal = () => setDbModalVisible(false);
 
@@ -375,6 +383,46 @@ const ProfileScreen = ({ navigation }) => {
         <Dialog.Button label="Cancel" onPress={handleCloseDbModal} />
         <Dialog.Button label="Connect" onPress={handleDbModalSubmit} />
       </Dialog.Container>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={followingModal}
+        onRequestClose={() => {
+          setFollowingModal(!followingModal);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Followings</Text>
+            <View
+              style={{ height: 1, width: "100%", backgroundColor: "black" }}
+            />
+            <View style={{ display: "flex", gap: 10 }}>
+              {userInfo.following &&
+                userInfo.following.map((user) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setFollowingModal(false);
+                        navigation.navigate("UserProfile", { param: user });
+                      }}
+                    >
+                      <Text style={{ fontWeight: "bold" }}>{user}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+            </View>
+            <TouchableOpacity
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setFollowingModal(!followingModal)}
+            >
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingBottom: 60 }}
@@ -519,7 +567,7 @@ const ProfileScreen = ({ navigation }) => {
                     " followers • "}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => setFollowingModal(true)}>
                 <Text
                   style={{
                     fontWeight: "bold",
@@ -1000,3 +1048,53 @@ const ProfileScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "left",
+  },
+  modalView: {
+    // margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    paddingRight: 40,
+    paddingLeft: 40,
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginTop: 20,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    // textAlign: "center",
+    // padding: 5,
+    // backgroundColor: "gray",
+    // borderRadius: 25,
+  },
+});

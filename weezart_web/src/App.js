@@ -25,7 +25,9 @@ import FriendProfile from './Pages/Profile/FriendProfile.jsx';
 import BlendList from './Pages/Lists/BlendList.jsx';
 import GroupAnalysis from './Pages/Profile/GroupAnalysis.jsx';
 import ConnectSpotify from './Pages/Spotify/ConnectSpotify.jsx';
-
+import SpotifyLoginPage from './Pages/Spotify/SpotifyLoginPage.jsx';
+import SpotifyList from './Pages/Lists/SpotifyList.jsx';
+import SpotifyRecomPage from './Pages/Lists/SpotifyRecomPage.jsx';
 
 
 
@@ -84,6 +86,8 @@ function App() {
     localStorage.removeItem('username');
     localStorage.removeItem('userId');
     localStorage.removeItem('isLoggedin');
+    localStorage.removeItem('spotifyToken');
+    
 
     setToken("");
     setUserId("");
@@ -127,7 +131,11 @@ function App() {
               <Route path='/blends/:id' element={<BlendList token={token} userId={userId} username={username} />} />
 
               <Route path = 'connectSpotify' element={<ConnectSpotify token={token} userId={userId} username={username}/>}/>
+              <Route path = '/api/spotify/callback' element={<SpotifyLoginPage token={token} userId={userId} username={username}/>}/>
+              <Route path = 'spotify-top-tracks' element={<SpotifyList token={token} userId={userId} username={username}/>}/>
+              <Route path = 'spotify-recom-tracks' element={<SpotifyRecomPage token={token} userId={userId} username={username}/>}/>
 
+              
               {/* farklı kullanıcılara girince nasıl yapmalıyız */}
 
               <Route path = 'likedSongs' element={<LikedSongsList token={token} userId={userId}/>}/>

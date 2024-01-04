@@ -1,6 +1,6 @@
-async function SpotifyGetToptracks (token, acsToken ) {
+async function SpotifyRecom (token, acsToken ) {
 
-    const url = `http://localhost:8080/api/spotify/get-users-top-tracks?token=${acsToken}`;
+    const url = `http://localhost:8080/api/spotify/top-track-based-recommendations?token=${acsToken}`;
     const auth = "Bearer " + token;
 
     try{        
@@ -34,4 +34,4 @@ async function SpotifyGetToptracks (token, acsToken ) {
     }
 }
 
-export default SpotifyGetToptracks;
+export default SpotifyRecom;

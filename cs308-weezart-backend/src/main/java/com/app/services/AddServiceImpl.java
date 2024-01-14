@@ -263,6 +263,7 @@ public class AddServiceImpl implements AddService {
 		return userSongs;
 	}
 
+	// return the added albums by the user
 	public List<UserAlbum> addedAlbums(String userId) {
 		User user = userRepo.findByiduser(Long.parseLong(userId));
 		if (user == null) {
@@ -274,6 +275,7 @@ public class AddServiceImpl implements AddService {
 		return userAlbums;
 	}
 
+	// return the added artists by the user
 	public List<UserArtist> addedArtists(String userId) {
 		User user = userRepo.findByiduser(Long.parseLong(userId));
 		if (user == null) {

@@ -12,16 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.models.Song;
-import com.app.models.User;
-import com.app.models.UserAlbum;
-import com.app.models.UserArtist;
-import com.app.models.UserSong;
+import com.app.models.*;
+
 import com.app.payloads.AlbumPayload;
 import com.app.payloads.ArtistPayload;
 import com.app.payloads.SongPayload;
-import com.app.repo.SongRepository;
-import com.app.repo.UserSongRepository;
+import com.app.repo.*;
 import com.app.services.LikeService;
 import com.app.services.RateService;
 import com.app.services.SpotifyService;
@@ -41,7 +37,21 @@ public class RateController {
 	private SongRepository songRepo;
 
 	@Autowired
+	private AlbumRepository albumRepo;
+
+	@Autowired
+	private ArtistRepository artistRepo;
+
+	
+	@Autowired
 	private UserSongRepository userSongRepo;
+	
+	@Autowired
+	private UserAlbumRepository userAlbumRepo;
+	
+	
+	@Autowired
+	private UserArtistRepository userArtistRepo;
 
 	private static final Logger log = LoggerFactory.getLogger(SpotifyService.class);
 
@@ -70,14 +80,52 @@ public class RateController {
 	}
 
 	@GetMapping("/song/get-rate-info/{songId}/{userId}")
-	public ResponseEntity<Integer> getLikeStatus(@PathVariable String songId, @PathVariable String userId) {
+	public ResponseEntity<?> getLikeStatusSong(@PathVariable String songId, @PathVariable String userId) {
 		Song givenSong = songRepo.findByid(songId);
 		User givenUser = new User(Long.parseLong(userId));
 
 		UserSong givenRelation = userSongRepo.findBySongAndUser(givenSong, givenUser);
+		
 
-		int lastRating = givenRelation.getRating().get(givenRelation.getRating().size() - 1);
+		if(givenRelation.getRating() != null) {
+			int lastRating = givenRelation.getRating().get(givenRelation.getRating().size() - 1);
+			return ResponseEntity.ok(lastRating);
+		}
+		else {
+			return ResponseEntity.ok("no rating");
+		}
+		
+	}
+	
+	@GetMapping("/album/get-rate-info/{albumId}/{userId}")
+	public ResponseEntity<?> getLikeStatusAlbum(@PathVariable String albumId, @PathVariable String userId) {
+		Album givenAlbum = albumRepo.findByid(albumId);
+		User givenUser = new User(Long.parseLong(userId));
 
-		return ResponseEntity.ok(lastRating);
+		UserAlbum givenRelation = userAlbumRepo.findByAlbumAndUser(givenAlbum, givenUser);
+
+		if(givenRelation.getRating() != null) {
+			int lastRating = givenRelation.getRating().get(givenRelation.getRating().size() - 1);
+			return ResponseEntity.ok(lastRating);
+		}
+		else {
+			return ResponseEntity.ok("no rating");
+		}
+	}
+	
+	@GetMapping("/artist/get-rate-info/{artistId}/{userId}")
+	public ResponseEntity<?> getLikeStatusArtist(@PathVariable String artistId, @PathVariable String userId) {
+		Artist givenArtist = artistRepo.findByid(artistId);
+		User givenUser = new User(Long.parseLong(userId));
+
+		UserArtist givenRelation = userArtistRepo.findByArtistAndUser(givenArtist, givenUser);
+
+		if(givenRelation.getRating() != null) {
+			int lastRating = givenRelation.getRating().get(givenRelation.getRating().size() - 1);
+			return ResponseEntity.ok(lastRating);
+		}
+		else {
+			return ResponseEntity.ok("no rating");
+		}
 	}
 }

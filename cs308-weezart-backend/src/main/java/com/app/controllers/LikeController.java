@@ -12,16 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.models.Song;
-import com.app.models.User;
-import com.app.models.UserAlbum;
-import com.app.models.UserArtist;
-import com.app.models.UserSong;
+import com.app.models.*;
 import com.app.payloads.AlbumPayload;
 import com.app.payloads.ArtistPayload;
 import com.app.payloads.SongPayload;
-import com.app.repo.SongRepository;
-import com.app.repo.UserSongRepository;
+import com.app.repo.*;
 import com.app.services.LikeService;
 import com.app.services.SpotifyService;
 
@@ -35,9 +30,21 @@ public class LikeController {
 
 	@Autowired
 	private SongRepository songRepo;
+	
+	@Autowired
+	private AlbumRepository albumRepo;
+	
+	@Autowired
+	private ArtistRepository artistRepo;
 
 	@Autowired
 	private UserSongRepository userSongRepo;
+	
+	@Autowired
+	private UserAlbumRepository userAlbumRepo;
+	
+	@Autowired
+	private UserArtistRepository userArtistRepo;
 
 	private static final Logger log = LoggerFactory.getLogger(SpotifyService.class);
 
@@ -64,7 +71,7 @@ public class LikeController {
 	}
 
 	@GetMapping("/song/get-like-info/{songId}/{userId}")
-	public ResponseEntity<Boolean> getLikeStatus(@PathVariable String songId, @PathVariable String userId) {
+	public ResponseEntity<Boolean> getLikeStatusSong(@PathVariable String songId, @PathVariable String userId) {
 		Song givenSong = songRepo.findByid(songId);
 		User givenUser = new User(Long.parseLong(userId));
 
@@ -76,4 +83,34 @@ public class LikeController {
 		else log.info("not liked");
 		return ResponseEntity.ok(likeStatus);
 	}
+	
+	@GetMapping("/album/get-like-info/{albumId}/{userId}")
+	public ResponseEntity<Boolean> getLikeStatusAlbum(@PathVariable String albumId, @PathVariable String userId) {
+		Album givenAlbum = albumRepo.findByid(albumId);
+		User givenUser = new User(Long.parseLong(userId));
+
+		UserAlbum givenRelation = userAlbumRepo.findByAlbumAndUser(givenAlbum, givenUser);
+
+		boolean likeStatus = givenRelation.isLiked();
+		if(likeStatus) log.info("liked");
+
+		else log.info("not liked");
+		return ResponseEntity.ok(likeStatus);
+	}
+	
+	@GetMapping("/artist/get-like-info/{artistId}/{userId}")
+	public ResponseEntity<Boolean> getLikeStatusArtist(@PathVariable String artistId, @PathVariable String userId) {
+		Artist givenArtist = artistRepo.findByid(artistId);
+		User givenUser = new User(Long.parseLong(userId));
+
+		UserArtist givenRelation = userArtistRepo.findByArtistAndUser(givenArtist, givenUser);
+
+		boolean likeStatus = givenRelation.isLiked();
+		if(likeStatus) log.info("liked");
+
+		else log.info("not liked");
+		return ResponseEntity.ok(likeStatus);
+	}
+	
+	
 }

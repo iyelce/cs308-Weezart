@@ -12,9 +12,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 @SpringBootApplication
-@EntityScan("com.app")  // Specify the base package for entity scanning
-@ComponentScan({"com.app", "com.app.services", "com.app.controllers", "com.app.security", "com.app.payloads"})  // Add controller package
-@EnableJpaRepositories("com.app.repo")  // Specify the base package for repositories
+@EntityScan("com.app")
+@ComponentScan({"com.app", "com.app.services", "com.app.controllers", "com.app.security", "com.app.payloads"})
+@EnableJpaRepositories("com.app.repo")
 
 public class Cs308WeezartBackendApplication {
     public static void main(String[] args) {

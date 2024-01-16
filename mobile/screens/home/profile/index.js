@@ -400,9 +400,10 @@ const ProfileScreen = ({ navigation }) => {
             />
             <View style={{ display: "flex", gap: 10 }}>
               {userInfo.following &&
-                userInfo.following.map((user) => {
+                userInfo.following.map((user, i) => {
                   return (
                     <TouchableOpacity
+                      key={i}
                       onPress={() => {
                         setFollowingModal(false);
                         navigation.navigate("UserProfile", { param: user });

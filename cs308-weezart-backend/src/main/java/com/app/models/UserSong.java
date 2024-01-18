@@ -44,6 +44,12 @@ public class UserSong {
 		rating.add(0);
 	}
 	
+	// !!!!!!!! for the user controller test thingy !!!!!!!!!!!!!!!!!!!!!!!
+		public UserSong(Long id) {
+			this.id = id;
+		}
+		
+	
 
 	public Long getId() {
 		return id;

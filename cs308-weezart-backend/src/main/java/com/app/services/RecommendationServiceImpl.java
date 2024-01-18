@@ -147,8 +147,11 @@ public class RecommendationServiceImpl implements RecommendationService {
 				return albumsAddedByUser.stream()
 						.noneMatch(userAlbum -> userAlbum.getAlbum().getId().equals(album.getId()));
 			}).filter(album -> {
-				String albumYear = album.getReleaseDate().substring(0, 4);
-				return topRatedDates.stream().anyMatch(topYear -> isYearInRange(albumYear, topYear));
+			    if (album.getReleaseDate() != null) {
+			    	String albumYear = album.getReleaseDate().substring(0, 4);
+				    return topRatedDates.stream().anyMatch(topYear -> isYearInRange(albumYear, topYear));
+			    }
+			    return true;
 			}).collect(Collectors.toList());
 
 			Collections.shuffle(filteredAlbums);
@@ -169,8 +172,10 @@ public class RecommendationServiceImpl implements RecommendationService {
 					List<String> artistsId = song.getArtistsId();
 					for (String artistId : artistsId) {
 						Artist givenArtist = artistRepo.findByid(artistId);
-						List<String> genresList = givenArtist.getGenres();
-						topRatedGenres.addAll(genresList);
+						if(givenArtist != null) {
+							List<String> genresList = givenArtist.getGenres();
+							topRatedGenres.addAll(genresList);
+						}
 					}
 				}
 			}

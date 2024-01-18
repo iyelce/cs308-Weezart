@@ -125,9 +125,7 @@ public class AnalysisServiceImpl implements AnalysisService{
       }
     	
         List<Song> top5Songs = filteredSongs.size() > 5 ? resultSong.subList(0, 5) : resultSong;
-        
-        
-        
+               
         currentTime = LocalDateTime.now();
     	System.out.println("6 Final: " + currentTime);
         return top5Songs;
@@ -145,12 +143,18 @@ public class AnalysisServiceImpl implements AnalysisService{
 	    		Song song = userSong.getSong();
 	    		List<String> artistsId = song.getArtistsId();
 	    		
+			// TODO: niye artist null donuyooooo??????????????????????????????
+			// hem de var olan artist???????????
+	    		
 	    		for (String artistId : artistsId) {
 	    			Artist givenArtist = artistRepo.findByid(artistId);
-	    			List<String> genresList = givenArtist.getGenres();
-	    			if (genresList.contains(genre)) {
-	    				genreFound = true;
-	    				break;
+	    			if(givenArtist != null) {
+		    			log.info(givenArtist.getName());
+		    			List<String> genresList = givenArtist.getGenres();
+		    			if (genresList.contains(genre)) {
+		    				genreFound = true;
+		    				break;
+		    			}
 	    			}
 	    		}
 	    		

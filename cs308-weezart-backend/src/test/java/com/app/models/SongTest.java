@@ -1,29 +1,54 @@
-package com.app.payloads;
+package com.app.models;
+
 
 import java.util.List;
 
-import com.app.models.*;
+import com.app.payloads.SongPayload;
 
-public class SongPayload {
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "songs")
+public class SongTest {
+
+	@Id
 	String id;
 	String name;
 	String albumName;
 	String albumId;
+	String albumRelease;
 	String albumImageURL;
 	List<String> artistsName;
 	List<String> artistsId;
 	int popularity;
 	int duration_ms;
 	boolean explicit;
-	String albumRelease;
 
-	
-	public SongPayload(String songname, List<String> artist) {
-		this.name=songname;
-		this.artistsName=artist;
+	public SongTest() {
+		super();
 	}
-	
-	public SongPayload(Song songPayload) {
+
+	public SongTest(String id, String albumImageURL, String name, String albumName, String albumId,
+            List<String> artistsName, List<String> artistsId, 
+            int popularity, int duration_ms, boolean explicit, String albumRelease) {
+		super();
+		this.albumImageURL = albumImageURL;
+		this.id = id;
+		this.name = name;
+		this.albumName = albumName;
+		this.albumId = albumId;
+		this.albumRelease = albumRelease;
+		this.artistsName = artistsName;
+		this.artistsId = artistsId;
+		this.popularity = popularity;
+		this.duration_ms = duration_ms;
+		this.explicit = explicit;
+	}
+
+
+	public SongTest(SongPayload songPayload) {
         this.id = songPayload.getId();
         this.albumImageURL = songPayload.getAlbumImageURL();
         this.name = songPayload.getName();
@@ -37,53 +62,25 @@ public class SongPayload {
         this.explicit = songPayload.isExplicit();
     }
 	
-	public SongPayload(String id, String name, String albumName, String albumId, String albumImageURL,
-			List<String> artistsName, List<String> artistsId, int popularity, int duration_ms, boolean explicit,
-			String albumRelease) {
-		super();
+	// !!!!!!!! for the user controller test thingy !!!!!!!!!!!!!!!!!!!!!!!
+	public SongTest(String id, String songName) {
 		this.id = id;
-		this.name = name;
-		this.albumName = albumName;
-		this.albumId = albumId;
-		this.albumImageURL = albumImageURL;
-		this.artistsName = artistsName;
-		this.artistsId = artistsId;
-		this.popularity = popularity;
-		this.duration_ms = duration_ms;
-		this.explicit = explicit;
-		this.albumRelease = albumRelease;
+		this.name = songName;
 	}
+	
+	
 	@Override
 	public String toString() {
-		return "SongPayload [id=" + id + ", name=" + name + ", albumName=" + albumName + ", albumId=" + albumId
-				+ ", albumImageURL=" + albumImageURL + ", artistsName=" + artistsName + ", artistsId=" + artistsId
-				+ ", popularity=" + popularity + ", duration_ms=" + duration_ms + ", explicit=" + explicit
-				+ ", albumRelease=" + albumRelease + "]";
+		return "Song [name=" + name + ", albumName=" + albumName + ", albumId=" + albumId + ", artistsName="
+				+ artistsName + ", popularity=" + popularity + ", duration_ms=" + duration_ms + "]";
 	}
+
 	public String getAlbumImageURL() {
 		return albumImageURL;
 	}
-	public void setAlbumImageURL(String albumImage) {
-		this.albumImageURL = albumImage;
-	}
 
-	public SongPayload() {
-		super();
-	}
-
-	
-	public SongPayload(External e) {
-		this.id = e.getId();
-		this.name = e.getName();
-		this.albumName = e.getAlbumName();
-		this.albumId = e.getAlbumId();
-		this.artistsName = e.getArtistsName();
-		this.artistsId = e.getArtistsId();
-		this.popularity = e.getPopularity();
-		this.duration_ms = e.getDuration_ms();
-		this.explicit = e.isExplicit();
-		this.albumRelease = e.getAlbumRelease();
-		this.albumImageURL = e.getAlbumImageURL();
+	public void setAlbumImageURL(String albumImageURL) {
+		this.albumImageURL = albumImageURL;
 	}
 
 
@@ -166,4 +163,6 @@ public class SongPayload {
 	public void setExplicit(boolean explicit) {
 		this.explicit = explicit;
 	}
+
 }
+

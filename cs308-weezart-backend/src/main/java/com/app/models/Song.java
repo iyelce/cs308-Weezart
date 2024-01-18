@@ -61,7 +61,19 @@ public class Song {
         this.explicit = songPayload.isExplicit();
     }
 	
+	// !!!!!!!! for the user controller test thingy !!!!!!!!!!!!!!!!!!!!!!!
+	public Song(String id, String songName) {
+		this.id = id;
+		this.name = songName;
+	}
 	
+	
+	@Override
+	public String toString() {
+		return "Song [name=" + name + ", albumName=" + albumName + ", albumId=" + albumId + ", artistsName="
+				+ artistsName + ", popularity=" + popularity + ", duration_ms=" + duration_ms + "]";
+	}
+
 	public String getAlbumImageURL() {
 		return albumImageURL;
 	}

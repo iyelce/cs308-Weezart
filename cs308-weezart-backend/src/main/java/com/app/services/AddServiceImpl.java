@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -29,6 +30,8 @@ import com.app.repo.UserAlbumRepository;
 import com.app.repo.UserArtistRepository;
 import com.app.repo.UserRepository;
 import com.app.repo.UserSongRepository;
+import com.app.services.UserServiceImpl.CustomException;
+import com.app.spotify.SpotifyAuthenticator;
 
 import jakarta.transaction.Transactional;
 
@@ -55,9 +58,59 @@ public class AddServiceImpl implements AddService {
 
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private SpotifyService spotifyService;
+	
+	@Autowired
+	private SpotifyAuthenticator spotifyAuth;
 
 	private static final Logger log = LoggerFactory.getLogger(SpotifyService.class);
 
+	
+//	public void songAccepted(SongPayload songPayload, String userId) {
+//
+//			Song didYouMeanSong = new Song(songPayload);
+//
+//			log.info("song id:_____" + didYouMeanSong.getId());
+//
+//			log.info(songPayload.toString());
+//
+//			if (songRepo.findByid(didYouMeanSong.getId()) == null) {
+//				songRepo.save(didYouMeanSong);
+//			}
+//			UserSong userSong = relateUserSong(songPayload, userId);
+//
+//			for (String artistName : didYouMeanSong.getArtistsName()) {
+//				log.info("artist kaydedecem-----" + artistName);
+//
+//				Artist artist = spotifyService.artistSearch(artistName, spotifyAuth.authenticateWithSpotify()).get(0);
+//
+//				log.info("artist kaydediyooommmmmm");
+//				log.info(artist.getName());
+//				artistRepo.save(artist);
+//				log.info("artist kayedttiimm");
+//				ArtistPayload artistPayload = new ArtistPayload(artist);
+//
+//				relateUserArtist(artistPayload, userId);
+//
+//			}
+//
+//			log.info("album kaydedecem-------" + didYouMeanSong.getAlbumName());
+//			Album album = spotifyService
+//					.albumSearch(didYouMeanSong.getAlbumName() + " " + didYouMeanSong.getArtistsName().get(0),
+//							spotifyAuth.authenticateWithSpotify())
+//					.get(0);
+//			albumRepo.save(album);
+//			log.info("albumun insoun=hun alayyimrim" + album.getArtistsName().get(0));
+//			AlbumPayload albumPayload = new AlbumPayload(album);
+//			relateUserAlbum(albumPayload, userId);
+//			// return ResponseEntity.ok("SONG_SAVED");
+//
+//	}
+//	
+	
+	
 	// TODO: spotify checkleme yapilacak
 	public Song addSong(SongPayload song) {
 

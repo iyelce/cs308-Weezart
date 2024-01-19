@@ -3,12 +3,11 @@ import './ProfilePage.css';
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Typography from '@mui/material/Typography';
 import CreateBlendPopup from "../Popups/CreateBlendPopup";
 import GetAllGroupPlaylists from "../../API/GetAllGroupPlaylists";
-
-
 
 const MyBlends = ({...props}) => {
 
@@ -100,30 +99,33 @@ const MyBlends = ({...props}) => {
       <div className="profile-container">
 
 
-        {blendList !== "boş" ? (
-          <div className="list-container">
-            {blendList.map((blend, index) => (
-              <div
-                key={index}
-                className="list-rectangle"
-                onClick={() => navigate(`/blend/${index}`, { state: { blend } })}
-              >
-                <img
-                  className="rectangle-image"
-                  src="https://placekitten.com/100/100"
-                  alt={blend.groupSongNames}
-                />
-                <p className="rectangle-label">
-                  {blend.userSong.groupSongNames ? blend.userSong.groupSongNames.join(', ') : ''}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>No blend found</p>
-        )}
 
-        
+      {blendList !== "boş" ? (
+  <div className="list-container">
+    {blendList.map((blend, index) => (
+      <div key={index}>
+        {console.log("BlendId before Link:", blend.userSong.id)}
+        <Link
+          key={index}
+          to={`/blends/${blend.userSong.id}`}
+          className="list-rectangle"
+        >
+          <img
+            className="rectangle-image"
+            src="https://placekitten.com/100/100"
+            alt={blend.groupSongNames}
+          />
+          <p className="rectangle-label">
+            {blend.userSong.groupSongNames ? blend.userSong.groupSongNames.join(', ') : ''}
+          </p>
+        </Link>
+      </div>
+    ))}
+  </div>
+) : (
+  <p>No blend found</p>
+)}
+
       </div>
 
       </div>

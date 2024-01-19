@@ -67,3 +67,22 @@
   background-color: #1a1721; /* Color of the scrollbar thumb */
   border-radius: 6px; /* Border radius of the scrollbar thumb */
 }
+
+
+
+.blend-anl-button{
+  background-color: #3B0944; /* Purple color */
+  color: #fff; /* White text color */
+  border: none;
+  padding: 10px 20px; /* Adjust padding as needed */
+  border-radius: 25px; /* Adjust border-radius for rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth color transition */
+ margin-left: 70rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-family: Poppins;
+  &:hover {
+    background-color: #600b71; 
+  }
+}

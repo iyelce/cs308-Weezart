@@ -22,6 +22,7 @@ import ExportPage from './Pages/ImportFile/ExportFile.jsx';
 import CloudImport from './Pages/ImportFile/CloudImport.jsx';
 import MyBlends from './Pages/Profile/MyBlends.jsx';
 import FriendProfile from './Pages/Profile/FriendProfile.jsx';
+import BlendList from './Pages/Lists/BlendList.jsx';
 
 
 
@@ -119,6 +120,7 @@ function App() {
               <Route path = 'followers' element={<FollowersList token={token} userId={userId} username={username}/>}/>
               <Route path = 'following' element={<FollowingList token={token} userId={userId} username={username}/>}/>
               <Route path = 'myBlends' element={<MyBlends token={token} userId={userId} username={username}/>}/>
+              <Route path='/blends/:id' element={<BlendList token={token} userId={userId} username={username} />} />
 
 
               {/* farklı kullanıcılara girince nasıl yapmalıyız */}

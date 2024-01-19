@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { LuClock3 } from "react-icons/lu";
 import { FaMusic } from "react-icons/fa";
 import './List.css';
-import AddedSongsApi from "../../API/AddedSongsApi";
 import SongInfoPopup from "../Popups/SongInfoPopup";
+import GetPlaylistGivenGroup from "../../API/GetPlaylistGivenGroup ";
 
 function BlendList({ ...props }) {
 
-    const location = useLocation();
-    const { blend } = location.state;
 
-
+    const { id } = useParams();
+    const [listName, setListName] = useState("");
+    
 
   //to map to table -> only song info
   const [songs, setSongs] = useState([]); 
-  //whole response from liked songs api
-  const [wholeSongResp, setWholeSongResp] = useState([]);
-
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
   const [showSongPopups, setShowSongPopups] = useState(new Map());
 
@@ -45,21 +42,13 @@ function BlendList({ ...props }) {
 
   };
 
-
   const fetchData = async () => {
     try {
-      const songList = await AddedSongsApi(props.token, props.userId);
-      setSongs(songList);
-
-      const songResponse = [];
-
-      for (let i=0; i<songList.length; i++) {
-          songResponse.push(songList[i].song);
-      }
-
-      setSongs(songResponse);
-
-      setWholeSongResp(songList);        
+    const response = await GetPlaylistGivenGroup(props.token, id);
+    console.log("response in page: ", response);
+    
+    setSongs(response[0].songList);
+    setListName(response[0].userSong.groupSongNames.join(", "));
 
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -70,7 +59,6 @@ function BlendList({ ...props }) {
 
   useEffect(() => {
     fetchData();
-    console.log("blend data:  ", blend);
   }, [props.token, props.userId]);
 
 
@@ -96,8 +84,12 @@ function BlendList({ ...props }) {
 
     <div>
 
+        <h1 style={{ textAlign: 'center', fontFamily: 'Poppins', color: '#B9B4C7' }}>
+            {listName}
+        </h1>
+
 <div>
-    <button>aaaaaaaaaaaaa</button>
+    <button className="blend-anl-button">Blend Analysis</button>
 </div>
 
 
@@ -149,11 +141,11 @@ function BlendList({ ...props }) {
               isOpen={true}
               onRequestClose={handleSongClosePopup}
               songInfo = {songs[selectedSongIndex]}
-              liked = {wholeSongResp[selectedSongIndex].liked}
-              rating = {wholeSongResp[selectedSongIndex].rating}
+              liked={"check with api"}
+              rating={"check with api"}
               token = {props.token}
-              userId = {props.userId}
-            />
+              userId = {props.userId}      
+      />
       )}
     </div>
     </div>

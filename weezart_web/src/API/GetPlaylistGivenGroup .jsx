@@ -2,9 +2,9 @@
 // o	PathVariable: String userIds, where userIds is a concatenated string of group members' ids 
 
 
-async function GetAllGroupPlaylists (token, userId ) {
+async function GetPlaylistGivenGroup  (token, id ) {
 
-    const url = `http://localhost:8080/group/get-all-playlists/${userId}`;  
+    const url = `http://localhost:8080/group/get-all-playlists/${id}`;  
     const auth = "Bearer " + token;
 
     try{        
@@ -27,7 +27,7 @@ async function GetAllGroupPlaylists (token, userId ) {
 
         const newResp = JSON.parse(data); 
 
-        console.log("group listlerei-> ", newResp);
+        console.log("--------------> ", newResp);
 
         return newResp;
     }
@@ -36,4 +36,4 @@ async function GetAllGroupPlaylists (token, userId ) {
     }
 }
 
-export default GetAllGroupPlaylists;
+export default GetPlaylistGivenGroup ;

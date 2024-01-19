@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 const FriendProfile = ({...props}) => {
 
     const {friendName} = useParams();
-  
+    console.log("friendName is : ", friendName);
 
   const [publicData, setPublicData] = useState();
 
@@ -93,7 +93,76 @@ async function publicDatas() {
     return (
         <div className="profile_page">
 
-          <p>{friendName}</p>
+            <br/>
+            <br/>
+
+       <div className="profile-container">
+        <div className="profile-header">
+          {/* User Image */}
+          <img
+            className="profile-image"
+            src="https://i.pinimg.com/564x/84/c2/af/84c2aff38526671371b2fd051ca782aa.jpg" // Replace with the actual user image URL
+            alt="User"
+          />
+  
+          {/* User Details */}
+          <div className="user-details">
+            <h2>{username}</h2>
+            <p >
+                {/* <span className="profile_followers" onClick={()=>{navigate(`/followers/${followers}`)}}>Followers: {followerCount} </span> */}
+
+                <span className="profile_followers" onClick={()=>{navigate("/followers")}}>Followers: {followerCount} </span>
+                | 
+                <span className="profile_following" onClick={()=>{
+                    navigate('/following', { state: { followingInfo } })
+                  }}>Following: {following} </span>
+            </p>
+          <FormControlLabel control={<Checkbox checked={publicData===undefined?false:publicData} color="secondary" onChange={handleChange} />} label="Public" />
+          </div>
+  
+          {/* Edit Profile Button */}
+          <button className="add-artist-button" onClick={handleEditProfile}>
+            Edit Profile
+          </button>
+        </div>
+      </div>
+
+        <br/>
+        <br/>
+
+      <div className="profile-container">
+        
+  
+        {/* Clickable Items */}
+
+        <div className="list-rectangle" onClick={() => navigate('/likedSongs')} >
+          <img
+            className="rectangle-image"
+            src="https://i1.sndcdn.com/artworks-y6qitUuZoS6y8LQo-5s2pPA-t500x500.jpg" // Replace with the actual image URL
+            alt="Added Songs"
+          />
+          <p className="rectangle-label">Added Songs</p>
+        </div>
+
+        <div className="list-rectangle" onClick={() => navigate('/likedArtists')} >
+          <img
+            className="rectangle-image"
+            src="https://placekitten.com/100/100" // Replace with the actual image URL
+            alt="Added Artists"
+          />
+          <p className="rectangle-label">Added Artists</p>
+        </div>
+
+        <div className="list-rectangle" onClick={() => navigate('/likedAlbums')} >
+          <img
+            className="rectangle-image"
+            src="https://i.pinimg.com/564x/f0/4b/80/f04b805f0edeadc935fac72d22ce76eb.jpg" // Replace with the actual image URL
+            alt="Added Albums"
+          />
+          <p className="rectangle-label">Added Albums</p>
+        </div>
+
+      </div>
 
       </div>
      

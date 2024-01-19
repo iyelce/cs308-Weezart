@@ -128,7 +128,7 @@ function App() {
               <Route path = 'likedAlbums' element={<LikedAlbumsList token={token} userId={userId}/>}/>
 
               <Route path='analyze' element={<Analyze token={token} userId={userId}/>} />
-              <Route path='friendProfile' element={<FriendProfile token={token} userId={userId}/>} />
+              <Route path='friendProfile/:friendName' element={<FriendProfile token={token} userId={userId}/>} />
 
               <Route path='*' element={<Error />} />
             </Route>

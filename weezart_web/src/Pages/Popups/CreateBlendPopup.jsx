@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import { AiOutlineClose } from "react-icons/ai";
-// import './Popup.css';
-import { AiOutlineStar, AiFillStar, AiOutlineHeart, AiFillHeart, AiFillCrown, AiOutlineDelete, AiFillDelete } from 'react-icons/ai'; 
 import CreateGroupPlaylist from "../../API/CreateGroupPlaylist";
+import { IoIosAddCircleOutline } from 'react-icons/io';
+import { AiFillDelete } from 'react-icons/ai';
 
 // Make sure to set appElement to avoid a11y violations
 Modal.setAppElement("#root");
@@ -11,19 +11,21 @@ Modal.setAppElement("#root");
  
   function CreateBlendPopup({ ...props }) {
 
-    const [selectedFriends, setSelectedFriends] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-  
+    const [addedFriends, setAddedFriends] = useState([]);
+    const [isCreating, setIsCreating] = useState(false);
+
     const handleFriendSelect = (friend) => {
-      setSelectedFriends([...selectedFriends, friend]);
+      // Check if the friend is already in the addedFriends list
+      if (addedFriends.includes(friend)) {
+        // If already added, remove from the list
+        setAddedFriends(addedFriends.filter((addedFriend) => addedFriend !== friend));
+      } else {
+        // If not added, add to the list
+        setAddedFriends([...addedFriends, friend]);
+      }
     };
-  
-    const handleFriendRemove = (friend) => {
-      const updatedFriends = selectedFriends.filter(
-        (selectedFriend) => selectedFriend !== friend
-      );
-      setSelectedFriends(updatedFriends);
-    };
+
+    const [searchTerm, setSearchTerm] = useState('');
   
     const handleSearch = (e) => {
       setSearchTerm(e.target.value);
@@ -34,11 +36,21 @@ Modal.setAppElement("#root");
     );
 
     const handleCreate = async () => {
-      let resp = await CreateGroupPlaylist(
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXJhaGluIiwicm9sZSI6W3siYXV0aG9yaXR5IjoiUk9MRV9VU0VSIn1dLCJleHAiOjE3MDQzNzQzNzksImlhdCI6MTcwNDM3MDc3OX0.-slzEEOh1t26D6AbjkGkohUo_peQZgvl-7WL6GEsq_U"
-        ,31);
+      try {
+        setIsCreating(true); // Set the loading state
+        let resp = await CreateGroupPlaylist(props.token, props.userId);
+  
+        // Handle the response here, e.g., close the popup or perform other actions
+  
         console.log("page içinde resp create : ", resp);
-    }
+  
+      } catch (error) {
+        // Handle error if needed
+      } finally {
+        setIsCreating(false); 
+        props.onRequestClose();
+      }
+    };
 
   return (
 
@@ -54,61 +66,93 @@ Modal.setAppElement("#root");
             </button>
         </div>
 
-
-
-        <br/>
-        <br/>
-
         <div>
       <div className="friend-selector">
+
+
+      <div class="friend-search-navigation">
         <input
-          type="text"
-          placeholder="Search friends"
+          type="search"
+          placeholder="search"
+          className="friend-search-navigation__input"
           value={searchTerm}
           onChange={handleSearch}
         />
-        <div className="friend-list">
-          <table>
-            <tbody>
-              {searchTerm === '' ? (
-                props.allFriends.map((friend) => (
-                  <tr key={friend}>
-                    <td>{friend}</td>
-                    <td>
-                      <button onClick={() => handleFriendSelect(friend)}>
-                        Select
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                filteredFriends.map((friend) => (
-                  <tr key={friend}>
-                    <td>{friend}</td>
-                    <td>
-                      <button onClick={() => handleFriendSelect(friend)}>
-                        Select
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+       
       </div>
+
+
+      <div className="table-friend-container">
+  <table className="list_friend_table">
+    <tbody>
+      {searchTerm === '' ? (
+        props.allFriends.length === 0 ? (
+          <tr>
+            <td colSpan="2">No friend found</td>
+          </tr>
+        ) : (
+          props.allFriends.map((friend) => (
+            <tr key={friend}>
+              <td>{friend}</td>
+              <td>
+                {addedFriends.includes(friend) ? (
+                  <AiFillDelete onClick={() => handleFriendSelect(friend)} />
+                ) : (
+                  <IoIosAddCircleOutline onClick={() => handleFriendSelect(friend)} />
+                )}
+              </td>
+            </tr>
+          ))
+        )
+      ) : (
+        filteredFriends.length === 0 ? (
+          <tr>
+            <td colSpan="2">No friend found</td>
+          </tr>
+        ) : (
+          filteredFriends.map((friend) => (
+            <tr key={friend}>
+              <td>{friend}</td>
+              <td>
+                {addedFriends.includes(friend) ? (
+                  <AiFillDelete onClick={() => handleFriendSelect(friend)} />
+                ) : (
+                  <IoIosAddCircleOutline onClick={() => handleFriendSelect(friend)} />
+                )}
+              </td>
+            </tr>
+          ))
+        )
+      )}
+    </tbody>
+  </table>
+</div>
+
+
+
+      </div>
+
+      
       <div className="selected-friends">
         <h2>Selected Friends</h2>
         <div className="selected-friends-list">
-          {selectedFriends.map((friend) => (
+          {addedFriends.map((friend) => (
             <span key={friend} className="selected-friend">
               {friend}{' '}
-              <button onClick={() => handleFriendRemove(friend)}>Remove</button>
             </span>
           ))}
         </div>
       </div>
-      <button onClick={handleCreate}>create</button>
+
+
+      <button
+          className="create-group-list-button"
+          onClick={handleCreate}
+          disabled={addedFriends.length === 0 || isCreating}
+        >
+          {isCreating ? 'Creating...' : 'Create'}
+      </button>
+
     </div>
 
 

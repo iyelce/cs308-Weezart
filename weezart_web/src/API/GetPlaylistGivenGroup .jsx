@@ -1,8 +1,5 @@
-// •	Get All Playlists for a User → GET/get-all-playlists/{id}
-// o	PathVariable: String id (the user to display all songs they are in)
-// o	Response: List<BigGroupSong> (properties of BigGroupSong explained above)
-
-
+// •	Get Playlist for a given group → GET /get-playlist/{userIds} 
+// o	PathVariable: String userIds, where userIds is a concatenated string of group members' ids 
 
 
 async function GetAllGroupPlaylists (token, userId ) {

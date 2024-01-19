@@ -32,9 +32,7 @@ async function CloudApi (token, userId, url, username, password, table) {
     }
 
     try{        
-        console.log("password: ",password );
-        console.log("username : ", username);
-        console.log("table: ", table);
+    
 
         const response = await fetch(apiURL, {
             headers: {

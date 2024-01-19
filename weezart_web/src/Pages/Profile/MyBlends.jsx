@@ -1,6 +1,7 @@
 import React from "react";
 import './ProfilePage.css'; 
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Typography from '@mui/material/Typography';
@@ -11,13 +12,21 @@ import GetAllGroupPlaylists from "../../API/GetAllGroupPlaylists";
 
 const MyBlends = ({...props}) => {
 
+  const location = useLocation();
+  const { followingInfo } = location.state;
+
+  const [blendList, setBlendList] = useState("boş");
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const blends = await GetAllGroupPlaylists(props.token, props.userId);
 
-        console.log("blend info in page is : ", blends);
+        // Update the state with the fetched data
+        setBlendList(blends);
+
+        console.log("blend info in page is : ", blendList);
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -27,8 +36,6 @@ const MyBlends = ({...props}) => {
   }, [props.token, props.userId]);
 
 
-
-    let mockFriendList = [ "cans", "sczxc", "aaa"]
     
     const navigate = useNavigate();  
 
@@ -75,8 +82,12 @@ const MyBlends = ({...props}) => {
             <CreateBlendPopup
               isOpen={isModalOpen}
               onRequestClose={closeModal}
-              allFriends = {mockFriendList}
-            />
+              allFriends = {followingInfo}
+              token = {props.token}
+              userId = {props.userId}
+            /> 
+
+
               
             </div>
 
@@ -87,38 +98,32 @@ const MyBlends = ({...props}) => {
         <br/>
 
       <div className="profile-container">
+
+
+        {blendList !== "boş" ? (
+          <div className="list-container">
+            {blendList.map((blend, index) => (
+              <div
+                key={index}
+                className="list-rectangle"
+                onClick={() => navigate(`/blend/${index}`, { state: { blend } })}
+              >
+                <img
+                  className="rectangle-image"
+                  src="https://placekitten.com/100/100"
+                  alt={blend.groupSongNames}
+                />
+                <p className="rectangle-label">
+                  {blend.userSong.groupSongNames ? blend.userSong.groupSongNames.join(', ') : ''}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No blend found</p>
+        )}
+
         
-  
-        {/* Clickable Items */}
-        <div className="list-container">
-          <div className="list-rectangle" onClick={() => navigate('/likedSongs')} >
-            <img
-              className="rectangle-image"
-              src="https://placekitten.com/100/100" 
-              alt="Added Songs"
-            />
-            <p className="rectangle-label">Blend 1</p>
-          </div>
-
-          <div className="list-rectangle" onClick={() => navigate('/likedSongs')} >
-            <img
-              className="rectangle-image"
-              src="https://placekitten.com/100/100" 
-              alt="Added Artists"
-            />
-            <p className="rectangle-label">Blend 2</p>
-          </div>
-
-          <div className="list-rectangle" onClick={() => navigate('/likedSongs')} >
-            <img
-              className="rectangle-image"
-              src="https://placekitten.com/100/100" 
-              alt="Added Albums"
-            />
-            <p className="rectangle-label">Blend 3</p>
-          </div>
-        </div>    
-
       </div>
 
       </div>

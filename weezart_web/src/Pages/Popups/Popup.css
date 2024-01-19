@@ -12,10 +12,9 @@
 
  
 .information-modal{
-    height: 60%;
     z-index: 1000;
-    
 }
+
 .information-modal, .song-details, .attributes, .song-like, .song-add {
     display: flex;
     flex-direction: column;
@@ -480,3 +479,191 @@ background-color: transparent;
 
 
 
+  .friend-search-navigation {
+    margin: auto;
+    width: 50%; 
+  }
+  
+  .friend-search-navigation__icon {
+    height: 20px;
+    left: calc((40px - 20px) / 2);
+    pointer-events: none;
+    position: absolute;
+    top: calc((40px - 20px) / 2);
+    transition: all 0.1s ease-out;
+    width: 20px;
+    color: #B9B4C7;
+  }
+  
+  [class$="--collapsed"] .friend-search-navigation__icon {
+    left: 12px;
+  }
+  
+  /* -------------- INPUT */
+  
+  .friend-search-navigation__input {
+    background-color: #352F44;
+    border-radius: 30px;
+    border: 0;
+    color: #B9B4C7;
+    font-family: inherit;
+    font-size: inherit;
+    height: 40px;
+    line-height: 40px;
+    outline: none;
+    padding-left: 40px;
+    transition: all 0.2s ease-out;
+    width: 100%;
+    position: relative;
+  }
+  
+  .friend-search-navigation__input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    background: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-x'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E") no-repeat center center/cover;
+    cursor: pointer;
+    height: 20px;
+    position: relative;
+    right: calc((40px - 20px) / 2);
+    width: 20px;
+  }
+  
+  [class$="--collapsed"] .friend-search-navigation__input:not(:focus)::-webkit-search-cancel-button {
+    display: none;
+  }
+  
+  /* -------------- FOCUS STYLES */
+  
+  .friend-search-navigation__input:focus {
+    padding-left: 40px;
+    background-color: #5C5470;
+    border-radius: 20px;
+    color: #B9B4C7;
+  
+    [class$="--collapsed"] .friend-search-navigation__input {
+      width: 250px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+  
+    + svg {
+      opacity: 0;
+      transform: translateX(-20%);
+    }
+  }
+
+
+
+  .table-friend-container {
+    margin: auto;
+    margin-top: 3rem;
+    width: 92%;
+    height: 170px;
+    display: flex;
+    justify-content: center;
+    background-image: url('../../WhatsApp\ Image\ 2023-12-06\ at\ 03.31.16.jpeg');
+    background-color: white;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow-y: auto;
+    scrollbar-width: thin; /* For Firefox */
+  
+    /* Webkit (Chrome, Safari) scrollbar styles */
+    &::-webkit-scrollbar {
+      width: 12px;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background-color: #352F44;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: #1a1721;
+      border-radius: 6px;
+    }
+  }
+  
+  
+  .list_friend_table {
+    margin-top: 0px;
+    width: 100%;
+    height: auto;
+    max-height: 100%; /* Allow the table to expand to its content */
+    border-collapse: collapse;
+    color: #B9B4C7;
+    background-color: rgba(7, 0, 8, 0.8);
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    overflow-y: auto; /* Add vertical scrollbar if needed */
+  }
+  
+  .list_friend_table th,
+  .list_friend_table td {
+    padding: 10px;
+    text-align: left;
+    border-top: none;
+  }
+  
+  .list_friend_table th {
+    background-color: rgba(7, 0, 8, 0.8);
+    opacity: 0.8;
+    border-top: none;
+  }
+  
+  .list_friend_table thead tr {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  
+  .list_friend_table tbody tr:hover {
+    background-color: rgba(219, 219, 219, 0.075);
+  }
+  
+  .selected-friends {
+    color: #B9B4C7;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 20px; 
+    margin-left: 3rem;
+  }
+  
+  .selected-friends h2 {
+    margin-bottom: 10px; /* Add margin below the heading */
+  }
+  
+  .selected-friends-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .selected-friend {
+    background-color: rgba(185, 180, 199, 0.2); /* Background color with opacity */
+    padding: 5px 10px;
+    margin: 5px; /* Add margin around each selected friend */
+    border-radius: 4px;
+  }
+  
+  .create-group-list-button {
+    background-color: #3B0944;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Poppins';
+    width: 60%;
+    display: block;
+    margin: 2rem auto;
+  
+    &:hover {
+      background-color: #600b71;
+    }
+    
+    &[disabled] {
+      opacity: 0.5; /* Reduce opacity when disabled */
+      cursor: not-allowed; /* Change cursor to indicate not allowed */
+    }
+  }
+  
+  

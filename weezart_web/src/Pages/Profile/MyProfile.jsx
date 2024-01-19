@@ -163,7 +163,7 @@ async function publicDatas() {
         </div>
 
         <div className="list-container">
-          <div className="list-rectangle" onClick={() => navigate('myBlends')} >
+          <div className="list-rectangle" onClick={() => navigate('/myBlends', { state: { followingInfo } }) } >
             <img
               className="rectangle-image"
               src="https://i1.sndcdn.com/artworks-y6qitUuZoS6y8LQo-5s2pPA-t500x500.jpg" // Replace with the actual image URL

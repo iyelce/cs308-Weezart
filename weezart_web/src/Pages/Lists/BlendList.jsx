@@ -56,7 +56,6 @@ function BlendList({ ...props }) {
   };
 
 
-
   useEffect(() => {
     fetchData();
   }, [props.token, props.userId]);

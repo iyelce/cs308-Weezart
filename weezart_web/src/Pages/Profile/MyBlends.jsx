@@ -109,7 +109,7 @@ const MyBlends = ({...props}) => {
 
 
 
-      {loading ? (
+      {/* {loading ? (
   <div className="loading-container">
     
     <ClipLoader
@@ -155,7 +155,48 @@ const MyBlends = ({...props}) => {
   </div>
 ) : (
   <p>No blend found</p>
-)}
+)} */}
+
+
+{loading ? (
+  <div className="loading-container">
+    
+    <ClipLoader
+      color="#800080"
+      size={50}
+      cssOverride={{}}
+      loading
+    />
+    <p>Loading blends...</p>
+    
+  </div>
+) : blendList !== "boş" ? (
+        <div className="list-container">
+          {blendList.map((blend, index) => (
+            <Link
+              key={index}
+              to={`/blends/${blend.userSong.id}`}
+              className="blend-item-container"
+            >
+              <div className="list-rectangle">
+                <img
+                  className="rectangle-image"
+                  src="https://placekitten.com/100/100"
+                  alt={blend.groupSongNames}
+                />
+                <p className="rectangle-label">
+                  {blend.userSong.groupSongNames ? blend.userSong.groupSongNames.join(', ') : ''}
+                </p>
+                <div className="delete-icon-blend" onClick={() => handleDelete(blend.userSong.id)}>
+                  <AiOutlineDelete />
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <p>No blend found</p>
+      )}
 
 
       </div>

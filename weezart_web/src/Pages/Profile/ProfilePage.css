@@ -123,6 +123,7 @@
 .blend-item-container{
   display: flex;
   flex-direction: row;
+  text-decoration: none;
 }
 
 .list-rectangle {

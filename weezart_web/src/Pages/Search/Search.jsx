@@ -35,26 +35,26 @@ function Search({...props}) {
 
   const [searchValue,setSearchValue] = useState("");
 
-  const handleSearch = async() => {
-    
-    if(activeCategory === null) {
-      //alert("select sth")
-    }
-    else if (activeCategory === 'songs') {
+  const handleSearch = async(category) => {
+        
+    if (category === 'songs') {
+      setActiveCategory('songs');
       console.log("song: ", searchValue);
       const response = await SearchSongApi(props.token,searchValue );
       console.log("in page songs: ", response);
       setSongInfos(response);
       setShowTable(true);
     }
-    else if (activeCategory === 'albums') {
+    else if (category === 'albums') {
+      setActiveCategory('albums');
       console.log("album: ", searchValue);
       const response = await SearchAlbumApi(props.token,searchValue );
       console.log("in page album: ", response);
       setAlbumInfos(response);
       setShowTable(true);
     }
-    else if (activeCategory === 'artists') {
+    else if (category === 'artists') {
+      setActiveCategory('artists');
       console.log("artist: ", searchValue);
       const response = await SearchArtistApi(props.token,searchValue );
       console.log("in page artist: ", response);
@@ -277,7 +277,7 @@ function Search({...props}) {
       <div className="search-bar">
 
 {/* searchbar */}
-<div class="navigation-search">
+      <div class="navigation-search">
         <input
           type="search"
           placeholder="search"
@@ -285,7 +285,7 @@ function Search({...props}) {
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onKeyPress={(e) => {
-            if (e.key === 'Enter') {handleSearch()};
+            if (e.key === 'Enter') {handleSearch(activeCategory)};
           }}
         />
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="navigation-search__icon">
@@ -300,13 +300,13 @@ function Search({...props}) {
         <button
           className={`search-button ${activeButton === 'songs' ? 'active' : ''}`}
           onClick={() => {
-            setActiveCategory('songs');
+            
             setActiveButton('songs');
 
 
             //--------------------
             if(searchValue !== "") {
-              handleSearch();
+              handleSearch('songs');
             }
           }}
         >
@@ -316,13 +316,13 @@ function Search({...props}) {
         <button
           className={`search-button ${activeButton === 'albums' ? 'active' : ''}`}
           onClick={() => {
-            setActiveCategory('albums');
+            
             setActiveButton('albums');
 
             //--------------------
             if(searchValue !== "") {
               console.log("search value in albums: ", searchValue)
-              handleSearch();
+              handleSearch('albums');
             }
           }}
         
@@ -333,12 +333,12 @@ function Search({...props}) {
         <button
           className={`search-button ${activeButton === 'artists' ? 'active' : ''}`}
           onClick={() => {
-            setActiveCategory('artists');
+            
             setActiveButton('artists');
 
             //--------------------
             if(searchValue !== "") {
-              handleSearch();
+              handleSearch('artists');
             }
         }}
         >
@@ -349,11 +349,11 @@ function Search({...props}) {
       </div>
 
       
-
     {/* opens the table in function */}
       <div className="search-items-container">
         {showTable && (
           <div className="search-items-container">
+            {console.log("rendering search items")}
             {renderSearchItems()}
           </div>
         )}

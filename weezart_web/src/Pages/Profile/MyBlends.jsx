@@ -23,10 +23,10 @@ const MyBlends = ({...props}) => {
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
+ 
     try {
-      const blends = await GetAllGroupPlaylists(props.token, props.userId);
+      const blends = await GetAllGroupPlaylists(localStorage.getItem("token"), localStorage.getItem("userId"));
       setBlendList(blends);
-
       setLoading(false);
     } catch (error) {
       console.error("Error fetching user profile:", error);

@@ -159,5 +159,15 @@
 }
 
 
+.loading-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  
+}
 
+.loading-container p {
+  margin-top: 1rem;
+}
 

@@ -10,7 +10,7 @@ import CreateBlendPopup from "../Popups/CreateBlendPopup";
 import GetAllGroupPlaylists from "../../API/GetAllGroupPlaylists";
 import DeleteBlend from "../../API/DeleteBlend";
 import { AiOutlineDelete, AiFillDelete } from 'react-icons/ai'; 
-
+import { ClipLoader } from "react-spinners";
 
 
 
@@ -20,18 +20,17 @@ const MyBlends = ({...props}) => {
   const { followingInfo } = location.state;
 
   const [blendList, setBlendList] = useState("boş");
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     try {
-      console.log("fetchnggggg")
       const blends = await GetAllGroupPlaylists(props.token, props.userId);
-
-      // Update the state with the fetched data
       setBlendList(blends);
 
-      console.log("blend info in page is : ", blendList);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching user profile:", error);
+      setLoading(false);
     }
   };
 
@@ -51,11 +50,13 @@ const MyBlends = ({...props}) => {
     
       const closeModal = () => {
         setIsModalOpen(false);
+        setLoading(true);
+        fetchData();
       };
 
     const handleDelete = async (userIds) => {
       const del = await DeleteBlend(props.token, userIds, props.userId);
-      console.log("return del is: ", del);
+      setLoading(true);
       fetchData();
     };
  
@@ -105,41 +106,56 @@ const MyBlends = ({...props}) => {
 
       <div className="profile-container">
 
-        {blendList !== "boş" ? (
-          <div className="list-container">
-            {blendList.map((blend, index) => (
-              <div key={index} className="blend-item-container">
-                {console.log("BlendId before Link:", blend.userSong.id)}
 
-                <div className="list-rectangle">
-                  <img
-                    className="rectangle-image"
-                    src="https://placekitten.com/100/100"
-                    alt={blend.groupSongNames}
-                  />
-                  <p className="rectangle-label">
-                    {blend.userSong.groupSongNames ? blend.userSong.groupSongNames.join(', ') : ''}
-                  </p>
-                  <div className="delete-icon-blend" onClick={() => handleDelete(blend.userSong.id)}>
-                    <AiOutlineDelete />
-                  </div>
-                </div>
 
-                <Link
-                  key={index}
-                  to={`/blends/${blend.userSong.id}`}
-                  className="list-link" 
-                >
-                  <div className="link-content">
-                  </div>
-                </Link>
+      {loading ? (
+  <div className="loading-container">
+    
+    <ClipLoader
+      color="#800080"
+      size={50}
+      cssOverride={{}}
+      loading
+    />
+    <p>Loading blends...</p>
+    
+  </div>
+) : blendList !== "boş" ? (
+  <div className="list-container">
+    {blendList.map((blend, index) => (
+      <div key={index} className="blend-item-container">
+        {console.log("BlendId before Link:", blend.userSong.id)}
 
-              </div>
-            ))}
+        <div className="list-rectangle">
+          <img
+            className="rectangle-image"
+            src="https://placekitten.com/100/100"
+            alt={blend.groupSongNames}
+          />
+          <p className="rectangle-label">
+            {blend.userSong.groupSongNames ? blend.userSong.groupSongNames.join(', ') : ''}
+          </p>
+          <div className="delete-icon-blend" onClick={() => handleDelete(blend.userSong.id)}>
+            <AiOutlineDelete />
           </div>
-        ) : (
-          <p>No blend found</p>
-        )}
+        </div>
+
+        <Link
+          key={index}
+          to={`/blends/${blend.userSong.id}`}
+          className="list-link" 
+        >
+          <div className="link-content">
+          </div>
+        </Link>
+
+      </div>
+    ))}
+  </div>
+) : (
+  <p>No blend found</p>
+)}
+
 
       </div>
 

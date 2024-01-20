@@ -15,20 +15,19 @@ import SearchArtistApi from "../../API/SearchArtistApi";
 function Search({...props}) {
   const [songInfos, setSongInfos] = useState([]);
   const [artistInfos, setArtistInfos] = useState([]);
-  const [albumInfos, setAlbumInfos] = useState([]);
-  const [profiles, setProfiles] = useState([]);
+  const [albumInfos, setAlbumInfos] = useState([])
   const [showTable, setShowTable] = useState(false);
 
-    //sets active buttons (css color) and category to load correct tables
-    const [activeButton, setActiveButton] = useState(null);
-    const [activeCategory, setActiveCategory] = useState(null);
+  //sets active buttons (css color) and category to load correct tables
+  const [activeButton, setActiveButton] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
 
   //to check which itm is clicked in the tables
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(-1);
   const [selectedAlbumIndex, setSelectedAlbumIndex] = useState(-1);
 
-//to open and close popups
+  //to open and close popups
   const [showSongPopups, setShowSongPopups] = useState(new Map());
   const [showArtistPopups, setShowArtistPopups] = useState(new Map());
   const [showAlbumPopups, setShowAlbumPopups] = useState(new Map());
@@ -36,26 +35,26 @@ function Search({...props}) {
 
   const [searchValue,setSearchValue] = useState("");
 
-  const handleSearch = async() => {
-    
-    if(activeCategory === null) {
-      //alert("select sth")
-    }
-    else if (activeCategory === 'songs') {
+  const handleSearch = async(category) => {
+        
+    if (category === 'songs') {
+      setActiveCategory('songs');
       console.log("song: ", searchValue);
       const response = await SearchSongApi(props.token,searchValue );
       console.log("in page songs: ", response);
       setSongInfos(response);
       setShowTable(true);
     }
-    else if (activeCategory === 'albums') {
+    else if (category === 'albums') {
+      setActiveCategory('albums');
       console.log("album: ", searchValue);
       const response = await SearchAlbumApi(props.token,searchValue );
       console.log("in page album: ", response);
       setAlbumInfos(response);
       setShowTable(true);
     }
-    else if (activeCategory === 'artists') {
+    else if (category === 'artists') {
+      setActiveCategory('artists');
       console.log("artist: ", searchValue);
       const response = await SearchArtistApi(props.token,searchValue );
       console.log("in page artist: ", response);
@@ -266,36 +265,6 @@ function Search({...props}) {
         </div>
         );
 
-      case 'profiles':
-        return (
-          <div className="list_box">
-          <table className="custom-table">
-            <thead>
-              <tr>
-                <th scope="col"><FaHatWizard /></th>
-                <th scope="col"></th>
-                <th scope="col">Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              {profiles.map((val, index) => (
-                <tr key={index} onClick={() => alert("clicked on user")}>
-                  <th scope="row"></th>
-                  <td>
-                    <img
-                      src={val.image}
-                      alt={`User image for ${val.profileName}`}
-                      style={{ width: '64px', height: '64px' }}
-                    />
-                  </td>
-                  <td>{val.profileName}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        );
-
       default:
         return null;
     }
@@ -305,8 +274,9 @@ function Search({...props}) {
   return (
     
      <div className="search-page">
+      <div className="search-bar">
 
-      {/* searchbar */}
+{/* searchbar */}
       <div class="navigation-search">
         <input
           type="search"
@@ -315,7 +285,7 @@ function Search({...props}) {
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onKeyPress={(e) => {
-            if (e.key === 'Enter') {handleSearch()};
+            if (e.key === 'Enter') {handleSearch(activeCategory)};
           }}
         />
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="navigation-search__icon">
@@ -330,13 +300,13 @@ function Search({...props}) {
         <button
           className={`search-button ${activeButton === 'songs' ? 'active' : ''}`}
           onClick={() => {
-            setActiveCategory('songs');
+            
             setActiveButton('songs');
 
 
             //--------------------
             if(searchValue !== "") {
-              handleSearch();
+              handleSearch('songs');
             }
           }}
         >
@@ -346,13 +316,13 @@ function Search({...props}) {
         <button
           className={`search-button ${activeButton === 'albums' ? 'active' : ''}`}
           onClick={() => {
-            setActiveCategory('albums');
+            
             setActiveButton('albums');
 
             //--------------------
             if(searchValue !== "") {
               console.log("search value in albums: ", searchValue)
-              handleSearch();
+              handleSearch('albums');
             }
           }}
         
@@ -363,35 +333,27 @@ function Search({...props}) {
         <button
           className={`search-button ${activeButton === 'artists' ? 'active' : ''}`}
           onClick={() => {
-            setActiveCategory('artists');
+            
             setActiveButton('artists');
 
             //--------------------
             if(searchValue !== "") {
-              handleSearch();
+              handleSearch('artists');
             }
         }}
         >
           <span>Artists</span>
         </button>
-
-        <button
-          className={`search-button ${activeButton === 'profiles' ? 'active' : ''}`}
-          onClick={() => {
-            setActiveCategory('profiles');
-            setActiveButton('profiles');
-        }}
-        >
-          <span>Profiles</span>
-        </button>
       </div>
 
+      </div>
 
-
+      
     {/* opens the table in function */}
       <div className="search-items-container">
         {showTable && (
           <div className="search-items-container">
+            {console.log("rendering search items")}
             {renderSearchItems()}
           </div>
         )}

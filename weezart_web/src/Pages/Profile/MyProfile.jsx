@@ -15,8 +15,7 @@ const MyProfile = ({...props}) => {
   function handleChange(event) {
     setPublicData(!publicData);
     publicDatas();
-   
-    
+
   }
 
 async function publicDatas() {
@@ -174,8 +173,6 @@ async function publicDatas() {
 
           
         </div>
-
-        
 
       </div>
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
+import { BarChart } from '@mui/x-charts/BarChart';
 import dayjs, { Dayjs } from 'dayjs';
 import {useState,useEffect} from "react";
 import {Box,Typography} from '@mui/material';
@@ -55,6 +56,9 @@ function isDateBeforeToday(date) {
 
   const [analyzeType,setType]=useState("song");
   const [dateFilter,setDate]=useState('2023-01-01');
+  const [chartType1,setChartType1]=useState("line");
+  const [chartType2,setChartType2]=useState("line");
+  const [chartType3,setChartType3]=useState("line");
 
   //--------------------------------------
 
@@ -203,7 +207,6 @@ function isDateBeforeToday(date) {
         setChart3xAxis(temp[0]);
         setChartData3(temp[1]);
         }
-        
       
     }
     catch(e){
@@ -273,6 +276,28 @@ function isDateBeforeToday(date) {
     {value:"album",label:"Album"},
     {value:"artist",label:"Artist"}
   ];
+
+  const options_chart_1=[
+    {value:"line",label:"Line Chart"},
+    {value:"bar",label:"Bar Chart"},
+    {value:"pie",label:"Pie Chart"}
+  ];
+  const styles_chart_1 = {
+    control: (provided) => ({
+      ...provided,
+ 
+      height:"20px"
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#ffffff"
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? "#3B0944" : "#ffffff",
+      color: state.isSelected ? "white" : "black",
+    }),
+  };
 
   const styles = {
     control: (provided) => ({
@@ -426,8 +451,27 @@ function isDateBeforeToday(date) {
           
          
         >
-            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"} >Daily Adds</Typography>
-            <LineChart
+
+
+<Box
+        gridColumn="span 12"
+        gridRow="span 1"
+        display="grid"
+        width="100%"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridTemplateRows="repeat(1, 1fr)"
+        paddingTop="10px"
+        paddingLeft="10px"
+        >
+            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"} gridColumn="1/span 3">Daily Adds</Typography>
+            <Box marginLeft="20px" fontSize={"20px"} color={"orange"} gridColumn="11/span 2" >  
+            <Select options={options_chart_1} styles={styles_chart_1} defaultValue={{label:"Line",value:"line"}}   onChange={(e)=>{setChartType1(e.value)}}/>
+            </Box>
+            </Box>
+           
+            
+
+           {chartType1==='line'&&<LineChart
                 xAxis={[{ scaleType:'band',data: (chart1xAxis?chart1xAxis:[0])  }]}
                 series={[
                         {
@@ -459,21 +503,14 @@ function isDateBeforeToday(date) {
                               stroke:"#AED2FF",
                               strokeWidth:0.4
                              }}}
-                             />
-        </Box>
-        <Box
-          gridColumn="span 12"
-          gridRow="span 6"
-          backgroundColor={"#"}
-        >
-            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Daily Likes</Typography>
+                             />}
 
-            <LineChart
-                xAxis={[{scaleType:'band', data: (chart2xAxis?chart2xAxis:[0])   }]}
+{chartType1==='bar'&&<BarChart
+                xAxis={[{ scaleType:'band',data: (chart1xAxis?chart1xAxis:[0])  }]}
                 series={[
                         {
-                            data: (chartData2===undefined?[0]:Object.values(chartData2)),
-                            color:"#FF3131"
+                            data: (chartData1===undefined?[0]:Object.values(chartData1)),
+                            color:"purple"
                         },
                         ]}
                         sx={{"& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
@@ -500,33 +537,148 @@ function isDateBeforeToday(date) {
                               stroke:"#AED2FF",
                               strokeWidth:0.4
                              }}}
-                             />
+                             />}
+
+
         </Box>
         <Box
           gridColumn="span 12"
           gridRow="span 6"
-          backgroundColor={"#"}
-       
+          backgroundColor={"#120719"}
+          
+         
         >
-            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"}>Daily Average Rating</Typography>
-            <LineChart
-                margin={{ bottom: 40}}
+
+
+<Box
+        gridColumn="span 12"
+        gridRow="span 1"
+        display="grid"
+        width="100%"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridTemplateRows="repeat(1, 1fr)"
+        paddingTop="10px"
+        paddingLeft="10px"
+        marginTop="20px"
+        >
+            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"} gridColumn="1/span 3">Daily Likes</Typography>
+            <Box marginLeft="20px" fontSize={"20px"} color={"orange"} gridColumn="11/span 2" >  
+            <Select options={options_chart_1} styles={styles_chart_1} defaultValue={{label:"Line",value:"line"}}   onChange={(e)=>{setChartType2(e.value)}}/>
+            </Box>
+            </Box>
+           
+            
+
+           {chartType2==='line'&&<LineChart
+                xAxis={[{ scaleType:'band',data: (chart2xAxis?chart2xAxis:[0])  }]}
+                series={[
+                        {
+                            data: (chartData2===undefined?[0]:Object.values(chartData2)),
+                            color:"purple"
+                        },
+                        ]}
+                        sx={{"& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
+                            fill:"#332FD0",
+                            fontSize:"3rem"
+                           },
+                           // change all labels fontFamily shown on both xAxis and yAxis
+                           "& .MuiChartsAxis-tickContainer .MuiChartsAxis-tickLabel":{
+                               fontFamily: "Roboto",
+                                 fontSize:"20px"
+                            },
+                            // change bottom label styles
+                            "& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel":{
+                                strokeWidth:"0.5",
+                                fill:"#6528F7"
+                             },
+                              // bottomAxis Line Styles
+                             "& .MuiChartsAxis-bottom .MuiChartsAxis-line":{
+                              stroke:"#6528F7",
+                              strokeWidth:0.4
+                             },
+                             // leftAxis Line Styles
+                             "& .MuiChartsAxis-left .MuiChartsAxis-line":{
+                              stroke:"#AED2FF",
+                              strokeWidth:0.4
+                             }}}
+                             />}
+
+{chartType2==='bar'&&<BarChart
+                xAxis={[{ scaleType:'band',data: (chart2xAxis?chart2xAxis:[0])  }]}
+                series={[
+                        {
+                            data: (chartData2===undefined?[0]:Object.values(chartData2)),
+                            color:"purple"
+                        },
+                        ]}
+                        sx={{"& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
+                            fill:"#332FD0",
+                            fontSize:"3rem"
+                           },
+                           // change all labels fontFamily shown on both xAxis and yAxis
+                           "& .MuiChartsAxis-tickContainer .MuiChartsAxis-tickLabel":{
+                               fontFamily: "Roboto",
+                                 fontSize:"20px"
+                            },
+                            // change bottom label styles
+                            "& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel":{
+                                strokeWidth:"0.5",
+                                fill:"#6528F7"
+                             },
+                              // bottomAxis Line Styles
+                             "& .MuiChartsAxis-bottom .MuiChartsAxis-line":{
+                              stroke:"#6528F7",
+                              strokeWidth:0.4
+                             },
+                             // leftAxis Line Styles
+                             "& .MuiChartsAxis-left .MuiChartsAxis-line":{
+                              stroke:"#AED2FF",
+                              strokeWidth:0.4
+                             }}}
+                             />}
+        </Box>
+
+        <Box
+          gridColumn="span 12"
+          gridRow="span 6"
+          backgroundColor={"#120719"}
+          
+         
+        >
+
+
+<Box
+        gridColumn="span 12"
+        display="grid"
+        height="20px"
+        width="100%"
+        gridTemplateColumns="repeat(12, 1fr)"
+        gridTemplateRows="repeat(1, 1fr)"
+        paddingTop="10px"
+        paddingLeft="10px"
+        marginTop="30px"
+        
+        >
+            <Typography marginLeft="20px" fontSize={"20px"} color={"orange"} gridColumn="1/span 3">Daily Average Ratings</Typography>
+            <Box marginLeft="20px" fontSize={"20px"} color={"orange"} gridColumn="11/span 2" >  
+            <Select options={options_chart_1} styles={styles_chart_1} defaultValue={{label:"Line",value:"line"}}   onChange={(e)=>{setChartType3(e.value)}}/>
+            </Box>
+            </Box>
+           
+            
+
+           {chartType3==='line'&&<LineChart
                 xAxis={[{ scaleType:'band',data: (chart3xAxis?chart3xAxis:[0])  }]}
                 series={[
                         {
                             data: (chartData3===undefined?[0]:Object.values(chartData3)),
-                            color:"#FFF01F"
-
+                            color:"purple"
                         },
-
                         ]}
                         sx={{"& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
                             fill:"#332FD0",
                             fontSize:"3rem"
                            },
-                           '& .MuiLineElement-root': {
-                            strokeWidth: 2,
-                          },
                            // change all labels fontFamily shown on both xAxis and yAxis
                            "& .MuiChartsAxis-tickContainer .MuiChartsAxis-tickLabel":{
                                fontFamily: "Roboto",
@@ -547,9 +699,42 @@ function isDateBeforeToday(date) {
                               stroke:"#AED2FF",
                               strokeWidth:0.4
                              }}}
-                             />
-        </Box>
+                             />}
 
+{chartType3==='bar'&&<BarChart
+                xAxis={[{ scaleType:'band',data: (chart3xAxis?chart3xAxis:[0])  }]}
+                series={[
+                        {
+                            data: (chartData3===undefined?[0]:Object.values(chartData3)),
+                            color:"purple"
+                        },
+                        ]}
+                        sx={{"& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
+                            fill:"#332FD0",
+                            fontSize:"3rem"
+                           },
+                           // change all labels fontFamily shown on both xAxis and yAxis
+                           "& .MuiChartsAxis-tickContainer .MuiChartsAxis-tickLabel":{
+                               fontFamily: "Roboto",
+                                 fontSize:"20px"
+                            },
+                            // change bottom label styles
+                            "& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel":{
+                                strokeWidth:"0.5",
+                                fill:"#6528F7"
+                             },
+                              // bottomAxis Line Styles
+                             "& .MuiChartsAxis-bottom .MuiChartsAxis-line":{
+                              stroke:"#6528F7",
+                              strokeWidth:0.4
+                             },
+                             // leftAxis Line Styles
+                             "& .MuiChartsAxis-left .MuiChartsAxis-line":{
+                              stroke:"#AED2FF",
+                              strokeWidth:0.4
+                             }}}
+                             />}
+        </Box>
         <Box
           gridColumn="span 12"
           gridRow="span 6"

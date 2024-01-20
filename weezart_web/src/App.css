@@ -84,9 +84,7 @@ border-color:#150426;
     height:100%;
 }
 
-#root > div > div:nth-child(2) > div > div > div:nth-child(7) > div{
-    height: 90%;
-}
+
 
 body > div.ReactModalPortal > div{
   z-index: 100;

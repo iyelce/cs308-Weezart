@@ -2,7 +2,8 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import GroupAnalysisApi from '../../API/GroupAnalysisApi';
 import { useParams } from "react-router-dom";
-import { Leaderboard } from '@propeldata/react-leaderboard'
+import { BarChart } from '@mui/x-charts/BarChart';
+
 
 
 
@@ -18,11 +19,19 @@ const GroupAnalysis= ({...props}) => {
 
     const [userFormation, setUserFormation] = useState([]);
     const [apiResult, setApiResult] = useState();
+    const[userNamesChart,setUsernamesChart]=useState();
+    const[addsChart,setAddsChart]=useState([{'username':'user1','value':[10]}]);
+    const[likesChart,setLikesChart]=useState();
+    const[ratingsChart,setRatingsChart]=useState();
 
     function userSetter(apiResult) {
         let userArray = [];
+        let userNames = [];
+        let adds = [];
+        let likes = [];
+        let ratings = [];
         let length_users = apiResult?.addList.length;
-      
+        if(length_users>0){
         for (let i = 0; i < length_users; i++) {
           userArray.push({
             add_cnt: apiResult?.addList[i],
@@ -30,12 +39,21 @@ const GroupAnalysis= ({...props}) => {
             rated_cnt: apiResult?.avgList[i],
             user: apiResult?.userList[i],
           });
-          console.log("userArray in page: ", userArray);
+          userNames.push(userArray[i].user.username);
+        adds.push({'username':userArray[i].user.username,'value':[userArray[i].add_cnt]});
+        likes.push({'username':userArray[i].user.username,'value':[userArray[i].like_cnt]});
+        ratings.push({'username':userArray[i].user.username,'value':[userArray[i].rated_cnt]});
+
         }
       
         setUserFormation(userArray);
-      }
-      
+        setUsernamesChart(userNames);
+        setAddsChart(adds);
+        setLikesChart(likes);
+        setRatingsChart(ratings);
+    }
+    }
+    
       const fetchData = async () => {
         try {
           const response = await GroupAnalysisApi(props.token, id);
@@ -51,24 +69,100 @@ const GroupAnalysis= ({...props}) => {
         fetchData();
       }, [props.token, props.userId]);
       
-   
-    const queryOptions = {
-        metric: 'addList',
-       
-        rowLimit: 10,
-        dimensions: [
-          {
-            columnName: 'addList'
-          }
-        ]
-      }
-       
 
+       
     return( 
+        <div>
+            <h1 style={{color:'red'}}>Group Analysis</h1>
     <div>
-        <h1>Group Analysis</h1>
-        <Leaderboard query={queryOptions} />
-    </div>)
+        <h1 style={{textAlign:'center',color:'white'}}>Adds</h1>
+        <BarChart
+        dataset={addsChart}
+      xAxis={[{ scaleType: 'band', dataKey: 'username' }]}
+      series={[{dataKey: 'value', color:'purple'}]}
+      sx={{ "& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
+        fill:"#332FD0",
+        fontSize:"3rem"
+       },"& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel":{
+        strokeWidth:"0.5",
+        fill:"#6528F7"
+     }, "& .MuiChartsAxis-bottom .MuiChartsAxis-line":{
+        stroke:"#6528F7",
+        strokeWidth:0.4
+       },
+       // leftAxis Line Styles
+       "& .MuiChartsAxis-left .MuiChartsAxis-line":{
+        stroke:"#AED2FF",
+        fill:"#AED2FF",
+        strokeWidth:0.4
+       }}}
+      width={1000}
+      height={300}
+
+    />
+    </div>
+
+
+    <div>
+        <h1 style={{color:'white',textAlign:'center'}}>Likes</h1>
+        <BarChart
+        dataset={likesChart}
+      xAxis={[{ scaleType: 'band', dataKey: 'username' }]}
+      series={[{dataKey: 'value', color:'#FF3131'}]}
+      sx={{ "& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
+        fill:"#332FD0",
+        fontSize:"3rem"
+       },"& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel":{
+        strokeWidth:"0.5",
+        fill:"#6528F7"
+     }, "& .MuiChartsAxis-bottom .MuiChartsAxis-line":{
+        stroke:"#6528F7",
+        strokeWidth:0.4
+       },
+       // leftAxis Line Styles
+       "& .MuiChartsAxis-left .MuiChartsAxis-line":{
+        stroke:"#AED2FF",
+        fill:"#AED2FF",
+        strokeWidth:0.4
+       }}}
+      width={1000}
+      height={300}
+
+    />
+    </div>
+
+
+    <div >
+        <h1 style={{textAlign:'center',color:'white'}}>Ratings</h1>
+        <BarChart
+        dataset={ratingsChart}
+      xAxis={[{ scaleType: 'band', dataKey: 'username' }]}
+      series={[{dataKey: 'value',color:'#FFF01F'}]}
+      sx={{ "& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
+        fill:"#332FD0",
+        fontSize:"3rem"
+       },"& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel":{
+        strokeWidth:"0.5",
+        fill:"#6528F7"
+     }, "& .MuiChartsAxis-bottom .MuiChartsAxis-line":{
+        stroke:"#6528F7",
+        strokeWidth:0.4
+       },
+       // leftAxis Line Styles
+       "& .MuiChartsAxis-left .MuiChartsAxis-line":{
+        stroke:"#AED2FF",
+        fill:"#AED2FF",
+        strokeWidth:0.4
+       }}}
+      width={1000}
+      height={300}
+
+    />
+    </div>
+    </div>
+    
+    
+    )
 
 
 

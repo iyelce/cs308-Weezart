@@ -8,6 +8,8 @@ async function GroupAnalysisApi  (token, id ) {
     const auth = "Bearer " + token;
 
     try{        
+        console.log("url: ", url);
+        console.log("auth: ", auth);
         const response = await fetch(url, {
             headers: {
                 accept: 'application/json',

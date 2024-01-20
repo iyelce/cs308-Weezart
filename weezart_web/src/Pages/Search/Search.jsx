@@ -15,20 +15,19 @@ import SearchArtistApi from "../../API/SearchArtistApi";
 function Search({...props}) {
   const [songInfos, setSongInfos] = useState([]);
   const [artistInfos, setArtistInfos] = useState([]);
-  const [albumInfos, setAlbumInfos] = useState([]);
-  const [profiles, setProfiles] = useState([]);
+  const [albumInfos, setAlbumInfos] = useState([])
   const [showTable, setShowTable] = useState(false);
 
-    //sets active buttons (css color) and category to load correct tables
-    const [activeButton, setActiveButton] = useState(null);
-    const [activeCategory, setActiveCategory] = useState(null);
+  //sets active buttons (css color) and category to load correct tables
+  const [activeButton, setActiveButton] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
 
   //to check which itm is clicked in the tables
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(-1);
   const [selectedAlbumIndex, setSelectedAlbumIndex] = useState(-1);
 
-//to open and close popups
+  //to open and close popups
   const [showSongPopups, setShowSongPopups] = useState(new Map());
   const [showArtistPopups, setShowArtistPopups] = useState(new Map());
   const [showAlbumPopups, setShowAlbumPopups] = useState(new Map());
@@ -266,36 +265,6 @@ function Search({...props}) {
         </div>
         );
 
-      case 'profiles':
-        return (
-          <div className="list_box">
-          <table className="custom-table">
-            <thead>
-              <tr>
-                <th scope="col"><FaHatWizard /></th>
-                <th scope="col"></th>
-                <th scope="col">Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              {profiles.map((val, index) => (
-                <tr key={index} onClick={() => alert("clicked on user")}>
-                  <th scope="row"></th>
-                  <td>
-                    <img
-                      src={val.image}
-                      alt={`User image for ${val.profileName}`}
-                      style={{ width: '64px', height: '64px' }}
-                    />
-                  </td>
-                  <td>{val.profileName}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        );
-
       default:
         return null;
     }
@@ -305,9 +274,10 @@ function Search({...props}) {
   return (
     
      <div className="search-page">
+      <div className="search-bar">
 
-      {/* searchbar */}
-      <div class="navigation-search">
+{/* searchbar */}
+<div class="navigation-search">
         <input
           type="search"
           placeholder="search"
@@ -374,19 +344,11 @@ function Search({...props}) {
         >
           <span>Artists</span>
         </button>
-
-        <button
-          className={`search-button ${activeButton === 'profiles' ? 'active' : ''}`}
-          onClick={() => {
-            setActiveCategory('profiles');
-            setActiveButton('profiles');
-        }}
-        >
-          <span>Profiles</span>
-        </button>
       </div>
 
+      </div>
 
+      
 
     {/* opens the table in function */}
       <div className="search-items-container">

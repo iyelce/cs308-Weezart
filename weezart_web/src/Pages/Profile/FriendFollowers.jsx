@@ -24,7 +24,7 @@ const FollowersList = ({...props}) => {
             Followers
         
             <ul>
-            {followers.map((item, index) => (
+            {followers!==undefined&followers!==null?followers.map((item, index) => (
                 <li style={{listStyleType:'none',display:'block', paddingTop:'10px', margin:'20px'}}>
                     <div>
                 <span key={index} className="profile_following">
@@ -39,7 +39,7 @@ const FollowersList = ({...props}) => {
                 </li>
             
             
-            ))}
+            )):<div style={{color:'white'}}>No Followers</div>}
             </ul>
             
 

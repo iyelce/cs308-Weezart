@@ -28,6 +28,8 @@ import ConnectSpotify from './Pages/Spotify/ConnectSpotify.jsx';
 import SpotifyLoginPage from './Pages/Spotify/SpotifyLoginPage.jsx';
 import SpotifyList from './Pages/Lists/SpotifyList.jsx';
 import SpotifyRecomPage from './Pages/Lists/SpotifyRecomPage.jsx';
+import FriendFollowers from './Pages/Profile/FriendFollowers.jsx';
+import FriendFollowings from './Pages/Profile/FriendFollowings.jsx';
 
 
 
@@ -145,6 +147,8 @@ function App() {
               <Route path='analyze' element={<Analyze token={token} userId={userId}/>} />
               <Route path='friendProfile/:friendName' element={<FriendProfile token={token} userId={userId}/>} />
               <Route path='groupAnalysis/:id' element={<GroupAnalysis token={token} userId={userId} username={username}/>} />
+              <Route path='friends/followers' element={<FriendFollowers token={token} userId={userId} username={username}/>} />
+              <Route path='friends/followings' element={<FriendFollowings token={token} userId={userId} username={username}/>} />
               <Route path='*' element={<Error />} />
             </Route>
           </Routes>

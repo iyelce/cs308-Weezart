@@ -2,13 +2,10 @@ import React from "react";
 import './ProfilePage.css'; 
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
-const FollowersList = ({...props}) => {
-    const navigate = useNavigate();
+const FollowingList = ({...props}) => {
     const location = useLocation();
-    const { followers } = location.state;
-  
+    const { followingInfo } = location.state;
     return (
         <div className="profile_page">
 
@@ -17,14 +14,13 @@ const FollowersList = ({...props}) => {
 
 
 
-     
-            <div className="profile-container" style={{display:"flex", flexDirection:'column'}}>
+        <div className="profile-container" style={{display:"flex", flexDirection:'column'}}>
             
             
-            Followers
+            Followings
         
             <ul>
-            {followers.map((item, index) => (
+            {followingInfo!==undefined&followingInfo!==null?followingInfo.map((item, index) => (
                 <li style={{listStyleType:'none',display:'block', paddingTop:'10px', margin:'20px'}}>
                     <div>
                 <span key={index} className="profile_following">
@@ -39,7 +35,7 @@ const FollowersList = ({...props}) => {
                 </li>
             
             
-            ))}
+            )):<div style={{color:'white'}}>No Followings</div>}
             </ul>
             
 
@@ -54,4 +50,4 @@ const FollowersList = ({...props}) => {
     );
   };
 
-export default FollowersList;
+export default FollowingList;

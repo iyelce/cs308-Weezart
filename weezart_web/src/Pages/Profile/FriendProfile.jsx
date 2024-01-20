@@ -111,26 +111,24 @@ async function publicDatas() {
             <p >
                 {/* <span className="profile_followers" onClick={()=>{navigate(`/followers/${followers}`)}}>Followers: {followerCount} </span> */}
 
-                <span className="profile_followers" onClick={()=>{navigate("/followers")}}>Followers: {followerCount} </span>
+                <span className="profile_followers" onClick={()=>{navigate('/friends/followers',{state:{followers}})}}>Followers: {followerCount} </span>
                 | 
                 <span className="profile_following" onClick={()=>{
-                    navigate('/following', { state: { followingInfo } })
+                    navigate('/friends/followings', { state: { followingInfo } })
                   }}>Following: {following} </span>
             </p>
-          <FormControlLabel control={<Checkbox checked={publicData===undefined?false:publicData} color="secondary" onChange={handleChange} />} label="Public" />
+        
           </div>
   
           {/* Edit Profile Button */}
-          <button className="add-artist-button" onClick={handleEditProfile}>
-            Edit Profile
-          </button>
+          
         </div>
       </div>
 
         <br/>
         <br/>
 
-      <div className="profile-container">
+      <div className="profile-container" style={{display:'flex',flexDirection:'column'}}>
         
   
         {/* Clickable Items */}

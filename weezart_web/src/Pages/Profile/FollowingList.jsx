@@ -14,20 +14,29 @@ const FollowingList = ({...props}) => {
 
 
 
-        <div className="profile-container">
+        <div className="profile-container" style={{display:"flex", flexDirection:'column'}}>
             
-            Following
-
-            <p>Following Info: {JSON.stringify(followingInfo)}</p>
             
+            Followings
+        
+            <ul>
             {followingInfo.map((item, index) => (
+                <li style={{listStyleType:'none',display:'block', paddingTop:'10px', margin:'20px'}}>
+                    <div>
                 <span key={index} className="profile_following">
-                <Link to={{ pathname: "/following", state: { followingItem: item } }}>
-                    Following: {item}
+                
+                <Link to={{ pathname: "/friendProfile/"+item, state: { followingItem: item } }} style={{color:'white', textDecoration:'none'}}>
+                     {item}
+                    
                 </Link>
                 <br />
                 </span>
+                </div>
+                </li>
+            
+            
             ))}
+            </ul>
             
 
         </div>

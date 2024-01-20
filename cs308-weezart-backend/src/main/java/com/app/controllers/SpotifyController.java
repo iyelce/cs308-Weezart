@@ -54,6 +54,8 @@ public class SpotifyController {
 
 	private final SpotifySearchResponse spotifyParser = new SpotifySearchResponse();
 
+	private String TOKEN_FINAL = "";
+
 	@Value("${spotify.id}")
 	private String CLIENT_ID;
 
@@ -119,8 +121,16 @@ public class SpotifyController {
 
 	}
 
-	@PostMapping("/callback")
-	public String test(@RequestParam("code") String code, @RequestParam("state") String state)
+	@GetMapping("/get-spotify-token") // api/spotify/get-spotify-token
+	public String getSpotifyToken() {
+		if (TOKEN_FINAL == "")
+			return "NOT_LOGGED_IN";
+		else
+			return TOKEN_FINAL;
+	}
+
+	@PostMapping("/callback") // http://localhost:8080/api/spotify/callback
+	public void test(@RequestParam("code") String code, @RequestParam("state") String state)
 			throws JsonMappingException, JsonProcessingException {
 
 		HttpHeaders headers = new HttpHeaders();
@@ -147,7 +157,7 @@ public class SpotifyController {
 
 		String accessToken = rootNode.get("access_token").asText();
 
-		return accessToken;
+		TOKEN_FINAL = accessToken;
 	}
 
 	@GetMapping("/get-users-top-tracks")

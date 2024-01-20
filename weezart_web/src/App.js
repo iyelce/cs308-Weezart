@@ -23,6 +23,8 @@ import CloudImport from './Pages/ImportFile/CloudImport.jsx';
 import MyBlends from './Pages/Profile/MyBlends.jsx';
 import FriendProfile from './Pages/Profile/FriendProfile.jsx';
 import BlendList from './Pages/Lists/BlendList.jsx';
+import GroupAnalysis from './Pages/Profile/GroupAnalysis.jsx';
+
 
 
 
@@ -131,7 +133,7 @@ function App() {
 
               <Route path='analyze' element={<Analyze token={token} userId={userId}/>} />
               <Route path='friendProfile/:friendName' element={<FriendProfile token={token} userId={userId}/>} />
-
+              <Route path='groupAnalysis/:id' element={<GroupAnalysis token={token} userId={userId} username={username}/>} />
               <Route path='*' element={<Error />} />
             </Route>
           </Routes>

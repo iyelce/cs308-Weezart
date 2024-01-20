@@ -6,6 +6,8 @@ import './List.css';
 import SongInfoPopup from "../Popups/SongInfoPopup";
 import GetPlaylistGivenGroup from "../../API/GetPlaylistGivenGroup ";
 
+
+
 function BlendList({ ...props }) {
 
 
@@ -17,6 +19,11 @@ function BlendList({ ...props }) {
   const [songs, setSongs] = useState([]); 
   const [selectedSongIndex, setSelectedSongIndex] = useState(-1);
   const [showSongPopups, setShowSongPopups] = useState(new Map());
+  
+  const handleAnalysisClick = () => {
+    // Change the URL to the one you want to navigate to
+    window.location.href = 'http://localhost:3000/groupAnalysis/'+id;
+  };
 
   //if sth is clicked from tables sets index and calls open popup functions
   const handleSongClickTable = (index) => {
@@ -88,7 +95,7 @@ function BlendList({ ...props }) {
         </h1>
 
 <div>
-    <button className="blend-anl-button">Blend Analysis</button>
+    <button className="blend-anl-button" onClick={handleAnalysisClick}>Blend Analysis</button>
 </div>
 
 

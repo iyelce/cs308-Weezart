@@ -51,6 +51,7 @@ function isDateBeforeToday(date) {
   const [chart1xAxis, setChart1xAxis] = useState([0]);
   const [chart2xAxis, setChart2xAxis] = useState([0]);
   const [chart3xAxis, setChart3xAxis] = useState([0]);
+  const [sortedArray, setSortedArray] = useState([0]);
 
   const [analyzeType,setType]=useState("song");
   const [dateFilter,setDate]=useState('2023-01-01');
@@ -163,8 +164,10 @@ function isDateBeforeToday(date) {
       setChartDataBool1(false);
       const response= await AnalyzeChartAddApi(props.token,props.userId,analyzeType);
       let temp=sortArraysTogether(Object.keys(response),Object.values(response));
+    if(temp[0]!=0){
       setChart1xAxis(temp[0]);
       setChartData1(temp[1]);
+    }
     }
     catch(e){
       console.log(e);
@@ -179,8 +182,10 @@ function isDateBeforeToday(date) {
       const response= await AnalyzeChartLikeApi(props.token,props.userId,analyzeType);
      
       let temp=sortArraysTogether(Object.keys(response),Object.values(response));
+      if(temp[0]!=0){
       setChart2xAxis(temp[0]);
       setChartData2(temp[1]);
+      }
     }
     catch(e){
       console.log(e);
@@ -194,9 +199,11 @@ function isDateBeforeToday(date) {
       setChartDataBool3(false);
       const response= await AnalyzeChartRateApi(props.token,props.userId,analyzeType);
         let temp=sortArraysTogether(Object.keys(response),Object.values(response));
+        if(temp[0]!=0){
         setChart3xAxis(temp[0]);
         setChartData3(temp[1]);
-
+        }
+        
       
     }
     catch(e){

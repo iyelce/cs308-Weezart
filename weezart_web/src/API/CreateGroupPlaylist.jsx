@@ -2,17 +2,22 @@
 // o	PathVariable: String userIds (userIds seperated by “-” )
 
 
-async function CreateGroupPlaylist(token, userIds ) {
+import ConvertNameToId from "./ConvertNameToId";
 
-    //eski token gelmeye devam ediyor
+async function CreateGroupPlaylist(token, username, userNames ) {
 
-    const groupIds= "30-31-33"
+    try {
+        userNames.push(username);
 
-    const url = `http://localhost:8080/group/post-playlist/${groupIds}`;  
-    const auth = "Bearer " + token;
-    try{        
+        const groupIds = await ConvertNameToId(token, userNames); 
 
-        console.log("cerateiçinde auth: ", auth);
+        const sortedGroupIds = groupIds.sort((a, b) => a - b);
+
+        const groupIdsString = sortedGroupIds.join('-');
+
+        const url = `http://localhost:8080/group/post-playlist/${groupIdsString}`;  
+        const auth = "Bearer " + token;
+
         const response = await fetch(url, {
             headers: {
                 accept: 'application/json',
@@ -26,7 +31,7 @@ async function CreateGroupPlaylist(token, userIds ) {
         
         const data = await response.text();
     
-        if(!response.ok) {
+        if (!response.ok) {
             throw new Error('Network response is not ok');
         }
 
@@ -35,7 +40,6 @@ async function CreateGroupPlaylist(token, userIds ) {
         console.log("create api dönen : ", newResp);
 
         return newResp;
-
     }
     catch (error) {
         console.error('error in fetching data:', error);

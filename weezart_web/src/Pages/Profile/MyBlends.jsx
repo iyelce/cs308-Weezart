@@ -95,6 +95,7 @@ const MyBlends = ({...props}) => {
               allFriends = {followingInfo}
               token = {props.token}
               userId = {props.userId}
+              username = {props.username}
             /> 
             </div>
 

@@ -38,7 +38,7 @@ Modal.setAppElement("#root");
     const handleCreate = async () => {
       try {
         setIsCreating(true); // Set the loading state
-        let resp = await CreateGroupPlaylist(props.token, props.userId);
+        let resp = await CreateGroupPlaylist(props.token, props.username, addedFriends);
   
         // Handle the response here, e.g., close the popup or perform other actions
   

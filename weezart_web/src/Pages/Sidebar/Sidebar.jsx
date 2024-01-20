@@ -13,6 +13,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router-dom";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonIcon from '@mui/icons-material/Person';
+import { FaSpotify } from "react-icons/fa";
 
 const LOGO = require('../../weezart-removebg-preview.png');
 
@@ -222,6 +223,20 @@ const SideBar = ({...props}) => {
                 icon={<FileDownloadIcon />}
               >
                 <Typography>{"Export Songs"}</Typography>
+
+              </MenuItem>
+
+              <MenuItem
+                active={true}
+                style={{
+                  color: colors.grey[100],
+                }}
+                onClick={() => {
+                  navigate("connectSpotify")
+                }}
+                icon={<FaSpotify />}
+              >
+                <Typography>{"Connect Spotify"}</Typography>
 
               </MenuItem>
 

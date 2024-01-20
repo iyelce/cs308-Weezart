@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import SongInfoPopup from "../Popups/SongInfoPopup";
 import ArtistInfoPopup from "../Popups/ArtistInfoPopup";
 import AlbumInfoPopup from "../Popups/AlbumInfoPopup";
 import './Search.css'
 import { LuClock3 } from "react-icons/lu";
-import { FaMusic, FaHatWizard } from "react-icons/fa";
+import { FaMusic } from "react-icons/fa";
 import { IoIosAlbums } from "react-icons/io";
 import { FaUser } from "react-icons/fa6";
 import SearchSongApi from "../../API/SearchSongApi";

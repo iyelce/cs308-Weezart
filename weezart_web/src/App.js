@@ -24,6 +24,7 @@ import MyBlends from './Pages/Profile/MyBlends.jsx';
 import FriendProfile from './Pages/Profile/FriendProfile.jsx';
 import BlendList from './Pages/Lists/BlendList.jsx';
 import GroupAnalysis from './Pages/Profile/GroupAnalysis.jsx';
+import ConnectSpotify from './Pages/Spotify/ConnectSpotify.jsx';
 
 
 
@@ -125,6 +126,7 @@ function App() {
               <Route path = 'myBlends' element={<MyBlends token={token} userId={userId} username={username}/>}/>
               <Route path='/blends/:id' element={<BlendList token={token} userId={userId} username={username} />} />
 
+              <Route path = 'connectSpotify' element={<ConnectSpotify token={token} userId={userId} username={username}/>}/>
 
               {/* farklı kullanıcılara girince nasıl yapmalıyız */}
 

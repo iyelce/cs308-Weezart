@@ -279,8 +279,7 @@ function isDateBeforeToday(date) {
 
   const options_chart_1=[
     {value:"line",label:"Line Chart"},
-    {value:"bar",label:"Bar Chart"},
-    {value:"pie",label:"Pie Chart"}
+    {value:"bar",label:"Bar Chart"}
   ];
   const styles_chart_1 = {
     control: (provided) => ({

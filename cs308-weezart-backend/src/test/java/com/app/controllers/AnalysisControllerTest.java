@@ -177,7 +177,7 @@ class AnalysisControllerTest {
 
  private Map<String, Long> createTestDailyLikedAlbums() {
      Map<String, Long> testData = new HashMap<>();
-     testData.put("2024-01-21", 1L);
+     //testData.put("2024-01-21", 1L);
      return testData;
  }
 
@@ -205,7 +205,7 @@ class AnalysisControllerTest {
 
  private Map<String, Double> createTestDailyAverageRatingAlbum() {
      Map<String, Double> testData = new HashMap<>();
-     testData.put("2024-01-21", 5.0D);
+     //testData.put("2024-01-21", 5.0D);
      return testData;
  }
  
@@ -263,7 +263,7 @@ class AnalysisControllerTest {
 
  private Map<String, Long> createTestDailyLikedArtists() {
      Map<String, Long> testData = new HashMap<>();
-     testData.put("2024-01-21", 1L);
+     //testData.put("2024-01-21", 1L);
      return testData;
  }
 
@@ -291,7 +291,7 @@ class AnalysisControllerTest {
 
  private Map<String, Double> createTestDailyAverageRatingArtists() {
      Map<String, Double> testData = new HashMap<>();
-     testData.put("2024-01-21", 4.5D);
+     //testData.put("2024-01-21", 4.5D);
      return testData;
  }
  

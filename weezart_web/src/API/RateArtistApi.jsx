@@ -16,15 +16,15 @@ async function RateArtistApi(token, userId, artistInfo, rating) {
 
     let ratedArtist = 
     {
-        id: artistInfo.id,
-        name: artistInfo.name,
-        genres: artistInfo.genres,
-        imageUrl: artistInfo.imageUrl,
-        followerCount: artistInfo.followerCount
+        id: artistInfo?.id,
+        name: artistInfo?.name,
+        genres: artistInfo?.genres,
+        imageUrl: artistInfo?.imageUrl,
+        followerCount: artistInfo?.followerCount
     }
 
     try{        
-        console.log("rate api içine gelen: ", artistInfo)
+
 
         const response = await fetch(url, {
             headers: {
@@ -38,21 +38,22 @@ async function RateArtistApi(token, userId, artistInfo, rating) {
             credentials: 'include', 
         });
         
-        const data = await response.text();
-    
+        
         if(!response.ok) {
             throw new Error('Network response is not ok');
         }
+        const data = await response?.text();
 
         const newResp = JSON.parse(data); 
 
-        console.log("like api dönen : ", newResp);
+        console.log(newResp);
 
         return newResp;
 
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 }
 

@@ -25,17 +25,17 @@ async function UnlikeSongApi(token, userId, songInfo) {
 
     let likedSong = 
     {
-        id: songInfo.id,
-        name: songInfo.name,
-        albumName: songInfo.albumName,
-        albumId: songInfo.albumId,
-        albumImageURL: songInfo.albumImageURL,
-        artistsName: songInfo.artistsName,
-        artistsId: songInfo.artistsId,
-        popularity: songInfo.popularity,
-        duration_ms: songInfo.duration_ms,
-        explicit: songInfo.explicit,
-        albumRelease: songInfo.albumRelease
+        id: songInfo?.id,
+        name: songInfo?.name,
+        albumName: songInfo?.albumName,
+        albumId: songInfo?.albumId,
+        albumImageURL: songInfo?.albumImageURL,
+        artistsName: songInfo?.artistsName,
+        artistsId: songInfo?.artistsId,
+        popularity: songInfo?.popularity,
+        duration_ms: songInfo?.duration_ms,
+        explicit: songInfo?.explicit,
+        albumRelease: songInfo?.albumRelease
     }
 
     try{        
@@ -52,7 +52,7 @@ async function UnlikeSongApi(token, userId, songInfo) {
             credentials: 'include', 
         });
         
-        const data = await response.text();
+        const data = await response?.text();
     
         if(!response.ok) {
             throw new Error('Network response is not ok');

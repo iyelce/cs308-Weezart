@@ -19,20 +19,16 @@ async function LikeArtistApi(token, userId, artistInfo) {
 
     let likedArtist = 
     {
-        id: artistInfo.id,
-        name: artistInfo.name,
-        genres: artistInfo.genres,
-        imageUrl: artistInfo.imageUrl,
-        followerCount: artistInfo.followerCount
+        id: artistInfo?.id,
+        name: artistInfo?.name,
+        genres: artistInfo?.genres,
+        imageUrl: artistInfo?.imageUrl,
+        followerCount: artistInfo?.followerCount
     }
 
     try{        
 
-        console.log("gelen artist info : ", artistInfo);
-
-        console.log(userId, "   +++   ", token);
-
-
+    
         const response = await fetch(url, {
             headers: {
                 accept: 'application/json',
@@ -45,21 +41,22 @@ async function LikeArtistApi(token, userId, artistInfo) {
             credentials: 'include', 
         });
         
-        const data = await response.text();
-    
+        
         if(!response.ok) {
             throw new Error('Network response is not ok');
         }
+        const data = await response?.text();
 
         const newResp = JSON.parse(data); 
 
-        console.log("like api dönen : ", newResp);
+        console.log(newResp);
 
         return newResp;
 
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 }
 

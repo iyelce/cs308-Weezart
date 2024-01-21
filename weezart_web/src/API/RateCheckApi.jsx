@@ -16,17 +16,18 @@ async function RateCheckApi (token, userId, songId) {
             credentials: 'include', 
         });
         
-        const data = await response.json();
-
+        
         if(!response.ok) {
             throw new Error('Network response is not ok');
         }
+        const data = await response.json();
 
         return data;
 
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 }
 

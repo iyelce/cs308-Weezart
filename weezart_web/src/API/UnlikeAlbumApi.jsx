@@ -5,15 +5,15 @@ async function UnlikeAlbumApi(token, userId, albumInfo) {
 
     let likedAlbum = 
     {
-        id: albumInfo.id,
-        name: albumInfo.name,
-        imageUrl: albumInfo.imageUrl,
-        releaseDate: albumInfo.releaseDate,
-        numberOfTracks: albumInfo.numberOfTracks,
-        artistsName: albumInfo.artistsName,
-        artistsId: albumInfo.artistsId,
-        songsName: albumInfo.songsName,
-        songsId: albumInfo.songsId
+        id: albumInfo?.id,
+        name: albumInfo?.name,
+        imageUrl: albumInfo?.imageUrl,
+        releaseDate: albumInfo?.releaseDate,
+        numberOfTracks: albumInfo?.numberOfTracks,
+        artistsName: albumInfo?.artistsName,
+        artistsId: albumInfo?.artistsId,
+        songsName: albumInfo?.songsName,
+        songsId: albumInfo?.songsId
     }
 
     try{        
@@ -35,7 +35,7 @@ async function UnlikeAlbumApi(token, userId, albumInfo) {
             credentials: 'include', 
         });
         
-        const data = await response.text();
+        const data = await response?.text();
     
         if(!response.ok) {
             throw new Error('Network response is not ok');

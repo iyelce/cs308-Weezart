@@ -5,11 +5,11 @@ async function UnlikeArtistApi(token, userId, artistInfo) {
 
     let likedArtist = 
     {
-        id: artistInfo.id,
-        name: artistInfo.name,
-        genres: artistInfo.genres,
-        imageUrl: artistInfo.imageUrl,
-        followerCount: artistInfo.followerCount
+        id: artistInfo?.id,
+        name: artistInfo?.name,
+        genres: artistInfo?.genres,
+        imageUrl: artistInfo?.imageUrl,
+        followerCount: artistInfo?.followerCount
     }
 
     try{        
@@ -26,7 +26,7 @@ async function UnlikeArtistApi(token, userId, artistInfo) {
             credentials: 'include', 
         });
         
-        const data = await response.text();
+        const data = await response?.text();
     
         if(!response.ok) {
             throw new Error('Network response is not ok');

@@ -20,22 +20,22 @@ async function RateAlbumApi(token, userId, albumInfo, rating) {
 
     let likedAlbum = 
     {
-        id: albumInfo.id,
-        name: albumInfo.name,
-        imageUrl: albumInfo.imageUrl,
-        releaseDate: albumInfo.releaseDate,
-        numberOfTracks: albumInfo.numberOfTracks,
-        artistsName: albumInfo.artistsName,
-        artistsId: albumInfo.artistsId,
-        songsName: albumInfo.songsName,
-        songsId: albumInfo.songsId
+        id: albumInfo?.id,
+        name: albumInfo?.name,
+        imageUrl: albumInfo?.imageUrl,
+        releaseDate: albumInfo?.releaseDate,
+        numberOfTracks: albumInfo?.numberOfTracks,
+        artistsName: albumInfo?.artistsName,
+        artistsId: albumInfo?.artistsId,
+        songsName: albumInfo?.songsName,
+        songsId: albumInfo?.songsId
     }
 
     try{        
 
-        console.log("like için yolladığım : ", likedAlbum);
 
-        console.log(userId, "   +++   ", token)
+
+
 
 
         const response = await fetch(url, {
@@ -50,21 +50,22 @@ async function RateAlbumApi(token, userId, albumInfo, rating) {
             credentials: 'include', 
         });
         
-        const data = await response.text();
-    
+        
         if(!response.ok) {
             throw new Error('Network response is not ok');
         }
-
+        
+        const data = await response?.text();
         const newResp = JSON.parse(data); 
 
-        console.log("like api dönen : ", newResp);
+        console.log(newResp);
 
         return newResp;
 
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 }
 

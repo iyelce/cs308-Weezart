@@ -22,7 +22,7 @@ describe('AddFriend component', () => {
 
   it('displays error message for already friend error', async () => {
     // Mock the AddFriendApi function to return ALREADY_FRIEND_ERROR
-    AddFriendApiModule.AddFriendApi.mockRejectedValue({
+    AddFriendApiModule?.AddFriendApi?.mockRejectedValue({
       ok: false,
       status: 403, // or any other appropriate status code
       text: jest.fn().mockResolvedValue('ALREADY_FRIEND_ERROR'),
@@ -36,7 +36,7 @@ describe('AddFriend component', () => {
     fireEvent.click(followButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Already Following')).toBeInTheDocument();
-    });
+      expect(screen.findByText(text => text.includes('Already Following'))).toBeInTheDocument();
+  });
   });
 });

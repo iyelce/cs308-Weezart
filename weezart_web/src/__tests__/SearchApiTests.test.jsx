@@ -341,7 +341,7 @@ describe('SearchSongApi', () => {
 
         // Ensure console.error is called for error logging
         expect(global.console.error).toHaveBeenCalledWith(
-            'error parsing response JSON:',
+            'error in fetching data:',
             expect.any(SyntaxError)
         );
     });

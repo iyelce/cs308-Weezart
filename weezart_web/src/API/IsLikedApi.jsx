@@ -16,11 +16,11 @@ async function IsLikedApi (token, userId ,songId ) {
             credentials: 'include', 
         });
         
-        const data = await response.text();
-    
+        
         if(!response.ok) {
             throw new Error('Network response is not ok');
         }
+        const data = await response?.text();
         
         if(data === "false") {
             return false;
@@ -35,6 +35,7 @@ async function IsLikedApi (token, userId ,songId ) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 
 

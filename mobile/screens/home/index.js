@@ -50,7 +50,7 @@ export default Home = () => {
         component={Add}
         options={{ headerShown: false }}
         initialParams={{
-          icon: require("./../../assets/icons/add.png"),
+          icon: require("./../../assets/icons/plus.png"),
         }}
       />
       <Tab.Screen

@@ -62,7 +62,7 @@ public class SpotifyController {
 	@Value("${spotify.secret}")
 	private String CLIENT_SECRET;
 
-	private String REDIRECT_URI = "http://localhost:8080/api/spotify/callback";
+	private String REDIRECT_URI = "http://localhost:3000/api/spotify/callback";
 
 	private final RestTemplate restTemplate = new RestTemplate();
 
@@ -118,19 +118,18 @@ public class SpotifyController {
 				+ "&scope=" + scope + "&redirect_uri=" + REDIRECT_URI + "&state=" + state;
 
 		return spotifyUrl;
-
 	}
 
 	@GetMapping("/get-spotify-token") // api/spotify/get-spotify-token
 	public String getSpotifyToken() {
-		if (TOKEN_FINAL == "")
+		if (this.TOKEN_FINAL == "")
 			return "NOT_LOGGED_IN";
 		else
-			return TOKEN_FINAL;
+			return this.TOKEN_FINAL;
 	}
 
 	@PostMapping("/callback") // http://localhost:8080/api/spotify/callback
-	public void test(@RequestParam("code") String code, @RequestParam("state") String state)
+	public String test(@RequestParam("code") String code, @RequestParam("state") String state)
 			throws JsonMappingException, JsonProcessingException {
 
 		HttpHeaders headers = new HttpHeaders();
@@ -157,7 +156,8 @@ public class SpotifyController {
 
 		String accessToken = rootNode.get("access_token").asText();
 
-		TOKEN_FINAL = accessToken;
+		return accessToken;
+		
 	}
 
 	@GetMapping("/get-users-top-tracks")

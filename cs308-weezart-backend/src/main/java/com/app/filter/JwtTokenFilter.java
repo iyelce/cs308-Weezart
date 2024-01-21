@@ -81,8 +81,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	}
 
 	private boolean isLoginRequest(HttpServletRequest request) {
-		return (request.getRequestURI().equals("/auth/login") || request.getRequestURI().equals("/auth/register")
-				|| request.getRequestURI().equals("/api/spotify/callback"));
+		return (request.getRequestURI().equals("/auth/login") || request.getRequestURI().equals("/auth/register"));
 	}
 
 }

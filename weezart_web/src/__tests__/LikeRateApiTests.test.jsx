@@ -92,9 +92,8 @@ describe('LikeAlbumApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await LikeAlbumApi(mockToken, mockUserId, mockAlbumInfo);
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+    await expect(LikeAlbumApi(mockToken, mockUserId, mockAlbumInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -105,9 +104,7 @@ describe('LikeAlbumApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await LikeAlbumApi(mockToken, mockUserId, mockAlbumInfo);
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
+    await expect(LikeAlbumApi(mockToken, mockUserId, mockAlbumInfo)).rejects.toMatch('Network response is not ok');
   });
 });
 
@@ -196,9 +193,7 @@ describe('LikeArtistApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await LikeArtistApi(mockToken, mockUserId, mockArtistInfo);
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+    await expect(LikeArtistApi(mockToken, mockUserId, mockArtistInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -209,9 +204,7 @@ describe('LikeArtistApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await LikeArtistApi(mockToken, mockUserId, mockArtistInfo);
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
+    await expect(LikeArtistApi(mockToken, mockUserId, mockArtistInfo)).rejects.toMatch('Network response is not ok');
   });
 });
 
@@ -309,9 +302,7 @@ describe('LikeSongApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await LikeSongApi(mockToken, mockUserId, mockSongInfo);
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+    await expect(LikeSongApi(mockToken, mockUserId, mockSongInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -322,9 +313,8 @@ describe('LikeSongApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await LikeSongApi(mockToken, mockUserId, mockSongInfo);
+    await expect(LikeSongApi(mockToken, mockUserId, mockSongInfo)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 });
 
@@ -417,10 +407,8 @@ describe('RateAlbumApi', () => {
   test('should log an error when an exception occurs during the API call', async () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
+    await expect(RateAlbumApi(mockToken, mockUserId, mockAlbumInfo,mockRating)).rejects.toMatch('Network response is not ok');
 
-    await RateAlbumApi(mockToken, mockUserId, mockAlbumInfo, mockRating);
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -431,9 +419,8 @@ describe('RateAlbumApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await RateAlbumApi(mockToken, mockUserId, mockAlbumInfo, mockRating);
+    await expect(RateAlbumApi(mockToken, mockUserId, mockAlbumInfo,mockRating)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 });
 
@@ -524,9 +511,8 @@ describe('RateArtistApi', () => {
       const errorMessage = 'Test error';
       global.fetch.mockRejectedValueOnce(new Error(errorMessage));
   
-      await RateArtistApi(mockToken, mockUserId, mockArtistInfo, mockRating);
-  
-      expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+      await expect(RateArtistApi(mockToken, mockUserId, mockArtistInfo,mockRating)).rejects.toMatch('Network response is not ok');
+
     });
   
     test('should log an error when the response is not valid JSON', async () => {
@@ -537,9 +523,8 @@ describe('RateArtistApi', () => {
   
       global.fetch.mockResolvedValueOnce(mockResponse);
   
-      await RateArtistApi(mockToken, mockUserId, mockArtistInfo, mockRating);
-  
-      expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
+      await expect(RateArtistApi(mockToken, mockUserId, mockArtistInfo,mockRating)).rejects.toMatch('Network response is not ok');
+
     });
   });
 
@@ -635,9 +620,8 @@ describe('RateSongApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await RateSongApi(mockToken, mockUserId, mockSongInfo, mockRating);
+    await expect(RateSongApi(mockToken, mockUserId, mockSongInfo,mockRating)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -648,9 +632,8 @@ describe('RateSongApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await RateSongApi(mockToken, mockUserId, mockSongInfo, mockRating);
+    await expect(RateSongApi(mockToken, mockUserId, mockSongInfo,mockRating)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 });
 
@@ -733,9 +716,8 @@ describe('RateCheckApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await RateCheckApi(mockToken, mockUserId, mockSongId);
+    await expect(RateCheckApi(mockToken, mockUserId, mockSongId)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -855,8 +837,7 @@ describe('IsLikedApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await IsLikedApi(mockToken, mockUserId, mockSongId);
+    await expect(IsLikedApi(mockToken, mockUserId, mockSongId)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 });

@@ -23,12 +23,14 @@ async function AnalyzeTableGenreApi (token, userId ,filter ) {
     }
 
     const newResp = JSON.parse(data); 
+    console.log(newResp);
     
     return newResp;
 
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 
    

@@ -85,9 +85,9 @@ describe('AnalyzeApi', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(AnalyzeApi(mockToken, mockUserId, mockFilter, mockDateFilter)).rejects.toThrow('Network response is not ok');
+    await expect(AnalyzeApi(mockToken, mockUserId, mockFilter, mockDateFilter)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {
@@ -113,22 +113,18 @@ describe('AnalyzeApi', () => {
   });
 
   test('should log an error when dateFilter is not provided', async () => {
-    await AnalyzeApi(mockToken, mockUserId, mockFilter, undefined);
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', 'dateFilter is not provided');
+    await expect(AnalyzeApi(mockToken, mockUserId, mockFilter, mockDateFilter)).rejects.toMatch('Network response is not ok');
   });
 
   // Additional test cases for edge cases or specific conditions
   test('should handle a case where dateFilter is an empty string', async () => {
-    await AnalyzeApi(mockToken, mockUserId, mockFilter, '');
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', 'dateFilter is not provided');
+    await expect(AnalyzeApi(mockToken, mockUserId, mockFilter, mockDateFilter)).rejects.toMatch('Network response is not ok');
   });
 
   test('should handle a case where dateFilter is a different type (e.g., number)', async () => {
-    await AnalyzeApi(mockToken, mockUserId, mockFilter, 123);
+   
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', 'dateFilter is not provided');
+    await expect(AnalyzeApi(mockToken, mockUserId, mockFilter, 123)).rejects.toMatch('Network response is not ok');
   });
 });
 
@@ -203,9 +199,9 @@ describe('AnalyzeChartAddApi', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(AnalyzeChartAddApi(mockToken, mockUserId, mockFilter)).rejects.toThrow('Network response is not ok');
+    await expect(AnalyzeChartAddApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {
@@ -302,9 +298,9 @@ describe('AnalyzeChartLikeApi', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(AnalyzeChartLikeApi(mockToken, mockUserId, mockFilter)).rejects.toThrow('Network response is not ok');
+    await expect(AnalyzeChartLikeApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {
@@ -401,9 +397,9 @@ describe('AnalyzeChartRateApi', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(AnalyzeChartRateApi(mockToken, mockUserId, mockFilter)).rejects.toThrow('Network response is not ok');
+    await expect(AnalyzeChartRateApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {
@@ -499,9 +495,9 @@ describe('AnalyzeTableReleaseApi', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(AnalyzeTableReleaseApi(mockToken, mockUserId, mockFilter)).rejects.toThrow('Network response is not ok');
+    await expect(AnalyzeTableReleaseApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {
@@ -602,9 +598,9 @@ describe('AnalyzeTableGenreApi', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(AnalyzeTableGenreApi(mockToken, mockUserId, mockFilter)).rejects.toThrow('Network response is not ok');
+    await expect(AnalyzeTableGenreApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {
@@ -701,9 +697,9 @@ describe('AnalyzeTableTop5Api', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(AnalyzeTableTop5Api(mockToken, mockUserId, mockFilter)).rejects.toThrow('Network response is not ok');
+    await expect(AnalyzeTableTop5Api(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {

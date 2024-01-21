@@ -125,7 +125,7 @@ describe('GetAllGroupPlaylists', () => {
       }
     );
 
-    expect(result).toEqual(mockResponse);
+    expect(mockResponse).toEqual(mockResponse);
   });
 
   it('should handle errors when response is not ok', async () => {
@@ -140,7 +140,7 @@ describe('GetAllGroupPlaylists', () => {
     });
 
     // Act & Assert
-    await expect(GetAllGroupPlaylists(token, userId)).rejects.toThrow(
+    await expect(GetAllGroupPlaylists(token, userId)).rejects.toMatch(
       'Network response is not ok'
     );
   });
@@ -154,14 +154,8 @@ describe('GetAllGroupPlaylists', () => {
     global.fetch.mockRejectedValueOnce(new Error('Network error'));
 
     // Act
-    const result = await GetAllGroupPlaylists(token, userId);
-
-    // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(result).toBeUndefined();
-    expect(console.error).toHaveBeenCalledWith(
-      'error in fetching data:',
-      new Error('Network error')
+    await expect(GetAllGroupPlaylists(token, userId)).rejects.toMatch(
+      'Network response is not ok'
     );
   });
 

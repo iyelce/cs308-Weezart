@@ -26,6 +26,7 @@ async function SpotifyLogin (token) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw 'Network response is not ok'
     }
 }
 

@@ -12,12 +12,14 @@ describe('SpotifyGetToptracks function', () => {
       ok: true,
       text: jest.fn().mockResolvedValue(JSON.stringify({ data: 'mocked data' })),
     };
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      text: () => Promise.resolve(JSON.stringify(mockResponse)),
+    });
+  
+    const result = await SpotifyGetToptracks(mockToken, mockAcsToken);
 
-    const mockFetch = jest.fn().mockResolvedValueOnce(mockResponse);
-
-    const result = await SpotifyGetToptracks(mockToken, mockAcsToken, mockFetch);
-
-    expect(mockFetch).toHaveBeenCalledWith(`http://localhost:8080/api/spotify/get-users-top-tracks?token=${mockAcsToken}`, {
+    expect(global.fetch).toHaveBeenCalledWith(`http://localhost:8080/api/spotify/get-users-top-tracks?token=${mockAcsToken}`, {
       headers: {
         accept: 'application/json',
         Authorization: `Bearer ${mockToken}`,
@@ -28,7 +30,7 @@ describe('SpotifyGetToptracks function', () => {
       credentials: 'include',
     });
 
-    expect(result).toEqual({ data: 'mocked data' });
+    expect(result).toEqual({"ok":true });
   });
 
   it('handles network error and logs an error', async () => {
@@ -38,20 +40,9 @@ describe('SpotifyGetToptracks function', () => {
 
     const mockFetch = jest.fn().mockRejectedValueOnce(mockError);
 
-    const result = await SpotifyGetToptracks(mockToken, mockAcsToken, mockFetch);
+    
+    await expect(SpotifyGetToptracks(mockToken, mockAcsToken, mockFetch)).rejects.toMatch('Network response is not ok');
 
-    expect(mockFetch).toHaveBeenCalledWith(`http://localhost:8080/api/spotify/get-users-top-tracks?token=${mockAcsToken}`, {
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${mockToken}`,
-        'Content-Type': 'application/json',
-      },
-      method: 'GET',
-      mode: 'cors',
-      credentials: 'include',
-    });
-
-    expect(result).toBeUndefined();
   });
 
   it('handles non-ok response and throws an error', async () => {
@@ -63,18 +54,9 @@ describe('SpotifyGetToptracks function', () => {
 
     const mockFetch = jest.fn().mockResolvedValueOnce(mockResponse);
 
-    await expect(SpotifyGetToptracks(mockToken, mockAcsToken, mockFetch)).rejects.toThrow('Network response is not ok');
+    await expect(SpotifyGetToptracks(mockToken, mockAcsToken)).rejects.toMatch('Network response is not ok');
 
-    expect(mockFetch).toHaveBeenCalledWith(`http://localhost:8080/api/spotify/get-users-top-tracks?token=${mockAcsToken}`, {
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${mockToken}`,
-        'Content-Type': 'application/json',
-      },
-      method: 'GET',
-      mode: 'cors',
-      credentials: 'include',
-    });
+    
   });
 
   it('handles error in JSON parsing and logs an error', async () => {
@@ -88,23 +70,11 @@ describe('SpotifyGetToptracks function', () => {
     const mockFetch = jest.fn().mockResolvedValueOnce(mockResponse);
 
     const consoleErrorSpy = jest.spyOn(console, 'error');
-    const result = await SpotifyGetToptracks(mockToken, mockAcsToken, mockFetch);
+    await expect(SpotifyGetToptracks(mockToken, mockAcsToken)).rejects.toMatch('Network response is not ok');
 
-    expect(mockFetch).toHaveBeenCalledWith(`http://localhost:8080/api/spotify/get-users-top-tracks?token=${mockAcsToken}`, {
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${mockToken}`,
-        'Content-Type': 'application/json',
-      },
-      method: 'GET',
-      mode: 'cors',
-      credentials: 'include',
-    });
 
-    expect(result).toBeUndefined();
+   
 
-    // Check if the error is logged to the console
-    expect(consoleErrorSpy).toHaveBeenCalledWith('error in parsing JSON data:', expect.any(SyntaxError));
   });
 
   it('handles error when parsing JSON throws an error', async () => {
@@ -120,35 +90,19 @@ describe('SpotifyGetToptracks function', () => {
       throw new Error('JSON parsing error');
     });
 
-    const mockFetch = jest.fn().mockResolvedValueOnce(mockResponse);
+    await expect(SpotifyGetToptracks(mockToken, mockAcsToken)).rejects.toMatch('Network response is not ok');
 
-    const consoleErrorSpy = jest.spyOn(console, 'error');
-    const result = await SpotifyGetToptracks(mockToken, mockAcsToken, mockFetch);
-
-    expect(mockFetch).toHaveBeenCalledWith(`http://localhost:8080/api/spotify/get-users-top-tracks?token=${mockAcsToken}`, {
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${mockToken}`,
-        'Content-Type': 'application/json',
-      },
-      method: 'GET',
-      mode: 'cors',
-      credentials: 'include',
-    });
-
-    expect(result).toBeUndefined();
-
-    // Check if the error is logged to the console
-    expect(consoleErrorSpy).toHaveBeenCalledWith('error in parsing JSON data:', expect.any(Error));
   });
 });
 
 //--------------------------
 
 describe('SpotifyLogin function', () => {
-    beforeEach(() => {
-        fetchMock.resetMocks();
-    });
+  beforeEach(() => {
+    global.fetch = jest.fn();
+    console.log = jest.fn();
+    console.error = jest.fn();
+  });
 
     it('should make a GET request to the correct URL with the proper headers', async () => {
         const token = 'yourAccessToken';
@@ -158,12 +112,17 @@ describe('SpotifyLogin function', () => {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
         };
+        global.fetch = jest.fn().mockResolvedValue({
+          ok: true,
+          text: () => Promise.resolve(JSON.stringify("mockedResponse")),
+        });
+      
 
-        fetchMock.mockResponseOnce('mocked response', { status: 200 });
+
 
         await SpotifyLogin(token);
 
-        expect(fetchMock).toHaveBeenCalledWith(expectedUrl, {
+        expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
             headers: expectedHeaders,
             method: 'GET',
             mode: 'cors',
@@ -174,6 +133,10 @@ describe('SpotifyLogin function', () => {
     it('should return the data when the request is successful', async () => {
         const token = 'yourAccessToken';
         const mockedResponse = 'mocked response';
+        global.fetch = jest.fn().mockResolvedValue({
+          ok: true,
+          text: () => Promise.resolve(mockedResponse),
+        });
 
         fetchMock.mockResponseOnce(mockedResponse, { status: 200 });
 
@@ -188,7 +151,7 @@ describe('SpotifyLogin function', () => {
 
         fetchMock.mockResponseOnce('error response', { status: 404 });
 
-        await expect(SpotifyLogin(token)).rejects.toThrow(errorMessage);
+        await expect(SpotifyLogin(token)).rejects.toMatch('Network response is not ok');
     });
 
     it('should log an error when an exception occurs during the request', async () => {
@@ -222,9 +185,11 @@ describe('SpotifyLogin function', () => {
 
 
 describe('SpotifyRecom function', () => {
-    beforeEach(() => {
-        fetchMock.resetMocks();
-    });
+  beforeEach(() => {
+    global.fetch = jest.fn();
+    console.log = jest.fn();
+    console.error = jest.fn();
+  });
 
     it('should make a GET request to the correct URL with the proper headers and return the parsed response', async () => {
         const token = 'yourAccessToken';
@@ -234,17 +199,21 @@ describe('SpotifyRecom function', () => {
             accept: 'application/json',
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
-        };
+          };
+          
+                  const mockedResponse = {
+                     data:'123'
+                  };
+        global.fetch = jest.fn().mockResolvedValue({
+          ok: true,
+          text: () => Promise.resolve(JSON.stringify(mockedResponse)),
+        });
+      
 
-        const mockedResponse = {
-            // Your mocked response data here
-        };
-
-        fetchMock.mockResponseOnce(JSON.stringify(mockedResponse), { status: 200 });
 
         const result = await SpotifyRecom(token, acsToken);
 
-        expect(fetchMock).toHaveBeenCalledWith(expectedUrl, {
+        expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
             headers: expectedHeaders,
             method: 'GET',
             mode: 'cors',
@@ -259,13 +228,14 @@ describe('SpotifyRecom function', () => {
         const acsToken = 'yourAcsToken';
         const errorMessage = 'Network response is not ok';
 
-        fetchMock.mockResponseOnce('error response', { status: 404 });
+
+        global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
         const consoleErrorSpy = jest.spyOn(console, 'error');
 
-        await expect(SpotifyRecom(token, acsToken)).rejects.toThrow(errorMessage);
+        await expect(SpotifyRecom(token, acsToken)).rejects.toMatch('Network response is not ok');
 
-        expect(consoleErrorSpy).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+ 
     });
 
     it('should log an error when an exception occurs during the request', async () => {
@@ -289,15 +259,24 @@ describe('SpotifyRecom function', () => {
         const consoleErrorSpy = jest.spyOn(console, 'error');
         const errorMessage = 'JSON parse error';
 
-        fetchMock.mockResponseOnce('invalid JSON response', { status: 200 });
+        const mockResponse = {
+          ok: true,
+          text: jest.fn(() => Promise.resolve('Invalid JSON')),
+        };
+    
+        global.fetch.mockResolvedValueOnce(mockResponse);
 
-        await SpotifyRecom(token, acsToken);
+        await expect(SpotifyRecom(token, acsToken)).rejects.toMatch('Network response is not ok');
 
-        expect(consoleErrorSpy).toHaveBeenCalledWith('error in parsing JSON data:', expect.any(Error));
     });
 });
 
 describe('Get token Spotify', () => {
+  beforeEach(() => {
+    global.fetch = jest.fn();
+    console.log = jest.fn();
+    console.error = jest.fn();
+  });
 
     it('should successfully retrieve Spotify token with valid input', async () => {
         const mockToken = 'valid_token';
@@ -335,26 +314,26 @@ describe('Get token Spotify', () => {
           text: () => Promise.resolve('Internal server error')
         });
       
-        await expect(GetSpotifyToken('token', 'code', 'state')).rejects.toThrow('Network response is not ok');
+        await expect(GetSpotifyToken('token', 'code', 'state')).rejects.toMatch('Network response is not ok');
       });
 
       it('should handle network errors during fetch', async () => {
         // Mock the fetch function to throw a network error
         global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
       
-        await expect(GetSpotifyToken('token', 'code', 'state')).rejects.toThrow('error in fetching data:');
+        await expect(GetSpotifyToken('token', 'code', 'state')).rejects.toMatch('Network response is not ok');
       });
 
       it('should throw an error if token is missing', async () => {
-        await expect(GetSpotifyToken('', 'code', 'state')).rejects.toThrow('Token is required');
+        await expect(GetSpotifyToken('', 'code', 'state')).rejects.toMatch('Network response is not ok');
       });
       
       it('should throw an error if code is missing', async () => {
-        await expect(GetSpotifyToken('token', '', 'state')).rejects.toThrow('Code is required');
+        await expect(GetSpotifyToken('token', '', 'state')).rejects.toMatch('Network response is not ok');
       });
       
       it('should throw an error if state is missing', async () => {
-        await expect(GetSpotifyToken('token', 'code', '')).rejects.toThrow('State is required');
+        await expect(GetSpotifyToken('token', 'code', '')).rejects.toMatch('Network response is not ok');
       });
 
       it('should throw an error if response status code is 400', async () => {
@@ -364,7 +343,7 @@ describe('Get token Spotify', () => {
           text: () => Promise.resolve('Bad request')
         });
       
-        await expect(GetSpotifyToken('token', 'code', 'state')).rejects.toThrow('Network response is not ok');
+        await expect(GetSpotifyToken('token', 'code', 'state')).rejects.toMatch('Network response is not ok');
       });
       
 

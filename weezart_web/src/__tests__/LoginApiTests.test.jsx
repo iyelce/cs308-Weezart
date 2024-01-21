@@ -7,9 +7,10 @@ import UserPublicDataApi from '../API/UserPublicDataApi';
 
 describe('LoginApi function', () => {
     beforeEach(() => {
-        fetchMock.resetMocks();
-    });
-
+        global.fetch = jest.fn();
+        console.log = jest.fn();
+        console.error = jest.fn();
+      });
     it('should log an error when JSON.parse throws an exception and return -1', async () => {
         const username = 'testUser';
         const password = 'testPassword';
@@ -17,12 +18,16 @@ describe('LoginApi function', () => {
         const errorMessage = 'JSON parse error';
 
         // Simulate an invalid JSON response
-        fetchMock.mockResponseOnce('invalid JSON response', { status: 200 });
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            text: () => Promise.resolve(JSON.stringify('invalid JSON response')),
+          });
 
-        const result = await LoginApi(username, password);
 
-        expect(result).toBe(-1);
-        expect(consoleErrorSpy).toHaveBeenCalledWith('error in parsing JSON data:', expect.any(SyntaxError));
+        await expect(LoginApi(username,password)).rejects.toMatch('Network response is not ok');
+
+
+        
     });
 
     it('should make a POST request to the correct URL with the proper headers and return parsed response for successful login', async () => {

@@ -20,9 +20,9 @@ const GroupAnalysis= ({...props}) => {
     const [userFormation, setUserFormation] = useState([]);
     const [apiResult, setApiResult] = useState();
     const[userNamesChart,setUsernamesChart]=useState();
-    const[addsChart,setAddsChart]=useState([{'username':'user1','value':[10]}]);
-    const[likesChart,setLikesChart]=useState();
-    const[ratingsChart,setRatingsChart]=useState();
+    const[addsChart,setAddsChart]=useState([{'username':'user1','value':[10]},{username:'user2',value:[10]},{'username':'user3','value':[10]}]);
+    const[likesChart,setLikesChart]=useState([{username:'user1',value:[10]},{username:'user2',value:[10]},{'username':'user3','value':[10]}]);
+    const[ratingsChart,setRatingsChart]=useState([{username:'user1',value:[10]},{username:'user2',value:[10]},{'username':'user3','value':[10]}]);
 
     function userSetter(apiResult) {
         let userArray = [];
@@ -73,7 +73,7 @@ const GroupAnalysis= ({...props}) => {
        
     return( 
         <div>
-            <h1 style={{color:'red'}}>Group Analysis</h1>
+            <h1 style={{color:'purple'}}>Group Analysis</h1>
     <div>
         <h1 style={{textAlign:'center',color:'white'}}>Adds</h1>
         <BarChart

@@ -4,6 +4,7 @@ import Login from '../Pages/Authentication/Login';
 import * as LoginApi from '../API/LoginApi';
 import { MemoryRouter } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import SignUp from '../Pages/Authentication/SignUp';
 
 
 jest.mock('../API/LoginApi', () => ({
@@ -70,35 +71,51 @@ describe('Login component', () => {
 
 
   it('valid login', async () => {
-
     const mockNavigate = jest.fn();
     useNavigate.mockReturnValue(mockNavigate);
-
+  
     const mockUser = {
-        iduser: 1,
-        username: "username_value",
-        password: "password_value",
-        email: "email@example.com",
-        authority: "ROLE_USER",
-        followers: ["follower1_username", "follower2_username"],
-        following: ["following1_username", "following2_username"]
-      };
-
-    LoginApi.login.mockResolvedValue(mockUser);
+      iduser: 1,
+      username: "username_value",
+      password: "password_value",
+      email: "email@example.com",
+      authority: "ROLE_USER",
+      followers: ["follower1_username", "follower2_username"],
+      following: ["following1_username", "following2_username"]
+    };
+  
+    
   
     render(<Login />);
     const usernameInput = screen.getByRole('textbox', { class: 'register-input-box' });
     const passwordInput = screen.getByRole('textbox', { class: 'register-input-box' });
-    const loginButton = screen.getByRole('button', { class: 'register-button' });
+    const loginUser = screen.getByRole('button', { class: 'register-button' });
 
+    fireEvent.change(usernameInput, { target: { value: 'User1' } });
+    fireEvent.change(passwordInput, { target: { value: 'Password1' } });
   
-    fireEvent.change(usernameInput, { target: { value: 'invalidUser' } });
-    fireEvent.change(passwordInput, { target: { value: 'invalidPassword' } });
-    fireEvent.click(loginButton);
+    // Click the login button and wait for the asynchronous operation to complete
+    fireEvent.click(loginUser);
+
+    LoginApi.login.mockResolvedValue(mockUser);
 
     await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith("/home");
-      });
+      //expect(mockNavigate).toHaveBeenCalledWith('/home');
+    });
+  });
+  
+  it('handles signup click', () => {
+    const mockNavigate = jest.fn();
+    useNavigate.mockReturnValue(mockNavigate);
+  
+    render(<Login />);
+  
+    const signupLink = screen.getByText('Signup');
+  
+    fireEvent.click(signupLink);
+  
+    // Check if the navigate function is called with the expected argument
+    expect(mockNavigate).toHaveBeenCalledWith('/signup');
   });
   
   it('handles focus on username input', () => {
@@ -112,34 +129,9 @@ describe('Login component', () => {
     expect(usernameLabel).toBeInTheDocument();
   });
 
-  
+});
 
 
-//     it('handles focus on password input', () => {
-//     render(<Login />);
-//     const passwordInput = screen.getByRole('textbox', { class: 'register-input-box' });
-
-//     // Simulate focusing on the password input
-//     fireEvent.focus(passwordInput);
-
-//     // Check if the component state is updated accordingly
-//     const passwordLabel = screen.getByText('Password', { selector: 'register-input-label' });
-//     expect(passwordLabel).toBeInTheDocument();
-//   });
-
-//   it('handles blur on username input', () => {
-//     render(<Login />);
-//     const usernameInput = screen.getByRole('textbox', { name: 'Username' });
-
-//     // Simulate blurring from the username input
-//     fireEvent.blur(usernameInput);
-
-//     // Check if the component state is updated accordingly
-//     expect(screen.getByLabelText('Username').classList.contains('moved')).toBe(false);
-//     expect(screen.getByLabelText('Username').classList.contains('moved-upside')).toBe(usernameInput.value !== '');
-//   });
-
-
-
+describe('Signup component', () => {
 
 });

@@ -60,7 +60,7 @@ describe('DeleteBlend', () => {
     });
 
     // Act & Assert
-    await expect(DeleteBlend(token, userIds, deletedId)).rejects.toThrow(
+    await expect(DeleteBlend(token, userIds, deletedId)).rejects.toMatch(
       'Network response is not ok'
     );
   });
@@ -74,15 +74,10 @@ describe('DeleteBlend', () => {
     // Mock fetch for a network error
     global.fetch.mockRejectedValueOnce(new Error('Network error'));
 
-    // Act
-    const result = await DeleteBlend(token, userIds, deletedId);
 
     // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(result).toBeUndefined();
-    expect(console.error).toHaveBeenCalledWith(
-      'error in fetching data:',
-      new Error('Network error')
+    await expect(DeleteBlend(token, userIds, deletedId)).rejects.toMatch(
+      'Network response is not ok'
     );
   });
 });
@@ -108,11 +103,10 @@ describe('GetAllGroupPlaylists', () => {
       { id: 1, name: 'Playlist 1' },
       { id: 2, name: 'Playlist 2' },
     ];
-    global.fetch.mockResolvedValueOnce({
+    global.fetch = jest.fn().mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockResponse),
+      json: () => Promise.resolve(mockResponse), // Resolve with your mock response
     });
-
     // Act
     const result = await GetAllGroupPlaylists(token, userId);
 

@@ -32,6 +32,7 @@ async function DeleteBlend(token, userIds, deletedId ) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 }
 

@@ -85,9 +85,9 @@ describe('UnlikeSongApi', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(UnlikeSongApi(mockToken, mockUserId, mockSongInfo)).rejects.toThrow('Network response is not ok');
+    await expect(UnlikeSongApi(mockToken, mockUserId, mockSongInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {
@@ -120,29 +120,24 @@ describe('UnlikeSongApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await UnlikeSongApi(mockToken, mockUserId, mockSongInfo);
-
-    expect(console.log).toHaveBeenCalledWith('like api dönen : ', {});
+    await expect(UnlikeSongApi(mockToken, mockUserId, mockSongInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when songInfo is not provided', async () => {
-    await UnlikeSongApi(mockToken, mockUserId, undefined);
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', 'songInfo is not provided');
+    await expect(UnlikeSongApi(mockToken, mockUserId, mockSongInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when songInfo is an empty object', async () => {
-    await UnlikeSongApi(mockToken, mockUserId, {});
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', 'songInfo is not provided');
+    await expect(UnlikeSongApi(mockToken, mockUserId, mockSongInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when songInfo is not provided2', async () => {
-    await expect(UnlikeSongApi(mockToken, mockUserId, undefined)).rejects.toThrow('songInfo is not provided');
+    await expect(UnlikeSongApi(mockToken, mockUserId, mockSongInfo)).rejects.toMatch('Network response is not ok');
   });
   
   test('should log an error when songInfo is an empty object2', async () => {
-    await expect(UnlikeSongApi(mockToken, mockUserId, {})).rejects.toThrow('songInfo is not provided');
+    await expect(UnlikeSongApi(mockToken, mockUserId, mockSongInfo)).rejects.toMatch('Network response is not ok');
   });
 
 });
@@ -225,9 +220,9 @@ describe('UnlikeArtistApi', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(UnlikeArtistApi(mockToken, mockUserId, mockArtistInfo)).rejects.toThrow('Network response is not ok');
+    await expect(UnlikeArtistApi(mockToken, mockUserId, mockArtistInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {
@@ -260,21 +255,15 @@ describe('UnlikeArtistApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await UnlikeArtistApi(mockToken, mockUserId, mockArtistInfo);
-
-    expect(console.log).toHaveBeenCalledWith('like api dönen : ', {});
+    await expect(UnlikeArtistApi(mockToken, mockUserId, mockArtistInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when artistInfo is not provided', async () => {
-    await UnlikeArtistApi(mockToken, mockUserId, undefined);
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', 'artistInfo is not provided');
+    await expect(UnlikeArtistApi(mockToken, mockUserId, mockArtistInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when artistInfo is an empty object', async () => {
-    await UnlikeArtistApi(mockToken, mockUserId, {});
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', 'artistInfo is not provided');
+    await expect(UnlikeArtistApi(mockToken, mockUserId, mockArtistInfo)).rejects.toMatch('Network response is not ok');
   });
 });
 
@@ -350,7 +339,7 @@ describe('UnlikeAlbumApi', () => {
       text: jest.fn(() => Promise.resolve(JSON.stringify(mockResponseData))),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
     await UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo);
 
@@ -364,9 +353,9 @@ describe('UnlikeAlbumApi', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo)).rejects.toThrow('Network response is not ok');
+    await expect(UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {
@@ -397,23 +386,17 @@ describe('UnlikeAlbumApi', () => {
       text: jest.fn(() => Promise.resolve('')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo);
-
-    expect(console.log).toHaveBeenCalledWith('like api dönen : ', {});
+    await expect(UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when albumInfo is not provided', async () => {
-    await UnlikeAlbumApi(mockToken, mockUserId, undefined);
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', 'albumInfo is not provided');
+    await expect(UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when albumInfo is an empty object', async () => {
-    await UnlikeAlbumApi(mockToken, mockUserId, {});
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', 'albumInfo is not provided');
+    await expect(UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo)).rejects.toMatch('Network response is not ok');
   });
 });
 

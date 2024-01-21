@@ -60,13 +60,14 @@ async function UnlikeSongApi(token, userId, songInfo) {
 
         const newResp = JSON.parse(data); 
 
-        console.log("like api dönen : ", newResp);
+        console.log(newResp);
 
         return newResp;
 
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 }
 

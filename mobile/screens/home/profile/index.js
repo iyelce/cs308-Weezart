@@ -325,6 +325,7 @@ const ProfileScreen = ({ navigation }) => {
   const [dbData, setDbData] = useState({ url: "", username: "", password: "" });
 
   const [followingModal, setFollowingModal] = useState(false);
+  const [followersModal, setFollowersModal] = useState(false);
 
   const handleOpenDbModal = () => setDbModalVisible(true);
   const handleCloseDbModal = () => setDbModalVisible(false);
@@ -414,7 +415,7 @@ const ProfileScreen = ({ navigation }) => {
             <View
               style={{ height: 1, width: "100%", backgroundColor: "black" }}
             />
-            <View style={{ display: "flex", gap: 10 }}>
+            <View style={{ display: "flex", gap: 10, marginRight: "auto" }}>
               {userInfo.following &&
                 userInfo.following.map((user, i) => {
                   return (
@@ -431,10 +432,107 @@ const ProfileScreen = ({ navigation }) => {
                 })}
             </View>
             <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                alignSelf: "flex-start",
+                marginTop: "auto",
+              }}
               onPress={() => setFollowingModal(!followingModal)}
             >
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              <LinearGradient
+                colors={["#684a4a", "#482d2d"]}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 0, y: 0 }}
+                style={{
+                  borderRadius: 8,
+                  paddingVertical: 10,
+                  paddingHorizontal: 25,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderWidth: 1,
+                  borderColor: "#2d3748",
+                  marginTop: 30,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "rgba(255, 255, 255, 0.75)",
+                    fontSize: 14,
+                    fontWeight: "bold",
+                  }}
+                >
+                  close
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={followersModal}
+        onRequestClose={() => {
+          setFollowersModal(!followersModal);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Followers</Text>
+            <View
+              style={{ height: 1, width: "100%", backgroundColor: "black" }}
+            />
+            <View style={{ display: "flex", gap: 10, marginRight: "auto" }}>
+              {userInfo.followers &&
+                userInfo.followers.map((user, i) => {
+                  return (
+                    <TouchableOpacity
+                      key={i}
+                      onPress={() => {
+                        setFollowersModal(false);
+                        navigation.navigate("UserProfile", { param: user });
+                      }}
+                    >
+                      <Text style={{ fontWeight: "bold" }}>{user}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+            </View>
+            <TouchableOpacity
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                alignSelf: "flex-start",
+                marginTop: "auto",
+              }}
+              onPress={() => setFollowingModal(!followingModal)}
+            >
+              <LinearGradient
+                colors={["#684a4a", "#482d2d"]}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 0, y: 0 }}
+                style={{
+                  borderRadius: 8,
+                  paddingVertical: 10,
+                  paddingHorizontal: 25,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderWidth: 1,
+                  borderColor: "#2d3748",
+                  marginTop: 30,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "rgba(255, 255, 255, 0.75)",
+                    fontSize: 14,
+                    fontWeight: "bold",
+                  }}
+                >
+                  close
+                </Text>
+              </LinearGradient>
             </TouchableOpacity>
           </View>
         </View>
@@ -572,7 +670,7 @@ const ProfileScreen = ({ navigation }) => {
                 flexDirection: "row",
               }}
             >
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => setFollowersModal(true)}>
                 <Text
                   style={{
                     fontWeight: "bold",
@@ -1143,6 +1241,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     marginBottom: 15,
+    fontSize: 16,
     // textAlign: "center",
     // padding: 5,
     // backgroundColor: "gray",

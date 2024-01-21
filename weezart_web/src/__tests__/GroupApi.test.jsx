@@ -2,7 +2,8 @@ import DeleteBlend from "../API/DeleteBlend";
 import GetAllGroupPlaylists from "../API/GetAllGroupPlaylists";
 import GetPlaylistGivenGroup from "../API/GetPlaylistGivenGroup ";
 import GroupAnalysisApi from "../API/GroupAnalysisApi";
-
+import CreateGroupPlaylist from "../API/CreateGroupPlaylist";
+import ConvertNameToId from "../API/ConvertNameToId";
 
 describe('DeleteBlend', () => {
   beforeEach(() => {
@@ -509,4 +510,137 @@ describe('GroupAnalysisApi', () => {
 });
 
 //---------------------------------
+
+describe('Create group playlist', () => {
+
+    it('should successfully create a playlist with valid input', async () => {
+        const mockToken = 'valid_token';
+        const username = 'user1';
+        const userNames = ['user2', 'user3'];
+        const mockPlaylistId = 'playlist_id';
+      
+        // Mock ConvertNameToId to return userIds
+        ConvertNameToId.mockResolvedValue(['1', '2', '3']);
+      
+        // Mock the fetch response to simulate successful playlist creation
+        global.fetch = jest.fn().mockResolvedValue({
+          ok: true,
+          status: 201,
+          text: () => Promise.resolve(JSON.stringify({ playlistId: mockPlaylistId }))
+        });
+      
+        const result = await CreateGroupPlaylist(mockToken, username, userNames);
+      
+        expect(result).toEqual({ playlistId: mockPlaylistId });
+        expect(ConvertNameToId).toHaveBeenCalledWith(mockToken, ['user1', 'user2', 'user3']);
+        expect(fetch).toHaveBeenCalledWith(
+          'http://localhost:8080/group/post-playlist/1-2-3',
+          expect.objectContaining({
+            method: 'POST',
+            headers: expect.objectContaining({
+              Authorization: 'Bearer valid_token',
+              'Content-Type': 'application/json'
+            })
+          })
+        );
+      });
+      it('should throw an error if server response is not ok', async () => {
+        // Mock the fetch response with a non-200 status code
+        global.fetch = jest.fn().mockResolvedValue({
+          ok: false,
+          status: 500,
+          text: () => Promise.resolve('Internal server error')
+        });
+      
+        await expect(CreateGroupPlaylist('token', 'username', [])).rejects.toThrow('Network response is not ok');
+      });
+      it('should handle network errors during fetch', async () => {
+        // Mock the fetch function to throw a network error
+        global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
+      
+        await expect(CreateGroupPlaylist('token', 'username', [])).rejects.toThrow('error in fetching data:');
+      });
+      it('should throw an error if token is missing', async () => {
+        await expect(CreateGroupPlaylist('', 'username', [])).rejects.toThrow('Token is required');
+      });
+      
+      it('should throw an error if username is missing', async () => {
+        await expect(CreateGroupPlaylist('token', '', [])).rejects.toThrow('Username is required');
+      });
+      
+      it('should throw an error if userNames is missing', async () => {
+        await expect(CreateGroupPlaylist('token', 'username', undefined)).rejects.toThrow('UserNames is required');
+      });
+      
+      it('should throw an error if userNames is empty', async () => {
+        await expect(CreateGroupPlaylist('token', 'username', [])).rejects.toThrow('At least one other userName is required');
+      });
+      it('should throw an error if response status code is 400', async () => {
+        global.fetch = jest.fn().mockResolvedValue({
+          ok: false,
+          status: 400,
+          text: () => Promise.resolve('Bad request')
+        });
+      
+        await expect(CreateGroupPlaylist('token', 'username', [])).rejects.toThrow('Network response is not ok');
+      });
+
+      it('should correctly format groupIdsString', () => {
+        const groupIds = ['3', '1', '2'];
+        const sortedGroupIds = groupIds.sort((a, b) => a - b);
+        const expectedGroupIdsString = '1-2-3';
+      
+        const actualGroupIdsString = sortedGroupIds.join('-');
+      
+        expect(actualGroupIdsString).toBe(expectedGroupIdsString);
+      });
+      it('should create the correct URL with groupIdsString', () => {
+        const groupIdsString = '1-2-3';
+        const expectedUrl = 'http://localhost:8080/group/post-playlist/1-2-3';
+      
+        const actualUrl = `http://localhost:8080/group/post-playlist/${groupIdsString}`;
+      
+        expect(actualUrl).toBe(expectedUrl);
+      });
+      it('should make a fetch request with correct headers and method', async () => {
+        const mockResponse = { ok: true, status: 201, text: () => Promise.resolve('{"playlistId": "123"}') };
+        global.fetch = jest.fn().mockResolvedValue(mockResponse);
+      
+        await CreateGroupPlaylist('token', 'username', []); // Pass any valid inputs for token and username
+      
+        expect(fetch).toHaveBeenCalledWith(
+          'http://localhost:8080/group/post-playlist/1-2-3', // Assuming ConvertNameToId returns ['1', '2', '3']
+          expect.objectContaining({
+            method: 'POST',
+            headers: expect.objectContaining({
+              Authorization: 'Bearer token',
+              'Content-Type': 'application/json',
+              accept: 'application/json'
+            })
+          })
+        );
+      });
+      it('should parse the response as JSON', async () => {
+        const mockResponse = { ok: true, status: 201, text: () => Promise.resolve('{"playlistId": "123"}') };
+        global.fetch = jest.fn().mockResolvedValue(mockResponse);
+      
+        const result = await CreateGroupPlaylist('token', 'username', []);
+      
+        expect(result).toEqual({ playlistId: '123' });
+      });
+      it('should throw an error if response status code is not 200', async () => {
+        global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 400, text: () => Promise.resolve('Bad request') });
+      
+        await expect(CreateGroupPlaylist('token', 'username', [])).rejects.toThrow('Network response is not ok');
+      });
+      it('should log the response data', async () => {
+        const mockResponse = { ok: true, status: 201, text: () => Promise.resolve('{"playlistId": "123"}') };
+        global.fetch = jest.fn().mockResolvedValue(mockResponse);
+      
+        await CreateGroupPlaylist('token', 'username', []);
+      
+        expect(console.log).toHaveBeenCalledWith('create api dönen : ', { playlistId: '123' });
+      });    
+                              
+});
 

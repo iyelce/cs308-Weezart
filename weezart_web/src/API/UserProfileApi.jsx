@@ -32,8 +32,6 @@ async function UserProfileApi (token, username ) {
 
         const newResp = JSON.parse(data); 
 
-        console.log("--> user in api : ", newResp);
-
         return newResp;
 
     }

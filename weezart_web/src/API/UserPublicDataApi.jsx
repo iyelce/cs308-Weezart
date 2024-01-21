@@ -31,9 +31,6 @@ async function UserPublicDataApi (token, userId ,filter) {
         }
 
         const newResp = JSON.parse(data); 
-
-        console.log("--> user in api : ", newResp);
-
         return newResp;
 
     }

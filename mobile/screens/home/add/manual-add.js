@@ -108,7 +108,7 @@ export default ManualAdd = ({ route, navigation }) => {
               paddingLeft: 20,
               paddingRight: 20,
               // width: "100%",
-              marginTop: 10,
+              marginTop: 20,
               flexDirection: "row",
               alignItems: "center",
               display: "flex",
@@ -226,27 +226,22 @@ export default ManualAdd = ({ route, navigation }) => {
             style={{
               backgroundColor: "#f3f3f3",
               borderRadius: 16,
-              padding: 16,
+              padding: 20,
               paddingLeft: 20,
               paddingRight: 20,
               // width: "100%",
               marginTop: 10,
               flexDirection: "row",
               alignItems: "center",
-              gap: 6,
             }}
           >
             <View
               style={{
                 backgroundColor: "#f3f3f3",
                 borderRadius: 16,
-                padding: 16,
-                paddingLeft: 20,
                 paddingRight: 20,
-                marginTop: 10,
                 flexDirection: "row",
                 alignItems: "center",
-                gap: 6,
               }}
             >
               <Text
@@ -269,13 +264,18 @@ export default ManualAdd = ({ route, navigation }) => {
           </View>
           <View
             style={{
+              backgroundColor: "#f3f3f3",
+              borderRadius: 16,
+              padding: 20,
+              paddingRight: 20,
+              marginTop: 10,
               flexDirection: "row",
               alignItems: "center",
             }}
           >
             <Text style={{ fontSize: 17, fontWeight: "bold", marginRight: 10 }}>
-              Explicit:
-              {explicit ? "True" : "False"}
+              Explicit?
+              {/* {explicit ? "True" : "False"} */}
             </Text>
             <Switch
               style={{}}

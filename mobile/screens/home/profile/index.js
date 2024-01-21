@@ -361,6 +361,22 @@ const ProfileScreen = ({ navigation }) => {
     });
   };
 
+  const connectWithSpotify = async () => {
+    try {
+      // Step 1: Get the Spotify authorization link from your server
+      const response = await axios.get("/api/spotify/login");
+
+      // Step 2: Open the Spotify authorization link in the user's browser
+      await Linking.openURL(response);
+
+      // The user will be redirected to the callback URL after logging in on Spotify
+      // You might not need to handle the callback explicitly here,
+      // as the redirect should automatically trigger the callback endpoint in your app
+    } catch (error) {
+      console.error("Error connecting with Spotify:", error);
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <Dialog.Container visible={dbModalVisible}>
@@ -516,7 +532,7 @@ const ProfileScreen = ({ navigation }) => {
               }}
             >
               <Image
-                source={require("./../../../assets/icons/pp.png")}
+                source={require("./../../../assets/icons/pp.jpeg")}
                 resizeMode="contain"
                 style={{
                   height: 85,
@@ -581,12 +597,12 @@ const ProfileScreen = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <View style={{ display: "flex" }}>
+            <View style={{ display: "flex", flexDirection: "row" }}>
               <TouchableOpacity
                 style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  alignSelf: "flex-start",
+                  flex: 1,
+                  marginLeft: 15,
+                  marginRight: 3,
                 }}
                 onPress={() => navigation.navigate("FriendGroups")}
               >
@@ -597,7 +613,7 @@ const ProfileScreen = ({ navigation }) => {
                   style={{
                     borderRadius: 8,
                     paddingVertical: 10,
-                    paddingHorizontal: 25,
+                    // paddingHorizontal: 25,
                     justifyContent: "center",
                     alignItems: "center",
                     borderWidth: 1,
@@ -613,6 +629,40 @@ const ProfileScreen = ({ navigation }) => {
                     }}
                   >
                     Friend Groups
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  flex: 1,
+                  marginLeft: 3,
+                  marginRight: 15,
+                }}
+                onPress={() => connectWithSpotify()}
+              >
+                <LinearGradient
+                  colors={["#4a684c", "#2d482f"]}
+                  start={{ x: 0, y: 1 }}
+                  end={{ x: 0, y: 0 }}
+                  style={{
+                    borderRadius: 8,
+                    paddingVertical: 10,
+                    // paddingHorizontal: 25,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderWidth: 1,
+                    borderColor: "#2d3748",
+                    marginTop: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "rgba(255, 255, 255, 0.75)",
+                      fontSize: 14,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Connect with spotify
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>

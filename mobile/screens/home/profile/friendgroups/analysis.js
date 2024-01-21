@@ -11,6 +11,8 @@ import axios from "./../../../../config/axios";
 import { BarChart } from "react-native-chart-kit";
 import { ScrollView } from "react-native-gesture-handler";
 import LottieView from "lottie-react-native";
+import LinearGradient from "react-native-linear-gradient";
+import { getUserId } from "../../../../helpers/Utils";
 
 export default GroupAnalysis = ({ route, navigation }) => {
   const { data } = route.params;
@@ -72,6 +74,16 @@ export default GroupAnalysis = ({ route, navigation }) => {
       setLoading(false);
     });
   }, []);
+
+  const deletePlaylist = () => {
+    getUserId().then((userId) => {
+      axios
+        .delete("/group/delete-playlist/" + data.userSong.id + "/" + userId)
+        .then((res) => {
+          navigation.goBack();
+        });
+    });
+  };
 
   return (
     <View style={{ paddingTop: 80, backgroundColor: "white", height: "100%" }}>
@@ -287,6 +299,42 @@ export default GroupAnalysis = ({ route, navigation }) => {
               </View>
             </TouchableOpacity>
           ))}
+          <TouchableOpacity
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              alignSelf: "flex-start",
+              marginTop: "auto",
+              marginBottom: 50,
+            }}
+            onPress={() => deletePlaylist()}
+          >
+            <LinearGradient
+              colors={["#684a4a", "#482d2d"]}
+              start={{ x: 0, y: 1 }}
+              end={{ x: 0, y: 0 }}
+              style={{
+                borderRadius: 8,
+                paddingVertical: 10,
+                paddingHorizontal: 25,
+                justifyContent: "center",
+                alignItems: "center",
+                borderWidth: 1,
+                borderColor: "#2d3748",
+                marginTop: 10,
+              }}
+            >
+              <Text
+                style={{
+                  color: "rgba(255, 255, 255, 0.75)",
+                  fontSize: 14,
+                  fontWeight: "bold",
+                }}
+              >
+                Delete group
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </ScrollView>
       )}
     </View>

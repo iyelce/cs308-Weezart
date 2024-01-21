@@ -13,6 +13,8 @@ import ImageBlurShadow from "react-native-image-blur-shadow";
 import _ from "lodash";
 import { getUserId } from "../../../../helpers/Utils";
 import axios from "./../../../../config/axios";
+import LinearGradient from "react-native-linear-gradient";
+import Toast from "react-native-simple-toast";
 
 export default Album = ({ route, navigation }) => {
   const { data } = route.params;
@@ -115,6 +117,16 @@ export default Album = ({ route, navigation }) => {
     });
   }, 1000);
 
+  const addAlbum = () => {
+    // console.log("record.album", record.album);
+    getUserId().then((userId) => {
+      axios.post("/add/album/" + userId, record.album).then((res) => {
+        Toast.show("Successfully added :)");
+        navigation.goBack();
+      });
+    });
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
       <ScrollView
@@ -180,56 +192,96 @@ export default Album = ({ route, navigation }) => {
           </View>
 
           {/* <View style={{ width: "80%", padding: 10 }}> */}
-          <View
-            style={{
-              flexDirection: "row",
-              // justifyContent: "center",
-              justifyContent: "space-between",
-              backgroundColor: "#fefefe",
-              //   width: "100%",
-              padding: 13,
-              paddingRight: 20,
-              paddingLeft: 20,
-              margin: 10,
-              marginTop: 10,
-              marginBottom: 0,
-              borderRadius: 999,
-              alignItems: "center",
-              gap: 20,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 1,
-              },
-              shadowOpacity: 0.18,
-              shadowRadius: 1.0,
+          {record.userState ? (
+            <View
+              style={{
+                flexDirection: "row",
+                // justifyContent: "center",
+                justifyContent: "space-between",
+                backgroundColor: "#fefefe",
+                //   width: "100%",
+                padding: 13,
+                paddingRight: 20,
+                paddingLeft: 20,
+                margin: 10,
+                marginTop: 10,
+                marginBottom: 0,
+                borderRadius: 999,
+                alignItems: "center",
+                gap: 20,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.18,
+                shadowRadius: 1.0,
 
-              elevation: 1,
-            }}
-          >
-            <Rating
-              size={15}
-              rating={record.userState.liked}
-              maxRating={1}
-              variant="hearts-outline"
-              // fillColor="#fff"
-              baseColor="#48484A"
-              onChange={() => onLikedChanged(record, !record.userState.liked)}
-            />
-            <Rating
-              size={17}
-              rating={
-                record.userState.rating
-                  ? record.userState.rating[record.userState.rating.length - 1]
-                  : 0
-              }
-              variant="stars-outline"
-              fillColor="#c2a30a"
-              baseColor="#48484A"
-              touchColor="#c2a30a"
-              onChange={(rating) => onRatingChange(record, rating)}
-            />
-          </View>
+                elevation: 1,
+              }}
+            >
+              <Rating
+                size={15}
+                rating={record.userState.liked}
+                maxRating={1}
+                variant="hearts-outline"
+                // fillColor="#fff"
+                baseColor="#48484A"
+                onChange={() => onLikedChanged(record, !record.userState.liked)}
+              />
+              <Rating
+                size={17}
+                rating={
+                  record.userState.rating
+                    ? record.userState.rating[
+                        record.userState.rating.length - 1
+                      ]
+                    : 0
+                }
+                variant="stars-outline"
+                fillColor="#c2a30a"
+                baseColor="#48484A"
+                touchColor="#c2a30a"
+                onChange={(rating) => onRatingChange(record, rating)}
+              />
+            </View>
+          ) : (
+            <TouchableOpacity
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                alignSelf: "flex-start",
+                marginTop: "auto",
+              }}
+              onPress={() => addAlbum()}
+            >
+              <LinearGradient
+                colors={["#4a5568", "#2d3748"]}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 0, y: 0 }}
+                style={{
+                  borderRadius: 8,
+                  paddingVertical: 10,
+                  paddingHorizontal: 25,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderWidth: 1,
+                  borderColor: "#2d3748",
+                  marginTop: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "rgba(255, 255, 255, 0.75)",
+                    fontSize: 14,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Add album
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
           {/* </View> */}
           <View
             style={{

@@ -230,7 +230,7 @@ export default UserProfile = ({ route, navigation }) => {
               }}
             >
               <Image
-                source={require("./../../../assets/icons/pp.png")}
+                source={require("./../../../assets/icons/pp.jpeg")}
                 resizeMode="contain"
                 style={{
                   height: 85,

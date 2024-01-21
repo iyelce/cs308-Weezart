@@ -57,10 +57,13 @@ export default Search = () => {
 
 const SearchScreen = ({ navigation }) => {
   const [searchType, setSearchType] = useState(0);
+  const [addType, setAddType] = useState(0);
   const [searchInput, setSearchInput] = useState("");
   const [songData, setSongData] = useState("");
   const [albumData, setAlbumData] = useState("");
   const [artistData, setArtistData] = useState("");
+
+  const [friendUsername, setFriendUsername] = useState("");
 
   useEffect(() => {
     console.log("the current user id", getUserId());
@@ -98,11 +101,30 @@ const SearchScreen = ({ navigation }) => {
   addSongClicked = (song) => {
     getUserId().then((userId) => {
       axios.post("/add/song/" + userId, song).then((res) => {
+        console.log("is id returned?", res);
         if (res.id) {
           Toast.Show("Added Successfully");
         } else {
           Toast.Show("Already Added");
         }
+      });
+    });
+  };
+
+  const AddFriend = () => {
+    Keyboard.dismiss();
+
+    getUserId().then((id) => {
+      axios.get("/user/profile/" + id).then((myProfile) => {
+        axios
+          .post("/add/friend/" + myProfile.username + "/" + friendUsername)
+          .then((res) => {
+            if (res.iduser) {
+              Toast.show("Added :)");
+            } else {
+              Toast.show("Failed :(");
+            }
+          });
       });
     });
   };
@@ -114,257 +136,244 @@ const SearchScreen = ({ navigation }) => {
           height: "100%",
         }}
       >
-        <View
-          style={{
-            backgroundColor: "#f3f3f3",
-            borderRadius: 16,
-            padding: 16,
-            paddingLeft: 20,
-            paddingRight: 20,
-            // width: "100%",
-            marginTop: 10,
-            marginLeft: 20,
-            marginRight: 20,
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 6,
-          }}
-        >
-          <Image
-            style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
-            source={require("./../../../assets/icons/search.png")}
-          />
-          <TextInput
-            required
-            placeholder="Search"
-            placeholderTextColor={"#9ba3af"}
-            value={searchInput}
+        <View>
+          <View
             style={{
-              width: "100%",
-              fontSize: 17,
-              fontWeight: "bold",
+              backgroundColor: "#f3f3f3",
+              borderRadius: 16,
+              padding: 16,
+              paddingLeft: 20,
+              paddingRight: 20,
+              // width: "100%",
+              marginTop: 10,
+              marginLeft: 20,
+              marginRight: 20,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 6,
             }}
-            returnKeyType="search"
-            onChangeText={(text) => {
-              setSearchInput(text);
-            }}
-            onSubmitEditing={() => {
-              handleSearch();
+          >
+            <Image
+              style={{ width: 16, height: 16, tintColor: "#9ba3af" }}
+              source={require("./../../../assets/icons/search.png")}
+            />
+            <TextInput
+              required
+              placeholder="Search"
+              placeholderTextColor={"#9ba3af"}
+              value={searchInput}
+              style={{
+                width: "100%",
+                fontSize: 17,
+                fontWeight: "bold",
+              }}
+              returnKeyType="search"
+              onChangeText={(text) => {
+                setSearchInput(text);
+              }}
+              onSubmitEditing={() => {
+                handleSearch();
+              }}
+            />
+          </View>
+          <SegmentedControl
+            values={["Songs", "Albums", "Artists"]}
+            selectedIndex={searchType}
+            style={{ marginLeft: 20, marginRight: 20, marginTop: 5 }}
+            onChange={(event) => {
+              console.log(event.nativeEvent.selectedSegmentIndex);
+              setSearchType(event.nativeEvent.selectedSegmentIndex);
             }}
           />
-        </View>
-        <SegmentedControl
-          values={["Songs", "Albums", "Artists"]}
-          selectedIndex={searchType}
-          style={{ marginLeft: 20, marginRight: 20, marginTop: 5 }}
-          onChange={(event) => {
-            console.log(event.nativeEvent.selectedSegmentIndex);
-            setSearchType(event.nativeEvent.selectedSegmentIndex);
-          }}
-        />
-        <ScrollView
-          style={{ display: "flex", gap: 5, width: "100%", padding: 10 }}
-          //   showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: 60,
-          }}
-        >
-          {searchType == 0
-            ? songData &&
-              songData.map((song, i) => {
-                return (
-                  <TouchableOpacity
-                    style={{
-                      //   backgroundColor: "#f3f3f3",
-                      padding: 20,
-                      paddingBottom: 15,
-                      paddingTop: 15,
-                      borderRadius: 10,
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginLeft: 10,
-                      justifyContent: "space-between",
-                      // backgroundColor: "#f9f9f9",
-                    }}
-                    key={song.id}
-                    onPress={() =>
-                      navigation.navigate("Details", {
-                        data: song,
-                        source: "profile",
-                      })
-                    }
-                  >
-                    <View style={{ marginLeft: 20 }}>
-                      <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                        {song.name}
-                        {/* <Text
-                                style={{
-                                  color: "#48484A",
-                                  fontSize: 12,
-                                  fontWeight: "normal",
-                                }}
-                              >
-                                {track.song.artistsName[0]}
-                              </Text> */}
-                      </Text>
 
-                      <Text
+          <ScrollView
+            style={{ display: "flex", gap: 5, width: "100%", padding: 10 }}
+            //   showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingBottom: 60,
+            }}
+          >
+            {searchType == 0
+              ? songData &&
+                songData.map((song, i) => {
+                  return (
+                    <TouchableOpacity
+                      style={{
+                        //   backgroundColor: "#f3f3f3",
+                        padding: 20,
+                        paddingBottom: 15,
+                        paddingTop: 15,
+                        borderRadius: 10,
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginLeft: 10,
+                        justifyContent: "space-between",
+                        // backgroundColor: "#f9f9f9",
+                      }}
+                      key={song.id}
+                      onPress={() =>
+                        navigation.navigate("Details", {
+                          data: song,
+                          // source: "profile",
+                        })
+                      }
+                    >
+                      <View style={{ marginLeft: 20 }}>
+                        <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+                          {song.name}
+                          {/* <Text
+                          style={{
+                            color: "#48484A",
+                            fontSize: 12,
+                            fontWeight: "normal",
+                          }}
+                        >
+                          {track.song.artistsName[0]}
+                        </Text> */}
+                        </Text>
+
+                        <Text
+                          style={{
+                            color: "#48484A",
+                            fontSize: 12,
+                            fontWeight: "normal",
+                            marginTop: 5,
+                          }}
+                        >
+                          {song.artistsName[0]}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })
+              : searchType == 1
+              ? albumData &&
+                albumData.map((album, i) => {
+                  return (
+                    <TouchableOpacity
+                      key={album.id}
+                      style={{
+                        width: "100%",
+                        //   padding: 5,
+                        borderRadius: 5,
+                        overflow: "hidden",
+                        marginTop: 10,
+                      }}
+                      onPress={() =>
+                        navigation.navigate("Album", {
+                          data: { userState: null, album: album },
+                        })
+                      }
+                    >
+                      <ImageBackground
+                        source={{ uri: album.imageUrl }}
+                        resizeMode="cover"
                         style={{
-                          color: "#48484A",
-                          fontSize: 12,
-                          fontWeight: "normal",
-                          marginTop: 5,
+                          height: "100%",
+                          width: "100%",
+                          position: "absolute",
+                        }}
+                      ></ImageBackground>
+                      <BlurView
+                        style={{
+                          height: "100%",
+                          width: "100%",
+                          position: "absolute",
+                        }}
+                        blurType="light"
+                        blurAmount={100}
+                        // reducedTransparencyFallbackColor="white"
+                        // overlayColor="rgba(255, 255, 255)"
+                      />
+                      <View
+                        style={{
+                          padding: 5,
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
                         }}
                       >
-                        {song.artistsName[0]}
-                      </Text>
-                    </View>
-                    <TouchableOpacity onPress={() => addSongClicked(song)}>
-                      <Image
-                        style={{
-                          width: 24,
-                          height: 24,
-                          marginLeft: "auto",
-                        }}
-                        source={require("./../../../assets/icons/add.png")}
-                      />
-                    </TouchableOpacity>
-                  </TouchableOpacity>
-                );
-              })
-            : searchType == 1
-            ? albumData &&
-              albumData.map((album, i) => {
-                return (
-                  <TouchableOpacity
-                    key={album.id}
-                    style={{
-                      width: "100%",
-                      //   padding: 5,
-                      borderRadius: 5,
-                      overflow: "hidden",
-                      marginTop: 10,
-                    }}
-                    onPress={() =>
-                      navigation.navigate("Album", { data: album })
-                    }
-                  >
-                    <ImageBackground
-                      source={{ uri: album.imageUrl }}
-                      resizeMode="cover"
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        position: "absolute",
-                      }}
-                    ></ImageBackground>
-                    <BlurView
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        position: "absolute",
-                      }}
-                      blurType="light"
-                      blurAmount={100}
-                      // reducedTransparencyFallbackColor="white"
-                      // overlayColor="rgba(255, 255, 255)"
-                    />
-                    <View
-                      style={{
-                        padding: 5,
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Image
-                        source={{ uri: album.imageUrl }}
-                        style={{
-                          width: 80,
-                          height: 80,
-                          borderRadius: 5,
-                        }}
-                      />
-                      <View style={{ marginLeft: 15, gap: 5 }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                          {album.name}
-                        </Text>
-                        <Text style={{ color: "#0007", fontWeight: 500 }}>
-                          {album.artistsName[0] + " • "}
-                          <Text style={{ fontWeight: "normal" }}>
-                            {album.releaseDate}
+                        <Image
+                          source={{ uri: album.imageUrl }}
+                          style={{
+                            width: 80,
+                            height: 80,
+                            borderRadius: 5,
+                          }}
+                        />
+                        <View style={{ marginLeft: 15, gap: 5 }}>
+                          <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+                            {album.name}
                           </Text>
-                        </Text>
+                          <Text style={{ color: "#0007", fontWeight: 500 }}>
+                            {album.artistsName[0] + " • "}
+                            <Text style={{ fontWeight: "normal" }}>
+                              {album.releaseDate}
+                            </Text>
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                  </TouchableOpacity>
-                );
-              })
-            : searchType == 2 &&
-              artistData &&
-              artistData.map((artist, i) => {
-                return (
-                  <TouchableOpacity
-                    key={artist.id}
-                    style={{
-                      width: "100%",
-                      //   padding: 5,
-                      borderRadius: 5,
-                      overflow: "hidden",
-                      marginTop: 10,
-                    }}
-                    onPress={() =>
-                      navigation.navigate("Artist", { data: artist })
-                    }
-                  >
-                    <View
+                    </TouchableOpacity>
+                  );
+                })
+              : searchType == 2 &&
+                artistData &&
+                artistData.map((artist, i) => {
+                  return (
+                    <TouchableOpacity
+                      key={artist.id}
                       style={{
-                        padding: 5,
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
+                        width: "100%",
+                        //   padding: 5,
+                        borderRadius: 5,
+                        overflow: "hidden",
+                        marginTop: 10,
                       }}
+                      onPress={() =>
+                        navigation.navigate("Artist", {
+                          data: { userState: null, artist: artist },
+                        })
+                      }
                     >
-                      <Image
-                        source={{ uri: artist.imageUrl }}
+                      <View
                         style={{
-                          width: 80,
-                          height: 80,
-                          borderRadius: 40,
+                          padding: 5,
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
                         }}
-                      />
-                      <View style={{ marginLeft: 15, gap: 5 }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                          {artist.name}
-                        </Text>
-                        <Text style={{ color: "#0007" }}>
-                          <Text style={{ fontWeight: 500 }}>{"artist"}</Text>
-                        </Text>
+                      >
+                        <Image
+                          source={{ uri: artist.imageUrl }}
+                          style={{
+                            width: 80,
+                            height: 80,
+                            borderRadius: 40,
+                          }}
+                        />
+                        <View style={{ marginLeft: 15, gap: 5 }}>
+                          <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+                            {artist.name}
+                          </Text>
+                          <Text style={{ color: "#0007" }}>
+                            <Text style={{ fontWeight: 500 }}>{"artist"}</Text>
+                          </Text>
+                        </View>
+                        <Image
+                          style={{
+                            width: 24,
+                            height: 24,
+                            marginLeft: "auto",
+                          }}
+                          source={require("./../../../assets/icons/arrow.png")}
+                        />
                       </View>
-                      <Image
-                        style={{
-                          width: 24,
-                          height: 24,
-                          marginLeft: "auto",
-                        }}
-                        source={require("./../../../assets/icons/arrow.png")}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                );
-              })}
-        </ScrollView>
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate("Album", { data: sampleData[0] })}
-        >
-          <Text>For Emma, Forever Ago</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Album", { data: sampleData[1] })}
-        >
-          <Text>Titanic Rising</Text>
-        </TouchableOpacity> */}
+                    </TouchableOpacity>
+                  );
+                })}
+          </ScrollView>
+        </View>
       </View>
     </SafeAreaView>
   );

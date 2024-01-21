@@ -68,11 +68,17 @@ export default Main = ({ route, navigation }) => {
           const dates = Object.keys(res);
           const sortedDates = dates.sort((a, b) => new Date(a) - new Date(b));
           const sortedData = sortedDates.map((date) => res[date]);
+          // Select the last 4 dates
+          const last4Dates = sortedDates.slice(-4);
+
+          // Map only the data for the last 4 dates
+          const last4Data = last4Dates.map((date) => res[date]);
+
           setAddedChartData({
-            labels: sortedDates,
+            labels: last4Dates,
             datasets: [
               {
-                data: sortedData,
+                data: last4Data,
               },
             ],
           });

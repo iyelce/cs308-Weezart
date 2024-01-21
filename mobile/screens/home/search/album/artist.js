@@ -12,6 +12,8 @@ import {
 import { getUserId } from "../../../../helpers/Utils";
 import axios from "./../../../../config/axios";
 import _ from "lodash";
+import LinearGradient from "react-native-linear-gradient";
+import Toast from "react-native-simple-toast";
 
 export default Artist = ({ route, navigation }) => {
   const { data } = route.params;
@@ -114,43 +116,55 @@ export default Artist = ({ route, navigation }) => {
     });
   }, 1000);
 
+  const addArtist = () => {
+    // console.log("record.album", record.album);
+    getUserId().then((userId) => {
+      axios.post("/add/artist/" + userId, singer.artist).then((res) => {
+        Toast.show("Successfully added :)");
+        navigation.goBack();
+      });
+    });
+  };
+
   return (
     <View>
-      <View
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          marginTop: 60,
-          marginRight: 15,
-          zIndex: 99,
-          flexDirection: "row",
-          gap: 10,
-        }}
-      >
-        <TouchableOpacity>
-          <BlurView
-            blurType="light"
-            blurAmount={100}
-            style={{
-              height: 35,
-              width: 35,
-              borderRadius: 18,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Rating
-              size={15}
-              rating={singer.userState.liked}
-              maxRating={1}
-              variant="hearts-outline"
-              baseColor="#48484A"
-              onChange={() => onLikedChanged(singer, !singer.userState.liked)}
-            />
-          </BlurView>
-        </TouchableOpacity>
-      </View>
+      {singer.userState && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            marginTop: 60,
+            marginRight: 15,
+            zIndex: 99,
+            flexDirection: "row",
+            gap: 10,
+          }}
+        >
+          <TouchableOpacity>
+            <BlurView
+              blurType="light"
+              blurAmount={100}
+              style={{
+                height: 35,
+                width: 35,
+                borderRadius: 18,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Rating
+                size={15}
+                rating={singer.userState.liked}
+                maxRating={1}
+                variant="hearts-outline"
+                baseColor="#48484A"
+                onChange={() => onLikedChanged(singer, !singer.userState.liked)}
+              />
+            </BlurView>
+          </TouchableOpacity>
+        </View>
+      )}
       <ScrollView
         style={{
           height: "100%",
@@ -179,33 +193,74 @@ export default Artist = ({ route, navigation }) => {
           >
             {data.artist.name}
           </Text>
-          <BlurView
-            blurType="light"
-            blurAmount={100}
-            style={{
-              position: "absolute",
-              bottom: 0,
-              right: 0,
-              margin: 10,
-              padding: 12,
-              borderRadius: 20,
-            }}
-          >
-            <Rating
-              size={16}
-              rating={
-                singer.userState.rating
-                  ? singer.userState.rating[singer.userState.rating.length - 1]
-                  : 0
-              }
-              variant="stars-outline"
-              fillColor="#c2a30a"
-              baseColor="#48484A"
-              touchColor="#c2a30a"
-              onChange={(rating) => onRatingChange(singer, rating)}
-            />
-          </BlurView>
+          {singer.userState && (
+            <BlurView
+              blurType="light"
+              blurAmount={100}
+              style={{
+                position: "absolute",
+                bottom: 0,
+                right: 0,
+                margin: 10,
+                padding: 12,
+                borderRadius: 20,
+              }}
+            >
+              <Rating
+                size={16}
+                rating={
+                  singer.userState.rating
+                    ? singer.userState.rating[
+                        singer.userState.rating.length - 1
+                      ]
+                    : 0
+                }
+                variant="stars-outline"
+                fillColor="#c2a30a"
+                baseColor="#48484A"
+                touchColor="#c2a30a"
+                onChange={(rating) => onRatingChange(singer, rating)}
+              />
+            </BlurView>
+          )}
         </View>
+        {!singer.userState && (
+          <TouchableOpacity
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              alignSelf: "flex-start",
+              marginTop: "auto",
+            }}
+            onPress={() => addArtist()}
+          >
+            <LinearGradient
+              colors={["#4a5568", "#2d3748"]}
+              start={{ x: 0, y: 1 }}
+              end={{ x: 0, y: 0 }}
+              style={{
+                borderRadius: 8,
+                paddingVertical: 10,
+                paddingHorizontal: 25,
+                justifyContent: "center",
+                alignItems: "center",
+                borderWidth: 1,
+                borderColor: "#2d3748",
+                marginTop: 10,
+              }}
+            >
+              <Text
+                style={{
+                  color: "rgba(255, 255, 255, 0.75)",
+                  fontSize: 14,
+                  fontWeight: "bold",
+                }}
+              >
+                Add artist
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        )}
         <View
           style={{
             flexDirection: "row",

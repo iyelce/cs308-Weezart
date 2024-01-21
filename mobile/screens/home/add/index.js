@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Album from "./album";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   Image,
-  ImageBackground,
   Keyboard,
   SafeAreaView,
   ScrollView,
@@ -12,18 +10,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Details from "./album/details";
-import Artist from "./album/artist";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
 import { BlurView } from "@react-native-community/blur";
 import axios from "../../../config/axios";
 import { getToken, getUserId } from "../../../helpers/Utils";
-import manualAdd from "./manual-add";
+import ManualAdd from "./manual-add";
 import Toast from "react-native-simple-toast";
 
 const Stack = createNativeStackNavigator();
 
-export default Search = () => {
+export default Add = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -32,37 +28,20 @@ export default Search = () => {
       }}
     >
       <Stack.Screen
-        name="SearchScreen"
-        component={SearchScreen}
+        name="AddScreen"
+        component={AddScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Group>
-        <Stack.Screen
-          name="Album"
-          component={Album}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Artist"
-          component={Artist}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Details"
-          component={Details}
-          options={{ headerShown: false, presentation: "modal" }}
-        />
-        <Stack.Screen
-          name="ManualAdd"
-          component={manualAdd}
-          options={{ headerShown: false, presentation: "modal" }}
-        />
-      </Stack.Group>
+      <Stack.Screen
+        name="ManualAdd"
+        component={ManualAdd}
+        options={{ headerShown: false, presentation: "modal" }}
+      />
     </Stack.Navigator>
   );
 };
 
-const SearchScreen = ({ navigation }) => {
+const AddScreen = ({ navigation }) => {
   const [searchType, setSearchType] = useState(0);
 
   const [songSearch, setSongSearch] = useState("");

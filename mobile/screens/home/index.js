@@ -16,6 +16,7 @@ import Profile from "./profile";
 import Main from "./main";
 import details from "./search/album/details";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Add from "./add";
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +25,7 @@ export default Home = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Add"
+      initialRouteName="Profile"
       backBehavior="none"
       tabBar={(props) => <MyTabBar {...props} />}
     >
@@ -37,11 +38,19 @@ export default Home = () => {
         }}
       />
       <Tab.Screen
-        name="Add"
+        name="Search"
         component={Search}
-        // options={{ headerShown: false }}
+        options={{ headerShown: false }}
         initialParams={{
           icon: require("./../../assets/icons/search.png"),
+        }}
+      />
+      <Tab.Screen
+        name="Add"
+        component={Add}
+        options={{ headerShown: false }}
+        initialParams={{
+          icon: require("./../../assets/icons/add.png"),
         }}
       />
       <Tab.Screen

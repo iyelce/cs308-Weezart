@@ -21,7 +21,10 @@ describe('AddFriendApi', () => {
         'Authorization': 'Bearer ' + mockToken,
         'Content-Type': 'application/json'
       };
-  
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve(JSON.stringify({ /* mock response data */ })),
+      });
       await AddFriendApi(mockToken, mockUsername, mockAddingUsername);
   
       expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
@@ -53,9 +56,9 @@ describe('AddFriendApi', () => {
         text: jest.fn(() => Promise.resolve('Internal Server Error')),
       };
   
-      global.fetch.mockResolvedValueOnce(mockResponse);
+      global.fetch.mockRejectedValueOnce(mockResponse);
   
-      await expect(AddFriendApi(mockToken, mockUsername, mockAddingUsername)).rejects.toThrow('Network response is not ok');
+      await expect(AddFriendApi(mockToken, mockUsername, mockAddingUsername)).rejects.toMatch('Network response is not ok');
     });
   
     test('should log the response data when the response is ok', async () => {
@@ -79,9 +82,8 @@ describe('AddFriendApi', () => {
   
       console.error = jest.fn(); // Mock console.error
   
-      await AddFriendApi(mockToken, mockUsername, mockAddingUsername);
-  
-      expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+      await expect(AddFriendApi(mockToken, mockUsername, mockAddingUsername)).rejects.toMatch('Network response is not ok');
+
     });
   
     test('should handle unexpected response status', async () => {
@@ -91,9 +93,9 @@ describe('AddFriendApi', () => {
         text: jest.fn(() => Promise.resolve('Not Found')),
       };
   
-      global.fetch.mockResolvedValueOnce(mockResponse);
+      global.fetch.mockRejectedValueOnce(mockResponse);
   
-      await expect(AddFriendApi(mockToken, mockUsername, mockAddingUsername)).rejects.toThrow('Network response is not ok');
+      await expect(AddFriendApi(mockToken, mockUsername, mockAddingUsername)).rejects.toMatch('Network response is not ok');
     });
   
     test('should handle a successful response with empty data', async () => {

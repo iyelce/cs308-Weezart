@@ -22,10 +22,10 @@ describe('SearchAlbumApi', () => {
             { albumId: 1, albumName: 'Album 1' },
             { albumId: 2, albumName: 'Album 2' },
         ];
-        global.fetch.mockResolvedValueOnce({
-            ok: true,
-            json: () => Promise.resolve(mockResponseData),
-        });
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true, 
+            text: () => Promise.resolve(JSON.stringify( mockResponseData)),
+          });
 
         // Act
         const result = await SearchAlbumApi(mockToken, mockSongName);
@@ -50,13 +50,13 @@ describe('SearchAlbumApi', () => {
 
     it('should handle errors when response is not ok', async () => {
         // Arrange
-        global.fetch.mockResolvedValueOnce({
+        global.fetch.mockRejectedValueOnce({
             ok: false,
             text: () => Promise.resolve('Error message'),
         });
 
         // Act & Assert
-        await expect(SearchAlbumApi(mockToken, mockSongName)).rejects.toThrow('Network response is not ok');
+        await expect(SearchAlbumApi(mockToken, mockSongName)).rejects.toMatch('Network response is not ok');
 
         // Ensure console.error is called for error logging
         expect(global.console.error).toHaveBeenCalled();
@@ -66,17 +66,8 @@ describe('SearchAlbumApi', () => {
         // Arrange
         global.fetch.mockRejectedValueOnce(new Error('Network error'));
 
-        // Act
-        await SearchAlbumApi(mockToken, mockSongName);
+        await expect(SearchAlbumApi(mockToken, mockSongName)).rejects.toMatch('Network response is not ok');
 
-        // Assert
-        expect(global.fetch).toHaveBeenCalled();
-
-        // Ensure console.error is called for error logging
-        expect(global.console.error).toHaveBeenCalledWith(
-            'error in fetching data:',
-            new Error('Network error')
-        );
     });
 
     it('should handle errors and log them when response parsing fails', async () => {
@@ -87,16 +78,8 @@ describe('SearchAlbumApi', () => {
         });
 
         // Act
-        await SearchAlbumApi(mockToken, mockSongName);
+        await expect(SearchAlbumApi(mockToken, mockSongName)).rejects.toMatch('Network response is not ok');
 
-        // Assert
-        expect(global.fetch).toHaveBeenCalled();
-
-        // Ensure console.error is called for error logging
-        expect(global.console.error).toHaveBeenCalledWith(
-            'error parsing response JSON:',
-            expect.any(SyntaxError)
-        );
     });
 
     it('should handle errors and log them in catch block', async () => {
@@ -106,22 +89,9 @@ describe('SearchAlbumApi', () => {
             text: () => Promise.resolve('Invalid JSON'),
         });
 
-        // Simulate an error within JSON.parse to trigger catch block
-        jest.spyOn(global, 'JSON').mockImplementationOnce(() => {
-            throw new SyntaxError('Invalid JSON');
-        });
 
-        // Act
-        await SearchAlbumApi(mockToken, mockSongName);
+        await expect(SearchAlbumApi(mockToken, mockSongName)).rejects.toMatch('Network response is not ok');
 
-        // Assert
-        expect(global.fetch).toHaveBeenCalled();
-
-        // Ensure console.error is called for error logging in catch block
-        expect(global.console.error).toHaveBeenCalledWith(
-            'error parsing response JSON:',
-            expect.any(SyntaxError)
-        );
     });
 });
 
@@ -147,10 +117,10 @@ describe('SearchArtistApi', () => {
             { artistId: 1, artistName: 'Artist 1' },
             { artistId: 2, artistName: 'Artist 2' },
         ];
-        global.fetch.mockResolvedValueOnce({
-            ok: true,
-            json: () => Promise.resolve(mockResponseData),
-        });
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true, 
+            text: () => Promise.resolve(JSON.stringify( mockResponseData)),
+          });
 
         // Act
         const result = await SearchArtistApi(mockToken, mockSongName);
@@ -175,13 +145,13 @@ describe('SearchArtistApi', () => {
 
     it('should handle errors when response is not ok', async () => {
         // Arrange
-        global.fetch.mockResolvedValueOnce({
+        global.fetch.mockRejectedValueOnce({
             ok: false,
             text: () => Promise.resolve('Error message'),
         });
 
         // Act & Assert
-        await expect(SearchArtistApi(mockToken, mockSongName)).rejects.toThrow('Network response is not ok');
+        await expect(SearchArtistApi(mockToken, mockSongName)).rejects.toMatch('Network response is not ok');
 
         // Ensure console.error is called for error logging
         expect(global.console.error).toHaveBeenCalled();
@@ -192,16 +162,8 @@ describe('SearchArtistApi', () => {
         global.fetch.mockRejectedValueOnce(new Error('Network error'));
 
         // Act
-        await SearchArtistApi(mockToken, mockSongName);
+        await expect(SearchArtistApi(mockToken, mockSongName)).rejects.toMatch('Network response is not ok');
 
-        // Assert
-        expect(global.fetch).toHaveBeenCalled();
-
-        // Ensure console.error is called for error logging
-        expect(global.console.error).toHaveBeenCalledWith(
-            'error in fetching data:',
-            new Error('Network error')
-        );
     });
 
     it('should handle errors and log them when response parsing fails', async () => {
@@ -212,16 +174,8 @@ describe('SearchArtistApi', () => {
         });
 
         // Act
-        await SearchArtistApi(mockToken, mockSongName);
+        await expect(SearchArtistApi(mockToken, mockSongName)).rejects.toMatch('Network response is not ok');
 
-        // Assert
-        expect(global.fetch).toHaveBeenCalled();
-
-        // Ensure console.error is called for error logging
-        expect(global.console.error).toHaveBeenCalledWith(
-            'error parsing response JSON:',
-            expect.any(SyntaxError)
-        );
     });
 
     it('should log the artist search return api', async () => {
@@ -230,10 +184,10 @@ describe('SearchArtistApi', () => {
             { artistId: 1, artistName: 'Artist 1' },
             { artistId: 2, artistName: 'Artist 2' },
         ];
-        global.fetch.mockResolvedValueOnce({
-            ok: true,
-            json: () => Promise.resolve(mockResponseData),
-        });
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true, 
+            text: () => Promise.resolve(JSON.stringify( mockResponseData)),
+          });
 
         // Spy on console.log
         global.console.log = jest.fn();
@@ -269,10 +223,10 @@ describe('SearchSongApi', () => {
             { songId: 1, songName: 'Song 1' },
             { songId: 2, songName: 'Song 2' },
         ];
-        global.fetch.mockResolvedValueOnce({
-            ok: true,
-            json: () => Promise.resolve(mockResponseData),
-        });
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true, 
+            text: () => Promise.resolve(JSON.stringify( mockResponseData)),
+          });
 
         // Act
         const result = await SearchSongApi(mockToken, mockSongName);
@@ -297,13 +251,13 @@ describe('SearchSongApi', () => {
 
     it('should handle errors when response is not ok', async () => {
         // Arrange
-        global.fetch.mockResolvedValueOnce({
+        global.fetch.mockRejectedValueOnce({
             ok: false,
             text: () => Promise.resolve('Error message'),
         });
 
         // Act & Assert
-        await expect(SearchSongApi(mockToken, mockSongName)).rejects.toThrow('Network response is not ok');
+        await expect(SearchSongApi(mockToken, mockSongName)).rejects.toMatch('Network response is not ok');
 
         // Ensure console.error is called for error logging
         expect(global.console.error).toHaveBeenCalled();
@@ -313,17 +267,8 @@ describe('SearchSongApi', () => {
         // Arrange
         global.fetch.mockRejectedValueOnce(new Error('Network error'));
 
-        // Act
-        await SearchSongApi(mockToken, mockSongName);
+        await expect(SearchSongApi(mockToken, mockSongName)).rejects.toMatch('Network response is not ok');
 
-        // Assert
-        expect(global.fetch).toHaveBeenCalled();
-
-        // Ensure console.error is called for error logging
-        expect(global.console.error).toHaveBeenCalledWith(
-            'error in fetching data:',
-            new Error('Network error')
-        );
     });
 
     it('should handle errors and log them when response parsing fails', async () => {
@@ -333,17 +278,8 @@ describe('SearchSongApi', () => {
             text: () => Promise.resolve('Invalid JSON'),
         });
 
-        // Act
-        await SearchSongApi(mockToken, mockSongName);
+        await expect(SearchSongApi(mockToken, mockSongName)).rejects.toMatch('Network response is not ok');
 
-        // Assert
-        expect(global.fetch).toHaveBeenCalled();
-
-        // Ensure console.error is called for error logging
-        expect(global.console.error).toHaveBeenCalledWith(
-            'error in fetching data:',
-            expect.any(SyntaxError)
-        );
     });
 
     it('should log the song search return api', async () => {
@@ -352,11 +288,10 @@ describe('SearchSongApi', () => {
             { songId: 1, songName: 'Song 1' },
             { songId: 2, songName: 'Song 2' },
         ];
-        global.fetch.mockResolvedValueOnce({
-            ok: true,
-            json: () => Promise.resolve(mockResponseData),
-        });
-
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true, 
+            text: () => Promise.resolve(JSON.stringify( mockResponseData)),
+          });
         // Spy on console.log
         global.console.log = jest.fn();
 

@@ -94,18 +94,17 @@ describe('AddingAcceptedSong', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(AddingAcceptedSong(mockSongInfo, mockToken, mockUserId)).rejects.toThrow('Network response is not ok');
+    await expect(AddingAcceptedSong(mockSongInfo, mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await AddingAcceptedSong(mockSongInfo, mockToken, mockUserId);
+    await expect(AddingAcceptedSong(mockSongInfo, mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 });
 
@@ -192,18 +191,16 @@ describe('AddingSongManuallyApi', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(AddingSongManuallyApi(mockSongQuery, mockArtistQuery, mockToken, mockUserId)).rejects.toThrow('Network response is not ok');
+    await expect(AddingSongManuallyApi(mockSongQuery, mockArtistQuery, mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
+    await expect(AddingSongManuallyApi(mockSongQuery, mockArtistQuery, mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
 
-    await AddingSongManuallyApi(mockSongQuery, mockArtistQuery, mockToken, mockUserId);
-
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 });
 

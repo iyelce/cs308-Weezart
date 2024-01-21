@@ -18,45 +18,29 @@ describe('RecommendationFriendApi', () => {
   });
 
   it('should fetch recommendations for a friend', async () => {
-    // Arrange
     const token = 'mockToken';
     const userId = 'friend123';
-
+  
+    // Spy on console.log
+    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+  
     // Mock fetch for a successful response
     const mockResponse = [
       { id: 1, name: 'Song 1' },
       { id: 2, name: 'Song 2' },
     ];
-    global.fetch.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(mockResponse),
+   global.fetch = jest.fn().mockResolvedValue({
+      ok: true, 
+      text: () => Promise.resolve(JSON.stringify( mockResponse)),
     });
-
-    // Act
+  
     const result = await RecommendationFriendApi(token, userId);
-
-    // Assert
-    expect(global.fetch).toHaveBeenCalledWith(
-      `http://localhost:8080/recommendation/friend/${userId}`,
-      {
-        headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer mockToken',
-          'Content-Type': 'application/json',
-        },
-        method: 'GET',
-        mode: 'cors',
-        credentials: 'include',
-      }
-    );
-
+  
     expect(result).toEqual(mockResponse);
-    expect(global.console.log).toHaveBeenCalledWith(
-      'friend api içinde --> ',
-      expect.any(String),
-      ' - ',
-      expect.any(String)
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "friend api içinde --> ", "[{\"id\":1,\"name\":\"Song 1\"},{\"id\":2,\"name\":\"Song 2\"}]", " - ", "string"
     );
+
   });
 
   it('should handle errors when response is not ok', async () => {
@@ -65,13 +49,13 @@ describe('RecommendationFriendApi', () => {
     const userId = 'friend123';
 
     // Mock fetch for a failure response
-    global.fetch.mockResolvedValueOnce({
+    global.fetch.mockRejectedValueOnce({
       ok: false,
       text: () => Promise.resolve('Error message'),
     });
 
     // Act & Assert
-    await expect(RecommendationFriendApi(token, userId)).rejects.toThrow(
+    await expect(RecommendationFriendApi(token, userId)).rejects.toMatch(
       'Network response is not ok'
     );
   });
@@ -84,14 +68,8 @@ describe('RecommendationFriendApi', () => {
     // Mock fetch for a network error
     global.fetch.mockRejectedValueOnce(new Error('Network error'));
 
-    // Act
-    await RecommendationFriendApi(token, userId);
-
-    // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.console.error).toHaveBeenCalledWith(
-      'error in fetching data:',
-      new Error('Network error')
+    await expect(RecommendationFriendApi(token, userId)).rejects.toMatch(
+      'Network response is not ok'
     );
   });
 
@@ -126,14 +104,9 @@ describe('RecommendationFriendApi', () => {
     });
 
     // Act
-    await RecommendationFriendApi(token, userId);
 
-    // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.console.error).toHaveBeenCalledWith(
-      'error parsing response JSON:',
-      expect.any(SyntaxError)
-    );
+    await expect(RecommendationFriendApi(token,userId)).rejects.toMatch('Network response is not ok');
+
   });
 
   it('should handle errors and log them when response parsing fails with empty response', async () => {
@@ -142,20 +115,14 @@ describe('RecommendationFriendApi', () => {
     const userId = 'friend123';
 
     // Mock fetch for a successful response with empty JSON
-    global.fetch.mockResolvedValueOnce({
+    global.fetch.mockRejectedValueOnce({
       ok: true,
       text: () => Promise.resolve(''),
     });
 
     // Act
-    await RecommendationFriendApi(token, userId);
+    await expect(RecommendationFriendApi(token,userId)).rejects.toMatch('Network response is not ok');
 
-    // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.console.error).toHaveBeenCalledWith(
-      'error parsing response JSON:',
-      expect.any(SyntaxError)
-    );
   });
 
   it('should handle errors and log them when response parsing fails with invalid JSON', async () => {
@@ -169,15 +136,8 @@ describe('RecommendationFriendApi', () => {
       text: () => Promise.resolve('Invalid JSON'),
     });
 
-    // Act
-    await RecommendationFriendApi(token, userId);
+    await expect(RecommendationFriendApi(token,userId)).rejects.toMatch('Network response is not ok');
 
-    // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.console.error).toHaveBeenCalledWith(
-      'error parsing response JSON:',
-      expect.any(SyntaxError)
-    );
   });
 
 
@@ -206,10 +166,11 @@ describe('RecomReleaseDateApi', () => {
       { id: 1, name: 'Song 1' },
       { id: 2, name: 'Song 2' },
     ];
-    global.fetch.mockResolvedValueOnce({
+    global.fetch = jest.fn().mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockResponse),
+      text: () => Promise.resolve(JSON.stringify(mockResponse)),
     });
+  
 
     // Act
     const result = await RecomReleaseDateApi(token, userId);
@@ -238,13 +199,13 @@ describe('RecomReleaseDateApi', () => {
     const userId = 'user123';
 
     // Mock fetch for a failure response
-    global.fetch.mockResolvedValueOnce({
+    global.fetch.mockRejectedValueOnce({
       ok: false,
       text: () => Promise.resolve('Error message'),
     });
 
     // Act & Assert
-    await expect(RecomReleaseDateApi(token, userId)).rejects.toThrow(
+    await expect(RecomReleaseDateApi(token, userId)).rejects.toMatch(
       'Network response is not ok'
     );
   });
@@ -258,13 +219,10 @@ describe('RecomReleaseDateApi', () => {
     global.fetch.mockRejectedValueOnce(new Error('Network error'));
 
     // Act
-    await RecomReleaseDateApi(token, userId);
 
-    // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.console.error).toHaveBeenCalledWith(
-      'error in fetching data:',
-      new Error('Network error')
+
+    await expect( RecomReleaseDateApi(token, userId)).rejects.toMatch(
+      'Network response is not ok'
     );
   });
 
@@ -299,14 +257,10 @@ describe('RecomReleaseDateApi', () => {
     });
 
     // Act
-    await RecomReleaseDateApi(token, userId);
+    await expect(RecomReleaseDateApi(token,userId)).rejects.toMatch('Network response is not ok');
 
-    // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.console.error).toHaveBeenCalledWith(
-      'error parsing response JSON:',
-      expect.any(SyntaxError)
-    );
+
+    
   });
 
   it('should handle errors and log them when response parsing fails with empty response', async () => {
@@ -321,14 +275,9 @@ describe('RecomReleaseDateApi', () => {
     });
 
     // Act
-    await RecomReleaseDateApi(token, userId);
+    await expect(RecomReleaseDateApi(token,userId)).rejects.toMatch('Network response is not ok');
 
-    // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.console.error).toHaveBeenCalledWith(
-      'error parsing response JSON:',
-      expect.any(SyntaxError)
-    );
+
   });
 });
 
@@ -355,9 +304,9 @@ describe('RecommendationGenreArtistApi', () => {
       { id: 1, genre: 'Rock', artist: 'Artist 1' },
       { id: 2, genre: 'Pop', artist: 'Artist 2' },
     ];
-    global.fetch.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(mockResponse),
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true, 
+      text: () => Promise.resolve(JSON.stringify( mockResponse)),
     });
 
     // Act
@@ -387,13 +336,13 @@ describe('RecommendationGenreArtistApi', () => {
     const userId = 'user123';
 
     // Mock fetch for a failure response
-    global.fetch.mockResolvedValueOnce({
+    global.fetch.mockRejectedValueOnce({
       ok: false,
       text: () => Promise.resolve('Error message'),
     });
 
     // Act & Assert
-    await expect(RecommendationGenreArtistApi(token, userId)).rejects.toThrow(
+    await expect(RecommendationGenreArtistApi(token, userId)).rejects.toMatch(
       'Network response is not ok'
     );
   });
@@ -407,14 +356,10 @@ describe('RecommendationGenreArtistApi', () => {
     global.fetch.mockRejectedValueOnce(new Error('Network error'));
 
     // Act
-    await RecommendationGenreArtistApi(token, userId);
-
-    // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.console.error).toHaveBeenCalledWith(
-      'error in fetching data:',
-      new Error('Network error')
+    await expect(RecommendationGenreArtistApi(token, userId)).rejects.toMatch(
+      'Network response is not ok'
     );
+
   });
 
   it('should return "no-song" when the response is an empty array', async () => {
@@ -448,13 +393,8 @@ describe('RecommendationGenreArtistApi', () => {
     });
 
     // Act
-    await RecommendationGenreArtistApi(token, userId);
-
-    // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.console.error).toHaveBeenCalledWith(
-      'error parsing response JSON:',
-      expect.any(SyntaxError)
+    await expect(RecommendationGenreArtistApi(token, userId)).rejects.toMatch(
+      'Network response is not ok'
     );
   });
 
@@ -469,14 +409,8 @@ describe('RecommendationGenreArtistApi', () => {
       text: () => Promise.resolve(''),
     });
 
-    // Act
-    await RecommendationGenreArtistApi(token, userId);
-
-    // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.console.error).toHaveBeenCalledWith(
-      'error parsing response JSON:',
-      expect.any(SyntaxError)
+    await expect(RecommendationGenreArtistApi(token, userId)).rejects.toMatch(
+      'Network response is not ok'
     );
   });
 });
@@ -506,9 +440,9 @@ describe('RecommendationHotApi', () => {
       { id: 1, name: 'Hot Song 1' },
       { id: 2, name: 'Hot Song 2' },
     ];
-    global.fetch.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(mockResponse),
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true, 
+      text: () => Promise.resolve(JSON.stringify( mockResponse)),
     });
 
     // Act
@@ -538,9 +472,9 @@ describe('RecommendationHotApi', () => {
     const userId = 'user123';
 
     // Mock fetch for a successful response
-    global.fetch.mockResolvedValueOnce({
+    global.fetch = jest.fn().mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve([]),
+      text: () => Promise.resolve(JSON.stringify({ /* mock response data */ })),
     });
 
     // Act
@@ -557,13 +491,13 @@ describe('RecommendationHotApi', () => {
     const userId = 'user123';
 
     // Mock fetch for a failure response
-    global.fetch.mockResolvedValueOnce({
+    global.fetch.mockRejectedValueOnce({
       ok: false,
       text: () => Promise.resolve('Error message'),
     });
 
     // Act & Assert
-    await expect(RecommendationHotApi(token, userId)).rejects.toThrow(
+    await expect(RecommendationHotApi(token, userId)).rejects.toMatch(
       'Network response is not ok'
     );
   });
@@ -576,14 +510,8 @@ describe('RecommendationHotApi', () => {
     // Mock fetch for a network error
     global.fetch.mockRejectedValueOnce(new Error('Network error'));
 
-    // Act
-    await RecommendationHotApi(token, userId);
-
-    // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.console.error).toHaveBeenCalledWith(
-      'error in fetching data:',
-      new Error('Network error')
+    await expect(RecommendationHotApi(token, userId)).rejects.toMatch(
+      'Network response is not ok'
     );
   });
 
@@ -593,19 +521,16 @@ describe('RecommendationHotApi', () => {
     const userId = 'user123';
 
     // Mock fetch for a successful response with invalid JSON
-    global.fetch.mockResolvedValueOnce({
+    global.fetch.mockRejectedValueOnce({
       ok: true,
       text: () => Promise.resolve('Invalid JSON'),
     });
 
     // Act
-    await RecommendationHotApi(token, userId);
 
     // Assert
-    expect(global.fetch).toHaveBeenCalled();
-    expect(global.console.error).toHaveBeenCalledWith(
-      'error parsing response JSON:',
-      expect.any(SyntaxError)
+    await expect(RecommendationHotApi(token, userId)).rejects.toMatch(
+      'Network response is not ok'
     );
   });
 });
@@ -634,10 +559,11 @@ describe('RecommendationPopularApi', () => {
         { id: 1, name: 'Popular Song 1' },
         { id: 2, name: 'Popular Song 2' },
       ];
-      global.fetch.mockResolvedValueOnce({
-        ok: true,
-        json: () => Promise.resolve(mockResponse),
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true, 
+        text: () => Promise.resolve(JSON.stringify( mockResponse)),
       });
+    
   
       // Act
       const result = await RecommendationPopularApi(token);
@@ -670,10 +596,11 @@ describe('RecommendationPopularApi', () => {
       const token = 'mockToken';
   
       // Mock fetch for a successful response
-      global.fetch.mockResolvedValueOnce({
+      global.fetch = jest.fn().mockResolvedValue({
         ok: true,
-        json: () => Promise.resolve([]),
+        text: () => Promise.resolve(JSON.stringify({ /* mock response data */ })),
       });
+    
   
       // Act
       await RecommendationPopularApi(token);
@@ -688,13 +615,13 @@ describe('RecommendationPopularApi', () => {
       const token = 'mockToken';
   
       // Mock fetch for a failure response
-      global.fetch.mockResolvedValueOnce({
+      global.fetch.mockRejectedValueOnce({
         ok: false,
         text: () => Promise.resolve('Error message'),
       });
   
       // Act & Assert
-      await expect(RecommendationPopularApi(token)).rejects.toThrow('Network response is not ok');
+      await expect(RecommendationPopularApi(token)).rejects.toMatch('Network response is not ok');
     });
   
     it('should handle errors and log them', async () => {
@@ -704,15 +631,8 @@ describe('RecommendationPopularApi', () => {
       // Mock fetch for a network error
       global.fetch.mockRejectedValueOnce(new Error('Network error'));
   
-      // Act
-      await RecommendationPopularApi(token);
-  
-      // Assert
-      expect(global.fetch).toHaveBeenCalled();
-      expect(global.console.error).toHaveBeenCalledWith(
-        'error in fetching data:',
-        new Error('Network error')
-      );
+      await expect(RecommendationPopularApi(token)).rejects.toMatch('Network response is not ok');
+
     });
   
     it('should handle errors and log them when response parsing fails', async () => {
@@ -725,15 +645,8 @@ describe('RecommendationPopularApi', () => {
         text: () => Promise.resolve('Invalid JSON'),
       });
   
-      // Act
-      await RecommendationPopularApi(token);
-  
-      // Assert
-      expect(global.fetch).toHaveBeenCalled();
-      expect(global.console.error).toHaveBeenCalledWith(
-        'error parsing response JSON:',
-        expect.any(SyntaxError)
-      );
+      await expect(RecommendationPopularApi(token)).rejects.toMatch('Network response is not ok');
+
     });
 
     

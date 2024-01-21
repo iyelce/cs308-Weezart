@@ -31,6 +31,7 @@ async function SearchArtistApi (token, songName) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw 'Network response is not ok';
     }
 
 

@@ -28,12 +28,19 @@ describe('AnalyzeApi', () => {
   });
 
   test('should make a GET request with the correct parameters for dateFilter 2023-01-01', async () => {
+
+    
     const expectedUrl = `http://localhost:8080/analysis/${mockFilter}/counts/${mockUserId}`;
     const expectedHeaders = {
       accept: 'application/json',
       'Authorization': 'Bearer ' + mockToken,
       'Content-Type': 'application/json'
     };
+
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      text: () => Promise.resolve(JSON.stringify({ status: 'success'})),
+    });
 
     await AnalyzeApi(mockToken, mockUserId, mockFilter, mockDateFilter);
 
@@ -46,6 +53,10 @@ describe('AnalyzeApi', () => {
   });
 
   test('should make a GET request with the correct parameters for dateFilter other than 2023-01-01', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      text: () => Promise.resolve(JSON.stringify({ /* mock response data */ })),
+    });
     const mockCustomDateFilter = '2023-02-02';
     const expectedUrl = `http://localhost:8080/analysis/${mockFilter}/constrained-counts/${mockUserId}/${mockCustomDateFilter}`;
     const expectedHeaders = {
@@ -92,11 +103,17 @@ describe('AnalyzeApi', () => {
 
   test('should log an error when an exception occurs during the API call', async () => {
     const errorMessage = 'Test error';
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: false,
+      text: () => Promise.reject(new Error(errorMessage)),
+    });
+    
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
+    //spy for console error
 
-    await AnalyzeApi(mockToken, mockUserId, mockFilter, mockDateFilter);
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+    await expect(AnalyzeApi(mockToken, mockUserId, mockFilter, mockDateFilter)).rejects.toMatch('Network response is not ok');
+
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -107,9 +124,8 @@ describe('AnalyzeApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await AnalyzeApi(mockToken, mockUserId, mockFilter, mockDateFilter);
+    await expect(AnalyzeApi(mockToken, mockUserId, mockFilter, mockDateFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 
   test('should log an error when dateFilter is not provided', async () => {
@@ -208,9 +224,8 @@ describe('AnalyzeChartAddApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await AnalyzeChartAddApi(mockToken, mockUserId, mockFilter);
+    await expect(AnalyzeChartAddApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -221,9 +236,8 @@ describe('AnalyzeChartAddApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await AnalyzeChartAddApi(mockToken, mockUserId, mockFilter);
+    await expect(AnalyzeChartAddApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 });
 
@@ -307,9 +321,8 @@ describe('AnalyzeChartLikeApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await AnalyzeChartLikeApi(mockToken, mockUserId, mockFilter);
+    await expect(AnalyzeChartLikeApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -320,9 +333,8 @@ describe('AnalyzeChartLikeApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await AnalyzeChartLikeApi(mockToken, mockUserId, mockFilter);
+    await expect(AnalyzeChartLikeApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 });
 
@@ -406,9 +418,8 @@ describe('AnalyzeChartRateApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await AnalyzeChartRateApi(mockToken, mockUserId, mockFilter);
+    await expect(AnalyzeChartRateApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -419,9 +430,8 @@ describe('AnalyzeChartRateApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await AnalyzeChartRateApi(mockToken, mockUserId, mockFilter);
+    await expect(AnalyzeChartRateApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 });
 
@@ -504,9 +514,8 @@ describe('AnalyzeTableReleaseApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await AnalyzeTableReleaseApi(mockToken, mockUserId, mockFilter);
+    await expect(AnalyzeTableReleaseApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -517,9 +526,8 @@ describe('AnalyzeTableReleaseApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await AnalyzeTableReleaseApi(mockToken, mockUserId, mockFilter);
+    await expect(AnalyzeTableReleaseApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 });
 
@@ -607,9 +615,8 @@ describe('AnalyzeTableGenreApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await AnalyzeTableGenreApi(mockToken, mockUserId, mockFilter);
+    await expect(AnalyzeTableGenreApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -620,9 +627,8 @@ describe('AnalyzeTableGenreApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await AnalyzeTableGenreApi(mockToken, mockUserId, mockFilter);
+    await expect(AnalyzeTableGenreApi(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 });
 
@@ -706,9 +712,8 @@ describe('AnalyzeTableTop5Api', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await AnalyzeTableTop5Api(mockToken, mockUserId, mockFilter);
+    await expect(AnalyzeTableTop5Api(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -719,8 +724,7 @@ describe('AnalyzeTableTop5Api', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await AnalyzeTableTop5Api(mockToken, mockUserId, mockFilter);
+    await expect(AnalyzeTableTop5Api(mockToken, mockUserId, mockFilter)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 });

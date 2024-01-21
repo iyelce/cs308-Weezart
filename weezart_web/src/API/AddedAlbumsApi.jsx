@@ -23,7 +23,7 @@ async function AddedAlbumsApi (token, userId ) {
             credentials: 'include', 
         });
         
-        const data = await response.text();
+        const data = await response?.text();
     
         if(!response.ok) {
             throw new Error('Network response is not ok');
@@ -35,6 +35,7 @@ async function AddedAlbumsApi (token, userId ) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw 'Network response is not ok';
     }
 }
 

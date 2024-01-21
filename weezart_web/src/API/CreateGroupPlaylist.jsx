@@ -43,6 +43,7 @@ async function CreateGroupPlaylist(token, username, userNames ) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 }
 

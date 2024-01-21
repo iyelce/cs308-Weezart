@@ -18,11 +18,11 @@ async function ArtistRemoveApi(token, userId, artistInfo) {
 
     let deletedArtist = 
     {
-        id: artistInfo.id,
-        name: artistInfo.name,
-        genres: artistInfo.genres,
-        imageUrl: artistInfo.imageUrl,
-        followerCount: artistInfo.followerCount
+        id: artistInfo?.id,
+        name: artistInfo?.name,
+        genres: artistInfo?.genres,
+        imageUrl: artistInfo?.imageUrl,
+        followerCount: artistInfo?.followerCount
     }
 
     try{        
@@ -50,6 +50,7 @@ async function ArtistRemoveApi(token, userId, artistInfo) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 }
 

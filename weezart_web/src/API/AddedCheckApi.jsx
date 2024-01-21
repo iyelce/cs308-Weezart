@@ -31,6 +31,7 @@ async function AddedCheckApi (token, userId, songId ) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw 'Network response is not ok';
     }
 }
 

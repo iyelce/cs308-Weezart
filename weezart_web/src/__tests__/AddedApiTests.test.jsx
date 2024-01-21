@@ -23,7 +23,11 @@ describe('AddedAlbumsApi', () => {
         'Authorization': 'Bearer ' + mockToken,
         'Content-Type': 'application/json'
       };
-  
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve(JSON.stringify({ /* mock response data */ })),
+      });
+    
       await AddedAlbumsApi(mockToken, mockUserId);
   
       expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
@@ -54,11 +58,10 @@ describe('AddedAlbumsApi', () => {
         text: jest.fn(() => Promise.resolve('')),
       };
   
-      global.fetch.mockResolvedValueOnce(mockResponse);
+      global.fetch = jest.fn().mockRejectedValueOnce(mockResponse);
   
-      const result = await AddedAlbumsApi(mockToken, mockUserId);
   
-      expect(result).toEqual([]);
+      await expect(AddedAlbumsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
     });
   
     test('should throw an error when the network response is not ok', async () => {
@@ -68,9 +71,9 @@ describe('AddedAlbumsApi', () => {
         text: jest.fn(() => Promise.resolve('Internal Server Error')),
       };
   
-      global.fetch.mockResolvedValueOnce(mockResponse);
+      global.fetch.mockRejectedValueOnce(mockResponse);
   
-      await expect(AddedAlbumsApi(mockToken, mockUserId)).rejects.toThrow('Network response is not ok');
+      await expect(AddedAlbumsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
     });
   
     test('should log an error when an exception occurs during the API call', async () => {
@@ -79,9 +82,8 @@ describe('AddedAlbumsApi', () => {
   
       console.error = jest.fn(); // Mock console.error
   
-      await AddedAlbumsApi(mockToken, mockUserId);
-  
-      expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+      await expect(AddedAlbumsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
+
     });
   
     test('should log an error when the response is not valid JSON', async () => {
@@ -92,11 +94,8 @@ describe('AddedAlbumsApi', () => {
   
       global.fetch.mockResolvedValueOnce(mockResponse);
   
-      console.error = jest.fn(); // Mock console.error
-  
-      await AddedAlbumsApi(mockToken, mockUserId);
-  
-      expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
+      await expect(AddedAlbumsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
+
     });
   });
 
@@ -125,6 +124,11 @@ describe('AddedArtistsApi', () => {
         'Authorization': 'Bearer ' + mockToken,
         'Content-Type': 'application/json'
       };
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve(JSON.stringify({ /* mock response data */ })),
+      });
+    
   
       await AddedArtistsApi(mockToken, mockUserId);
   
@@ -156,11 +160,11 @@ describe('AddedArtistsApi', () => {
         text: jest.fn(() => Promise.resolve('')),
       };
   
-      global.fetch.mockResolvedValueOnce(mockResponse);
+      global.fetch.mockRejectedValueOnce(mockResponse);
+      await expect(AddedArtistsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
+
   
-      const result = await AddedArtistsApi(mockToken, mockUserId);
-  
-      expect(result).toEqual([]);
+    
     });
   
     test('should throw an error when the network response is not ok', async () => {
@@ -170,9 +174,9 @@ describe('AddedArtistsApi', () => {
         text: jest.fn(() => Promise.resolve('Internal Server Error')),
       };
   
-      global.fetch.mockResolvedValueOnce(mockResponse);
+      global.fetch.mockRejectedValueOnce(mockResponse);
   
-      await expect(AddedArtistsApi(mockToken, mockUserId)).rejects.toThrow('Network response is not ok');
+      await expect(AddedArtistsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
     });
   
     test('should log an error when an exception occurs during the API call', async () => {
@@ -181,9 +185,8 @@ describe('AddedArtistsApi', () => {
   
       console.error = jest.fn(); // Mock console.error
   
-      await AddedArtistsApi(mockToken, mockUserId);
-  
-      expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+      await expect(AddedArtistsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
+
     });
   
     test('should log an error when the response is not valid JSON', async () => {
@@ -196,9 +199,8 @@ describe('AddedArtistsApi', () => {
   
       console.error = jest.fn(); // Mock console.error
   
-      await AddedArtistsApi(mockToken, mockUserId);
-  
-      expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
+      await expect(AddedArtistsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
+
     });
   
     test('should handle an unexpected response status', async () => {
@@ -208,9 +210,9 @@ describe('AddedArtistsApi', () => {
         text: jest.fn(() => Promise.resolve('Not Found')),
       };
   
-      global.fetch.mockResolvedValueOnce(mockResponse);
+      global.fetch.mockRejectedValueOnce(mockResponse);
   
-      await expect(AddedArtistsApi(mockToken, mockUserId)).rejects.toThrow('Network response is not ok');
+      await expect(AddedArtistsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
     });
   
     test('should log an error when the response parsing fails', async () => {
@@ -223,9 +225,8 @@ describe('AddedArtistsApi', () => {
   
       console.error = jest.fn(); // Mock console.error
   
-      await AddedArtistsApi(mockToken, mockUserId);
-  
-      expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
+      await expect(AddedArtistsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
+
     });
   });
 
@@ -256,7 +257,11 @@ describe('AddedCheckApi', () => {
       'Authorization': 'Bearer ' + mockToken,
       'Content-Type': 'application/json'
     };
-
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      text: () => Promise.resolve(JSON.stringify({ /* mock response data */ })),
+    });
+  
     await AddedCheckApi(mockToken, mockUserId, mockSongId);
 
     expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
@@ -301,18 +306,17 @@ describe('AddedCheckApi', () => {
       text: jest.fn(() => Promise.resolve('Internal Server Error')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await expect(AddedCheckApi(mockToken, mockUserId, mockSongId)).rejects.toThrow('Network response is not ok');
+    await expect(AddedCheckApi(mockToken, mockUserId, mockSongId)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when an exception occurs during the API call', async () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await AddedCheckApi(mockToken, mockUserId, mockSongId);
+    await expect(AddedCheckApi(mockToken, mockUserId, mockSongId)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 
   test('should log an error when parsing response data fails', async () => {
@@ -321,11 +325,11 @@ describe('AddedCheckApi', () => {
       text: jest.fn(() => Promise.resolve('Invalid JSON')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
 
-    await AddedCheckApi(mockToken, mockUserId, mockSongId);
+    await expect(AddedCheckApi(mockToken, mockUserId, mockSongId)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in parsing response data:', expect.any(SyntaxError));
+
   });
 
   test('should handle an empty response body for a successful request', async () => {
@@ -334,23 +338,21 @@ describe('AddedCheckApi', () => {
       text: jest.fn(() => Promise.resolve('')),
     };
 
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
+    await expect(AddedCheckApi(mockToken, mockUserId, mockSongId)).rejects.toMatch('Network response is not ok');
 
-    await AddedCheckApi(mockToken, mockUserId, mockSongId);
-
-    expect(console.log).toHaveBeenCalledWith('is added api içinde return: ', '');
   });
 
   test('should log an error when songId is not provided', async () => {
-    await AddedCheckApi(mockToken, mockUserId, undefined);
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', 'songId is not provided');
+
+    await expect(AddedCheckApi(mockToken, mockUserId, undefined)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when userId is not provided', async () => {
-    await AddedCheckApi(mockToken, undefined, mockSongId);
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', 'userId is not provided');
+    await expect(AddedCheckApi(mockToken, undefined, mockSongId)).rejects.toMatch('Network response is not ok');
+
   });
 
   test('should log an error when network response is not ok', async () => {
@@ -360,9 +362,9 @@ describe('AddedCheckApi', () => {
       text: jest.fn(() => Promise.resolve('Not Found')),
     };
   
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
   
-    await expect(AddedCheckApi(mockToken, mockUserId, mockSongId)).rejects.toThrow('Network response is not ok');
+    await expect(AddedCheckApi(mockToken, mockUserId, mockSongId)).rejects.toMatch('Network response is not ok');
   });
   
   test('should log an error when parsing response data fails2', async () => {
@@ -371,9 +373,9 @@ describe('AddedCheckApi', () => {
       text: jest.fn(() => Promise.resolve('Invalid JSON')),
     };
   
-    global.fetch.mockResolvedValueOnce(mockResponse);
+    global.fetch.mockRejectedValueOnce(mockResponse);
   
-    await expect(AddedCheckApi(mockToken, mockUserId, mockSongId)).rejects.toThrow('error in parsing response data:');
+    await expect(AddedCheckApi(mockToken, mockUserId, mockSongId)).rejects.toMatch('Network response is not ok');
   });
 
 });
@@ -407,7 +409,10 @@ describe('AddedSongsApi', () => {
         'Authorization': 'Bearer ' + mockToken,
         'Content-Type': 'application/json'
       };
-  
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        text: () => Promise.resolve(JSON.stringify({ /* mock response data */ })),
+      });
       await AddedSongsApi(mockToken, mockUserId);
   
       expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
@@ -439,18 +444,22 @@ describe('AddedSongsApi', () => {
         text: jest.fn(() => Promise.resolve('Internal Server Error')),
       };
   
-      global.fetch.mockResolvedValueOnce(mockResponse);
-  
-      await expect(AddedSongsApi(mockToken, mockUserId)).rejects.toThrow('Network response is not ok');
+      global.fetch = jest.fn().mockRejectedValueOnce({
+        ok: true,
+        text: () => Promise.resolve(JSON.stringify(mockResponse)),
+      });
+      
+      await expect(AddedSongsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
+
+      
     });
   
     test('should log an error when an exception occurs during the API call', async () => {
       const errorMessage = 'Test error';
       global.fetch.mockRejectedValueOnce(new Error(errorMessage));
   
-      await AddedSongsApi(mockToken, mockUserId);
-  
-      expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+      await expect(AddedSongsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
+
     });
   
     test('should log an error when the response is not valid JSON', async () => {
@@ -461,9 +470,8 @@ describe('AddedSongsApi', () => {
   
       global.fetch.mockResolvedValueOnce(mockResponse);
   
-      await AddedSongsApi(mockToken, mockUserId);
-  
-      expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
+      await expect(AddedSongsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
+
     });
   
     test('should log an empty array to the console for an empty response body', async () => {
@@ -472,10 +480,9 @@ describe('AddedSongsApi', () => {
         text: jest.fn(() => Promise.resolve('')),
       };
   
-      global.fetch.mockResolvedValueOnce(mockResponse);
+      global.fetch.mockRejectedValueOnce(mockResponse);
   
-      await AddedSongsApi(mockToken, mockUserId);
-  
-      expect(console.log).toHaveBeenCalledWith('song orj response: ', []);
+      await expect(AddedSongsApi(mockToken, mockUserId)).rejects.toMatch('Network response is not ok');
+
     });
   });

@@ -78,6 +78,7 @@ async function ImportSongFromFileApi(token, userId, selectedFile ) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw 'Network response is not ok';
     }
 }
 

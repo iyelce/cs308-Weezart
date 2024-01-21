@@ -21,15 +21,15 @@ async function AlbumRemoveaApi(token, userId, albumInfo) {
 
     let deletedAlbum = 
     {
-        id: albumInfo.id,
-        name: albumInfo.name,
-        imageUrl: albumInfo.imageUrl,
-        releaseDate: albumInfo.releaseDate,
-        numberOfTracks: albumInfo.numberOfTracks,
-        artistsName: albumInfo.artistsName,
-        artistsId: albumInfo.artistsId,
-        songsName: albumInfo.songsName,
-        songsId: albumInfo.songsId
+        id: albumInfo?.id,
+        name: albumInfo?.name,
+        imageUrl: albumInfo?.imageUrl,
+        releaseDate: albumInfo?.releaseDate,
+        numberOfTracks: albumInfo?.numberOfTracks,
+        artistsName: albumInfo?.artistsName,
+        artistsId: albumInfo?.artistsId,
+        songsName: albumInfo?.songsName,
+        songsId: albumInfo?.songsId
     }
 
     try{      
@@ -57,6 +57,7 @@ async function AlbumRemoveaApi(token, userId, albumInfo) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 }
 

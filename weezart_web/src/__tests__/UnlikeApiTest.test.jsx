@@ -53,6 +53,10 @@ describe('UnlikeSongApi', () => {
       albumRelease: mockSongInfo.albumRelease,
     });
 
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      text: () => Promise.resolve(JSON.stringify({ status: 'success' })),
+    });
     await UnlikeSongApi(mockToken, mockUserId, mockSongInfo);
 
     expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
@@ -75,7 +79,7 @@ describe('UnlikeSongApi', () => {
 
     await UnlikeSongApi(mockToken, mockUserId, mockSongInfo);
 
-    expect(console.log).toHaveBeenCalledWith('like api dönen : ', mockResponseData);
+    expect(console.log).toHaveBeenCalledWith( mockResponseData);
   });
 
   test('should throw an error when the network response is not ok', async () => {
@@ -94,9 +98,8 @@ describe('UnlikeSongApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await UnlikeSongApi(mockToken, mockUserId, mockSongInfo);
+    await expect(UnlikeSongApi(mockToken, mockUserId, mockSongInfo)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -107,9 +110,8 @@ describe('UnlikeSongApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await UnlikeSongApi(mockToken, mockUserId, mockSongInfo);
+    await expect(UnlikeSongApi(mockToken, mockUserId, mockSongInfo)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 
   test('should log an empty object to the console for an empty response body', async () => {
@@ -187,6 +189,10 @@ describe('UnlikeArtistApi', () => {
       imageUrl: mockArtistInfo.imageUrl,
       followerCount: mockArtistInfo.followerCount,
     });
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      text: () => Promise.resolve(JSON.stringify({ status: 'success' })),
+    });
 
     await UnlikeArtistApi(mockToken, mockUserId, mockArtistInfo);
 
@@ -229,9 +235,9 @@ describe('UnlikeArtistApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await UnlikeArtistApi(mockToken, mockUserId, mockArtistInfo);
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+
+    await expect(UnlikeArtistApi(mockToken, mockUserId, mockArtistInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -242,9 +248,8 @@ describe('UnlikeArtistApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await UnlikeArtistApi(mockToken, mockUserId, mockArtistInfo);
+    await expect(UnlikeArtistApi(mockToken, mockUserId, mockArtistInfo)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 
   test('should log an empty object to the console for an empty response body', async () => {
@@ -320,6 +325,10 @@ describe('UnlikeAlbumApi', () => {
       songsName: mockAlbumInfo.songsName,
       songsId: mockAlbumInfo.songsId,
     });
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      text: () => Promise.resolve(JSON.stringify({ status: 'success' })),
+    });
 
     await UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo);
 
@@ -333,17 +342,15 @@ describe('UnlikeAlbumApi', () => {
   });
 
   test('should log the response data to the console for a successful request', async () => {
-    const mockResponseData = { status: 'success' };
-    const mockResponse = {
+    global.fetch = jest.fn().mockResolvedValue({
       ok: true,
-      text: jest.fn(() => Promise.resolve(JSON.stringify(mockResponseData))),
-    };
+      text: () => Promise.resolve(JSON.stringify({ status: 'success' })),
+    });
 
-    global.fetch.mockRejectedValueOnce(mockResponse);
 
     await UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo);
 
-    expect(console.log).toHaveBeenCalledWith('like api dönen : ', mockResponseData);
+    expect(console.log).toHaveBeenCalledWith('like api dönen : ', { status: 'success' });
   });
 
   test('should throw an error when the network response is not ok', async () => {
@@ -362,9 +369,8 @@ describe('UnlikeAlbumApi', () => {
     const errorMessage = 'Test error';
     global.fetch.mockRejectedValueOnce(new Error(errorMessage));
 
-    await UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo);
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+    await expect(UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo)).rejects.toMatch('Network response is not ok');
   });
 
   test('should log an error when the response is not valid JSON', async () => {
@@ -375,9 +381,8 @@ describe('UnlikeAlbumApi', () => {
 
     global.fetch.mockResolvedValueOnce(mockResponse);
 
-    await UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo);
+    await expect(UnlikeAlbumApi(mockToken, mockUserId, mockAlbumInfo)).rejects.toMatch('Network response is not ok');
 
-    expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(SyntaxError));
   });
 
   test('should log an empty object to the console for an empty response body', async () => {

@@ -506,7 +506,7 @@ const ProfileScreen = ({ navigation }) => {
                 alignSelf: "flex-start",
                 marginTop: "auto",
               }}
-              onPress={() => setFollowingModal(!followingModal)}
+              onPress={() => setFollowersModal(!followersModal)}
             >
               <LinearGradient
                 colors={["#684a4a", "#482d2d"]}

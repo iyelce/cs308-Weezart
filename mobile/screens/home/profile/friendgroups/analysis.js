@@ -254,7 +254,7 @@ export default GroupAnalysis = ({ route, navigation }) => {
             />
           </View>
           <Text style={{ fontWeight: "bold", fontSize: 25, padding: 20 }}>
-            All Songs Mixed
+            Blended Songs
           </Text>
           {data.songList.map((track, i) => (
             <TouchableOpacity

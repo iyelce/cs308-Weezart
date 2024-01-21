@@ -22,7 +22,11 @@ describe('AddFriend component', () => {
 
   it('displays error message for already friend error', async () => {
     // Mock the AddFriendApi function to return ALREADY_FRIEND_ERROR
-    AddFriendApiModule.AddFriendApi.mockResolvedValue('ALREADY_FRIEND_ERROR');
+    AddFriendApiModule.AddFriendApi.mockRejectedValue({
+      ok: false,
+      status: 403, // or any other appropriate status code
+      text: jest.fn().mockResolvedValue('ALREADY_FRIEND_ERROR'),
+    });
 
     render(<AddFriend username="testUser" token="testToken" />);
     const usernameInput = screen.getByRole('textbox');
@@ -35,8 +39,4 @@ describe('AddFriend component', () => {
       expect(screen.getByText('Already Following')).toBeInTheDocument();
     });
   });
-
-
-
-
 });

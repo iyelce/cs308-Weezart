@@ -30,7 +30,6 @@ async function RecommendationFriendApi (token, userId ) {
     
         const newResp = JSON.parse(data); 
 
-        
         return newResp;
     }
     catch (error) {

@@ -1,5 +1,9 @@
 package com.app.controllers;
 
+import com.app.models.Album;
+import com.app.models.Artist;
+import com.app.models.DateRange;
+import com.app.models.Song;
 import com.app.services.AnalysisService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -12,7 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -294,6 +300,249 @@ class AnalysisControllerTest {
      //testData.put("2024-01-21", 4.5D);
      return testData;
  }
+ 
+ //-------------------------------------------
+ 
+ @Test
+ void latest5AnalysisController() throws Exception {
+     // Given
+     String userId = "56";
+     List<Song> expectedLatest5Songs = createTestLatest5Songs(); 
+
+     // When
+     MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+             .get("/analysis/song/last-5/{userId}", userId))
+             .andExpect(status().isOk())
+             .andReturn();
+
+     // Then
+     List<Song> resultLatest5Songs = objectMapper.readValue(
+             mvcResult.getResponse().getContentAsString(),
+             objectMapper.getTypeFactory().constructCollectionType(List.class, Song.class)
+     );
+
+     // Assertions
+     assertEquals(expectedLatest5Songs.size(), resultLatest5Songs.size());
+     
+ }
+
+ private List<Song> createTestLatest5Songs() {
+
+     return new ArrayList<>();
+ }
+
+ @Test
+ void top5AnalysisController() throws Exception {
+     // Given
+     String userId = "56";
+     List<Song> expectedTop5Songs = createTestTop5Songs();
+
+     // When
+     MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+             .get("/analysis/song/top-5/{userId}", userId))
+             .andExpect(status().isOk())
+             .andReturn();
+
+     // Then
+     List<Song> resultTop5Songs = objectMapper.readValue(
+             mvcResult.getResponse().getContentAsString(),
+             objectMapper.getTypeFactory().constructCollectionType(List.class, Song.class)
+     );
+
+     // Assertions
+     assertEquals(expectedTop5Songs.size(), resultTop5Songs.size());
+ }
+
+ private List<Song> createTestTop5Songs() {
+     return new ArrayList<>();
+ }
+
+ @Test
+ void genreAnalysisController() throws Exception {
+     // Given
+     String userId = "56";
+     String genre = "Pop";
+     List<Song> expectedGenreSongs = createTestGenreSongs(); 
+
+
+
+     // When
+     MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+             .get("/analysis/song/genre/{genre}/{userId}", genre, userId))
+             .andExpect(status().isOk())
+             .andReturn();
+
+     // Then
+     List<Song> resultGenreSongs = objectMapper.readValue(
+             mvcResult.getResponse().getContentAsString(),
+             objectMapper.getTypeFactory().constructCollectionType(List.class, Song.class)
+     );
+
+     // Assertions
+     assertEquals(expectedGenreSongs.size(), resultGenreSongs.size());
+ }
+
+ private List<Song> createTestGenreSongs() {
+
+     return new ArrayList<>();
+ }
+
+ @Test
+ void releaseDateAnalysisController() throws Exception {
+     // Given
+     String userId = "56";
+     int startDate = 20220101;
+     int endDate = 20220131;
+     List<Song> expectedReleaseDateSongs = createTestReleaseDateSongs(); 
+
+
+     // When
+     MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+             .get("/analysis/song/release-date/{startDate}/{endDate}/{userId}", startDate, endDate, userId))
+             .andExpect(status().isOk())
+             .andReturn();
+
+     // Then
+     List<Song> resultReleaseDateSongs = objectMapper.readValue(
+             mvcResult.getResponse().getContentAsString(),
+             objectMapper.getTypeFactory().constructCollectionType(List.class, Song.class)
+     );
+
+     // Assertions
+     assertEquals(expectedReleaseDateSongs.size(), resultReleaseDateSongs.size());
+ }
+
+ private List<Song> createTestReleaseDateSongs() {
+
+     return new ArrayList<>();
+ }
+ //---------------------------------------------------
+ @Test
+ void latest5AlbumAnalysisController() throws Exception {
+     String userId = "56";
+     List<Album> expectedLatest5Albums = createTestLatest5Albums();
+     MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+             .get("/analysis/album/last-5/{userId}", userId))
+             .andExpect(status().isOk())
+             .andReturn();
+     List<Album> resultLatest5Albums = objectMapper.readValue(
+             mvcResult.getResponse().getContentAsString(),
+             objectMapper.getTypeFactory().constructCollectionType(List.class, Album.class)
+     );
+     assertEquals(expectedLatest5Albums.size(), resultLatest5Albums.size());
+ }
+
+
+ private List<Album> createTestLatest5Albums() {
+     return new ArrayList<>();
+ }
+
+ @Test
+ void top5AlbumAnalysisController() throws Exception {
+     String userId = "56";
+     List<Album> expectedTop5Albums = createTestTop5Albums();
+     MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+             .get("/analysis/album/top-5/{userId}", userId))
+             .andExpect(status().isOk())
+             .andReturn();
+     List<Album> resultTop5Albums = objectMapper.readValue(
+             mvcResult.getResponse().getContentAsString(),
+             objectMapper.getTypeFactory().constructCollectionType(List.class, Album.class)
+     );
+     assertEquals(expectedTop5Albums.size(), resultTop5Albums.size());
+ }
+
+
+ private List<Album> createTestTop5Albums() {
+     return new ArrayList<>();
+ }
+
+ @Test
+ void genreAlbumAnalysisController() throws Exception {
+     String userId = "56";
+     String genre = "Pop";
+     List<Album> expectedGenreAlbums = createTestGenreAlbums();
+     MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+             .get("/analysis/album/genre/{genre}/{userId}", genre, userId))
+             .andExpect(status().isOk())
+             .andReturn();
+     List<Album> resultGenreAlbums = objectMapper.readValue(
+             mvcResult.getResponse().getContentAsString(),
+             objectMapper.getTypeFactory().constructCollectionType(List.class, Album.class)
+     );
+     assertEquals(expectedGenreAlbums.size(), resultGenreAlbums.size());
+ }
+
+
+ private List<Album> createTestGenreAlbums() {
+     return new ArrayList<>();
+ }
+
+
+
+ @Test
+ void latest5ArtistAnalysisController() throws Exception {
+     String userId = "56";
+     List<Artist> expectedLatest5Artists = createTestLatest5Artists();
+     MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+             .get("/analysis/artist/last-5/{userId}", userId))
+             .andExpect(status().isOk())
+             .andReturn();
+     List<Artist> resultLatest5Artists = objectMapper.readValue(
+             mvcResult.getResponse().getContentAsString(),
+             objectMapper.getTypeFactory().constructCollectionType(List.class, Artist.class)
+     );
+     assertEquals(expectedLatest5Artists.size(), resultLatest5Artists.size());
+ }
+
+
+ private List<Artist> createTestLatest5Artists() {
+     return new ArrayList<>();
+ }
+
+ @Test
+ void top5ArtistAnalysisController() throws Exception {
+     String userId = "56";
+     List<Artist> expectedTop5Artists = createTestTop5Artists();
+     MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+             .get("/analysis/artist/top-5/{userId}", userId))
+             .andExpect(status().isOk())
+             .andReturn();
+     List<Artist> resultTop5Artists = objectMapper.readValue(
+             mvcResult.getResponse().getContentAsString(),
+             objectMapper.getTypeFactory().constructCollectionType(List.class, Artist.class)
+     );
+     assertEquals(expectedTop5Artists.size(), resultTop5Artists.size());
+ }
+
+
+ private List<Artist> createTestTop5Artists() {
+     return new ArrayList<>();
+ }
+
+ @Test
+ void genreArtistAnalysisController() throws Exception {
+     String userId = "56";
+     String genre = "Pop";
+     List<Artist> expectedGenreArtists = createTestGenreArtists();
+     MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+             .get("/analysis/artist/genre/{genre}/{userId}", genre, userId))
+             .andExpect(status().isOk())
+             .andReturn();
+     List<Artist> resultGenreArtists = objectMapper.readValue(
+             mvcResult.getResponse().getContentAsString(),
+             objectMapper.getTypeFactory().constructCollectionType(List.class, Artist.class)
+     );
+     assertEquals(expectedGenreArtists.size(), resultGenreArtists.size());
+ }
+
+
+ private List<Artist> createTestGenreArtists() {
+     return new ArrayList<>();
+ }
+
+//--------------------------------------------
+ 
  
  
 }

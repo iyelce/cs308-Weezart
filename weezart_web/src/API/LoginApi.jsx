@@ -19,7 +19,7 @@ async function LoginApi ( username, password) {
         const data = await response.text();
     
         if(!response.ok) {
-            return (-1)
+            return (-1);
             //throw new Error ('network response is not ok')
         }
 
@@ -30,7 +30,7 @@ async function LoginApi ( username, password) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
-        throw "Network response is not ok"
+        throw "Network response is not ok";
     }
 }
 

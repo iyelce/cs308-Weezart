@@ -37,6 +37,7 @@ async function UserProfileApi (token, username ) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 }
 

@@ -11,18 +11,19 @@ async function SignUpApi ( SignUpData) {
             body: JSON.stringify(SignUpData),
         });
 
-        if (!response.ok) {
+        if (!response?.ok) {
             //console.log("-->" , response.data);
             return (-1); //username dışında farklı errorler varsa bunu handle etmemiz lazım sonradan (page içinde de kod değişikliği lazım bu durumda)
             throw new Error('Network response is not ok');
         }
 
-        const data = await response.json();
+        const data = await response?.json();
 
         return data;
 
     } catch (error) {
         console.error('Error in fetching data:', error);
+        throw "Network response is not ok"
         //console.log("err--> " , error.body);
     }
 }

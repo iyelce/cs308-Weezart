@@ -26,17 +26,17 @@ async function SongRemoveApi (token, userId ,songInfo ) {
     const auth = "Bearer " + token;
 
     let deletedSong =     {
-        id: songInfo.id,
-        name: songInfo.name,
-        albumName: songInfo.albumName,
-        albumId: songInfo.albumId,
-        albumImageURL: songInfo.albumImageURL,
-        artistsName: songInfo.artistsName,
-        artistsId: songInfo.artistsId,
-        popularity: songInfo.popularity,
-        duration_ms: songInfo.duration_ms,
-        explicit: songInfo.explicit,
-        albumRelease: songInfo.albumRelease
+        id: songInfo?.id,
+        name: songInfo?.name,
+        albumName: songInfo?.albumName,
+        albumId: songInfo?.albumId,
+        albumImageURL: songInfo?.albumImageURL,
+        artistsName: songInfo?.artistsName,
+        artistsId: songInfo?.artistsId,
+        popularity: songInfo?.popularity,
+        duration_ms: songInfo?.duration_ms,
+        explicit: songInfo?.explicit,
+        albumRelease: songInfo?.albumRelease
     }
 
     try{        
@@ -67,6 +67,7 @@ async function SongRemoveApi (token, userId ,songInfo ) {
     }
     catch (error) {
         console.error('error in fetching data:', error);
+        throw "Network response is not ok";
     }
 }
 

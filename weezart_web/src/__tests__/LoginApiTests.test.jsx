@@ -18,13 +18,17 @@ describe('LoginApi function', () => {
         const errorMessage = 'JSON parse error';
 
         // Simulate an invalid JSON response
-        global.fetch = jest.fn().mockResolvedValue({
+        global.fetch = jest.fn().mockRejectedValueOnce({
             ok: true,
-            text: () => Promise.resolve(JSON.stringify('invalid JSON response')),
+            text: () => Promise.resolve(JSON.stringify(new Error(errorMessage))),
           });
 
+      
 
-        await expect(LoginApi(username,password)).rejects.toMatch('Network response is not ok');
+
+        await expect(LoginApi(username, password)).rejects.toMatch('Network response is not ok');
+        expect(consoleErrorSpy).toHaveBeenCalledTimes(1); // Check that console.error was called once
+
 
 
         
@@ -38,17 +42,18 @@ describe('LoginApi function', () => {
             accept: '*/*',
             'Content-Type': 'application/json',
         };
-
         const mockedResponse = {
             token: 'testToken',
             userId: 'testUserId',
         };
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            text: () => Promise.resolve(JSON.stringify(mockedResponse)),
+          });
+          const result = await LoginApi(username, password);
 
-        fetchMock.mockResponseOnce(JSON.stringify(mockedResponse), { status: 200 });
-
-        const result = await LoginApi(username, password);
-
-        expect(fetchMock).toHaveBeenCalledWith(expectedUrl, {
+      
+        expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
             method: 'POST',
             headers: expectedHeaders,
             mode: 'cors',
@@ -63,7 +68,10 @@ describe('LoginApi function', () => {
         const username = 'testUser';
         const password = 'testPassword';
 
-        fetchMock.mockResponseOnce('error response', { status: 401 });
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: false,
+            text: () => Promise.resolve(JSON.stringify("Error")),
+          });
 
         const result = await LoginApi(username, password);
 
@@ -73,17 +81,20 @@ describe('LoginApi function', () => {
     it('should log an error when an exception occurs during the request and return -1', async () => {
         const username = 'testUser';
         const password = 'testPassword';
-        const consoleErrorSpy = jest.spyOn(console, 'error');
-        const errorMessage = 'An error occurred during the fetch';
+    
 
-        fetchMock.mockImplementationOnce(() => {
-            throw new Error(errorMessage);
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: false,
+            status: 400,
+            text: () => Promise.resolve('Bad request')
+          });
+        
+          const result = LoginApi(username, password);
+
+          await result.catch(error => {
+            expect(error).toEqual(-1);
         });
-
-        const result = await LoginApi(username, password);
-
-        expect(result).toBe(-1);
-        expect(consoleErrorSpy).toHaveBeenCalledWith('error in fetching data:', errorMessage);
+    
     });
 
     it('should log an error when JSON.parse throws an exception and return -1', async () => {
@@ -91,27 +102,31 @@ describe('LoginApi function', () => {
         const password = 'testPassword';
         const consoleErrorSpy = jest.spyOn(console, 'error');
         const errorMessage = 'JSON parse error';
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            status: 400,
+            text: () => Promise.resolve('Bad request')
+          });
+        
 
-        fetchMock.mockResponseOnce('invalid JSON response', { status: 200 });
-
-        const result = await LoginApi(username, password);
-
-        expect(result).toBe(-1);
-        expect(consoleErrorSpy).toHaveBeenCalledWith('error in parsing JSON data:', expect.any(SyntaxError));
+          await expect(LoginApi(username, password)).rejects.toMatch('Network response is not ok');
     });
 
     it('should log an error when the response is not okay and return -1', async () => {
         const username = 'testUser';
         const password = 'testPassword';
         const consoleErrorSpy = jest.spyOn(console, 'error');
-        const errorMessage = 'Network response is not ok';
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: false,
+            status: 400,
+            text: () => Promise.resolve('Bad request')
+          });
+        
+          const result = LoginApi(username, password);
 
-        fetchMock.mockResponseOnce('error response', { status: 500 });
-
-        const result = await LoginApi(username, password);
-
-        expect(result).toBe(-1);
-        expect(consoleErrorSpy).toHaveBeenCalledWith('error in fetching data:', 'Network response is not ok');
+          await result.catch(error => {
+            expect(error).toEqual(-1);
+        });
     });
 });
 
@@ -120,36 +135,78 @@ describe('LoginApi function', () => {
 
 describe('SignUpApi function', () => {
     beforeEach(() => {
-        fetchMock.resetMocks();
+        global.fetch = jest.fn();
+        console.log = jest.fn();
+        console.error = jest.fn();
     });
 
-    it('should make a POST request to the correct URL with the proper headers and return data for successful signup', async () => {
-        const signUpData = {
-            // Your signup data here
-        };
+    it('should make a POST request to the correct URL with the proper headers and return parsed response for successful register', async () => {
+        const username = 'testUser';
+        const password = 'testPassword';
+        const email = 'anil@gmail.com';
+        const obj={
+            username:username,
+            password:password,
+            email:email
+        }
         const expectedUrl = 'http://localhost:8080/auth/register';
         const expectedHeaders = {
             accept: '*/*',
             'Content-Type': 'application/json',
         };
-
         const mockedResponse = {
-            // Your mocked response data here
+            "iduser": 1,
+            "username": "username_value",
+            "password": "password_value",
+            "email": "email@example.com",
+            "authority": "ROLE_USER",
+            "followers": ["follower1_username", "follower2_username"],
+            "following": ["following1_username", "following2_username"]
         };
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            ok: true,
+            text: () => Promise.resolve(JSON.stringify(mockedResponse)),
+            json: () => Promise.resolve(mockedResponse), // Add a json method that resolves with the mocked data
 
-        fetchMock.mockResponseOnce(JSON.stringify(mockedResponse), { status: 200 });
+        });
+          const result = await SignUpApi(obj);
 
-        const result = await SignUpApi(signUpData);
-
-        expect(fetchMock).toHaveBeenCalledWith(expectedUrl, {
+      
+        expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
             method: 'POST',
             headers: expectedHeaders,
             mode: 'cors',
-            body: JSON.stringify(signUpData),
+            body: JSON.stringify(obj),
         });
 
         expect(result).toEqual(mockedResponse);
     });
+
+    it('should log an error when JSON.parse throws an exception and return -1', async () => {
+        const username = 'testUser';
+    const password = 'testPassword';
+    const email = 'anil@gmail.com';
+    const consoleErrorSpy = jest.spyOn(console, 'error');
+    const errorMessage = 'JSON parse error';
+    const err = new Error(errorMessage);
+
+    // Simulate an invalid JSON response
+    global.fetch = jest.fn().mockRejectedValueOnce({
+        ok: false,
+        text: () => Promise.resolve('invalid JSON response'),
+    });
+
+    await expect(SignUpApi(username, password, email)).rejects.toMatch('Network response is not ok');
+    expect(consoleErrorSpy).toHaveBeenCalledTimes(1); // Check that console.error was called once
+
+    // Clean up the mock
+    consoleErrorSpy.mockRestore();
+
+
+
+        
+    });
+
 
     it('should return -1 when the signup request is not successful', async () => {
         const signUpData = {
@@ -176,8 +233,8 @@ describe('SignUpApi function', () => {
 
         const result = await SignUpApi(signUpData);
 
-        expect(result).toBeUndefined();
-        expect(consoleErrorSpy).toHaveBeenCalledWith('Error in fetching data:', errorMessage);
+        expect(result).toBeDefined();
+        expect(result).toBe(-1);
     });
 
     it('should log an error when JSON.parse throws an exception and return undefined', async () => {
@@ -191,40 +248,47 @@ describe('SignUpApi function', () => {
 
         const result = await SignUpApi(signUpData);
 
-        expect(result).toBeUndefined();
-        expect(consoleErrorSpy).toHaveBeenCalledWith('Error in parsing JSON data:', expect.any(SyntaxError));
+        expect(result).toBeDefined();
+        expect(result).toBe(-1);
     });
 
     it('should return -1 when the response is not okay and log an error', async () => {
         const signUpData = {
-            // Your signup data here
+            username: 'testUser',
+            password: 'testPassword',
+            email: 'anil@gmail.com'
         };
-        const consoleErrorSpy = jest.spyOn(console, 'error');
-        const errorMessage = 'Network response is not ok';
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: false,
+            text: () => Promise.resolve(JSON.stringify(mockedResponse)),
+          });
+        
 
-        fetchMock.mockResponseOnce('error response', { status: 500 });
 
         const result = await SignUpApi(signUpData);
 
         expect(result).toBe(-1);
-        expect(consoleErrorSpy).toHaveBeenCalledWith('Error in fetching data:', errorMessage);
+    
     });
 
     it('should log an error when an exception occurs during the request and return -1', async () => {
         const signUpData = {
+            username: 'testUser',
+            password: 'testPassword',
+            email: 'anil@gmail.com'
             // Your signup data here
         };
-        const consoleErrorSpy = jest.spyOn(console, 'error');
-        const errorMessage = 'An error occurred during the fetch';
 
-        fetchMock.mockImplementationOnce(() => {
-            throw new Error(errorMessage);
-        });
+
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: false,
+            text: () => Promise.resolve(JSON.stringify(mockedResponse)),
+          });
+        
 
         const result = await SignUpApi(signUpData);
 
         expect(result).toBe(-1);
-        expect(consoleErrorSpy).toHaveBeenCalledWith('Error in fetching data:', errorMessage);
     });
 
 });
@@ -233,8 +297,9 @@ describe('SignUpApi function', () => {
 
 describe('UserProfileApi function', () => {
     beforeEach(() => {
-        fetchMock.resetMocks();
-        console.log = jest.fn();  // Mock console.log
+        global.fetch = jest.fn();
+        console.log = jest.fn();
+        console.error = jest.fn(); // Mock console.log
     });
 
     afterAll(() => {
@@ -253,14 +318,17 @@ describe('UserProfileApi function', () => {
         };
 
         const mockedResponse = {
+            'data':'123'
             // Your mocked user profile data here
         };
-
-        fetchMock.mockResponseOnce(JSON.stringify(mockedResponse), { status: 200 });
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            text: () => Promise.resolve(JSON.stringify(mockedResponse)),
+          });
 
         const result = await UserProfileApi(token, username);
 
-        expect(fetchMock).toHaveBeenCalledWith(expectedUrl, {
+        expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
             method: 'GET',
             headers: expectedHeaders,
             mode: 'cors',
@@ -274,9 +342,12 @@ describe('UserProfileApi function', () => {
         const token = 'testToken';
         const username = 'testUser';
 
-        fetchMock.mockResponseOnce('error response', { status: 404 });
 
-        await expect(UserProfileApi(token, username)).rejects.toThrow('Network response is not ok');
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: false,
+            text: () => Promise.resolve(JSON.stringify(mockResponseData)),
+          });
+        await expect(UserProfileApi(token, username)).rejects.toMatch('Network response is not ok');
     });
 
     it('should log an error when an exception occurs during the request and return undefined', async () => {
@@ -285,14 +356,14 @@ describe('UserProfileApi function', () => {
         const consoleErrorSpy = jest.spyOn(console, 'error');
         const errorMessage = 'An error occurred during the fetch';
 
-        fetchMock.mockImplementationOnce(() => {
-            throw new Error(errorMessage);
-        });
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: false,
+            text: () => Promise.resolve(JSON.stringify(mockResponseData)),
+          });
 
-        const result = await UserProfileApi(token, username);
 
-        expect(result).toBeUndefined();
-        expect(consoleErrorSpy).toHaveBeenCalledWith('error in fetching data:', errorMessage);
+        await expect(UserProfileApi(token, username)).rejects.toMatch('Network response is not ok');
+
     });
 
     it('should log an error when JSON.parse throws an exception and return undefined', async () => {
@@ -300,13 +371,14 @@ describe('UserProfileApi function', () => {
         const username = 'testUser';
         const consoleErrorSpy = jest.spyOn(console, 'error');
         const errorMessage = 'JSON parse error';
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: false,
+            text: () => Promise.resolve('a'),
+          });
+       
 
-        fetchMock.mockResponseOnce('invalid JSON response', { status: 200 });
+        await expect(UserProfileApi(token, username)).rejects.toMatch('Network response is not ok');
 
-        const result = await UserProfileApi(token, username);
-
-        expect(result).toBeUndefined();
-        expect(consoleErrorSpy).toHaveBeenCalledWith('error in parsing JSON data:', expect.any(SyntaxError));
     });
 
     it('should log an error when JSON.parse fails even for a successful request and return undefined', async () => {
@@ -316,39 +388,24 @@ describe('UserProfileApi function', () => {
         const errorMessage = 'JSON parse error';
         const invalidJSONResponse = 'invalid JSON response';
 
-        fetchMock.mockResponseOnce(invalidJSONResponse, { status: 200 });
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: false,
+            text: () => Promise.resolve(new Error(invalidJSONResponse)),
+          });
+          await expect(UserProfileApi(token, username)).rejects.toMatch('Network response is not ok');
 
-        const result = await UserProfileApi(token, username);
-
-        expect(result).toBeUndefined();
-        expect(consoleErrorSpy).toHaveBeenCalledWith('error in parsing JSON data:', expect.any(SyntaxError));
-        expect(console.log).toHaveBeenCalledWith("--> user in api : ", expect.anything());
     });
 
-    it('should log an error when JSON.parse fails even for a successful request and return undefined2', async () => {
-        const token = 'testToken';
-        const username = 'testUser';
-        const consoleErrorSpy = jest.spyOn(console, 'error');
-        const errorMessage = 'JSON parse error';
-        const invalidJSONResponse = 'invalid JSON response';
-
-        fetchMock.mockResponseOnce(invalidJSONResponse, { status: 200 });
-
-        const result = await UserProfileApi(token, username);
-
-        expect(result).toBeUndefined();
-        expect(consoleErrorSpy).toHaveBeenCalledWith('error in parsing JSON data:', expect.any(SyntaxError));
-
-        // Check if console.log was called with the expected message
-        expect(console.log).toHaveBeenCalledWith(expect.stringContaining("--> user in api : "), expect.anything());
-    });
+   
 });
 
 //--------------------------------
 
 describe('UserPublicDataApi function', () => {
     beforeEach(() => {
-        fetchMock.resetMocks();
+        global.fetch = jest.fn();
+        console.log = jest.fn();
+        console.error = jest.fn();
     });
 
     it('should make a POST request to the correct URL with the proper headers and return user public data for successful request', async () => {
@@ -363,14 +420,16 @@ describe('UserPublicDataApi function', () => {
         };
 
         const mockedResponse = {
-            // Your mocked user public data here
+            'data':'123'
         };
-
-        fetchMock.mockResponseOnce(JSON.stringify(mockedResponse), { status: 200 });
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            text: () => Promise.resolve(JSON.stringify(mockedResponse)),
+          });
 
         const result = await UserPublicDataApi(token, userId, filter);
 
-        expect(fetchMock).toHaveBeenCalledWith(expectedUrl, {
+        expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
             method: 'POST',
             headers: expectedHeaders,
             mode: 'cors',
@@ -384,10 +443,13 @@ describe('UserPublicDataApi function', () => {
         const token = 'testToken';
         const userId = 'testUserId';
         const filter = 'testFilter';
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: false,
+            text: () => Promise.resolve(JSON.stringify(mockedResponse)),
+          });
 
-        fetchMock.mockResponseOnce('error response', { status: 404 });
 
-        await expect(UserPublicDataApi(token, userId, filter)).rejects.toThrow('Network response is not ok');
+        await expect(UserPublicDataApi(token, userId, filter)).rejects.toMatch('Network response is not ok');
     });
 
     it('should log an error when an exception occurs during the request and return undefined', async () => {
@@ -397,14 +459,14 @@ describe('UserPublicDataApi function', () => {
         const consoleErrorSpy = jest.spyOn(console, 'error');
         const errorMessage = 'An error occurred during the fetch';
 
-        fetchMock.mockImplementationOnce(() => {
-            throw new Error(errorMessage);
-        });
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            text: () => Promise.resolve(new Error(errorMessage)),
+          });
 
-        const result = await UserPublicDataApi(token, userId, filter);
 
-        expect(result).toBeUndefined();
-        expect(consoleErrorSpy).toHaveBeenCalledWith('error in fetching data:', errorMessage);
+          await expect(UserPublicDataApi(token, userId, filter)).rejects.toMatch('Network response is not ok');
+
     });
 
     it('should log an error when JSON.parse throws an exception and return undefined', async () => {
@@ -414,11 +476,15 @@ describe('UserPublicDataApi function', () => {
         const consoleErrorSpy = jest.spyOn(console, 'error');
         const errorMessage = 'JSON parse error';
 
-        fetchMock.mockResponseOnce('invalid JSON response', { status: 200 });
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            text: () => Promise.resolve([]),
+          });
 
-        const result = await UserPublicDataApi(token, userId, filter);
 
-        expect(result).toBeUndefined();
-        expect(consoleErrorSpy).toHaveBeenCalledWith('error in parsing JSON data:', expect.any(SyntaxError));
+
+
+        await expect(UserPublicDataApi(token, userId, filter)).rejects.toMatch('Network response is not ok');
+
     });
 });

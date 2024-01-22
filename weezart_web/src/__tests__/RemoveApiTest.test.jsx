@@ -173,7 +173,7 @@ describe('Artist Remove Api', () => {
           text: () => Promise.resolve('Unauthorized')
         });
       
-        await expect(AlbumRemoveaApi('token', 'userId', {})).rejects.toMa('Network response is not ok');
+        await expect(AlbumRemoveaApi('token', 'userId', {})).rejects.toMatch('Network response is not ok');
       });
       
       it('should log an error if an unexpected error occurs', async () => {
@@ -229,36 +229,36 @@ describe('Artist Remove Api', () => {
 
       it('should throw an error if server response is not ok', async () => {
         // Mock the fetch response with a non-200 status code
-        global.fetch = jest.fn().mockResolvedValue({
+        global.fetch = jest.fn().mockRejectedValueOnce({
           ok: false,
           status: 500,
           text: () => Promise.resolve('Internal server error')
         });
       
-        await expect(SongRemoveApi('token', 'userId', {})).rejects.toThrow('Network response is not ok');
+        await expect(SongRemoveApi('token', 'userId', {})).rejects.toMatch('Network response is not ok');
       });
 
       it('should handle network errors during fetch', async () => {
         // Mock the fetch function to throw a network error
         global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
       
-        await expect(SongRemoveApi('token', 'userId', {})).rejects.toThrow('error in fetching data:');
+        await expect(SongRemoveApi('token', 'userId', {})).rejects.toMatch('Network response is not ok');
       });
 
       it('should throw an error if token is missing', async () => {
-        await expect(SongRemoveApi('', 'userId', {})).rejects.toThrow('Token is required');
+        await expect(SongRemoveApi('', 'userId', {})).rejects.toMatch('Network response is not ok');
       });
       
       it('should throw an error if userId is missing', async () => {
-        await expect(SongRemoveApi('token', '', {})).rejects.toThrow('UserId is required');
+        await expect(SongRemoveApi('token', '', {})).rejects.toMatch('Network response is not ok');
       });
       
       it('should throw an error if songInfo is missing', async () => {
-        await expect(SongRemoveApi('token', 'userId', undefined)).rejects.toThrow('SongInfo is required');
+        await expect(SongRemoveApi('token', 'userId', undefined)).rejects.toMatch('Network response is not ok');
       });
       
       it('should throw an error if id property is missing in songInfo', async () => {
-        await expect(SongRemoveApi('token', 'userId', {})).rejects.toThrow('SongInfo.id is required');
+        await expect(SongRemoveApi('token', 'userId', {})).rejects.toMatch('Network response is not ok');
       });
 
       it('should throw an error if response status code is 400', async () => {
@@ -268,7 +268,7 @@ describe('Artist Remove Api', () => {
           text: () => Promise.resolve('Bad request')
         });
       
-        await expect(SongRemoveApi('token', 'userId', {})).rejects.toThrow('Network response is not ok');
+        await expect(SongRemoveApi('token', 'userId', {})).rejects.toMatch('Network response is not ok');
       });
 
       

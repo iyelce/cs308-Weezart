@@ -1,6 +1,11 @@
 package com.app.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +48,8 @@ public class AddControllerTest {
 
     @Test
     public Song testAddSongManual() throws Exception {
-        String songQuery = "water from wine";
-        String artistQuery = "amaarae";
+        String songQuery = "time slip";
+        String artistQuery = "red velvet";
         String userId = "32";
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/add/manual-song-assisted/{songQuery}/{artistQuery}/{userId}",
@@ -60,28 +65,23 @@ public class AddControllerTest {
 
     @Test
     public void testAddSongAccepted() throws Exception {
-    	Song song = testAddSongManual();
+        Song song = testAddSongManual();
         String userId = "32";
-        
+
         SongPayload songPayload = new SongPayload(song);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/add/manual-song-accepted/{userId}", userId)
+        // When
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/add/manual-song-accepted/{userId}", userId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(songPayload)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        // Then
+        String content = mvcResult.getResponse().getContentAsString();
+
+        assertNotNull(content);
+        assertEquals("SONG_SAVED", content);
     }
 
-//    @Test
-//    public void testAddSongUnique() throws Exception {
-//        String userId = "33";
-//        String songQuery = "water from wine";
-//        List<String> artistQuery = new ArrayList<String>();
-//        artistQuery.add("amaarae");
-//        SongPayload songPayload = new SongPayload(songQuery, artistQuery);
-//
-//        mockMvc.perform(MockMvcRequestBuilders.post("/add/manual-song-unique/{userId}", userId)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(songPayload)))
-//                .andExpect(MockMvcResultMatchers.status().isOk());
-//    }
 }

@@ -6,6 +6,10 @@ import com.app.models.Artist;
 
 public class ArtistPayload {
 
+	public ArtistPayload() {
+		super();
+	}
+
 	public ArtistPayload(String name, List<String> genres, String imageUrl, int followerCount, String id) {
 		super();
 		this.name = name;

@@ -32,6 +32,18 @@ describe('SpotifyGetToptracks function', () => {
 
     expect(result).toEqual({"ok":true });
   });
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(SpotifyGetToptracks('token','as')).rejects.toMatch('Network response is not ok');
+    
+  });
 
   it('handles network error and logs an error', async () => {
     const mockToken = 'your_mock_token';
@@ -130,6 +142,19 @@ describe('SpotifyLogin function', () => {
         });
     });
 
+    test('should return exception when response is not ok ', async () => {
+      const mockResponse = {
+        ok: false,
+        status: 403,
+        text: jest.fn(() => Promise.resolve('Song not found')),
+      };
+  
+      global.fetch.mockResolvedValueOnce(mockResponse);
+  
+      await expect(SpotifyLogin('token')).rejects.toMatch('Network response is not ok');
+      
+    });
+
     it('should return the data when the request is successful', async () => {
         const token = 'yourAccessToken';
         const mockedResponse = 'mocked response';
@@ -221,6 +246,18 @@ describe('SpotifyRecom function', () => {
         });
 
         expect(result).toEqual(mockedResponse);
+    });
+    test('should return exception when response is not ok ', async () => {
+      const mockResponse = {
+        ok: false,
+        status: 403,
+        text: jest.fn(() => Promise.resolve('Song not found')),
+      };
+  
+      global.fetch.mockResolvedValueOnce(mockResponse);
+  
+      await expect(SpotifyRecom('token','acstoken')).rejects.toMatch('Network response is not ok');
+      
     });
 
     it('should throw an error when the request is not successful and log the error', async () => {

@@ -61,6 +61,18 @@ describe('LikeAlbumApi', () => {
       credentials: 'include',
     });
   });
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(LikeAlbumApi('token','a','c')).rejects.toMatch('Network response is not ok');
+    
+  });
 
   test('should log the response data to the console for a successful request', async () => {
     const mockResponseData = { status: 'success' };
@@ -272,6 +284,19 @@ describe('LikeSongApi', () => {
     });
   });
 
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(LikeSongApi('token','a','c')).rejects.toMatch('Network response is not ok');
+    
+  });
+
   test('should log the response data to the console for a successful request', async () => {
     const mockResponseData = { status: 'success' };
     const mockResponse = {
@@ -378,6 +403,19 @@ describe('RateAlbumApi', () => {
     });
   });
 
+
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(RateAlbumApi('token','a','c','d')).rejects.toMatch('Network response is not ok');
+    
+  });
   test('should log the response data to the console for a successful request', async () => {
     const mockResponseData = { status: 'success' };
     const mockResponse = {
@@ -494,6 +532,19 @@ describe('RateArtistApi', () => {
   
       expect(console.log).toHaveBeenCalledWith(mockResponseData);
     });
+
+    test('should return exception when response is not ok ', async () => {
+      const mockResponse = {
+        ok: false,
+        status: 403,
+        text: jest.fn(() => Promise.resolve('Song not found')),
+      };
+  
+      global.fetch.mockResolvedValueOnce(mockResponse);
+  
+      await expect(RateArtistApi('token','a','c','d')).rejects.toMatch('Network response is not ok');
+      
+    });
   
     test('should throw an error when the network response is not ok', async () => {
       const mockResponse = {
@@ -590,6 +641,18 @@ describe('RateSongApi', () => {
     });
   });
 
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(RateSongApi('token','a','c','d')).rejects.toMatch('Network response is not ok');
+    
+  });
   test('should log the response data to the console for a successful request', async () => {
     const mockResponseData = { status: 'success' };
     const mockResponse = {
@@ -668,6 +731,8 @@ describe('RateCheckApi', () => {
       'Content-Type': 'application/json',
     };
 
+    
+
     const mockResponseData = { status: 'success' };
     const mockResponse = {
       ok: true,
@@ -684,6 +749,19 @@ describe('RateCheckApi', () => {
       mode: 'cors',
       credentials: 'include',
     });
+  });
+
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(RateCheckApi('token','a','c')).rejects.toMatch('Network response is not ok');
+    
   });
 
   test('should return the response data for a successful request', async () => {
@@ -777,6 +855,19 @@ describe('IsLikedApi', () => {
       mode: 'cors',
       credentials: 'include',
     });
+  });
+
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(IsLikedApi('token','a','c')).rejects.toMatch('Network response is not ok');
+    
   });
 
   test('should return true when the response is "true"', async () => {

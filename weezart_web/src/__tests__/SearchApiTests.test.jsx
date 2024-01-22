@@ -48,6 +48,19 @@ describe('SearchAlbumApi', () => {
         expect(result).toEqual(mockResponseData);
     });
 
+    test('should return exception when response is not ok ', async () => {
+        const mockResponse = {
+          ok: false,
+          status: 403,
+          text: jest.fn(() => Promise.resolve('Song not found')),
+        };
+    
+        global.fetch.mockResolvedValueOnce(mockResponse);
+    
+        await expect(SearchAlbumApi('token','a')).rejects.toMatch('Network response is not ok');
+        
+      });
+
     it('should handle errors when response is not ok', async () => {
         // Arrange
         global.fetch.mockRejectedValueOnce({
@@ -142,6 +155,18 @@ describe('SearchArtistApi', () => {
 
         expect(result).toEqual(mockResponseData);
     });
+    test('should return exception when response is not ok ', async () => {
+        const mockResponse = {
+          ok: false,
+          status: 403,
+          text: jest.fn(() => Promise.resolve('Song not found')),
+        };
+    
+        global.fetch.mockResolvedValueOnce(mockResponse);
+    
+        await expect(SearchArtistApi('token','a')).rejects.toMatch('Network response is not ok');
+        
+      });
 
     it('should handle errors when response is not ok', async () => {
         // Arrange
@@ -248,6 +273,18 @@ describe('SearchSongApi', () => {
 
         expect(result).toEqual(mockResponseData);
     });
+    test('should return exception when response is not ok ', async () => {
+        const mockResponse = {
+          ok: false,
+          status: 403,
+          text: jest.fn(() => Promise.resolve('Song not found')),
+        };
+    
+        global.fetch.mockResolvedValueOnce(mockResponse);
+    
+        await expect(SearchSongApi('token','a')).rejects.toMatch('Network response is not ok');
+        
+      });
 
     it('should handle errors when response is not ok', async () => {
         // Arrange

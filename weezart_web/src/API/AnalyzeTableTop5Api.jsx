@@ -32,12 +32,7 @@ async function AnalyzeTableTop5Api (token, userId ,filter ) {
         throw "Network response is not ok";
     }
 
-   
-    
 
-
-
-    return result;
 }
 
 

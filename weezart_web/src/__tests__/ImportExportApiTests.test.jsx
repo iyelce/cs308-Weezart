@@ -28,6 +28,18 @@ describe('import file', () => {
             })
         );
     });
+    test('should return exception when response is not ok ', async () => {
+      const mockResponse = {
+        ok: false,
+        status: 403,
+        text: jest.fn(() => Promise.resolve('Song not found')),
+      };
+  
+      global.fetch.mockResolvedValueOnce(mockResponse);
+  
+      await expect(ImportSongFromFileApi('token','a','c')).rejects.toMatch('Network response is not ok');
+      
+    });
 
     it('should return "Import successful" even if all songs already exist', async () => {
         // Same setup as above, with a backend that simulates no new songs added

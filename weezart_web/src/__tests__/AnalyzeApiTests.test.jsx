@@ -74,6 +74,18 @@ describe('AnalyzeApi', () => {
       credentials: 'include',
     });
   });
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(AnalyzeApi('token','a','asa','2023-12-01')).rejects.toMatch('Network response is not ok');
+    
+  });
 
   test('should log the response data to the console for a successful request', async () => {
     const mockResponseData = { status: 'success' };
@@ -194,6 +206,20 @@ describe('AnalyzeChartAddApi', () => {
     });
   });
 
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(AnalyzeChartAddApi('token','a','asa')).rejects.toMatch('Network response is not ok');
+    
+  });
+
+
   test('should log the response data to the console for a successful request', async () => {
     const mockResponseData = { status: 'success' };
     const mockResponse = {
@@ -289,6 +315,18 @@ describe('AnalyzeChartLikeApi', () => {
       mode: 'cors',
       credentials: 'include',
     });
+  });
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(AnalyzeChartLikeApi('token','a','asa')).rejects.toMatch('Network response is not ok');
+    
   });
 
   test('should log the response data to the console for a successful request', async () => {
@@ -388,6 +426,19 @@ describe('AnalyzeChartRateApi', () => {
     });
   });
 
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(AnalyzeChartRateApi('token','a','asa')).rejects.toMatch('Network response is not ok');
+    
+  });
+
   test('should log the response data to the console for a successful request', async () => {
     const mockResponseData = { status: 'success' };
     const mockResponse = {
@@ -482,6 +533,19 @@ describe('AnalyzeTableReleaseApi', () => {
       mode: 'cors',
       credentials: 'include',
     });
+  });
+
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(AnalyzeTableReleaseApi('token','a','asa')).rejects.toMatch('Network response is not ok');
+    
   });
 
   test('should log the response data to the console for a successful request', async () => {
@@ -585,6 +649,19 @@ describe('AnalyzeTableGenreApi', () => {
     });
   });
 
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(AnalyzeTableGenreApi('token','a','asa')).rejects.toMatch('Network response is not ok');
+    
+  });
+
   test('should log the response data to the console for a successful request', async () => {
     const mockResponseData = { status: 'success' };
     const mockResponse = {
@@ -682,6 +759,18 @@ describe('AnalyzeTableTop5Api', () => {
     });
   });
 
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(AnalyzeTableTop5Api('token','a','asa')).rejects.toMatch('Network response is not ok');
+    
+  });
   test('should log the response data to the console for a successful request', async () => {
     const mockResponseData = { status: 'success' };
     const mockResponse = {

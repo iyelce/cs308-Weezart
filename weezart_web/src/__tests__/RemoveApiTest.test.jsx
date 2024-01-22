@@ -43,6 +43,8 @@ describe('Artist Remove Api', () => {
         );
       });
       
+
+      
       it('should throw an error if server response is not ok', async () => {
         // Mock the fetch response with a non-200 status code
         const mockResponse = {
@@ -51,7 +53,7 @@ describe('Artist Remove Api', () => {
           text: jest.fn(() => Promise.resolve('Internal Server Error')),
         };
     
-        global.fetch.mockRejectedValueOnce(mockResponse);
+        global.fetch.mockResolvedValueOnce(mockResponse);
     
       
         await expect(ArtistRemoveApi('token', 'userId', {})).rejects.toMatch('Network response is not ok');

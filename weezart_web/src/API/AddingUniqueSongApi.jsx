@@ -5,15 +5,15 @@ async function AddingUniqueSongApi ({...props} ) {
 
     let newSong = {
         id : "",
-        name : props.name,
-        albumName : props.albumName,
+        name : props?.name,
+        albumName : props?.albumName,
         albumId : "",
-        artistsName : props.artistsName,
+        artistsName : props?.artistsName,
         artistsId : [],
         popularity : -1,
-        duration_ms :  (props.minutes * 60000) + (props.seconds * 1000)   ,
-        explicit : props.explicit,
-        albumRelease : props.albumRelease 
+        duration_ms :  (props?.minutes * 60000) + (props?.seconds * 1000)   ,
+        explicit : props?.explicit,
+        albumRelease : props?.albumRelease 
     }
 
     try{        
@@ -39,7 +39,6 @@ async function AddingUniqueSongApi ({...props} ) {
     
         if(!response.ok) {
             return -1;
-            throw new Error('Network response is not ok');
         }
 
         if(data !== null || data !== "") {

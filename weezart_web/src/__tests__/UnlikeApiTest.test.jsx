@@ -68,6 +68,19 @@ describe('UnlikeSongApi', () => {
     });
   });
 
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(UnlikeSongApi('token','a','c')).rejects.toMatch('Network response is not ok');
+    
+  });
+
   test('should log the response data to the console for a successful request', async () => {
     const mockResponseData = { status: 'success' };
     const mockResponse = {
@@ -205,6 +218,19 @@ describe('UnlikeArtistApi', () => {
     });
   });
 
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(UnlikeArtistApi('token','a','c')).rejects.toMatch('Network response is not ok');
+    
+  });
+
   test('should log the response data to the console for a successful request', async () => {
     const mockResponseData = { status: 'success' };
     const mockResponse = {
@@ -339,6 +365,19 @@ describe('UnlikeAlbumApi', () => {
       mode: 'cors',
       credentials: 'include',
     });
+  });
+
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(UnlikeAlbumApi('token','a','c')).rejects.toMatch('Network response is not ok');
+    
   });
 
   test('should log the response data to the console for a successful request', async () => {

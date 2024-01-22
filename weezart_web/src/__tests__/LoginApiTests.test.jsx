@@ -439,6 +439,19 @@ describe('UserPublicDataApi function', () => {
         expect(result).toEqual(mockedResponse);
     });
 
+    test('should return exception when response is not ok ', async () => {
+        const mockResponse = {
+          ok: false,
+          status: 403,
+          text: jest.fn(() => Promise.resolve('Song not found')),
+        };
+    
+        global.fetch.mockResolvedValueOnce(mockResponse);
+    
+        await expect(UserPublicDataApi('token','a','c')).rejects.toMatch('Network response is not ok');
+        
+      });
+
     it('should throw an error when the network response is not ok', async () => {
         const token = 'testToken';
         const userId = 'testUserId';

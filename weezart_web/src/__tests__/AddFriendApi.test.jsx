@@ -34,6 +34,19 @@ describe('AddFriendApi', () => {
         credentials: 'include',
       });
     });
+
+    test('should return exception when response is not ok ', async () => {
+      const mockResponse = {
+        ok: false,
+        status: 500,
+        text: jest.fn(() => Promise.resolve('Song not found')),
+      };
+  
+      global.fetch.mockResolvedValueOnce(mockResponse);
+  
+      await expect(AddFriendApi('token','a','c')).rejects.toMatch('Network response is not ok');
+      
+    });
   
     test('should return "USER_ALREADY_FRIEND" when response status is 403', async () => {
       const mockResponse = {

@@ -58,6 +58,18 @@ describe('AddingAcceptedSong', () => {
       credentials: 'include',
     });
   });
+  test('should return exception when response is not ok ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 403,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockRejectedValueOnce(mockResponse);
+
+    await expect(AddingAcceptedSong('token','a','c')).rejects.toMatch('Network response is not ok');
+    
+  });
 
   test('should return "Song is already added" when the response status is 403', async () => {
     const mockResponse = {
@@ -155,6 +167,8 @@ describe('AddingSongManuallyApi', () => {
       mode: 'cors',
     });
   });
+
+
 
   test('should return "Song not found" when the response status is 403', async () => {
     const mockResponse = {
@@ -274,6 +288,8 @@ describe('AddingUniqueSongApi', () => {
       credentials: 'include',
     });
   });
+
+
 
   test('should return 1 when the response is ok', async () => {
     const mockResponse = {

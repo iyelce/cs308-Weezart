@@ -19,7 +19,6 @@ import AnalyzeChartLikeApi from '../../API/AnalyzeChartLikeApi';
 import AnalyzeTableTop5Api from '../../API/AnalyzeTableTop5Api';
 import AnalyzeTableReleaseApi from '../../API/AnalyzeTableReleaseApi';
 import AnalyzeTableGenreApi from '../../API/AnalyzeTableGenreApi';
-import AnalyzeTableLast5Api from '../../API/AnalyzeTableLast5Api';
 import './Analyze.css';
 import ShareIcon from '@mui/icons-material/Share';
 
@@ -230,17 +229,7 @@ function isDateBeforeToday(date) {
     fetchTableMetrics();
 
   }, [props.token,props.userId,analyzeType]);
-  useEffect(() => {
-    const fetchTableMetrics = async () => { 
-    try{
-      const response=await AnalyzeTableLast5Api(props.token,props.userId,analyzeType);
-      setTableData2(response);
-    }
-    catch(e){
-      console.log(e);
-    }};
-    fetchTableMetrics();
-  }, [props.token,props.userId,analyzeType]);
+  
 
   useEffect(() => {
     const fetchTableMetrics = async () => {

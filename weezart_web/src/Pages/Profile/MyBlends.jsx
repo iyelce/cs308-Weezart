@@ -123,10 +123,14 @@ const MyBlends = ({...props}) => {
 ) : blendList !== "boş" ? (
         <div className="list-container">
           {blendList.map((blend, index) => (
+
+            <div style={{display:"flex", backgroundColor:"#2c2834", borderRadius:"24px", marginBottom:"15px"}}>
+            
             <Link
               key={index}
               to={`/blends/${blend.userSong.id}`}
               className="blend-item-container"
+              style={{height:"100%"}}
             >
               <div className="list-rectangle">
                 <img
@@ -137,11 +141,14 @@ const MyBlends = ({...props}) => {
                 <p className="rectangle-label">
                   {blend.userSong.groupSongNames ? blend.userSong.groupSongNames.join(', ') : ''}
                 </p>
-                <div className="delete-icon-blend" onClick={() => handleDelete(blend.userSong.id)}>
-                  <AiOutlineDelete />
-                </div>
+                
               </div>
             </Link>
+            <div className="delete-icon-blend" onClick={() => handleDelete(blend.userSong.id)} style={{display:"flex",justifyContent:"center",alignItems:"center", paddingRight:"10px"}}>
+                  <AiOutlineDelete />
+                </div>
+            
+            </div>
           ))}
         </div>
       ) : (

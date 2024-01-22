@@ -79,10 +79,7 @@ async function publicDatas() {
   
 
 
-    const handleEditProfile = () => {
-      // Add logic to handle edit profile
-      alert('Edit Profile clicked');
-    };
+    
   
 
   
@@ -118,10 +115,7 @@ async function publicDatas() {
           <FormControlLabel control={<Checkbox checked={publicData===undefined?false:publicData} color="secondary" onChange={handleChange} />} label="Public" />
           </div>
   
-          {/* Edit Profile Button */}
-          <button className="add-artist-button" onClick={handleEditProfile}>
-            Edit Profile
-          </button>
+        
         </div>
       </div>
 

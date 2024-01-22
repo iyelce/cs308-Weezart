@@ -70,6 +70,19 @@ describe('AddingAcceptedSong', () => {
     await expect(AddingAcceptedSong('token','a','c')).rejects.toMatch('Network response is not ok');
     
   });
+  test('should return exception when response is not ok aa ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 404,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(AddingAcceptedSong('token','a','c')).rejects.toMatch('Network response is not ok');
+    
+  });
+
 
   test('should return "Song is already added" when the response status is 403', async () => {
     const mockResponse = {
@@ -168,6 +181,18 @@ describe('AddingSongManuallyApi', () => {
     });
   });
 
+  test('should return exception when response is not ok aa ', async () => {
+    const mockResponse = {
+      ok: false,
+      status: 404,
+      text: jest.fn(() => Promise.resolve('Song not found')),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    await expect(AddingSongManuallyApi('token','a','c')).rejects.toMatch('Network response is not ok');
+    
+  });
 
 
   test('should return "Song not found" when the response status is 403', async () => {
@@ -183,6 +208,8 @@ describe('AddingSongManuallyApi', () => {
 
     expect(result).toBe('Song not found');
   });
+
+ 
 
   test('should return the parsed response when the response status is ok', async () => {
     const mockResponseData = '{"id":"your_id_value","name":"your_name_value","albumName":"your_album_name_value","albumId":"your_album_id_value","albumRelease":"2023-05-15","artistsName":["Recep Tayyip Erdoğan","Kemal Kılıçdaroğlu","Sinan Oğan"],"artistsId":["","",""],"popularity":-1,"duration_ms":221306,"explicit":true}';
@@ -324,6 +351,32 @@ describe('AddingUniqueSongApi', () => {
     await AddingUniqueSongApi(mockProps);
 
     expect(console.error).toHaveBeenCalledWith('error in fetching data:', expect.any(Error));
+  });
+
+
+  test('should return -1 when the response is ok data null', async () => {
+    const mockResponse = {
+      ok: true,
+      text: jest.fn(() => Promise.resolve(null)),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    const result = await AddingUniqueSongApi(mockProps);
+
+    expect(result).toBe(1);
+  });
+  test('should return -1 when the response is ok data null 2 ', async () => {
+    const mockResponse = {
+      ok: true,
+      text: jest.fn(() => Promise.resolve("")),
+    };
+
+    global.fetch.mockResolvedValueOnce(mockResponse);
+
+    const result = await AddingUniqueSongApi(mockProps);
+
+    expect(result).toBe(1);
   });
 });
 

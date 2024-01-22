@@ -18,9 +18,7 @@ async function AddingUniqueSongApi ({...props} ) {
 
     try{        
 
-        console.log("uniwue eklerken yolladığım : ", newSong);
-
-        console.log (props.minutes ,"--",props.seconds)
+        
 
 
         const response = await fetch(url, {

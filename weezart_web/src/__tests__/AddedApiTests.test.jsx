@@ -471,6 +471,19 @@ describe('AddedSongsApi', () => {
       await expect(AddedSongsApi('token','a')).rejects.toMatch('Network response is not ok');
       
     });
+
+    test('should return exception when response is not ok ', async () => {
+      const mockResponse = {
+        ok: false,
+        status: 403,
+        text: jest.fn(() => Promise.resolve('Song not found')),
+      };
+  
+      global.fetch.mockRejectedValueOnce(mockResponse);
+  
+      await expect(AddedSongsApi('token','a')).rejects.toMatch('Network response is not ok');
+      
+    });
   
     test('should log the response data to the console for a successful request', async () => {
       const mockResponseData = [{ songId: 1, songName: 'Song 1' }];

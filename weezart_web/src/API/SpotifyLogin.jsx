@@ -20,13 +20,13 @@ async function SpotifyLogin (token) {
         const data = await response.text();
     
         if(!response.ok) {
-            throw new Error('Network response is not ok');
+            throw ('Network response is not ok');
         }
         return data;
     }
     catch (error) {
         console.error('error in fetching data:', error);
-        throw 'Network response is not ok'
+        
     }
 }
 

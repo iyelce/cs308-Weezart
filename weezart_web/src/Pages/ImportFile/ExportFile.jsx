@@ -67,7 +67,7 @@ const ExportPage = ({...props}) => {
 
             <p className="song-add-label"> Click to Export Your Song List </p>
 
-            <button className="export-button" onClick={handleExport}>Export File</button>
+            <button className="export-button" onClick={handleExport} data-testid="buttons">Export File</button>
 
             <p style={{ display: showErrorLabel ? 'block' : 'none' }} className="single-song-add-unique-label">
                 Something went wrong. Try again.

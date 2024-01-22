@@ -14,9 +14,6 @@ const FollowersList = ({...props}) => {
 
             <br/>
             <br/>
-
-
-
      
             <div className="profile-container" style={{display:"flex", flexDirection:'column'}}>
             

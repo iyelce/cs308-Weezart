@@ -1,0 +1,394 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+.importPage{
+    background-color: #222;
+    height: 100vh;
+}
+
+.importPage > p {
+    text-align: center;
+    display: block;
+    margin: 10px 0;
+  }
+
+.song-add-page{
+    height: 100vh;
+    position: relative;
+    background-image:url('../../add_page.png');
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
+  .single-song-add {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    height: auto;
+    margin: auto;
+    padding: 20px;
+    background-color: rgba(26, 23, 33, 0.8);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .single-song-add-label{
+    margin-top: 1rem;
+    margin-left: 2rem;    
+    margin-right: 1rem;
+    font-family: Poppins;
+    font-size: 17px;
+    font-weight: 600;
+    color: #B9B4C7;
+  }
+
+  .single-song-add-unique-label,
+  .single-song-add-fill-label {
+    margin-left: auto;
+    margin-right: auto;
+    font-family: Poppins;
+    font-weight: 600;
+    color: #B9B4C7;
+  }
+
+  .single-song-add-unique-label{
+    margin-top: 3rem;
+    font-size: 17px;
+  }
+
+  .single-song-add-fill-label {
+    margin-top: 1.5rem;
+    font-size: 20px;
+  }
+  
+  .form-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Optional: Adjust as needed for vertical alignment */
+    margin-top: 1.5rem;
+  }
+  
+  .form-row > * {
+    margin-bottom: 20px; /* Adjust as needed for vertical spacing between items */
+  }
+  
+  .form-row > *:last-child {
+    margin-bottom: 0;
+  }
+  
+  .explicit-checkbox {
+    width: auto;
+    margin-right: 5px;
+  }
+  
+  .artist-list {
+    padding: 0;
+    list-style: none;
+  }
+  
+
+  
+
+
+  .submit-button{
+    background-color: #3B0944; /* Purple color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px 20px; /* Adjust padding as needed */
+    border-radius: 25px; /* Adjust border-radius for rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth color transition */
+    margin-left: 10rem;
+    margin-right: 10rem;
+    margin-top: 3rem;
+    font-family: Poppins;
+    
+  
+    /* Optional: Add hover effect */
+    &:hover {
+      background-color: #600b71; 
+    }
+  }
+  
+  /* Styling for react-datepicker */
+  .date-picker {
+    font-family: 'Arial', sans-serif;
+    font-family: Poppins;
+  }
+  
+  .date-picker__header {
+    background-color: #555;
+    color: #fff;
+  }
+  
+  .date-picker__day-name,
+  .date-picker__day {
+    color: #fff;
+  }
+  
+  .date-picker__day:hover {
+    background-color: #777;
+  }
+
+  /* Styling for react-datepicker */
+.date-picker {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .date-picker__header {
+    background-color: #555;
+    color: #fff;
+  }
+  
+  .date-picker__year-dropdown-container {
+    background-color: #555;
+    border: 1px solid #666;
+    border-radius: 4px;
+    padding: 8px;
+    margin-top: 8px;
+  }
+  
+  .date-picker__year-dropdown {
+    color: #fff;
+  }
+  
+  .date-picker__year-option {
+    color: #fff;
+  }
+  
+  .date-picker__day-name,
+  .date-picker__day {
+    color: #fff;
+  }
+  
+  .date-picker__day:hover {
+    background-color: #777;
+  }
+
+  /* SpotifySearch.css or your preferred CSS file */
+
+.spotify-search-container {
+    max-width: 40rem;
+    margin: auto;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Poppins;
+  }
+  
+  .input-row {
+    margin-bottom: 15px;
+  }
+  
+  .input-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #fff;
+    font-family: Poppins;
+  }
+  
+  .input-text {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #1a1721;
+    border-radius: 4px;
+    background-color: #352F44;
+    color: #fff;
+    font-family: Poppins;
+    width: 200px;
+    height: 20px;
+    
+  }
+
+  .explicit-checkbox{
+    margin-left: 1rem;
+
+  }
+  
+  .search-button{
+    margin-left: 11rem;
+    margin-top: 1rem;
+    background-color: #45a049;
+    color: #fff;
+    border: none;
+    padding: 10px 20px; 
+    border-radius: 25px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+    font-family: Poppins;
+  
+    &:hover {
+      background-color: #2e7632; 
+    }
+  }
+
+
+
+  .add-song-button
+  {
+    background-color: #9416ad; /* Purple color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px 20px; /* Adjust padding as needed */
+    border-radius: 25px; /* Adjust border-radius for rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth color transition */
+    font-family: Poppins;
+    margin-left: 20rem;
+    /* Optional: Add hover effect */
+    &:hover {
+      background-color: #780d8e; 
+    }
+  }
+
+  .export-button  {
+    background-color: #9416ad; /* Purple color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 10px 20px; /* Adjust padding as needed */
+    border-radius: 25px; /* Adjust border-radius for rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth color transition */
+    font-family: Poppins;
+    /* Optional: Add hover effect */
+    &:hover {
+      background-color: #780d8e; 
+    }
+  }
+  
+
+  .song-add-label {
+    font-family: 'Poppins';
+    font-size: 20px;
+    font-weight: 800;
+    color: #B9B4C7;
+    text-shadow: 2px 2px 4px rgba(1, 1, 1, 1);
+    font-family: Poppins;
+  }
+
+  .weezart-text {
+    color: #9416ad;
+    font-family: Poppins;
+  }
+
+  .spotify-text {
+    color: #45a049;
+    font-family: Poppins;
+  }
+
+
+.column_addsong{
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.spotify-add-table,
+.artist-add-table-unique {
+    width: 30rem;
+    border-collapse: collapse;
+    margin-top: 1.7rem;
+    color: #B9B4C7;
+    background-color: #352F44;
+    border-radius: 0.25rem;
+    border: 1px solid #1a1721;
+    font-family: Poppins;
+  }
+
+  .spotify-add-table{
+    margin-left: 15%;
+  }
+
+  .artist-add-table-unique {
+    margin-left: 2rem;
+  }
+
+.spotify-add-table th,
+.spotify-add-table td,
+.artist-add-table-unique th,
+.artist-add-table-unique td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #1a1721;
+  font-family: Poppins;
+}
+
+.spotify-add-table th,
+.artist-add-table-unique th {
+  background-color: #1a1721;
+  border-top: 1px solid #1a1721;
+  padding-bottom: 0.1rem;
+  font-family: Poppins;
+}
+
+
+.add-from-spotify-row > * {
+  margin-bottom: 20px;
+}
+
+.add-from-spotify-row > *:last-child {
+  margin-bottom: 0;
+}
+
+
+/* FileUploadPage.css */
+
+.file-upload-container {
+  width: 100%;
+  height: 300px;
+  border: 2px dashed #B9B4C7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #B9B4C7;
+  font-family: Poppins;
+}
+
+.file-upload-container p {
+  margin: 10px 0;
+}
+
+.file-upload-buttons {
+  margin-top: 10px;
+}
+
+.file-upload-buttons button {
+  margin-right: 10px;
+}
+.file-upload-container-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  height: auto;
+  margin: auto;
+  padding: 20px;
+  background-color: rgba(26, 23, 33, 0.8);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Poppins;
+}
+
+.add_song_row{
+  display: flex;
+  flex-direction: row;
+}
+
+
+.new-song-add-row{
+  height: 2%;
+  margin-top: 2rem;
+}
+
+
+

@@ -1,0 +1,390 @@
+.authbody{
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url('https://cdnb.artstation.com/p/assets/images/images/016/387/059/large/stefanie-arndorfer-god-temple-interior-version.jpg?1551966297');
+    background-size:cover;
+    background-position:center;
+    background-repeat: no-repeat;
+    font-family: Poppins;
+
+
+
+    margin:0;
+    padding:0;
+}
+
+/* #root{
+    width: 50%;
+    height: auto;
+
+}
+*{
+    margin:0;
+    padding:0;
+} */
+
+/* Div that react creates*/
+div.App{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+}
+
+/* Div that we created */
+div.main{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height:70%;
+    background: rgba(255,255,255,0.3);
+    box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -o-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -ms-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -o-border-radius: 20px;
+    -ms-border-radius: 20px; 
+    padding:0;
+    padding-bottom:2rem;
+}
+
+/* Login or Sign up written Part*/
+div.main .title{
+  font-size: 35px;
+  font-weight: 400;
+  margin-top: 0;
+  text-align: center;
+  line-height: 100px;
+  color: #fff;
+  user-select: none;
+  border-radius: 15px 15px 0 0;
+  background: rgba(37, 2, 67, 0.873);
+}
+
+/* Part that contains whole input part and buttons*/
+div.main .register-content{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* Two Equal parts in div one of them whole inputs other one is for the logo*/
+div.main .register-form{
+    width:100%;
+    height:100%;
+    position:relative;
+    margin-left: 3%;
+    margin-top:100px;
+} 
+
+
+div.main .register-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    height:100%;
+    padding:0;
+    position:relative;
+
+}
+
+/* Div that contains input boxes of username email password and repeat password*/
+div.main .register-form .field{
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+    position: relative;
+    display: flex;
+    border: 1px solid lightgrey;
+    border-radius: 25px;
+    background:white;
+}
+
+/*Input Boxes */
+div.main .register-form .field input.register-input-box{
+    width: 90%;
+    outline:none;
+    font-size: 17px;
+    border-color: transparent;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    position:relative;
+    padding-left: 1.5rem;
+}
+
+/*Texts inside of the input boxes */
+div.main .register-form .field label{
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    color: #999999;
+    background:transparent;
+    font-weight: 400;
+    font-size: 17px;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+}
+
+/* See Password Button */
+div.main .register-form .field span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right:0;
+    margin-right: 1rem;
+}
+
+/* When input boxes are clicked its border become this color */
+div.main .register-form form .field.moved{
+  border-color: #331055;
+}
+
+
+/* It moves the text inside of the input box to upperside of the input box  */
+div.main .register-form form .field input.register-input-box ~ label.moved-upside,
+form .field input ~ label.moved-upside{
+  top: 0%;
+  padding-bottom:3px;
+  color: #331055;
+  background: transparent;
+  transform: translateY(-75%);
+}
+
+/* Login or Sign Up Button */
+div.register-button {
+	position: relative;
+    margin-top:1.7rem;
+	top: 50%;
+    left:25%;
+	width: 250px;
+	height: 50px;	
+    transition:0.5s;
+    border-radius:30px;
+}
+
+/* Login or Sign Up Button Hover Effect */
+div.register-button:hover{
+    box-shadow: 0 0 5px #331055, 0 0 15px #331055, 0 0 30px #331055,
+		0 0 60px #331055;
+        
+}
+
+/* Login or Sign Up Button Text */
+div.register-button a {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 70%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #331055;
+	border-bottom: 1px solid #331055;
+	border-top: 1px solid #331055;
+	border-radius: 30px;
+	padding: 10px;
+	letter-spacing: 1px;
+	text-decoration: none;
+	overflow: hidden;
+	color: #fff;
+	font-weight: 400px;
+	z-index: 1;
+	transition: 0.5s;
+	backdrop-filter: blur(15px);
+}
+
+/* Login or Sign Up Button Text Hover Effect */
+div.register-button :hover a {
+	letter-spacing: 3px;
+}
+
+/* Button Animation Upper Part*/
+div.register-button a::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: 100%;
+	background: linear-gradient(to left, rgba(255, 255, 255, 0.15), transparent);
+	transform: skewX(45deg) translate(0);
+	transition: 0.5s;
+}
+
+/* Button Animation Hover Effect */
+div.register-button:hover a::before {
+	transform: skewX(45deg) translate(200px);
+}
+
+/* Button Animation Upper Part*/
+div.register-button::before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	transform: translatex(-50%);
+	bottom: -5px;
+	width: 30px;
+	height: 10px;
+	background: #331055;
+	border-radius: 1px;
+	transition: 0.5s;
+	transition-delay: 0.5;
+    opacity: 0;
+}
+
+ /*lightup button*/
+div.register-button:hover::before {
+	bottom: 0;
+	height: 50%;
+	width: 80%;
+	border-radius: 30px;
+    opacity: 1;
+}
+
+/* Button Animation Lower Part*/
+div.register-button::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	transform: translatex(-50%);
+	top: -5px;
+	width: 30px;
+	height: 10px;
+	background: #331055;
+	border-radius: 10px;
+	transition: 0.5s;
+	transition-delay: 0.5;
+    opacity: 0;
+}
+
+ /*lightup button*/
+div.register-button:hover::after  {
+	top: 0;
+	height: 50%;
+	width: 80%;
+	border-radius: 30px;
+    opacity: 1;
+}
+
+/* Login or Sign Up Button Text Hover Effect */
+div.register-button:nth-child(1)::before, 
+div.register-button:nth-child(1)::after {
+	background: #331055;
+	box-shadow: 0 0 5px #331055, 0 0 15px #331055, 0 0 30px #331055,
+		0 0 60px #331055;
+}
+
+/* Div that contains login or sign up with Google button */
+ .social-registers {    
+	display: flex;
+	width: 80%;
+	flex-direction: column;
+    margin-top: 1.5rem;
+	justify-content: center;
+	align-items: center;
+}
+
+/* Login or Sign Up with Google Button */
+.social-registers button.register-with-google-btn {
+    visibility: hidden;
+	padding: 12px 16px 12px 42px;
+	margin-top:20px;
+	border: none;
+	border-radius: 25px;
+	font-size:12px;
+	font-weight: 500;
+	box-shadow: 0 -1px 0 rgba(0, 0, 0, .04), 0 1px 1px rgba(0, 0, 0, .25);
+	color: #757575;
+	font-size: 14px;
+	font-weight: 500;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
+	position:relative;
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
+	background-color: white;
+	background-repeat: no-repeat;
+	background-position: 12px 11px;
+	cursor: pointer;
+    width: 60%;
+    left:5%;	
+  } 
+	
+/* Login or Sign Up with Google Button Hover Effect */
+  div button.register-with-google-btn:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left:-2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+}
+
+.register-with-google-btn:active {
+    color: #000
+}
+
+.register-with-google-btn:active:after {
+    background: transparent;
+}
+
+.register-with-google-btn:hover:before {
+    opacity: 1;
+}
+
+.register-with-google-btn:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+
+div.register-logo img{
+    width:60%;
+    height: 80%;
+    top:10%;
+    position: absolute;
+
+}
+
+.login-error-p{
+    color: #331055;
+    font-size: 20px;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgb(191, 186, 186);
+}
+  
+#root > div > div:nth-child(2) > div > div > div.register-content > div.register-form > div:nth-child(3){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}

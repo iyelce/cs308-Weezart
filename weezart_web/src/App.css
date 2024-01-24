@@ -1,0 +1,92 @@
+@import './Pages/Authentication/authStyle.css';
+@import './Pages/HomePage/HomePage.css';
+@import './Pages/Popups/Popup.css';
+@import './Pages/Sidebar/Sidebar.css';
+
+
+html,body,#root{
+    height:100vh;
+}
+
+#root>:nth-child(1){
+    height:100%;
+    display:flex;
+    width: 100%;
+
+}
+#root > div > div:nth-child(1) > div > div.sideBar{
+height:100%;
+}
+
+aside.ps-sidebar-root.css-1wvake5{
+    height:100%;
+}
+
+.flex-container {
+    display: flex;
+  }
+  
+  .block-container {
+    display: block;
+  }
+
+
+
+/* For sidebar component hover effects */
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > div.MuiBox-root.css-1l8icbj > li > a > span,
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > li > a > span.ps-menu-icon.css-wx7wi4,
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > div > li>a>span,
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > li > a > span > div > button {
+    color:#FFFFFF;
+  }
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > div.MuiBox-root.css-1l8icbj > li > a:hover span,
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > div.MuiBox-root.css-1l8icbj > li.ps-submenu-root>div>ul>li>a:hover span,
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > li > a:hover span.ps-menu-icon.css-wx7wi4,
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > div > li>a:hover span,
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > li > a > span > div > button:hover{
+    color:#b35dcb;
+  }
+
+  
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > div.MuiBox-root.css-1l8icbj > li > a:hover,
+  #root > div > div:nth-child(1) > div > div > aside > div > nav > ul > li > a:hover 
+  {
+    background-color:#3B0944;
+  }
+/* For sidebar component hover effects Finished  */
+
+
+#root>div>:nth-child(2){
+background-color: white;
+
+
+}
+
+#root > div > div:nth-child(1) > div > div > aside{
+border-color:#150426;
+
+}
+#root > div > div:nth-child(2){
+    width: 100%;
+    background-color: #120719;
+    overflow-y: auto;
+   
+}
+
+#root > div {
+    height:100%;
+}
+#root>div>div:nth-child(1){
+  z-index: 1;
+
+}
+#root > div > div:nth-child(1) > div{
+    height:100%;
+}
+
+
+
+body > div.ReactModalPortal > div{
+  z-index: 100;
+  background-color: rgba(0,0,0,0.0) !important;
+}

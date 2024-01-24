@@ -1,0 +1,174 @@
+/* ProfilePage.css */
+
+.profile_page{
+    height: 100vh;
+    position: relative;
+    background-image:url('../../output-onlinepngtools.png');
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(26, 23, 33, 0.5);
+    color: #ffffff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-left: 2rem;
+    margin-right: 2rem;
+    color: #B9B4C7;
+  }
+  .profile-container::before{
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .list-container{
+    margin-left: 2rem;
+  }
+  
+  .profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  
+  .user-details {
+    flex-grow: 1;
+  }
+  
+ 
+  .clickable-items {
+    display: flex;
+    gap: 20px;
+    cursor: pointer;
+  }
+
+
+
+  
+  /* Style each clickable item */
+  .clickable-items div {
+    padding: 10px;
+    background-color: #2c2834;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .clickable-items div:hover {
+    background-color: #403b4a;
+  }
+
+  
+  .rectangle-image {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    margin-right: 10px;
+  }
+  
+  .rectangle-label {
+    font-size: 16px;
+    margin-left: 1rem;
+  }
+
+  .profile_followers,
+.profile_following {
+  cursor: pointer;
+  /* Add any additional styling as needed */
+}
+
+.profile_followers:hover,
+.profile_following:hover {
+  text-decoration: underline; /* Add underline on hover if desired */
+  /* Add any additional styling for hover state as needed */
+}
+.add-artist-button {
+  background-color: #331055; /* Purple color */
+  color: #fff; /* White text color */
+  border: none;
+  padding: 10px 20px; /* Adjust padding as needed */
+  border-radius: 25px; /* Adjust border-radius for rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth color transition */
+  margin-left: 2rem;
+  font-family: Poppins;
+
+  /* Optional: Add hover effect */
+  &:hover {
+    background-color: #3B0944; 
+  }
+}
+
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.addBlendIcon {
+  font-size: 2.5rem; color: #800080;
+}
+
+.blend-item-container{
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+}
+
+.list-rectangle {
+  display: flex;
+  align-items: center;
+  background-color: #2c2834;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  color: #b9b4c7;
+  height: 70px;
+  width: 30rem;
+  margin-top: 1rem;
+}
+
+.delete-icon-blend {
+  color: gray;
+  cursor: pointer;
+  font-size: 55px;
+  transition: background-position 1s steps(28);
+}
+
+.delete-icon-blend:hover {
+  color: #ab20fd;
+}
+
+.rectangle-label {
+  flex-grow: 1; /* Allow the label to take the remaining space */
+}
+
+/* Adjust the margin based on the label width */
+.delete-icon-blend + .rectangle-label {
+  margin-left: calc(0.5rem + 1ch); /* Adjust as needed */
+}
+
+
+.loading-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  
+}
+
+.loading-container p {
+  margin-top: 1rem;
+}
+

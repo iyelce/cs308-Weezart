@@ -1,0 +1,235 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&display=swap");
+
+.navigation-search {
+  margin-bottom: 24px;
+  position: relative;
+  width: 70%;
+  margin-top: 30px;
+  margin-left: 3rem;
+  
+}
+
+.navigation-search__icon {
+  height: 20px;
+  left: calc((40px - 20px) / 2);
+  pointer-events: none;
+  position: absolute;
+  top: calc((40px - 20px) / 2);
+  transition: all 0.1s ease-out;
+  width: 20px;
+  color: #B9B4C7;
+}
+
+[class$="--collapsed"] .navigation-search__icon {
+  left: 12px;
+}
+
+/* -------------- INPUT */
+
+.navigation-search__input {
+  background-color: #352F44;
+  border-radius: 30px;
+  border: 0;
+  color: #B9B4C7;
+  font-family: inherit;
+  font-size: inherit;
+  height: 40px;
+  line-height: 40px;
+  outline: none;
+  padding-left: 40px;
+  transition: all 0.2s ease-out;
+  width: 100%;
+  position: relative;
+}
+
+.navigation-search__input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  background: url("data:image/svg+xml, %3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-x'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E") no-repeat center center/cover;
+  cursor: pointer;
+  height: 20px;
+  position: relative;
+  right: calc((40px - 20px) / 2);
+  width: 20px;
+}
+
+[class$="--collapsed"] .navigation-search__input:not(:focus)::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* -------------- FOCUS STYLES */
+
+.navigation-search__input:focus {
+  padding-left: 40px;
+  background-color: #5C5470;
+  border-radius: 20px;
+  color: #B9B4C7;
+
+  [class$="--collapsed"] .navigation-search__input {
+    width: 250px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  + svg {
+    opacity: 0;
+    transform: translateX(-20%);
+  }
+}
+
+
+.search-buttons {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .search-button {
+    background-color: #352F44;
+    color: #B9B4C7;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 40px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    margin-right: 3rem;
+    width: auto;
+  }
+  
+  .search-button.active {
+    background-color: #B9B4C7;
+    color: #352F44;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 30px; /* Adjust padding for button size */
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .search-items-container {
+    margin-top: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; 
+    background-color: none;
+    width: 100%;
+    background-color: none;
+
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  .search-item{
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    background-color: #352F44;
+    padding: 10px;
+    width: 90%;
+    border-radius: 4px;
+    height:max-content;
+  }
+  
+  .searchbar-song-number,
+  .searchbar-song-album,
+  .seachbar-song-duration {
+    margin-left: 3%; /* Adjust left margin */
+    white-space: nowrap;
+    flex: 2;
+  }
+  
+  /* Add space between the album and duration */
+  .searchbar-song-album {
+    margin-right: 3%;
+  }
+  
+  .searchbar-songname-artist {
+    display: flex;
+    flex-direction: column;
+    background-color: none;
+    margin-left: 3%; /* Adjust left margin */
+    white-space: nowrap;
+    flex: 3;
+  }
+  
+  .searchbar-songname-artist-artist,
+  .searchbar-songname-artist-songname,
+  .searchbar-song-album,
+  .seachbar-song-duration {
+    color: #B9B4C7;
+    font-family: Poppins;
+  }
+  
+  .searchbar-songname-artist-artist {
+    font-size: 13px;
+    font-weight: 200;
+  }
+  
+  .searchbar-songname-artist-songname,
+  .searchbar-song-album,
+  .seachbar-song-duration {
+    font-size: 17px;
+    font-weight: 200;
+  }
+
+  .searchbar-song-img {
+    flex: 2;
+    margin-right: 10px;
+    width: 64px;
+    height: 64px;
+  }
+  
+.search-page{
+  
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    
+    background-image:url('../../WhatsApp\ Image\ 2023-12-06\ at\ 03.31.16.jpeg');
+    background-color: white;
+    background-size:cover;
+    background-position:center;
+    background-repeat: no-repeat;    background-repeat: no-repeat;
+    font-family: Poppins;
+
+    margin:0;
+    padding:0;
+}
+
+
+.custom-table {
+  width: 80rem;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  color: #B9B4C7;
+  background-color: #352F44;
+  border-radius: 0.25rem;
+  border: 1px solid #1a1721;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #1a1721;
+}
+
+.custom-table th {
+  background-color: #1a1721;
+  border-top: 1px solid #1a1721;
+}
+
+
+.custom-table tbody tr:hover {
+  background-color: rgba(219, 219, 219, 0.075);
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px; /* Adjust as needed */
+  background-color: rgba(30, 30, 30, 0.075); /* Optional: Add background color to the search bar */
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin-top: 2rem;
+}
